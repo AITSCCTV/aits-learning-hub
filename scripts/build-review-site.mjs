@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { createHash } from 'node:crypto';
 const root = process.cwd();
 const source = path.join(root, 'training-content');
 const out = path.join(root, 'site');
@@ -12,7 +13,7 @@ for (const course of curriculum.courses) {
   for (const file of await fs.readdir(lessons)) {
     if (!file.endsWith('.html')) continue;
     const target = path.join(lessons, file);
-    const body = await fs.readFile(target, 'utf8');
+    const body = (await fs.readFile(target, 'utf8')).replace(/^[\s\S]*?(?=<h1>)/, '');
     await fs.writeFile(target, `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AITS course lesson</title><style>${css}</style><nav><a href="../../index.html">← All courses</a></nav><main>${body}</main></html>`);
   }
 }
@@ -26,4 +27,13 @@ index = index.replace(/<aside>[\s\S]*?<\/aside>/, '<aside><strong>Public course 
 index = index.replace(/<section><h2>Sources, knowledge and evidence[\s\S]*$/, '<section><h2>Sources and practice definitions</h2><ul><li><a href="sources/inventory.json">Source registry</a></li><li><a href="knowledge-base/items.json">Draft knowledge records</a></li><li><a href="knowledge-base/practice-sessions.json">Mentor practice definitions (not a live AI service)</a></li></ul></section></html>');
 await fs.writeFile(path.join(out, 'index.html'), index);
 await fs.writeFile(path.join(out, '.nojekyll'), '');
+const manifest = JSON.parse(await fs.readFile(path.join(out, 'content-manifest.json'), 'utf8'));
+for (const asset of manifest.assets) {
+  const bytes = await fs.readFile(path.join(out, asset.path));
+  asset.source_sha256 = asset.sha256;
+  asset.sha256 = createHash('sha256').update(bytes).digest('hex');
+  asset.bytes = bytes.length;
+}
+manifest.publication_note = 'HTML lessons have a navigation wrapper; source_sha256 preserves the original review-package hash.';
+await fs.writeFile(path.join(out, 'content-manifest.json'), JSON.stringify(manifest, null, 2));
 console.log(`Built public review site with ${curriculum.courses.length} courses in site/`);
