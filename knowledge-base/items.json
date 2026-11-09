@@ -1,0 +1,1018 @@
+[
+  {
+    "topic": "Company identity and history",
+    "question": "Explain AITS using supported public facts.",
+    "answer": "The official About us page identifies A.I.T.S. Company Limited and dates its founding to Buddhist year 2548, equivalent to 2005. It describes a business concerned with installation quality and professional service. These are public company statements; they do not establish an employee contract or a field acceptance standard. The public mission text emphasizes service standards, technology, attention to customer needs and responsibility. In this course, these themes introduce the business. Specific targets, individual duties and performance measures require current approved internal documents. Do not infer a reporting line or an employee benefit from marketing language.",
+    "source_document": [
+      "AITS",
+      "EX"
+    ],
+    "source_classification": "Verified company information",
+    "applicable_role": [
+      "All new employees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C01",
+    "related_lesson": "AITS-C01-L01",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C01-L01",
+      "course_id": "AITS-C01",
+      "title": "Company identity and history",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Services and customer needs",
+    "question": "Match customer needs to relevant service categories.",
+    "answer": "AITS publicly lists CCTV, network cabling, security systems, internet, telephone systems, access control, home automation and solar services. Learn what each category addresses before proposing a product. CCTV supports visual monitoring; access control manages entry; network infrastructure connects devices and services. A customer request may span several categories. Ask about the problem, location, existing equipment and desired outcome. Record uncertainty instead of promising compatibility, price, installation dates or a service level. A technical survey and approved quotation process are separate from this introductory training.",
+    "source_document": [
+      "HOME",
+      "EX"
+    ],
+    "source_classification": "Verified company information",
+    "applicable_role": [
+      "All new employees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C01",
+    "related_lesson": "AITS-C01-L02",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C01-L02",
+      "course_id": "AITS-C01",
+      "title": "Services and customer needs",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "HOME",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Roles and collaboration",
+    "question": "Prepare a clear handover without inventing an organization chart.",
+    "answer": "No current approved AITS organization chart was located in the inspected materials. This lesson therefore describes functions, not confirmed departments or reporting lines. In a typical service business, customer-facing staff capture requirements, technical staff assess feasibility, administration maintains records, and an authorized reviewer confirms commercial or operational decisions. A useful handover states the request, known facts, open questions, relevant evidence and next action. It identifies who is being asked to respond without assuming authority they do not have. Ask your supervisor to confirm actual role names and escalation routes. A handover is incomplete when the recipient cannot tell what decision is needed.",
+    "source_document": [
+      "EX",
+      "APP"
+    ],
+    "source_classification": "Hypothetical examples",
+    "applicable_role": [
+      "All new employees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C01",
+    "related_lesson": "AITS-C01-L03",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C01-L03",
+      "course_id": "AITS-C01",
+      "title": "Roles and collaboration",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "APP"
+      ]
+    }
+  },
+  {
+    "topic": "Learning Hub and your first learning cycle",
+    "question": "Complete a lesson, attempt a quiz and distinguish practice from approval.",
+    "answer": "Open the Learning Hub with your assigned account, select an assigned course and read the lesson objectives. Work through the explanation and exercise before taking the quiz. Review feedback, revisit the relevant lesson and retry when the platform permits. A recorded completion shows learning activity; it does not authorize electrical work or certify job competence. The knowledge library separates approved records from clearly labeled samples. Check title, version, source, approval state and applicability before using a document. Course publication and knowledge approval are separate controls. If internal policy is unavailable, ask HR or your supervisor for the current approved document. AI practice cannot supply missing company authority.",
+    "source_document": [
+      "APP",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All new employees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C01",
+    "related_lesson": "AITS-C01-L04",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C01-L04",
+      "course_id": "AITS-C01",
+      "title": "Learning Hub and your first learning cycle",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Statutory rights and company documents",
+    "question": "Separate legal minimums from unverified AITS arrangements.",
+    "answer": "Thai statutory employment protections and an employer’s additional benefits are different sources of entitlement. A company handbook may explain administration and provide more generous arrangements, but this training has not verified AITS benefits, payroll rules or leave approval channels. Ask for current employment terms, work rules, pay records and the applicable HR contact. Keep copies of documents you are entitled to hold and ask for clarification when terms are unclear. Record the actual dates and facts of a concern. Do not assume that signing a document makes every term lawful. Individual questions require review of current Thai law, the employment relationship and relevant exceptions by a qualified HR or legal reviewer.",
+    "source_document": [
+      "MOL",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All new employees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C02",
+    "related_lesson": "AITS-C02-L01",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C02-L01",
+      "course_id": "AITS-C02",
+      "title": "Statutory rights and company documents",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "MOL",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Hours rest and holidays",
+    "question": "Recognize the ordinary statutory baseline and its limits.",
+    "answer": "For ordinary work, Ministry of Labour guidance describes normal limits of eight hours a day and 48 hours a week, with lawful arrangements and sector exceptions requiring review. Specified hazardous work has a seven-hour daily and 42-hour weekly limit. The ordinary rest rule provides at least one hour after no more than five consecutive working hours; agreed split breaks and statutory exceptions must be checked. The general baseline includes at least one weekly holiday with no more than six days between, at least 13 traditional holidays including National Labour Day, and at least six working days of annual holiday after one continuous year. These are legal baselines, not a statement of the AITS roster. Overtime consent, exceptions and pay should be checked separately; do not infer that a customer deadline overrides them.",
+    "source_document": [
+      "MOL",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All new employees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C02",
+    "related_lesson": "AITS-C02-L02",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C02-L02",
+      "course_id": "AITS-C02",
+      "title": "Hours rest and holidays",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "MOL",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Leave categories and recent changes",
+    "question": "Locate current leave guidance and avoid outdated figures.",
+    "answer": "Leave categories include sickness, necessary personal business, maternity, qualifying spouse support, sterilization, military service and training, each with conditions and payment rules. Sick leave and paid sick-leave limits are different concepts. Do not use an old overview as the sole source for current allowances. The official explanation of the 2025 amendment, effective 7 December 2025, describes maternity leave of up to 120 days with employer-paid wages up to 60 days. It also describes up to 15 days of qualifying continuous child-care leave at 50% wages with the required medical evidence, and up to 15 days to assist a spouse who gives birth, paid in full, subject to the application and 90-day timing rules. These are statutory summaries, not AITS benefits. HR/legal review must confirm current text and individual eligibility before release.",
+    "source_document": [
+      "LEAVE",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All new employees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C02",
+    "related_lesson": "AITS-C02-L03",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C02-L03",
+      "course_id": "AITS-C02",
+      "title": "Leave categories and recent changes",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "LEAVE",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Conduct confidentiality and concerns",
+    "question": "Communicate professionally and protect personal information.",
+    "answer": "General professional practice includes accurate records, respectful communication, honesty about mistakes and protection of information entrusted to you. Collect only information needed for the legitimate task and share it only with authorized recipients through approved systems. This is privacy awareness, not a complete interpretation of Thailand’s PDPA or an AITS retention policy. Before sending a document, check recipient, attachment, purpose and sensitivity. Never put customer passwords into a ticket or AI practice chat. For a concern, separate what you observed from what you suspect, preserve relevant evidence lawfully, and use a verified responsible channel. If the usual contact is implicated, seek an alternative authorized route. This lesson does not invent a company grievance procedure or promise a particular investigation outcome.",
+    "source_document": [
+      "EX",
+      "QA"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All new employees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C02",
+    "related_lesson": "AITS-C02-L04",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C02-L04",
+      "course_id": "AITS-C02",
+      "title": "Conduct confidentiality and concerns",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ]
+    }
+  },
+  {
+    "topic": "Recognize hazards before work",
+    "question": "Identify hazards and select a safe next action.",
+    "answer": "A hazard is a source of possible harm; risk considers how harm could occur and its consequences. Before work, look for damaged cables, wet areas, unstable access, falling objects, traffic, heavy loads and blocked exits. A neat-looking site can still contain hidden services or energized equipment. Prefer eliminating a hazard or changing the method before relying only on personal protective equipment. A beginner should report an unsafe condition and stay outside the danger area. Do not start an unfamiliar task because a customer says it is urgent. This awareness course does not replace the employer’s risk assessment, task training, supervision or site-specific controls.",
+    "source_document": [
+      "HEIGHT",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All employees",
+      "Technician trainees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C03",
+    "related_lesson": "AITS-C03-L01",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C03-L01",
+      "course_id": "AITS-C03",
+      "title": "Recognize hazards before work",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Electrical and equipment awareness",
+    "question": "Recognize when equipment must be left to qualified personnel.",
+    "answer": "Thailand has specific occupational electrical-safety regulations and training requirements; the DLPW reference index links the regulation and notices. A short online lesson is not that qualification. Do not open energized equipment, defeat guards or improvise repairs. Unexpected heat, burning smell, exposed conductors or liquid ingress require a safe stop and qualified assessment. Network equipment can still be connected to mains supplies, backup power or other energy sources. Switching off one visible switch does not prove all energy is isolated. Isolation, verification and re-energization belong to trained authorized personnel using the approved method. Handle equipment using rated lifting and carrying methods; inspect packaging, connectors and manufacturer instructions without creating exposure.",
+    "source_document": [
+      "ELEC",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All employees",
+      "Technician trainees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C03",
+    "related_lesson": "AITS-C03-L02",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C03-L02",
+      "course_id": "AITS-C03",
+      "title": "Electrical and equipment awareness",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Height PPE and handling",
+    "question": "Explain why access and rescue planning precede height work.",
+    "answer": "Consider whether work can be done from the ground. Where height work remains necessary, competent people must plan suitable access, fall prevention, equipment inspection and emergency arrangements. A harness alone does not make an unsafe setup acceptable. Ladders are not a universal solution, and a chair is not access equipment. Select PPE for the assessed hazard, correct fit and compatibility. Inspect it and follow its instructions; damaged equipment should not be used. Do not attach fall protection to an unverified anchor. Keep people clear of falling-object areas and use approved handling arrangements. The learner’s exercise is a paper planning review; it includes no climbing, lifting experiment or live installation.",
+    "source_document": [
+      "HEIGHT",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All employees",
+      "Technician trainees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C03",
+    "related_lesson": "AITS-C03-L03",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C03-L03",
+      "course_id": "AITS-C03",
+      "title": "Height PPE and handling",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Incidents site conduct and quality",
+    "question": "Record observations and maintain professional site boundaries.",
+    "answer": "If an incident or near miss occurs, protect yourself, seek the designated emergency response and avoid disturbing the scene except where necessary for immediate safety. Do not attempt a rescue beyond your training. Record time, location, observed conditions and witnesses through the verified reporting route. Do not speculate about blame or publish images of people. At a customer site, confirm access permission, work boundaries and the approved scope. Protect property, keep routes clear and obtain permission before taking evidence photographs. Quality assurance means building reliable checks into the process; final inspection alone cannot repair every planning failure. Record incomplete work and unresolved risks truthfully so that the next person can act.",
+    "source_document": [
+      "HEIGHT",
+      "QA",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All employees",
+      "Technician trainees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C03",
+    "related_lesson": "AITS-C03-L04",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C03-L04",
+      "course_id": "AITS-C03",
+      "title": "Incidents site conduct and quality",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "HEIGHT",
+        "QA",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Cameras recorders and viewing",
+    "question": "Trace a basic CCTV signal path.",
+    "answer": "A CCTV system combines image capture, transport, recording or storage, and authorized viewing. IP cameras send digital video over a network to an NVR or video-management system; analog cameras commonly send video to a DVR for recording. Hybrid designs exist, so verify the actual equipment rather than relying on the name alone. A visible live image does not prove recording, time accuracy, playback or export works. A complete handover test considers the customer’s agreed purpose and approved requirements. Camera resolution alone does not guarantee identification: lens, distance, angle, lighting and motion matter. All examples here are generic; AITS-specific acceptance criteria have not been supplied.",
+    "source_document": [
+      "NET",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Technician trainees",
+      "Technical sales"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C04",
+    "related_lesson": "AITS-C04-L01",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C04-L01",
+      "course_id": "AITS-C04",
+      "title": "Cameras recorders and viewing",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "NET",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "PoE cabling and equipment checks",
+    "question": "Review power compatibility and cabling before connection.",
+    "answer": "Power over Ethernet can deliver power and data over compatible Ethernet cabling. Check both the device’s supported PoE type and the switch or injector’s capability. Do not assume every RJ45 port supplies power or every injector is standards-compatible. Manufacturer documentation takes priority for the actual model. A switch has per-port limits and a total power budget. Compare planned loads against the documented budget, allowing for the manufacturer’s conditions and cable losses. Axis explains that typical and maximum camera consumption differ with features and operating conditions. Inspect cable category, route, terminations, labeling, damage and suitability for the environment. Never improvise mains wiring as part of a network exercise.",
+    "source_document": [
+      "POE",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Technician trainees",
+      "Technical sales"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C04",
+    "related_lesson": "AITS-C04-L02",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C04-L02",
+      "course_id": "AITS-C04",
+      "title": "PoE cabling and equipment checks",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "POE",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Survey placement and installation preparation",
+    "question": "Prepare a survey that connects camera purpose to site constraints.",
+    "answer": "Start with the intended task: observe an area, recognize activity or capture usable identification detail under agreed conditions. Record field of view, expected lighting, mounting constraints, cable route, weather exposure and maintenance access. Avoid assumptions about recording private areas or neighboring property; escalate privacy and lawful-purpose questions to the responsible reviewer. Before installation, check model and quantities against the approved scope, inspect for damage and confirm compatible accessories. Verify that safe access and required permissions are ready. A drawing should label devices and cable routes clearly enough for another technician to follow. Do not treat a draft survey as permission to drill, energize or change a customer system.",
+    "source_document": [
+      "EX",
+      "HEIGHT",
+      "QA"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Technician trainees",
+      "Technical sales"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C04",
+    "related_lesson": "AITS-C04-L03",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C04-L03",
+      "course_id": "AITS-C04",
+      "title": "Survey placement and installation preparation",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "QA"
+      ]
+    }
+  },
+  {
+    "topic": "Faults maintenance and handover",
+    "question": "Separate symptom diagnosis from authorized corrective work.",
+    "answer": "For a missing image, establish whether one camera or many are affected, when it began and whether live view or playback is missing. Observe authorized power/link indications and compare with a known-good path where permitted. Possible causes include power, cabling, addressing, authentication, stream compatibility and recording settings; do not jump straight to a factory reset. Maintenance starts with approved intervals and model instructions. Review authorized health indicators, time accuracy, storage condition and image obstruction without changing settings unnecessarily. Handover evidence should identify devices, configuration versions, tests performed, results, limitations and open issues. Transfer credentials through the approved secure method, never in the ordinary completion report.",
+    "source_document": [
+      "EX",
+      "QA",
+      "POE"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Technician trainees",
+      "Technical sales"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C04",
+    "related_lesson": "AITS-C04-L04",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C04-L04",
+      "course_id": "AITS-C04",
+      "title": "Faults maintenance and handover",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA",
+        "POE"
+      ]
+    }
+  },
+  {
+    "topic": "LAN switches routers and Wi-Fi",
+    "question": "Explain the path from a device to an external service.",
+    "answer": "A local area network connects nearby devices. A switch commonly connects wired devices within that network, a router forwards traffic between networks, and an access point gives wireless devices access to a network. One physical product may combine these functions. A Wi-Fi connection alone does not prove internet access. Trace the path from the client through access, local switching, gateway and upstream connection to the service. A fault can affect one device, one wireless area, one VLAN or the whole site. Start by asking what works as well as what fails. Comparing affected and unaffected paths narrows the investigation without changing the network.",
+    "source_document": [
+      "NET",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Technicians",
+      "Support trainees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C05",
+    "related_lesson": "AITS-C05-L01",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C05-L01",
+      "course_id": "AITS-C05",
+      "title": "LAN switches routers and Wi-Fi",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "NET",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "IP addressing DHCP and DNS",
+    "question": "Distinguish an address, a gateway and name resolution.",
+    "answer": "An IP address identifies an interface on a network; the subnet prefix helps determine which destinations are local. A default gateway provides a path to other networks. Private IPv4 ranges include 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16; they are not globally routed public addresses. Avoid duplicate assignments and do not change addressing without an approved plan. DHCP supplies configuration such as an address lease and network options. DNS resolves names to records used to locate services. These functions are different: a valid lease does not prove DNS or upstream access works. In the synthetic 192.168.10.0/24 exercise, a client at .20 and gateway at .1 share the subnet; .0 and .255 are not ordinary host choices for that subnet.",
+    "source_document": [
+      "IP",
+      "DHCP",
+      "NET",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Technicians",
+      "Support trainees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C05",
+    "related_lesson": "AITS-C05-L02",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C05-L02",
+      "course_id": "AITS-C05",
+      "title": "IP addressing DHCP and DNS",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "IP",
+        "DHCP",
+        "NET",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Investigate internet unavailable",
+    "question": "Choose diagnostic steps that test a hypothesis.",
+    "answer": "First establish safety, authorization, affected users, services, start time and recent changes. Ask whether all sites fail or one application fails. Observe link and connection state safely. Read the client’s address, prefix, gateway and DNS configuration before changing it. Compare a known-good device on the relevant network. On an authorized test device, basic diagnostics can include ipconfig /all, a gateway reachability test and nslookup for an approved test name. A ping timeout is evidence, not proof that a device is offline: filtering or policy may block replies. If gateway and external connectivity appear available but name resolution fails, investigate the configured resolver and related policy. Change one authorized variable at a time, record before/after results and preserve a rollback route.",
+    "source_document": [
+      "NET",
+      "DHCP",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Technicians",
+      "Support trainees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C05",
+    "related_lesson": "AITS-C05-L03",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C05-L03",
+      "course_id": "AITS-C05",
+      "title": "Investigate internet unavailable",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "NET",
+        "DHCP",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Isolation escalation and customer updates",
+    "question": "Hand over an investigation with evidence and a clear next action.",
+    "answer": "Device isolation has two meanings: narrowing a fault to a device/path, and restricting a device for security containment. Do not disconnect equipment or change VLANs under the second meaning without the applicable authorization. For diagnosis, compare a known-good cable, port or client only where the test is safe and approved. Preserve the original state and record each change. An escalation includes impact, scope, timestamps, relevant topology, tests and results, changes made, rollback status and the requested help. Exclude passwords and unnecessary personal information. Tell the customer what is known, what remains uncertain and when the next agreed update will occur. Do not promise resolution times or quote an AITS SLA that has not been verified.",
+    "source_document": [
+      "EX",
+      "QA"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Technicians",
+      "Support trainees"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C05",
+    "related_lesson": "AITS-C05-L04",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C05-L04",
+      "course_id": "AITS-C05",
+      "title": "Isolation escalation and customer updates",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ]
+    }
+  },
+  {
+    "topic": "Discover and record requirements",
+    "question": "Turn a customer inquiry into an actionable record.",
+    "answer": "Begin with the outcome the customer wants and the problem they experience. Use open questions, then confirm specifics: site type, affected area, existing equipment, constraints and desired timing. Read back your understanding in plain language. Do not collect credentials or unnecessary personal data to make the record look complete. A useful request record distinguishes customer statements from confirmed observations. Include a reference, contact channel authorized for follow-up, scope, open questions and the next responsible action. The fields in this lesson are a generic practice template; actual AITS systems and mandatory fields require company confirmation.",
+    "source_document": [
+      "EX",
+      "QA"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Sales",
+      "Customer support",
+      "Administration"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C06",
+    "related_lesson": "AITS-C06-L01",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C06-L01",
+      "course_id": "AITS-C06",
+      "title": "Discover and record requirements",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ]
+    }
+  },
+  {
+    "topic": "Complaints and professional communication",
+    "question": "Acknowledge a complaint and agree a next step without unsupported promises.",
+    "answer": "Listen without interrupting, summarize the issue and acknowledge its impact. Ask focused questions to establish what happened and what outcome the customer seeks. Avoid assigning blame before evidence is available. A respectful acknowledgement can be accurate without admitting an unverified cause or promising compensation. Record the complaint, impact, evidence available, agreed contact method and next update. Escalate to the authorized responsible function when the request exceeds your role. Do not invent a refund rule or service deadline. If language becomes abusive or safety is threatened, seek the applicable supervisor/site response instead of escalating the confrontation.",
+    "source_document": [
+      "EX",
+      "QA"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Sales",
+      "Customer support",
+      "Administration"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C06",
+    "related_lesson": "AITS-C06-L02",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C06-L02",
+      "course_id": "AITS-C06",
+      "title": "Complaints and professional communication",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ]
+    }
+  },
+  {
+    "topic": "Quotations and sales coordination",
+    "question": "Check scope and assumptions before a quotation is issued.",
+    "answer": "A quotation should make the proposed scope understandable: items or services, quantities, relevant specifications, assumptions, exclusions and commercial terms supplied by the authorized process. This course does not set AITS pricing, discounts, tax treatment, approval limits or validity periods. Technical feasibility and commercial authorization are different checks. Before sending, reconcile the customer request, survey and draft quotation. Look for mismatched quantities, unclear installation scope and unsupported compatibility claims. Use a version identifier so reviewers discuss the same document. If the customer changes requirements, record the change and obtain the necessary revised review rather than editing a signed or approved document silently.",
+    "source_document": [
+      "EX",
+      "QA"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Sales",
+      "Customer support",
+      "Administration"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C06",
+    "related_lesson": "AITS-C06-L03",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C06-L03",
+      "course_id": "AITS-C06",
+      "title": "Quotations and sales coordination",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ]
+    }
+  },
+  {
+    "topic": "Administrative records and handovers",
+    "question": "Maintain accurate controlled documents and protect confidentiality.",
+    "answer": "Use clear names, stable references and version information so another person can locate the right record. Check dates, quantities, customer identifiers and attachments against the source. A copied spreadsheet can become an uncontrolled duplicate; follow the approved storage and retention rules once supplied. Do not invent a retention period. Restrict access according to the task, verify recipients and use approved transfer methods. A handover should state status, outstanding questions, evidence location and next owner or requested action. Do not mark a task complete merely because an email was sent. Confirm that the intended outcome or handover acceptance has been recorded by the appropriate person.",
+    "source_document": [
+      "EX",
+      "QA"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "Sales",
+      "Customer support",
+      "Administration"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C06",
+    "related_lesson": "AITS-C06-L04",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C06-L04",
+      "course_id": "AITS-C06",
+      "title": "Administrative records and handovers",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ]
+    }
+  },
+  {
+    "topic": "Read an SOP before using it",
+    "question": "Check scope authority and version before following instructions.",
+    "answer": "A standard operating procedure describes a repeatable task, its scope, responsible roles, prerequisites, steps and required evidence. A useful SOP also identifies exceptions, stop conditions and related documents. Standardization reduces avoidable variation only when the procedure is appropriate and current. Before use, check document ID, version, approval, effective date and applicability to the actual equipment and site. An attractive draft is not an approved procedure. If two versions conflict, pause the affected task and ask the authorized owner to identify the current version. The generic templates in this course are Draft and must not be used as official AITS instructions.",
+    "source_document": [
+      "QA",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All employees",
+      "Reviewers"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C07",
+    "related_lesson": "AITS-C07-L01",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C07-L01",
+      "course_id": "AITS-C07",
+      "title": "Read an SOP before using it",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "QA",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Evidence and deviations",
+    "question": "Record actual results and disclose departures from the plan.",
+    "answer": "Evidence connects a requirement to an observed result. Record what was checked, the method, time, relevant identifier and result. “Done” alone is weak evidence when the next reviewer cannot tell which requirement was tested. Do not fabricate a photo, measurement or signature. A deviation is a departure from the applicable requirement or planned process. Record the difference and its impact; seek authorized disposition instead of silently changing the procedure. Depending on the risk, the task may need to pause. Preserve the original evidence and record any correction with traceable history. A failed check can be useful information when it is reported honestly.",
+    "source_document": [
+      "QA",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All employees",
+      "Reviewers"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C07",
+    "related_lesson": "AITS-C07-L02",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C07-L02",
+      "course_id": "AITS-C07",
+      "title": "Evidence and deviations",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "QA",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "Quality assurance and completion review",
+    "question": "Distinguish process prevention from checking a finished result.",
+    "answer": "Quality assurance builds reliable methods, training and review into the work. Quality control checks outputs against defined requirements. Both are useful: a final inspection can detect a defect, while a better preparation process may prevent it. The ISO overview supports this general distinction; this course makes no claim that AITS holds a particular certification. For a completion review, compare the approved scope with evidence and open issues. Confirm that required tests have results, exceptions have an authorized disposition and the handover is understandable. Record recurring problems for improvement without changing a controlled procedure on your own. A customer signature alone does not erase an unresolved safety or technical issue.",
+    "source_document": [
+      "QA",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All employees",
+      "Reviewers"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C07",
+    "related_lesson": "AITS-C07-L03",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C07-L03",
+      "course_id": "AITS-C07",
+      "title": "Quality assurance and completion review",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "QA",
+        "EX"
+      ]
+    }
+  },
+  {
+    "topic": "AI checks and human authority",
+    "question": "Use AI feedback as practice support with source and approval controls.",
+    "answer": "An AI can help compare a written report with a checklist, ask missing questions and explain a training example. It may still misunderstand images, omit context or produce an unsupported answer. It cannot verify hidden physical conditions from a photograph, grant approval or turn a draft SOP into company policy. Before accepting AI feedback, inspect the cited source, version, approval and applicability. Keep company-authoritative retrieval restricted to approved company records. Draft and hypothetical items may support clearly labeled practice, but not a policy answer. Do not submit secrets or unnecessary personal data. An AI practice score is formative feedback; official competency assessment requires the company’s approved human-led process.",
+    "source_document": [
+      "APP",
+      "EX"
+    ],
+    "source_classification": "General industry knowledge",
+    "applicable_role": [
+      "All employees",
+      "Reviewers"
+    ],
+    "approval_status": "Draft",
+    "review_date": null,
+    "next_review_due": "2027-02-09",
+    "related_course": "AITS-C07",
+    "related_lesson": "AITS-C07-L04",
+    "authoritative_company_use": false,
+    "metadata": {
+      "document_id": "AITS-C07-L04",
+      "course_id": "AITS-C07",
+      "title": "AI checks and human authority",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Mixed; see references and labeled examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX"
+      ]
+    }
+  }
+]

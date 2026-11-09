@@ -1,0 +1,55 @@
+{
+  "title": "Survey placement and installation preparation",
+  "objectives": [
+    "Prepare a survey that connects camera purpose to site constraints."
+  ],
+  "explanation": [
+    "Start with the intended task: observe an area, recognize activity or capture usable identification detail under agreed conditions. Record field of view, expected lighting, mounting constraints, cable route, weather exposure and maintenance access. Avoid assumptions about recording private areas or neighboring property; escalate privacy and lawful-purpose questions to the responsible reviewer.",
+    "Before installation, check model and quantities against the approved scope, inspect for damage and confirm compatible accessories. Verify that safe access and required permissions are ready. A drawing should label devices and cable routes clearly enough for another technician to follow. Do not treat a draft survey as permission to drill, energize or change a customer system."
+  ],
+  "example": "A fictional entrance faces bright afternoon sunlight. A site review should test the relevant lighting conditions instead of accepting a clear indoor bench image.",
+  "exercise": "Create a survey checklist with purpose, scene, route, power, privacy and access headings.",
+  "model_response": "For each heading record known evidence, an unresolved question and the person who must confirm it; leave unknown measurements blank.",
+  "key_points": [
+    "Define the viewing task",
+    "Check real site conditions",
+    "Confirm scope and safe access"
+  ],
+  "references": [
+    "EX",
+    "HEIGHT",
+    "QA"
+  ],
+  "thai_summary": "สำรวจตามวัตถุประสงค์ของภาพ ตรวจแสง เส้นทางสาย ความเป็นส่วนตัว และทางเข้าทำงานที่ปลอดภัยก่อนติดตั้ง",
+  "id": "AITS-C04-L03",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C04-L02"
+  ],
+  "summary": "Define the viewing task Check real site conditions Confirm scope and safe access",
+  "visual_resources": [
+    "course-04-cctv-installation/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C04-L03",
+    "course_id": "AITS-C04",
+    "title": "Survey placement and installation preparation",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "HEIGHT",
+      "QA"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C04-L03-Q1",
+    "AITS-C04-L03-Q2",
+    "AITS-C04-L03-Q3"
+  ]
+}

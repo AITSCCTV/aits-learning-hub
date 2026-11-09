@@ -1,0 +1,53 @@
+{
+  "title": "Read an SOP before using it",
+  "objectives": [
+    "Check scope authority and version before following instructions."
+  ],
+  "explanation": [
+    "A standard operating procedure describes a repeatable task, its scope, responsible roles, prerequisites, steps and required evidence. A useful SOP also identifies exceptions, stop conditions and related documents. Standardization reduces avoidable variation only when the procedure is appropriate and current.",
+    "Before use, check document ID, version, approval, effective date and applicability to the actual equipment and site. An attractive draft is not an approved procedure. If two versions conflict, pause the affected task and ask the authorized owner to identify the current version. The generic templates in this course are Draft and must not be used as official AITS instructions."
+  ],
+  "example": "A printed checklist v1 and a digital v2 disagree about a test. The exercise asks you to resolve document authority, not choose whichever is easier.",
+  "exercise": "Mark the fields you would inspect on an SOP cover before starting work.",
+  "model_response": "ID, version, approval, effective date, task/equipment scope, prerequisites and responsible owner.",
+  "key_points": [
+    "Check scope before steps",
+    "Check version and approval",
+    "Resolve conflicts with the owner"
+  ],
+  "references": [
+    "QA",
+    "EX"
+  ],
+  "thai_summary": "ตรวจสอบขอบเขต เวอร์ชัน และการอนุมัติก่อนใช้ SOP แบบร่างในหลักสูตรยังไม่ใช่ขั้นตอนทางการของบริษัท",
+  "id": "AITS-C07-L01",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "summary": "Check scope before steps Check version and approval Resolve conflicts with the owner",
+  "visual_resources": [
+    "course-07-sop-quality/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C07-L01",
+    "course_id": "AITS-C07",
+    "title": "Read an SOP before using it",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "QA",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C07-L01-Q1",
+    "AITS-C07-L01-Q2",
+    "AITS-C07-L01-Q3"
+  ]
+}

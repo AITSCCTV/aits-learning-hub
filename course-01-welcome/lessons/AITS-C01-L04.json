@@ -1,0 +1,53 @@
+{
+  "title": "Learning Hub and your first learning cycle",
+  "objectives": [
+    "Complete a lesson, attempt a quiz and distinguish practice from approval."
+  ],
+  "explanation": [
+    "Open the Learning Hub with your assigned account, select an assigned course and read the lesson objectives. Work through the explanation and exercise before taking the quiz. Review feedback, revisit the relevant lesson and retry when the platform permits. A recorded completion shows learning activity; it does not authorize electrical work or certify job competence.",
+    "The knowledge library separates approved records from clearly labeled samples. Check title, version, source, approval state and applicability before using a document. Course publication and knowledge approval are separate controls. If internal policy is unavailable, ask HR or your supervisor for the current approved document. AI practice cannot supply missing company authority."
+  ],
+  "example": "A sample checklist appears in the library. You may use it for the exercise, but should not treat it as permission to perform a live installation.",
+  "exercise": "Open one course, complete its first lesson, locate its source note and identify its approval label.",
+  "model_response": "Record the course and lesson IDs, the visible Draft/sample label and the source reference; confirm completion persists after reopening.",
+  "key_points": [
+    "Read and practise before the quiz",
+    "Completion is learning evidence",
+    "Check source, version and approval"
+  ],
+  "references": [
+    "APP",
+    "EX"
+  ],
+  "thai_summary": "เรียนและฝึกก่อนทำแบบทดสอบ การเรียนจบไม่ใช่ใบรับรองความสามารถ ตรวจสอบเวอร์ชัน แหล่งอ้างอิง และสถานะอนุมัติ",
+  "id": "AITS-C01-L04",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C01-L03"
+  ],
+  "summary": "Read and practise before the quiz Completion is learning evidence Check source, version and approval",
+  "visual_resources": [
+    "course-01-welcome/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C01-L04",
+    "course_id": "AITS-C01",
+    "title": "Learning Hub and your first learning cycle",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "APP",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C01-L04-Q1",
+    "AITS-C01-L04-Q2",
+    "AITS-C01-L04-Q3"
+  ]
+}

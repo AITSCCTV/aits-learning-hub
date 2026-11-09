@@ -1,0 +1,53 @@
+{
+  "title": "Conduct confidentiality and concerns",
+  "objectives": [
+    "Communicate professionally and protect personal information."
+  ],
+  "explanation": [
+    "General professional practice includes accurate records, respectful communication, honesty about mistakes and protection of information entrusted to you. Collect only information needed for the legitimate task and share it only with authorized recipients through approved systems. This is privacy awareness, not a complete interpretation of Thailand’s PDPA or an AITS retention policy.",
+    "Before sending a document, check recipient, attachment, purpose and sensitivity. Never put customer passwords into a ticket or AI practice chat. For a concern, separate what you observed from what you suspect, preserve relevant evidence lawfully, and use a verified responsible channel. If the usual contact is implicated, seek an alternative authorized route. This lesson does not invent a company grievance procedure or promise a particular investigation outcome."
+  ],
+  "example": "A fictional employee receives a customer list by mistake. Stop further sharing and report the misdelivery through the verified internal route.",
+  "exercise": "Rewrite an accusatory message as an observation, impact and request.",
+  "model_response": "The file was sent to an unintended recipient at 10:15. It contains contact details. Please advise the authorized containment and reporting steps.",
+  "key_points": [
+    "Separate observation from suspicion",
+    "Share only with authorized recipients",
+    "Verify the route for concerns"
+  ],
+  "references": [
+    "EX",
+    "QA"
+  ],
+  "thai_summary": "สื่อสารอย่างสุภาพ บันทึกข้อเท็จจริง และจำกัดการเปิดเผยข้อมูล ตรวจสอบผู้รับและช่องทางก่อนส่งข้อมูลสำคัญ",
+  "id": "AITS-C02-L04",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C02-L03"
+  ],
+  "summary": "Separate observation from suspicion Share only with authorized recipients Verify the route for concerns",
+  "visual_resources": [
+    "course-02-employee-rights/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C02-L04",
+    "course_id": "AITS-C02",
+    "title": "Conduct confidentiality and concerns",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C02-L04-Q1",
+    "AITS-C02-L04-Q2",
+    "AITS-C02-L04-Q3"
+  ]
+}

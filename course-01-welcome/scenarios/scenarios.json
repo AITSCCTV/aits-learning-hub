@@ -1,0 +1,263 @@
+[
+  {
+    "id": "AITS-C01-S01",
+    "title": "Explain AITS to a colleague",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "New employee",
+    "problem_description": "A colleague asks when AITS started and who you report to.",
+    "available_information": [
+      "Public founding date is available; no approved reporting chart is supplied."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Use the public date and flag the missing reporting line.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Use the public date and flag the missing reporting line."
+    ],
+    "inappropriate_decisions": [
+      "Invent the manager name."
+    ],
+    "consequences": "The colleague receives a traceable introduction without an invented authority.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Invent the manager name.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Use the public date and flag the missing reporting line."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "AITS",
+      "APP",
+      "EX",
+      "HOME"
+    ],
+    "metadata": {
+      "document_id": "AITS-C01-S01",
+      "course_id": "AITS-C01",
+      "title": "Explain AITS to a colleague",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  },
+  {
+    "id": "AITS-C01-S02",
+    "title": "Route a mixed service request",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "Customer support trainee",
+    "problem_description": "Lotus Workshop needs remote entrance viewing and controlled door entry.",
+    "available_information": [
+      "Existing network details and device models are unknown."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Record CCTV, access-control and connectivity requirements for review.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Record CCTV, access-control and connectivity requirements for review."
+    ],
+    "inappropriate_decisions": [
+      "Promise a model and installation date immediately."
+    ],
+    "consequences": "A useful handover reduces avoidable resurvey and false expectations.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Promise a model and installation date immediately.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Record CCTV, access-control and connectivity requirements for review."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "AITS",
+      "APP",
+      "EX",
+      "HOME"
+    ],
+    "metadata": {
+      "document_id": "AITS-C01-S02",
+      "course_id": "AITS-C01",
+      "title": "Route a mixed service request",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  },
+  {
+    "id": "AITS-C01-S03",
+    "title": "Choose a reliable learning source",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "New employee",
+    "problem_description": "A sample checklist conflicts with a supervisor-provided approved current document.",
+    "available_information": [
+      "The sample is Draft and the approved document has an applicable version."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Use the approved applicable source and flag the sample conflict.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Use the approved applicable source and flag the sample conflict."
+    ],
+    "inappropriate_decisions": [
+      "Treat the sample as mandatory because it is newer."
+    ],
+    "consequences": "Authority and applicability are checked before use.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Treat the sample as mandatory because it is newer.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Use the approved applicable source and flag the sample conflict."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "AITS",
+      "APP",
+      "EX",
+      "HOME"
+    ],
+    "metadata": {
+      "document_id": "AITS-C01-S03",
+      "course_id": "AITS-C01",
+      "title": "Choose a reliable learning source",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  }
+]

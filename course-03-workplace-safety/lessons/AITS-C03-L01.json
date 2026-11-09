@@ -1,0 +1,53 @@
+{
+  "title": "Recognize hazards before work",
+  "objectives": [
+    "Identify hazards and select a safe next action."
+  ],
+  "explanation": [
+    "A hazard is a source of possible harm; risk considers how harm could occur and its consequences. Before work, look for damaged cables, wet areas, unstable access, falling objects, traffic, heavy loads and blocked exits. A neat-looking site can still contain hidden services or energized equipment.",
+    "Prefer eliminating a hazard or changing the method before relying only on personal protective equipment. A beginner should report an unsafe condition and stay outside the danger area. Do not start an unfamiliar task because a customer says it is urgent. This awareness course does not replace the employer’s risk assessment, task training, supervision or site-specific controls."
+  ],
+  "example": "A loose cable crosses a busy walkway. The exercise asks for a controlled routing solution and communication, not merely a warning shouted once.",
+  "exercise": "Identify three hazards in a fictional storeroom and propose one safer alternative for each.",
+  "model_response": "Blocked exit: clear through authorized action. Unstable stack: isolate and request safe restacking. Damaged lead: keep out of service and report.",
+  "key_points": [
+    "Look for the mechanism of harm",
+    "Remove or reduce exposure",
+    "Pause when safe controls are missing"
+  ],
+  "references": [
+    "HEIGHT",
+    "EX"
+  ],
+  "thai_summary": "ระบุอันตรายก่อนเริ่มงาน ลดการสัมผัสความเสี่ยง และหยุดเพื่อขอผู้ควบคุมที่มีความสามารถเมื่อมาตรการไม่พร้อม",
+  "id": "AITS-C03-L01",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "summary": "Look for the mechanism of harm Remove or reduce exposure Pause when safe controls are missing",
+  "visual_resources": [
+    "course-03-workplace-safety/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C03-L01",
+    "course_id": "AITS-C03",
+    "title": "Recognize hazards before work",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "HEIGHT",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C03-L01-Q1",
+    "AITS-C03-L01-Q2",
+    "AITS-C03-L01-Q3"
+  ]
+}

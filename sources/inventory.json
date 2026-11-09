@@ -1,0 +1,106 @@
+[
+  {
+    "id": "AITS",
+    "title": "AITS About us",
+    "url_or_path": "https://aitscctv.com/about-us/",
+    "classification": "Verified company information",
+    "publication_or_access": "Undated; accessed 2026-11-09",
+    "scope_limit": "Public history and service positioning only; not internal policy."
+  },
+  {
+    "id": "HOME",
+    "title": "AITS services",
+    "url_or_path": "https://aitscctv.com/",
+    "classification": "Verified company information",
+    "publication_or_access": "Undated; accessed 2026-11-09",
+    "scope_limit": "Public service categories."
+  },
+  {
+    "id": "MOL",
+    "title": "Ministry of Labour employment rights",
+    "url_or_path": "https://www.mol.go.th/employee/สิทธิหน้าที่นายจ้าง-ลูกจ้าง",
+    "classification": "General industry knowledge",
+    "publication_or_access": "Undated; accessed 2026-11-09",
+    "scope_limit": "Hours, rest and holiday baseline only. Its maternity and personal-leave sections are outdated; do not reuse them."
+  },
+  {
+    "id": "LEAVE",
+    "title": "PRD explanation of Labour Protection Act No 9",
+    "url_or_path": "https://secretary.prd.go.th/th/content/category/detail/id/9/iid/451880",
+    "classification": "General industry knowledge",
+    "publication_or_access": "2025-12-08; accessed 2026-11-09",
+    "scope_limit": "Amendment effective 2025-12-07. HR/legal reviewer must confirm applicability before release."
+  },
+  {
+    "id": "ELEC",
+    "title": "DLPW electrical safety regulation and training notices",
+    "url_or_path": "https://osh.labour.go.th/กฎกระทรวงฯ-ไฟฟ้า-2558/",
+    "classification": "General industry knowledge",
+    "publication_or_access": "Regulation 2015; accessed 2026-11-09",
+    "scope_limit": "Regulatory reference index; not a substitute for a site method statement."
+  },
+  {
+    "id": "HEIGHT",
+    "title": "ILO working at height",
+    "url_or_path": "https://www.ilo.org/topics-and-sectors/occupational-safety-and-health-guide-labour-inspectors-and-other/working-height",
+    "classification": "General industry knowledge",
+    "publication_or_access": "Accessed 2026-11-09",
+    "scope_limit": "Awareness, prevention and competent planning."
+  },
+  {
+    "id": "NET",
+    "title": "Cisco networking basics",
+    "url_or_path": "https://www.cisco.com/site/us/en/learn/topics/small-business/networking-basics.html",
+    "classification": "General industry knowledge",
+    "publication_or_access": "Accessed 2026-11-09",
+    "scope_limit": "Vendor-neutral explanation of switches, routers and access points."
+  },
+  {
+    "id": "IP",
+    "title": "RFC 1918 private addressing",
+    "url_or_path": "https://www.rfc-editor.org/rfc/rfc1918",
+    "classification": "General industry knowledge",
+    "publication_or_access": "1996-02; accessed 2026-11-09",
+    "scope_limit": "Private IPv4 address ranges; stable protocol foundation."
+  },
+  {
+    "id": "DHCP",
+    "title": "RFC 2131 DHCP",
+    "url_or_path": "https://www.rfc-editor.org/rfc/rfc2131",
+    "classification": "General industry knowledge",
+    "publication_or_access": "1997-03; accessed 2026-11-09",
+    "scope_limit": "Introductory DHCP function; not full implementation guidance."
+  },
+  {
+    "id": "POE",
+    "title": "Axis typical and maximum camera power",
+    "url_or_path": "https://whitepapers.axis.com/en-us/typical-and-maximum-power-consumption-in-axis-cameras",
+    "classification": "General industry knowledge",
+    "publication_or_access": "2025-12; accessed 2026-11-09",
+    "scope_limit": "Model-specific power and environmental load considerations."
+  },
+  {
+    "id": "QA",
+    "title": "ISO quality assurance overview",
+    "url_or_path": "https://www.iso.org/quality-management/quality-assurance",
+    "classification": "General industry knowledge",
+    "publication_or_access": "Accessed 2026-11-09",
+    "scope_limit": "General QA principles; no claim of AITS ISO certification."
+  },
+  {
+    "id": "APP",
+    "title": "Existing AITS LMS content management",
+    "url_or_path": "docs/CONTENT_MANAGEMENT.md",
+    "classification": "Verified company information",
+    "publication_or_access": "Workspace inspected 2026-11-09",
+    "scope_limit": "Implementation behavior, not an approved employment policy."
+  },
+  {
+    "id": "EX",
+    "title": "Original instructional examples",
+    "url_or_path": "training-content/build_content.py",
+    "classification": "Hypothetical examples",
+    "publication_or_access": "2026-11-09",
+    "scope_limit": "All customer names, tickets, networks and situations are synthetic."
+  }
+]

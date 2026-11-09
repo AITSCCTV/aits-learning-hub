@@ -1,0 +1,2586 @@
+{
+  "version": "0.1.0",
+  "approval_status": "Draft",
+  "assets": [
+    {
+      "path": "course-01-welcome/assessments/quiz.json",
+      "course_id": "AITS-C01",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C01-L01",
+        "AITS-C01-L02",
+        "AITS-C01-L03",
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "a9ecfc7a0f365ad00edf0b9369ceb85dcd3ec09caaf3d46e722fc76fdcd98726",
+      "bytes": 15087
+    },
+    {
+      "path": "course-01-welcome/course.json",
+      "course_id": "AITS-C01",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C01-L01",
+        "AITS-C01-L02",
+        "AITS-C01-L03",
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "987d2561ad6785c86dc5d988c93d8102d1219263a006e90d33d71fa593953b37",
+      "bytes": 46532
+    },
+    {
+      "path": "course-01-welcome/documents/training-manual.docx",
+      "course_id": "AITS-C01",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C01-L01",
+        "AITS-C01-L02",
+        "AITS-C01-L03",
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "f5c352ece7da4a66a45f10071479cb5ac4c0623037603777f9f0bff88a660176",
+      "bytes": 69312
+    },
+    {
+      "path": "course-01-welcome/documents/training-manual.pdf",
+      "course_id": "AITS-C01",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C01-L01",
+        "AITS-C01-L02",
+        "AITS-C01-L03",
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "dbb2e5cf8634efd1737cd4302871189f9f2b0523e18b84c026d0d3dd9d8ae638",
+      "bytes": 321431
+    },
+    {
+      "path": "course-01-welcome/infographics/workflow.png",
+      "course_id": "AITS-C01",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C01-L01",
+        "AITS-C01-L02",
+        "AITS-C01-L03",
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "bed2d43489f8eab929eccd6a1a614882ed96ecc7af9981fe4003fc54e7a805f8",
+      "bytes": 30774
+    },
+    {
+      "path": "course-01-welcome/infographics/workflow.svg",
+      "course_id": "AITS-C01",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C01-L01",
+        "AITS-C01-L02",
+        "AITS-C01-L03",
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "97907e3083c4d358df92e121fe2a9d54bea1b49773aa4dfad7c4a72af2e0115e",
+      "bytes": 2299
+    },
+    {
+      "path": "course-01-welcome/lessons/AITS-C01-L01.html",
+      "course_id": "AITS-C01",
+      "lesson_id": "AITS-C01-L01",
+      "related_lessons": [
+        "AITS-C01-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "9d2e37f0163ede3839cbd9a093bb8ae27f8f0066f117357c8c015348b44ded89",
+      "bytes": 2349
+    },
+    {
+      "path": "course-01-welcome/lessons/AITS-C01-L01.json",
+      "course_id": "AITS-C01",
+      "lesson_id": "AITS-C01-L01",
+      "related_lessons": [
+        "AITS-C01-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "b830863896b4b1deb0be922db69c49b53c205f074c00524eccd2aa88b200da39",
+      "bytes": 2789
+    },
+    {
+      "path": "course-01-welcome/lessons/AITS-C01-L02.html",
+      "course_id": "AITS-C01",
+      "lesson_id": "AITS-C01-L02",
+      "related_lessons": [
+        "AITS-C01-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "9f36ecf0a058ebdad787891bbe7d78db5b86533949288c272370a6f3f5478d67",
+      "bytes": 2298
+    },
+    {
+      "path": "course-01-welcome/lessons/AITS-C01-L02.json",
+      "course_id": "AITS-C01",
+      "lesson_id": "AITS-C01-L02",
+      "related_lessons": [
+        "AITS-C01-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "61dfed753ad2dab49494f0dcdac704bd9ee995db35ea700921d7658ed9a3c7c5",
+      "bytes": 2752
+    },
+    {
+      "path": "course-01-welcome/lessons/AITS-C01-L03.html",
+      "course_id": "AITS-C01",
+      "lesson_id": "AITS-C01-L03",
+      "related_lessons": [
+        "AITS-C01-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "b5ad1eb127fcf96d499c49e5568db232899a6d3c23ec68d21e4cb777b5c847ca",
+      "bytes": 2489
+    },
+    {
+      "path": "course-01-welcome/lessons/AITS-C01-L03.json",
+      "course_id": "AITS-C01",
+      "lesson_id": "AITS-C01-L03",
+      "related_lessons": [
+        "AITS-C01-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "16d890c94daccaca8f5d5b9c1cdd7c5dec28591994da1b47778d1e03d429cc55",
+      "bytes": 2918
+    },
+    {
+      "path": "course-01-welcome/lessons/AITS-C01-L04.html",
+      "course_id": "AITS-C01",
+      "lesson_id": "AITS-C01-L04",
+      "related_lessons": [
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "d0b5fefc5fa42361b2757c4c2bde600f94db2607587c31912774dbf2c8857c25",
+      "bytes": 2453
+    },
+    {
+      "path": "course-01-welcome/lessons/AITS-C01-L04.json",
+      "course_id": "AITS-C01",
+      "lesson_id": "AITS-C01-L04",
+      "related_lessons": [
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "43f7d4e4c15a16358d4d6480a17910f23ff7bdb1b615748b36114325623b0766",
+      "bytes": 2889
+    },
+    {
+      "path": "course-01-welcome/presentation/training-presentation.pptx",
+      "course_id": "AITS-C01",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C01-L01",
+        "AITS-C01-L02",
+        "AITS-C01-L03",
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "0ac5640eaffc893b6670be1561f45beab5de249742eac4a43d6375087e02b51e",
+      "bytes": 80056
+    },
+    {
+      "path": "course-01-welcome/scenarios/scenarios.json",
+      "course_id": "AITS-C01",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C01-L01",
+        "AITS-C01-L02",
+        "AITS-C01-L03",
+        "AITS-C01-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "sha256": "b5020171819f67ba7bc03007329b545c7d6522ef67ff594152b6c4e3d64077ce",
+      "bytes": 9321
+    },
+    {
+      "path": "course-02-employee-rights/assessments/quiz.json",
+      "course_id": "AITS-C02",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C02-L01",
+        "AITS-C02-L02",
+        "AITS-C02-L03",
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "56d4da1c793bdaddb125d1191fcd03a9b8add3efe6f0f6cb904eb21b2546d6bd",
+      "bytes": 15092
+    },
+    {
+      "path": "course-02-employee-rights/course.json",
+      "course_id": "AITS-C02",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C02-L01",
+        "AITS-C02-L02",
+        "AITS-C02-L03",
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "bc5a6689c6d19c4468d3ced69db0677655f8d879418274aa3939fa58436b2cad",
+      "bytes": 47700
+    },
+    {
+      "path": "course-02-employee-rights/documents/training-manual.docx",
+      "course_id": "AITS-C02",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C02-L01",
+        "AITS-C02-L02",
+        "AITS-C02-L03",
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "ec0f065e6d551fd7a7824677d88431e4c5556e7ca4b0963231f742f010f9e721",
+      "bytes": 73819
+    },
+    {
+      "path": "course-02-employee-rights/documents/training-manual.pdf",
+      "course_id": "AITS-C02",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C02-L01",
+        "AITS-C02-L02",
+        "AITS-C02-L03",
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "9ad20d827d0add64afb0028a3c35438437b9f608fdaf31f148e0acd6198ccab3",
+      "bytes": 332213
+    },
+    {
+      "path": "course-02-employee-rights/infographics/workflow.png",
+      "course_id": "AITS-C02",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C02-L01",
+        "AITS-C02-L02",
+        "AITS-C02-L03",
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "da312c49863e7f32abfbaf67319ba32c87c77583e88644dffeb763ec1f6d2b73",
+      "bytes": 35301
+    },
+    {
+      "path": "course-02-employee-rights/infographics/workflow.svg",
+      "course_id": "AITS-C02",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C02-L01",
+        "AITS-C02-L02",
+        "AITS-C02-L03",
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "2a924adb0263e070919891f2d0d542ea14733eab3222a11fd894c297bc24df99",
+      "bytes": 2562
+    },
+    {
+      "path": "course-02-employee-rights/lessons/AITS-C02-L01.html",
+      "course_id": "AITS-C02",
+      "lesson_id": "AITS-C02-L01",
+      "related_lessons": [
+        "AITS-C02-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "71e5440ed7834bb120d39369b26663f091d2c4195481d32ae27d8df4c7251f10",
+      "bytes": 2461
+    },
+    {
+      "path": "course-02-employee-rights/lessons/AITS-C02-L01.json",
+      "course_id": "AITS-C02",
+      "lesson_id": "AITS-C02-L01",
+      "related_lessons": [
+        "AITS-C02-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "daba71c1d0784598f066629e223375aa8454db8bb08d13a43e0872e7f3aa401f",
+      "bytes": 2831
+    },
+    {
+      "path": "course-02-employee-rights/lessons/AITS-C02-L02.html",
+      "course_id": "AITS-C02",
+      "lesson_id": "AITS-C02-L02",
+      "related_lessons": [
+        "AITS-C02-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "5c8668361235cfae043bdb838f7c79fbfc46cc91b02511133ffee2a0e671141e",
+      "bytes": 2604
+    },
+    {
+      "path": "course-02-employee-rights/lessons/AITS-C02-L02.json",
+      "course_id": "AITS-C02",
+      "lesson_id": "AITS-C02-L02",
+      "related_lessons": [
+        "AITS-C02-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "817a5888cb77a0f69517329b0d562fdde09e149766a21e0fb6e45d42ddcc3df5",
+      "bytes": 2952
+    },
+    {
+      "path": "course-02-employee-rights/lessons/AITS-C02-L03.html",
+      "course_id": "AITS-C02",
+      "lesson_id": "AITS-C02-L03",
+      "related_lessons": [
+        "AITS-C02-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "70c6840cac5cec50b43f96bea075df456c5e9e67bf93c5732fde45ffaa48ff1c",
+      "bytes": 2695
+    },
+    {
+      "path": "course-02-employee-rights/lessons/AITS-C02-L03.json",
+      "course_id": "AITS-C02",
+      "lesson_id": "AITS-C02-L03",
+      "related_lessons": [
+        "AITS-C02-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "154cf7b8c91ca74ec44b179bb85fcb001d75c769119dabf4bd45c82bffc62980",
+      "bytes": 3087
+    },
+    {
+      "path": "course-02-employee-rights/lessons/AITS-C02-L04.html",
+      "course_id": "AITS-C02",
+      "lesson_id": "AITS-C02-L04",
+      "related_lessons": [
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "a40da35d8472345b6dc09058385bc399ca943855c31861338350288d8efccae7",
+      "bytes": 2534
+    },
+    {
+      "path": "course-02-employee-rights/lessons/AITS-C02-L04.json",
+      "course_id": "AITS-C02",
+      "lesson_id": "AITS-C02-L04",
+      "related_lessons": [
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "06c88e6b267368294a50abd51ca880a340536fd434000896e195c6a70792af4c",
+      "bytes": 2950
+    },
+    {
+      "path": "course-02-employee-rights/presentation/training-presentation.pptx",
+      "course_id": "AITS-C02",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C02-L01",
+        "AITS-C02-L02",
+        "AITS-C02-L03",
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "d2df2ccfec330a2816fc0ff5a82f38a495a5933a31009f88199def4dc6eafccf",
+      "bytes": 82515
+    },
+    {
+      "path": "course-02-employee-rights/scenarios/scenarios.json",
+      "course_id": "AITS-C02",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C02-L01",
+        "AITS-C02-L02",
+        "AITS-C02-L03",
+        "AITS-C02-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "sha256": "840f5bc8935ab59ac21224e872760146a25a732c8c5c385cf982f794537801f7",
+      "bytes": 9149
+    },
+    {
+      "path": "course-03-workplace-safety/assessments/quiz.json",
+      "course_id": "AITS-C03",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C03-L01",
+        "AITS-C03-L02",
+        "AITS-C03-L03",
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "179a07597af7cc73045d13416c22d10dd5946bc62e8ed2271786f29749a9facc",
+      "bytes": 14957
+    },
+    {
+      "path": "course-03-workplace-safety/course.json",
+      "course_id": "AITS-C03",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C03-L01",
+        "AITS-C03-L02",
+        "AITS-C03-L03",
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "6f18891c41eca593d61520d157aa1e55562a6415cdc90f6bf198d69363306d91",
+      "bytes": 46725
+    },
+    {
+      "path": "course-03-workplace-safety/documents/training-manual.docx",
+      "course_id": "AITS-C03",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C03-L01",
+        "AITS-C03-L02",
+        "AITS-C03-L03",
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "b783d9eee9c09485d4ff8a736e788781a3d1f5aadf51344743bd2c5989f7c388",
+      "bytes": 72469
+    },
+    {
+      "path": "course-03-workplace-safety/documents/training-manual.pdf",
+      "course_id": "AITS-C03",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C03-L01",
+        "AITS-C03-L02",
+        "AITS-C03-L03",
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "50ad7b74a1353913396ba086417d604e11fb31cfb6cac028759e9a882ccbf6d6",
+      "bytes": 330712
+    },
+    {
+      "path": "course-03-workplace-safety/infographics/workflow.png",
+      "course_id": "AITS-C03",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C03-L01",
+        "AITS-C03-L02",
+        "AITS-C03-L03",
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "413fc0d26d9fc1e5b435f413abbf02af85a73ce61ecfbb033902fa6987def445",
+      "bytes": 34178
+    },
+    {
+      "path": "course-03-workplace-safety/infographics/workflow.svg",
+      "course_id": "AITS-C03",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C03-L01",
+        "AITS-C03-L02",
+        "AITS-C03-L03",
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "30a45ef2074e45fbc5d4b8686bea46fdc87960f84064e70c98edf506e0aa59a4",
+      "bytes": 2360
+    },
+    {
+      "path": "course-03-workplace-safety/lessons/AITS-C03-L01.html",
+      "course_id": "AITS-C03",
+      "lesson_id": "AITS-C03-L01",
+      "related_lessons": [
+        "AITS-C03-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "3e2052a884d4acea84fd978c4efe270e0c4cb573bdca2ce0d8eac2266f997a64",
+      "bytes": 2418
+    },
+    {
+      "path": "course-03-workplace-safety/lessons/AITS-C03-L01.json",
+      "course_id": "AITS-C03",
+      "lesson_id": "AITS-C03-L01",
+      "related_lessons": [
+        "AITS-C03-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "70bd20e62fd5112db36e06fa40101137a7104c32cd4f50ffeeb7819ec0c1741e",
+      "bytes": 2765
+    },
+    {
+      "path": "course-03-workplace-safety/lessons/AITS-C03-L02.html",
+      "course_id": "AITS-C03",
+      "lesson_id": "AITS-C03-L02",
+      "related_lessons": [
+        "AITS-C03-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "1b4e0ce877391a3766d18d7cc671859d6035cae679c855324f5769a09282bfe6",
+      "bytes": 2551
+    },
+    {
+      "path": "course-03-workplace-safety/lessons/AITS-C03-L02.json",
+      "course_id": "AITS-C03",
+      "lesson_id": "AITS-C03-L02",
+      "related_lessons": [
+        "AITS-C03-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "80ede368eda9bc4cbb99d1c8a06434af718f01c39fcf6d23bbb2a3510bc20e3b",
+      "bytes": 2939
+    },
+    {
+      "path": "course-03-workplace-safety/lessons/AITS-C03-L03.html",
+      "course_id": "AITS-C03",
+      "lesson_id": "AITS-C03-L03",
+      "related_lessons": [
+        "AITS-C03-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "1dcd703739f24f23ce918c85588fa24ba38414aa2aa23c44ad4da5db0f3d0fa8",
+      "bytes": 2474
+    },
+    {
+      "path": "course-03-workplace-safety/lessons/AITS-C03-L03.json",
+      "course_id": "AITS-C03",
+      "lesson_id": "AITS-C03-L03",
+      "related_lessons": [
+        "AITS-C03-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "8176d10ea6811aebc443ee69e3ff0deb9e1623e7c7e213cd3e9af2f4c0e4fad8",
+      "bytes": 2821
+    },
+    {
+      "path": "course-03-workplace-safety/lessons/AITS-C03-L04.html",
+      "course_id": "AITS-C03",
+      "lesson_id": "AITS-C03-L04",
+      "related_lessons": [
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "5ac571d2f2f3c6ec2bb7cb550da82299abb9587deed06f6ff1e3b49d1586f840",
+      "bytes": 2608
+    },
+    {
+      "path": "course-03-workplace-safety/lessons/AITS-C03-L04.json",
+      "course_id": "AITS-C03",
+      "lesson_id": "AITS-C03-L04",
+      "related_lessons": [
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "2de20cd23e0f07bc034a671cd5c7d158517cd3a2e6a623eb86c93ec83d299265",
+      "bytes": 2884
+    },
+    {
+      "path": "course-03-workplace-safety/presentation/training-presentation.pptx",
+      "course_id": "AITS-C03",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C03-L01",
+        "AITS-C03-L02",
+        "AITS-C03-L03",
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "b9d84f3cb56f35d661936ef912c655f95301cf77b3cae547d5156c1c3314ecee",
+      "bytes": 82306
+    },
+    {
+      "path": "course-03-workplace-safety/scenarios/scenarios.json",
+      "course_id": "AITS-C03",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C03-L01",
+        "AITS-C03-L02",
+        "AITS-C03-L03",
+        "AITS-C03-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "sha256": "7d4ab3bcd16267caec2448ea260981b80c469e1a61034bf35810d259889316a2",
+      "bytes": 8948
+    },
+    {
+      "path": "course-04-cctv-installation/assessments/quiz.json",
+      "course_id": "AITS-C04",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C04-L01",
+        "AITS-C04-L02",
+        "AITS-C04-L03",
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "dc7e60fb89cd0c912c514e79908685b9d1c8f0dfa81e042645d525e23fd10e00",
+      "bytes": 14951
+    },
+    {
+      "path": "course-04-cctv-installation/course.json",
+      "course_id": "AITS-C04",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C04-L01",
+        "AITS-C04-L02",
+        "AITS-C04-L03",
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "fe1ee9164b9613a34c8d0935e2ff6cfbf8745b608e226b0dd19cc5f3e7f0167d",
+      "bytes": 46887
+    },
+    {
+      "path": "course-04-cctv-installation/documents/training-manual.docx",
+      "course_id": "AITS-C04",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C04-L01",
+        "AITS-C04-L02",
+        "AITS-C04-L03",
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "1faa641a4f22c825804ac205c00f89e5df0425acfed1184e82a4dc3fb7ffcefd",
+      "bytes": 68861
+    },
+    {
+      "path": "course-04-cctv-installation/documents/training-manual.pdf",
+      "course_id": "AITS-C04",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C04-L01",
+        "AITS-C04-L02",
+        "AITS-C04-L03",
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "95633d43430f46c3fd0c6311c7a44feeb8c1f2f25ee01ba085eeeff4fe6df65f",
+      "bytes": 323094
+    },
+    {
+      "path": "course-04-cctv-installation/infographics/workflow.png",
+      "course_id": "AITS-C04",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C04-L01",
+        "AITS-C04-L02",
+        "AITS-C04-L03",
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "d117418f39aca4c8654dd75df3a25d9c98d7d1911cb45733a3a386b8252249be",
+      "bytes": 29988
+    },
+    {
+      "path": "course-04-cctv-installation/infographics/workflow.svg",
+      "course_id": "AITS-C04",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C04-L01",
+        "AITS-C04-L02",
+        "AITS-C04-L03",
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "540ff59680a39c86f281edb01a763096be70554d56212cd89494eaa634375e95",
+      "bytes": 2251
+    },
+    {
+      "path": "course-04-cctv-installation/lessons/AITS-C04-L01.html",
+      "course_id": "AITS-C04",
+      "lesson_id": "AITS-C04-L01",
+      "related_lessons": [
+        "AITS-C04-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "3c02cf3fa56fc387b7065c6146ad16255d6bf03bc08e4df024a32128127c4513",
+      "bytes": 2418
+    },
+    {
+      "path": "course-04-cctv-installation/lessons/AITS-C04-L01.json",
+      "course_id": "AITS-C04",
+      "lesson_id": "AITS-C04-L01",
+      "related_lessons": [
+        "AITS-C04-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "6bb1686606a966bd06bc973fae26cf1d6ff6447fdd20a26b639c8a448f7271de",
+      "bytes": 2828
+    },
+    {
+      "path": "course-04-cctv-installation/lessons/AITS-C04-L02.html",
+      "course_id": "AITS-C04",
+      "lesson_id": "AITS-C04-L02",
+      "related_lessons": [
+        "AITS-C04-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "1a0287023300c1d315674103b0cc367de438f53fce56133cdfa7ca8ebff606ec",
+      "bytes": 2377
+    },
+    {
+      "path": "course-04-cctv-installation/lessons/AITS-C04-L02.json",
+      "course_id": "AITS-C04",
+      "lesson_id": "AITS-C04-L02",
+      "related_lessons": [
+        "AITS-C04-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "1635799fb8b84f5394b4ad5620eb5e703e2584f6ac6f80c70b69dde1cb3d9f44",
+      "bytes": 2748
+    },
+    {
+      "path": "course-04-cctv-installation/lessons/AITS-C04-L03.html",
+      "course_id": "AITS-C04",
+      "lesson_id": "AITS-C04-L03",
+      "related_lessons": [
+        "AITS-C04-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "c20ed27b8a0e8dd9fc8ca3b87c553956103e3b6f6b5d51264cd284dbc9135f72",
+      "bytes": 2618
+    },
+    {
+      "path": "course-04-cctv-installation/lessons/AITS-C04-L03.json",
+      "course_id": "AITS-C04",
+      "lesson_id": "AITS-C04-L03",
+      "related_lessons": [
+        "AITS-C04-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "0dd3549bae2bc359a6d03b6b9ac959f7cbf2764b72a60006b66879165b6dab18",
+      "bytes": 2895
+    },
+    {
+      "path": "course-04-cctv-installation/lessons/AITS-C04-L04.html",
+      "course_id": "AITS-C04",
+      "lesson_id": "AITS-C04-L04",
+      "related_lessons": [
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "f6303bf9a3276ac25cdf2cdb6d5106cc60f3fb5eac80914b61314e12e80f8769",
+      "bytes": 2672
+    },
+    {
+      "path": "course-04-cctv-installation/lessons/AITS-C04-L04.json",
+      "course_id": "AITS-C04",
+      "lesson_id": "AITS-C04-L04",
+      "related_lessons": [
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "b2a308765ccce3551c89f3822a0507562586d4874564e5067baed2e424afb5fc",
+      "bytes": 2970
+    },
+    {
+      "path": "course-04-cctv-installation/presentation/training-presentation.pptx",
+      "course_id": "AITS-C04",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C04-L01",
+        "AITS-C04-L02",
+        "AITS-C04-L03",
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "ac0f65a0b958b9e9ca93d9c85a49c34c720e021c1f920b1ace8d221064943e33",
+      "bytes": 82651
+    },
+    {
+      "path": "course-04-cctv-installation/scenarios/scenarios.json",
+      "course_id": "AITS-C04",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C04-L01",
+        "AITS-C04-L02",
+        "AITS-C04-L03",
+        "AITS-C04-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "sha256": "40e2eb393401265715568e649393aa9e603e54e4cc34c3ae2868c9a3a09cebc9",
+      "bytes": 9115
+    },
+    {
+      "path": "course-05-networking/assessments/quiz.json",
+      "course_id": "AITS-C05",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C05-L01",
+        "AITS-C05-L02",
+        "AITS-C05-L03",
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "e6e0badd85ffac4d16f1fbecaf6cfae54cebd73a81d42e7029fd1382cdf58113",
+      "bytes": 14890
+    },
+    {
+      "path": "course-05-networking/course.json",
+      "course_id": "AITS-C05",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C05-L01",
+        "AITS-C05-L02",
+        "AITS-C05-L03",
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "e77cefa34ad4875ff6269b6d315ca4b957629308e258e39e477517784db9576e",
+      "bytes": 47074
+    },
+    {
+      "path": "course-05-networking/documents/training-manual.docx",
+      "course_id": "AITS-C05",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C05-L01",
+        "AITS-C05-L02",
+        "AITS-C05-L03",
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "cc2720ed397e566d04b22af27ae078523869834453ed6fe8f75b032f91beb854",
+      "bytes": 73196
+    },
+    {
+      "path": "course-05-networking/documents/training-manual.pdf",
+      "course_id": "AITS-C05",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C05-L01",
+        "AITS-C05-L02",
+        "AITS-C05-L03",
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "b61a6c781377a043d115224124add4d47cf605f176ccfdf21c6b5fef56debf05",
+      "bytes": 330514
+    },
+    {
+      "path": "course-05-networking/infographics/workflow.png",
+      "course_id": "AITS-C05",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C05-L01",
+        "AITS-C05-L02",
+        "AITS-C05-L03",
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "110fc3036d17f0c0b40e5615829bf0f222be54d7c0761cf07c4bff30fdac872e",
+      "bytes": 34912
+    },
+    {
+      "path": "course-05-networking/infographics/workflow.svg",
+      "course_id": "AITS-C05",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C05-L01",
+        "AITS-C05-L02",
+        "AITS-C05-L03",
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "ca99f30fc961d5955838e50ec3da13e8b974dfbf36459ce053207a78270ed433",
+      "bytes": 2408
+    },
+    {
+      "path": "course-05-networking/lessons/AITS-C05-L01.html",
+      "course_id": "AITS-C05",
+      "lesson_id": "AITS-C05-L01",
+      "related_lessons": [
+        "AITS-C05-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "867ad27e8909c919750ad3aa0a43d731bb42f4131190887c0959c4a112dae715",
+      "bytes": 2432
+    },
+    {
+      "path": "course-05-networking/lessons/AITS-C05-L01.json",
+      "course_id": "AITS-C05",
+      "lesson_id": "AITS-C05-L01",
+      "related_lessons": [
+        "AITS-C05-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "b6717b9f330ddfdc02fbf0b036ff468f06dab4d6eeb70ac5d103046c89bf148c",
+      "bytes": 2819
+    },
+    {
+      "path": "course-05-networking/lessons/AITS-C05-L02.html",
+      "course_id": "AITS-C05",
+      "lesson_id": "AITS-C05-L02",
+      "related_lessons": [
+        "AITS-C05-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "5dddf69da1d2f9b4259058fad5615ab5a9887eb9b11107f31f398b6bc3b2dc2b",
+      "bytes": 2520
+    },
+    {
+      "path": "course-05-networking/lessons/AITS-C05-L02.json",
+      "course_id": "AITS-C05",
+      "lesson_id": "AITS-C05-L02",
+      "related_lessons": [
+        "AITS-C05-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "3a5335c8a7f06124753c9abc6c2038f84cf1baafc20d7bdc5db731292d3111d5",
+      "bytes": 2788
+    },
+    {
+      "path": "course-05-networking/lessons/AITS-C05-L03.html",
+      "course_id": "AITS-C05",
+      "lesson_id": "AITS-C05-L03",
+      "related_lessons": [
+        "AITS-C05-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "6bad8457dc98b7706a6562d3c0fde2d78339664be1aae97b241f7864f7a0f956",
+      "bytes": 2604
+    },
+    {
+      "path": "course-05-networking/lessons/AITS-C05-L03.json",
+      "course_id": "AITS-C05",
+      "lesson_id": "AITS-C05-L03",
+      "related_lessons": [
+        "AITS-C05-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "3fb8a1524ae0020399e52b526cff3f68569eb4919d607742789702fbdd9a6f00",
+      "bytes": 2945
+    },
+    {
+      "path": "course-05-networking/lessons/AITS-C05-L04.html",
+      "course_id": "AITS-C05",
+      "lesson_id": "AITS-C05-L04",
+      "related_lessons": [
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "0473730a16392e97ccd18ad55a18cf82d6b290bf0a106f9e23ad3485583d668e",
+      "bytes": 2514
+    },
+    {
+      "path": "course-05-networking/lessons/AITS-C05-L04.json",
+      "course_id": "AITS-C05",
+      "lesson_id": "AITS-C05-L04",
+      "related_lessons": [
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "ba77181b0824448c8007c510ae450adf3e1447be56592848889fd73295937f19",
+      "bytes": 2926
+    },
+    {
+      "path": "course-05-networking/presentation/training-presentation.pptx",
+      "course_id": "AITS-C05",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C05-L01",
+        "AITS-C05-L02",
+        "AITS-C05-L03",
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "96ffb2d461176a3bf8fd38413bf60b369b35a6e3aab17890962926862dae0c6f",
+      "bytes": 81497
+    },
+    {
+      "path": "course-05-networking/scenarios/scenarios.json",
+      "course_id": "AITS-C05",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C05-L01",
+        "AITS-C05-L02",
+        "AITS-C05-L03",
+        "AITS-C05-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "sha256": "4c31bab4edbaea6c73d424038a1bf46fa24eed9b3a45e01c476339275ea2b4ad",
+      "bytes": 9286
+    },
+    {
+      "path": "course-06-customer-admin/assessments/quiz.json",
+      "course_id": "AITS-C06",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C06-L01",
+        "AITS-C06-L02",
+        "AITS-C06-L03",
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "2e4a5a63001ac4c1be0fa161a5c22a5db10478c7a3962b562cea8ea8690213e9",
+      "bytes": 14953
+    },
+    {
+      "path": "course-06-customer-admin/course.json",
+      "course_id": "AITS-C06",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C06-L01",
+        "AITS-C06-L02",
+        "AITS-C06-L03",
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "a9437c4217f250099ebdc6c2c03bca8f339c1412682ca97a8e8f9fa5d8a769d9",
+      "bytes": 46044
+    },
+    {
+      "path": "course-06-customer-admin/documents/training-manual.docx",
+      "course_id": "AITS-C06",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C06-L01",
+        "AITS-C06-L02",
+        "AITS-C06-L03",
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "3ff6e0d154100484cfc6043bc84d2556539a7fb3e67712d5e80874d30f80aa46",
+      "bytes": 69831
+    },
+    {
+      "path": "course-06-customer-admin/documents/training-manual.pdf",
+      "course_id": "AITS-C06",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C06-L01",
+        "AITS-C06-L02",
+        "AITS-C06-L03",
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "ca4332c643b14d9f978d513c6d537296bb26222253b345ff402469cc433966d9",
+      "bytes": 323705
+    },
+    {
+      "path": "course-06-customer-admin/infographics/workflow.png",
+      "course_id": "AITS-C06",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C06-L01",
+        "AITS-C06-L02",
+        "AITS-C06-L03",
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "883f861e4feace07e32cff3f25d7e6c48cd09b792499c8d02e731805b6baf21e",
+      "bytes": 31467
+    },
+    {
+      "path": "course-06-customer-admin/infographics/workflow.svg",
+      "course_id": "AITS-C06",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C06-L01",
+        "AITS-C06-L02",
+        "AITS-C06-L03",
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "f1573c20873069aee0eb35476e2035ba1f1f74b84966affb9b0691b44cec96ec",
+      "bytes": 2340
+    },
+    {
+      "path": "course-06-customer-admin/lessons/AITS-C06-L01.html",
+      "course_id": "AITS-C06",
+      "lesson_id": "AITS-C06-L01",
+      "related_lessons": [
+        "AITS-C06-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "5edd8ad6aefd7bb7153ee9cee41884956211e5f191c5c1bab572a74cb9414098",
+      "bytes": 2321
+    },
+    {
+      "path": "course-06-customer-admin/lessons/AITS-C06-L01.json",
+      "course_id": "AITS-C06",
+      "lesson_id": "AITS-C06-L01",
+      "related_lessons": [
+        "AITS-C06-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "22fd806da71fc1bd11c7233acd9ee46cbc7632bcef6c3d53be48d83653b55157",
+      "bytes": 2723
+    },
+    {
+      "path": "course-06-customer-admin/lessons/AITS-C06-L02.html",
+      "course_id": "AITS-C06",
+      "lesson_id": "AITS-C06-L02",
+      "related_lessons": [
+        "AITS-C06-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "448429217a8b9d7051113327a99fef2f46b026cbfbee27354e5c2d4ac9399e6e",
+      "bytes": 2468
+    },
+    {
+      "path": "course-06-customer-admin/lessons/AITS-C06-L02.json",
+      "course_id": "AITS-C06",
+      "lesson_id": "AITS-C06-L02",
+      "related_lessons": [
+        "AITS-C06-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "ffa8e05a65cd7f0859d9a9bfff7a332b0639de1d35841815256f7460dcc7bdaa",
+      "bytes": 2853
+    },
+    {
+      "path": "course-06-customer-admin/lessons/AITS-C06-L03.html",
+      "course_id": "AITS-C06",
+      "lesson_id": "AITS-C06-L03",
+      "related_lessons": [
+        "AITS-C06-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "15382ee96caa426c99645a17444fbc3045a9808635c2acc99b199abd1d994a11",
+      "bytes": 2410
+    },
+    {
+      "path": "course-06-customer-admin/lessons/AITS-C06-L03.json",
+      "course_id": "AITS-C06",
+      "lesson_id": "AITS-C06-L03",
+      "related_lessons": [
+        "AITS-C06-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "75a48fa62d317fe3f2eb67afa5e393c58f5124070639f0c4ebc19438a6c2c6ac",
+      "bytes": 2817
+    },
+    {
+      "path": "course-06-customer-admin/lessons/AITS-C06-L04.html",
+      "course_id": "AITS-C06",
+      "lesson_id": "AITS-C06-L04",
+      "related_lessons": [
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "054f3707c1e8892b9bdbd61a74c9b3e8c50849c6ab78ad4fa448025a2737b928",
+      "bytes": 2392
+    },
+    {
+      "path": "course-06-customer-admin/lessons/AITS-C06-L04.json",
+      "course_id": "AITS-C06",
+      "lesson_id": "AITS-C06-L04",
+      "related_lessons": [
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "ee5f306dab4b4eebc305b7ae68a1d2626fdc86a29e793779315b4708c8063f62",
+      "bytes": 2809
+    },
+    {
+      "path": "course-06-customer-admin/presentation/training-presentation.pptx",
+      "course_id": "AITS-C06",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C06-L01",
+        "AITS-C06-L02",
+        "AITS-C06-L03",
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "c2b777e7bc981863d04ae8fe96e82e4c9e28f853d7c1b6bf43e61000a3734e12",
+      "bytes": 78793
+    },
+    {
+      "path": "course-06-customer-admin/scenarios/scenarios.json",
+      "course_id": "AITS-C06",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C06-L01",
+        "AITS-C06-L02",
+        "AITS-C06-L03",
+        "AITS-C06-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "sha256": "69e0bc5bce82addd8fd4e95e517094304f56be8525800d917db459a15fe44db4",
+      "bytes": 8937
+    },
+    {
+      "path": "course-07-sop-quality/assessments/quiz.json",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "e0d6bb791b7abe9f312569a6e6b6417a2ef43ce5236ac155928943c4baef7545",
+      "bytes": 14545
+    },
+    {
+      "path": "course-07-sop-quality/course.json",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "d4527ac9d35f77cc7881b01ad0dfb0cfaee386046083b51c9be950e76011021a",
+      "bytes": 45062
+    },
+    {
+      "path": "course-07-sop-quality/documents/draft-sop-templates.docx",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "09d0419ce4396813b3229bf32c4201f6d1accb049820a8781732ed95e6a312ac",
+      "bytes": 37907
+    },
+    {
+      "path": "course-07-sop-quality/documents/draft-sop-templates.json",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "0422d2082934ee31ae01594d7c57bedd68791b59d95fca7d8e66ea6d8ed07c3d",
+      "bytes": 7988
+    },
+    {
+      "path": "course-07-sop-quality/documents/draft-sop-templates.pdf",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "c3ead4a82f3b4c9450063ebbc39c5bf8f3342fd22b244593e08a916de91867d7",
+      "bytes": 219788
+    },
+    {
+      "path": "course-07-sop-quality/documents/training-manual.docx",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "be3ec9109af66574a0d453c0e0ea908b509babb8363273b8d5598716f4429208",
+      "bytes": 72244
+    },
+    {
+      "path": "course-07-sop-quality/documents/training-manual.pdf",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "50d3ff7dc9ef7a6dd66b4af8f6e1aa00116eda3c3ac6cdca497cbb6f64ed19d4",
+      "bytes": 327309
+    },
+    {
+      "path": "course-07-sop-quality/infographics/workflow.png",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "c14bcdfc7792e6180970ae75116185ed2005af48cbebe46a08b7869e3a82438e",
+      "bytes": 34220
+    },
+    {
+      "path": "course-07-sop-quality/infographics/workflow.svg",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "43120536a4d7e2f7428233fe763d0480c77a10d8b2e6cb3865d8117c8ac70ac6",
+      "bytes": 2551
+    },
+    {
+      "path": "course-07-sop-quality/lessons/AITS-C07-L01.html",
+      "course_id": "AITS-C07",
+      "lesson_id": "AITS-C07-L01",
+      "related_lessons": [
+        "AITS-C07-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "edc123a2beced28ba07808704f2e75f22b31c637a39615f4b87e24b5e2371953",
+      "bytes": 2278
+    },
+    {
+      "path": "course-07-sop-quality/lessons/AITS-C07-L01.json",
+      "course_id": "AITS-C07",
+      "lesson_id": "AITS-C07-L01",
+      "related_lessons": [
+        "AITS-C07-L01"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "6a5f582dd10e0b39a061ec46343dbb6277b1c4aa64cb19c3b79a41d82057a09f",
+      "bytes": 2658
+    },
+    {
+      "path": "course-07-sop-quality/lessons/AITS-C07-L02.html",
+      "course_id": "AITS-C07",
+      "lesson_id": "AITS-C07-L02",
+      "related_lessons": [
+        "AITS-C07-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "df2e06e6c487850abd32ca90f261b095bdba922c7a5b44214abaeb813bec8ff6",
+      "bytes": 2239
+    },
+    {
+      "path": "course-07-sop-quality/lessons/AITS-C07-L02.json",
+      "course_id": "AITS-C07",
+      "lesson_id": "AITS-C07-L02",
+      "related_lessons": [
+        "AITS-C07-L02"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "c53f0ecc85d623b20b1fcf03ffb9ea9d96abf9cf76444308ade0d36eaf358210",
+      "bytes": 2617
+    },
+    {
+      "path": "course-07-sop-quality/lessons/AITS-C07-L03.html",
+      "course_id": "AITS-C07",
+      "lesson_id": "AITS-C07-L03",
+      "related_lessons": [
+        "AITS-C07-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "93af2bb40834169ebcf684b1b2b180959bc29e92830a90041ff7cf3f8a6a1fac",
+      "bytes": 2355
+    },
+    {
+      "path": "course-07-sop-quality/lessons/AITS-C07-L03.json",
+      "course_id": "AITS-C07",
+      "lesson_id": "AITS-C07-L03",
+      "related_lessons": [
+        "AITS-C07-L03"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "78d4e0ddf60d8219f6970ea025d9522923833e112b3f02c2a65da7dd22ff286f",
+      "bytes": 2749
+    },
+    {
+      "path": "course-07-sop-quality/lessons/AITS-C07-L04.html",
+      "course_id": "AITS-C07",
+      "lesson_id": "AITS-C07-L04",
+      "related_lessons": [
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "2113befe4c2a3a615aa6ee3a279a28ba4d9a0df7efeb92dc8563150238306739",
+      "bytes": 2409
+    },
+    {
+      "path": "course-07-sop-quality/lessons/AITS-C07-L04.json",
+      "course_id": "AITS-C07",
+      "lesson_id": "AITS-C07-L04",
+      "related_lessons": [
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "dfb1babaadbff14f992a758d41d1a15d116a4b60eac746429761b5a6971235f7",
+      "bytes": 2845
+    },
+    {
+      "path": "course-07-sop-quality/presentation/training-presentation.pptx",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "e5436d51410f8bfdd07c8cc341c3f34312f1a5b88108522250d289ea1bc331d9",
+      "bytes": 79551
+    },
+    {
+      "path": "course-07-sop-quality/scenarios/scenarios.json",
+      "course_id": "AITS-C07",
+      "lesson_id": null,
+      "related_lessons": [
+        "AITS-C07-L01",
+        "AITS-C07-L02",
+        "AITS-C07-L03",
+        "AITS-C07-L04"
+      ],
+      "version": "0.1.0",
+      "approval_status": "Draft",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "sha256": "cdf201862aa4c3e8379d18a1cfccf4abe10e2339f5139551bda195eae41f868f",
+      "bytes": 9008
+    }
+  ],
+  "shared_resources": [
+    "curriculum.json",
+    "sources/inventory.json",
+    "knowledge-base/items.json",
+    "knowledge-base/practice-sessions.json"
+  ],
+  "local_import_receipt": "imports/local-receipt.json"
+}

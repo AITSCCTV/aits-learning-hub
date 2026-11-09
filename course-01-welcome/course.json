@@ -1,0 +1,933 @@
+{
+  "slug": "welcome",
+  "title": "Welcome to AITS",
+  "title_th": "ยินดีต้อนรับสู่ AITS",
+  "roles": [
+    "All new employees"
+  ],
+  "lessons": [
+    {
+      "title": "Company identity and history",
+      "objectives": [
+        "Explain AITS using supported public facts."
+      ],
+      "explanation": [
+        "The official About us page identifies A.I.T.S. Company Limited and dates its founding to Buddhist year 2548, equivalent to 2005. It describes a business concerned with installation quality and professional service. These are public company statements; they do not establish an employee contract or a field acceptance standard.",
+        "The public mission text emphasizes service standards, technology, attention to customer needs and responsibility. In this course, these themes introduce the business. Specific targets, individual duties and performance measures require current approved internal documents. Do not infer a reporting line or an employee benefit from marketing language."
+      ],
+      "example": "A fictional new colleague asks whether the company began in 2548 or 2005. Explain the calendar conversion and identify the company page as the source.",
+      "exercise": "Write a two-sentence company introduction and name one fact that still requires internal confirmation.",
+      "model_response": "AITS publicly dates its founding to 2005 and describes IT and security installation services. My reporting manager must be confirmed from current internal records.",
+      "key_points": [
+        "Public history: founded in 2005",
+        "Service quality and responsibility are public themes",
+        "Internal duties need approved records"
+      ],
+      "references": [
+        "AITS",
+        "EX"
+      ],
+      "thai_summary": "ข้อมูลเว็บไซต์ระบุว่าก่อตั้งใน พ.ศ. 2548 หรือ ค.ศ. 2005 ข้อมูลตำแหน่งและผู้บังคับบัญชาต้องยืนยันจากบริษัท",
+      "id": "AITS-C01-L01",
+      "estimated_minutes": 15,
+      "prerequisites": [],
+      "summary": "Public history: founded in 2005 Service quality and responsibility are public themes Internal duties need approved records",
+      "visual_resources": [
+        "course-01-welcome/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L01",
+        "course_id": "AITS-C01",
+        "title": "Company identity and history",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "AITS",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C01-L01-Q1",
+        "AITS-C01-L01-Q2",
+        "AITS-C01-L01-Q3"
+      ],
+      "html": "<h1>Company identity and history</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C01-L01 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Explain AITS using supported public facts.</p><h2>Explanation</h2><p>The official About us page identifies A.I.T.S. Company Limited and dates its founding to Buddhist year 2548, equivalent to 2005. It describes a business concerned with installation quality and professional service. These are public company statements; they do not establish an employee contract or a field acceptance standard.</p><p>The public mission text emphasizes service standards, technology, attention to customer needs and responsibility. In this course, these themes introduce the business. Specific targets, individual duties and performance measures require current approved internal documents. Do not infer a reporting line or an employee benefit from marketing language.</p><h2>Synthetic example</h2><p>A fictional new colleague asks whether the company began in 2548 or 2005. Explain the calendar conversion and identify the company page as the source.</p><h2>Practical exercise</h2><p>Write a two-sentence company introduction and name one fact that still requires internal confirmation.</p><h2>Model response</h2><p>AITS publicly dates its founding to 2005 and describes IT and security installation services. My reporting manager must be confirmed from current internal records.</p><h2>Summary</h2><p>Public history: founded in 2005 Service quality and responsibility are public themes Internal duties need approved records</p><h2>Thai summary — translation pending review</h2><p>ข้อมูลเว็บไซต์ระบุว่าก่อตั้งใน พ.ศ. 2548 หรือ ค.ศ. 2005 ข้อมูลตำแหน่งและผู้บังคับบัญชาต้องยืนยันจากบริษัท</p><h2>References</h2><p>AITS: AITS About us — https://aitscctv.com/about-us/</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Services and customer needs",
+      "objectives": [
+        "Match customer needs to relevant service categories."
+      ],
+      "explanation": [
+        "AITS publicly lists CCTV, network cabling, security systems, internet, telephone systems, access control, home automation and solar services. Learn what each category addresses before proposing a product. CCTV supports visual monitoring; access control manages entry; network infrastructure connects devices and services.",
+        "A customer request may span several categories. Ask about the problem, location, existing equipment and desired outcome. Record uncertainty instead of promising compatibility, price, installation dates or a service level. A technical survey and approved quotation process are separate from this introductory training."
+      ],
+      "example": "Fictional Lotus Workshop wants to see its entrance remotely and restrict staff-door access. CCTV and access control are relevant; connectivity also needs investigation.",
+      "exercise": "List three discovery questions for Lotus Workshop without collecting passwords.",
+      "model_response": "What areas need coverage? Who should be allowed through the door? What network equipment and connection already exist?",
+      "key_points": [
+        "Start with the customer outcome",
+        "Several services may be involved",
+        "Do not promise unverified compatibility"
+      ],
+      "references": [
+        "HOME",
+        "EX"
+      ],
+      "thai_summary": "เริ่มจากความต้องการของลูกค้า แล้วเลือกบริการที่เกี่ยวข้อง อย่ารับรองราคา กำหนดส่ง หรือความเข้ากันได้โดยไม่มีข้อมูล",
+      "id": "AITS-C01-L02",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01-L01"
+      ],
+      "summary": "Start with the customer outcome Several services may be involved Do not promise unverified compatibility",
+      "visual_resources": [
+        "course-01-welcome/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L02",
+        "course_id": "AITS-C01",
+        "title": "Services and customer needs",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HOME",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C01-L02-Q1",
+        "AITS-C01-L02-Q2",
+        "AITS-C01-L02-Q3"
+      ],
+      "html": "<h1>Services and customer needs</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C01-L02 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Match customer needs to relevant service categories.</p><h2>Explanation</h2><p>AITS publicly lists CCTV, network cabling, security systems, internet, telephone systems, access control, home automation and solar services. Learn what each category addresses before proposing a product. CCTV supports visual monitoring; access control manages entry; network infrastructure connects devices and services.</p><p>A customer request may span several categories. Ask about the problem, location, existing equipment and desired outcome. Record uncertainty instead of promising compatibility, price, installation dates or a service level. A technical survey and approved quotation process are separate from this introductory training.</p><h2>Synthetic example</h2><p>Fictional Lotus Workshop wants to see its entrance remotely and restrict staff-door access. CCTV and access control are relevant; connectivity also needs investigation.</p><h2>Practical exercise</h2><p>List three discovery questions for Lotus Workshop without collecting passwords.</p><h2>Model response</h2><p>What areas need coverage? Who should be allowed through the door? What network equipment and connection already exist?</p><h2>Summary</h2><p>Start with the customer outcome Several services may be involved Do not promise unverified compatibility</p><h2>Thai summary — translation pending review</h2><p>เริ่มจากความต้องการของลูกค้า แล้วเลือกบริการที่เกี่ยวข้อง อย่ารับรองราคา กำหนดส่ง หรือความเข้ากันได้โดยไม่มีข้อมูล</p><h2>References</h2><p>HOME: AITS services — https://aitscctv.com/</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Roles and collaboration",
+      "objectives": [
+        "Prepare a clear handover without inventing an organization chart."
+      ],
+      "explanation": [
+        "No current approved AITS organization chart was located in the inspected materials. This lesson therefore describes functions, not confirmed departments or reporting lines. In a typical service business, customer-facing staff capture requirements, technical staff assess feasibility, administration maintains records, and an authorized reviewer confirms commercial or operational decisions.",
+        "A useful handover states the request, known facts, open questions, relevant evidence and next action. It identifies who is being asked to respond without assuming authority they do not have. Ask your supervisor to confirm actual role names and escalation routes. A handover is incomplete when the recipient cannot tell what decision is needed."
+      ],
+      "example": "Synthetic ticket LH-001 says “camera problem.” A better handover says “Entrance camera image missing since 09:00; other views work; model and safe observations attached; technical diagnosis requested.”",
+      "exercise": "Rewrite “customer unhappy, please fix” as a five-field handover.",
+      "model_response": "Request: restore entrance view. Facts: missing since 09:00. Evidence: authorized screenshot without people. Unknown: power status. Next action: technical review and agreed update time.",
+      "key_points": [
+        "Functional map is not an organization chart",
+        "Facts and unknowns travel together",
+        "Confirm the real escalation route"
+      ],
+      "references": [
+        "EX",
+        "APP"
+      ],
+      "thai_summary": "แผนภาพในบทเรียนเป็นตัวอย่างการประสานงาน ไม่ใช่ผังองค์กรที่อนุมัติ ต้องยืนยันช่องทางส่งต่อกับบริษัท",
+      "id": "AITS-C01-L03",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01-L02"
+      ],
+      "summary": "Functional map is not an organization chart Facts and unknowns travel together Confirm the real escalation route",
+      "visual_resources": [
+        "course-01-welcome/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L03",
+        "course_id": "AITS-C01",
+        "title": "Roles and collaboration",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "APP"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C01-L03-Q1",
+        "AITS-C01-L03-Q2",
+        "AITS-C01-L03-Q3"
+      ],
+      "html": "<h1>Roles and collaboration</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C01-L03 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Prepare a clear handover without inventing an organization chart.</p><h2>Explanation</h2><p>No current approved AITS organization chart was located in the inspected materials. This lesson therefore describes functions, not confirmed departments or reporting lines. In a typical service business, customer-facing staff capture requirements, technical staff assess feasibility, administration maintains records, and an authorized reviewer confirms commercial or operational decisions.</p><p>A useful handover states the request, known facts, open questions, relevant evidence and next action. It identifies who is being asked to respond without assuming authority they do not have. Ask your supervisor to confirm actual role names and escalation routes. A handover is incomplete when the recipient cannot tell what decision is needed.</p><h2>Synthetic example</h2><p>Synthetic ticket LH-001 says “camera problem.” A better handover says “Entrance camera image missing since 09:00; other views work; model and safe observations attached; technical diagnosis requested.”</p><h2>Practical exercise</h2><p>Rewrite “customer unhappy, please fix” as a five-field handover.</p><h2>Model response</h2><p>Request: restore entrance view. Facts: missing since 09:00. Evidence: authorized screenshot without people. Unknown: power status. Next action: technical review and agreed update time.</p><h2>Summary</h2><p>Functional map is not an organization chart Facts and unknowns travel together Confirm the real escalation route</p><h2>Thai summary — translation pending review</h2><p>แผนภาพในบทเรียนเป็นตัวอย่างการประสานงาน ไม่ใช่ผังองค์กรที่อนุมัติ ต้องยืนยันช่องทางส่งต่อกับบริษัท</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>APP: Existing AITS LMS content management — docs/CONTENT_MANAGEMENT.md</p>"
+    },
+    {
+      "title": "Learning Hub and your first learning cycle",
+      "objectives": [
+        "Complete a lesson, attempt a quiz and distinguish practice from approval."
+      ],
+      "explanation": [
+        "Open the Learning Hub with your assigned account, select an assigned course and read the lesson objectives. Work through the explanation and exercise before taking the quiz. Review feedback, revisit the relevant lesson and retry when the platform permits. A recorded completion shows learning activity; it does not authorize electrical work or certify job competence.",
+        "The knowledge library separates approved records from clearly labeled samples. Check title, version, source, approval state and applicability before using a document. Course publication and knowledge approval are separate controls. If internal policy is unavailable, ask HR or your supervisor for the current approved document. AI practice cannot supply missing company authority."
+      ],
+      "example": "A sample checklist appears in the library. You may use it for the exercise, but should not treat it as permission to perform a live installation.",
+      "exercise": "Open one course, complete its first lesson, locate its source note and identify its approval label.",
+      "model_response": "Record the course and lesson IDs, the visible Draft/sample label and the source reference; confirm completion persists after reopening.",
+      "key_points": [
+        "Read and practise before the quiz",
+        "Completion is learning evidence",
+        "Check source, version and approval"
+      ],
+      "references": [
+        "APP",
+        "EX"
+      ],
+      "thai_summary": "เรียนและฝึกก่อนทำแบบทดสอบ การเรียนจบไม่ใช่ใบรับรองความสามารถ ตรวจสอบเวอร์ชัน แหล่งอ้างอิง และสถานะอนุมัติ",
+      "id": "AITS-C01-L04",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01-L03"
+      ],
+      "summary": "Read and practise before the quiz Completion is learning evidence Check source, version and approval",
+      "visual_resources": [
+        "course-01-welcome/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L04",
+        "course_id": "AITS-C01",
+        "title": "Learning Hub and your first learning cycle",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C01-L04-Q1",
+        "AITS-C01-L04-Q2",
+        "AITS-C01-L04-Q3"
+      ],
+      "html": "<h1>Learning Hub and your first learning cycle</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C01-L04 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Complete a lesson, attempt a quiz and distinguish practice from approval.</p><h2>Explanation</h2><p>Open the Learning Hub with your assigned account, select an assigned course and read the lesson objectives. Work through the explanation and exercise before taking the quiz. Review feedback, revisit the relevant lesson and retry when the platform permits. A recorded completion shows learning activity; it does not authorize electrical work or certify job competence.</p><p>The knowledge library separates approved records from clearly labeled samples. Check title, version, source, approval state and applicability before using a document. Course publication and knowledge approval are separate controls. If internal policy is unavailable, ask HR or your supervisor for the current approved document. AI practice cannot supply missing company authority.</p><h2>Synthetic example</h2><p>A sample checklist appears in the library. You may use it for the exercise, but should not treat it as permission to perform a live installation.</p><h2>Practical exercise</h2><p>Open one course, complete its first lesson, locate its source note and identify its approval label.</p><h2>Model response</h2><p>Record the course and lesson IDs, the visible Draft/sample label and the source reference; confirm completion persists after reopening.</p><h2>Summary</h2><p>Read and practise before the quiz Completion is learning evidence Check source, version and approval</p><h2>Thai summary — translation pending review</h2><p>เรียนและฝึกก่อนทำแบบทดสอบ การเรียนจบไม่ใช่ใบรับรองความสามารถ ตรวจสอบเวอร์ชัน แหล่งอ้างอิง และสถานะอนุมัติ</p><h2>References</h2><p>APP: Existing AITS LMS content management — docs/CONTENT_MANAGEMENT.md</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    }
+  ],
+  "flow": [
+    "Customer need",
+    "Capture facts",
+    "Technical review",
+    "Authorized decision",
+    "Document handover"
+  ],
+  "id": "AITS-C01",
+  "folder": "course-01-welcome",
+  "metadata": {
+    "document_id": "AITS-C01",
+    "course_id": "AITS-C01",
+    "title": "Welcome to AITS",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "AITS",
+      "APP",
+      "EX",
+      "HOME"
+    ]
+  },
+  "prerequisites": [],
+  "estimated_minutes": 100,
+  "language": "en",
+  "translation_status": "Thai summaries only; AI translation pending native-speaker review",
+  "objectives": [
+    "Explain AITS using supported public facts.",
+    "Match customer needs to relevant service categories.",
+    "Prepare a clear handover without inventing an organization chart.",
+    "Complete a lesson, attempt a quiz and distinguish practice from approval."
+  ],
+  "assessments": [
+    {
+      "question": "Which year matches the published founding year 2548 BE?",
+      "choices": [
+        "2005 CE",
+        "2015 CE",
+        "1995 CE"
+      ],
+      "correct_answer": "2005 CE",
+      "explanation": "For this Thai calendar date, subtract 543.",
+      "id": "AITS-C01-L01-Q1",
+      "related_lesson": "AITS-C01-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "AITS",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L01-Q1",
+        "course_id": "AITS-C01",
+        "title": "Which year matches the published founding year 2548 BE?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "AITS",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What can the public website establish?",
+      "choices": [
+        "Your leave balance",
+        "Your direct manager",
+        "Published company history"
+      ],
+      "correct_answer": "Published company history",
+      "explanation": "Marketing information supports public facts, not personal employment details.",
+      "id": "AITS-C01-L01-Q2",
+      "related_lesson": "AITS-C01-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "AITS",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L01-Q2",
+        "course_id": "AITS-C01",
+        "title": "What can the public website establish?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "AITS",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which statement needs internal confirmation?",
+      "choices": [
+        "The About us page exists",
+        "My reporting manager is the service director",
+        "AITS publishes a service list"
+      ],
+      "correct_answer": "My reporting manager is the service director",
+      "explanation": "A reporting relationship requires a current approved organizational record.",
+      "id": "AITS-C01-L01-Q3",
+      "related_lesson": "AITS-C01-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "AITS",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L01-Q3",
+        "course_id": "AITS-C01",
+        "title": "Which statement needs internal confirmation?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "AITS",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which category directly addresses controlled door entry?",
+      "choices": [
+        "Telephone billing",
+        "Solar generation",
+        "Access control"
+      ],
+      "correct_answer": "Access control",
+      "explanation": "Entry permissions are an access-control requirement.",
+      "id": "AITS-C01-L02-Q1",
+      "related_lesson": "AITS-C01-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HOME",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L02-Q1",
+        "course_id": "AITS-C01",
+        "title": "Which category directly addresses controlled door entry?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HOME",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should precede a firm equipment recommendation?",
+      "choices": [
+        "A password request",
+        "Clarification of requirements",
+        "A guessed installation date"
+      ],
+      "correct_answer": "Clarification of requirements",
+      "explanation": "Requirements inform a suitable technical review.",
+      "id": "AITS-C01-L02-Q2",
+      "related_lesson": "AITS-C01-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HOME",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L02-Q2",
+        "course_id": "AITS-C01",
+        "title": "What should precede a firm equipment recommendation?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HOME",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which response is appropriate to an unfamiliar camera model?",
+      "choices": [
+        "Record the model and request compatibility review",
+        "Promise it works with every recorder",
+        "Reject every unfamiliar model"
+      ],
+      "correct_answer": "Record the model and request compatibility review",
+      "explanation": "Compatibility needs evidence from the relevant documentation.",
+      "id": "AITS-C01-L02-Q3",
+      "related_lesson": "AITS-C01-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "HOME",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L02-Q3",
+        "course_id": "AITS-C01",
+        "title": "Which response is appropriate to an unfamiliar camera model?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HOME",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What does the training collaboration map represent?",
+      "choices": [
+        "A list of current employees",
+        "A generic functional example",
+        "An approved AITS reporting chart"
+      ],
+      "correct_answer": "A generic functional example",
+      "explanation": "No approved current organizational structure was found.",
+      "id": "AITS-C01-L03-Q1",
+      "related_lesson": "AITS-C01-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "APP"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L03-Q1",
+        "course_id": "AITS-C01",
+        "title": "What does the training collaboration map represent?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "APP"
+        ]
+      }
+    },
+    {
+      "question": "Which handover is most useful?",
+      "choices": [
+        "Symptoms, scope, evidence and next action",
+        "Please fix urgently",
+        "The technician caused it"
+      ],
+      "correct_answer": "Symptoms, scope, evidence and next action",
+      "explanation": "Observable facts support the next investigation.",
+      "id": "AITS-C01-L03-Q2",
+      "related_lesson": "AITS-C01-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "APP"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L03-Q2",
+        "course_id": "AITS-C01",
+        "title": "Which handover is most useful?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "APP"
+        ]
+      }
+    },
+    {
+      "question": "Who should confirm your actual escalation route?",
+      "choices": [
+        "A fictional training customer",
+        "An AI guess",
+        "An authorized company supervisor or responsible department"
+      ],
+      "correct_answer": "An authorized company supervisor or responsible department",
+      "explanation": "Internal authority must come from the company.",
+      "id": "AITS-C01-L03-Q3",
+      "related_lesson": "AITS-C01-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "APP"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L03-Q3",
+        "course_id": "AITS-C01",
+        "title": "Who should confirm your actual escalation route?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "APP"
+        ]
+      }
+    },
+    {
+      "question": "Does completing a safety-awareness quiz authorize live electrical work?",
+      "choices": [
+        "No",
+        "Yes, automatically",
+        "Only if the score is 100%"
+      ],
+      "correct_answer": "No",
+      "explanation": "Task authorization and practical competence require separate controls.",
+      "id": "AITS-C01-L04-Q1",
+      "related_lesson": "AITS-C01-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L04-Q1",
+        "course_id": "AITS-C01",
+        "title": "Does completing a safety-awareness quiz authorize live electrical work?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should you check before relying on a library document?",
+      "choices": [
+        "Only its attractive design",
+        "Only its file size",
+        "Version, approval and applicability"
+      ],
+      "correct_answer": "Version, approval and applicability",
+      "explanation": "A document can be clear but obsolete or unapproved.",
+      "id": "AITS-C01-L04-Q2",
+      "related_lesson": "AITS-C01-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L04-Q2",
+        "course_id": "AITS-C01",
+        "title": "What should you check before relying on a library document?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "An unapproved sample lesson can establish official AITS policy.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "Unknown internal policy must remain unknown.",
+      "id": "AITS-C01-L04-Q3",
+      "related_lesson": "AITS-C01-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L04-Q3",
+        "course_id": "AITS-C01",
+        "title": "An unapproved sample lesson can establish official AITS policy.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "AITS-C01-S01",
+      "title": "Explain AITS to a colleague",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "New employee",
+      "problem_description": "A colleague asks when AITS started and who you report to.",
+      "available_information": [
+        "Public founding date is available; no approved reporting chart is supplied."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Use the public date and flag the missing reporting line.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Use the public date and flag the missing reporting line."
+      ],
+      "inappropriate_decisions": [
+        "Invent the manager name."
+      ],
+      "consequences": "The colleague receives a traceable introduction without an invented authority.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Invent the manager name.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Use the public date and flag the missing reporting line."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-S01",
+        "course_id": "AITS-C01",
+        "title": "Explain AITS to a colleague",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C01-S02",
+      "title": "Route a mixed service request",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Customer support trainee",
+      "problem_description": "Lotus Workshop needs remote entrance viewing and controlled door entry.",
+      "available_information": [
+        "Existing network details and device models are unknown."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Record CCTV, access-control and connectivity requirements for review.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Record CCTV, access-control and connectivity requirements for review."
+      ],
+      "inappropriate_decisions": [
+        "Promise a model and installation date immediately."
+      ],
+      "consequences": "A useful handover reduces avoidable resurvey and false expectations.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Promise a model and installation date immediately.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Record CCTV, access-control and connectivity requirements for review."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-S02",
+        "course_id": "AITS-C01",
+        "title": "Route a mixed service request",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C01-S03",
+      "title": "Choose a reliable learning source",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "New employee",
+      "problem_description": "A sample checklist conflicts with a supervisor-provided approved current document.",
+      "available_information": [
+        "The sample is Draft and the approved document has an applicable version."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Use the approved applicable source and flag the sample conflict.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Use the approved applicable source and flag the sample conflict."
+      ],
+      "inappropriate_decisions": [
+        "Treat the sample as mandatory because it is newer."
+      ],
+      "consequences": "Authority and applicability are checked before use.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Treat the sample as mandatory because it is newer.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Use the approved applicable source and flag the sample conflict."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-S03",
+        "course_id": "AITS-C01",
+        "title": "Choose a reliable learning source",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    }
+  ]
+}

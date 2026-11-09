@@ -1,0 +1,53 @@
+{
+  "title": "Statutory rights and company documents",
+  "objectives": [
+    "Separate legal minimums from unverified AITS arrangements."
+  ],
+  "explanation": [
+    "Thai statutory employment protections and an employer’s additional benefits are different sources of entitlement. A company handbook may explain administration and provide more generous arrangements, but this training has not verified AITS benefits, payroll rules or leave approval channels. Ask for current employment terms, work rules, pay records and the applicable HR contact.",
+    "Keep copies of documents you are entitled to hold and ask for clarification when terms are unclear. Record the actual dates and facts of a concern. Do not assume that signing a document makes every term lawful. Individual questions require review of current Thai law, the employment relationship and relevant exceptions by a qualified HR or legal reviewer."
+  ],
+  "example": "A colleague says AITS grants a particular bonus. No approved policy is supplied. Treat that as unverified, not as an entitlement.",
+  "exercise": "Create two columns: statutory topics to verify and company arrangements to obtain.",
+  "model_response": "Statutory: hours, rest, leave and wage protections. Company: work schedule, extra benefits, request channel and designated contacts.",
+  "key_points": [
+    "Law and company benefits have different sources",
+    "Obtain current employment documents",
+    "Record facts when raising concerns"
+  ],
+  "references": [
+    "MOL",
+    "EX"
+  ],
+  "thai_summary": "แยกสิทธิตามกฎหมายออกจากสวัสดิการบริษัท ขอเอกสารการจ้างและข้อบังคับฉบับปัจจุบันจากผู้รับผิดชอบ",
+  "id": "AITS-C02-L01",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "summary": "Law and company benefits have different sources Obtain current employment documents Record facts when raising concerns",
+  "visual_resources": [
+    "course-02-employee-rights/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C02-L01",
+    "course_id": "AITS-C02",
+    "title": "Statutory rights and company documents",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "MOL",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C02-L01-Q1",
+    "AITS-C02-L01-Q2",
+    "AITS-C02-L01-Q3"
+  ]
+}

@@ -1,0 +1,958 @@
+{
+  "slug": "cctv-installation",
+  "title": "CCTV and Installation Fundamentals",
+  "title_th": "พื้นฐาน CCTV และการติดตั้ง",
+  "roles": [
+    "Technician trainees",
+    "Technical sales"
+  ],
+  "lessons": [
+    {
+      "title": "Cameras recorders and viewing",
+      "objectives": [
+        "Trace a basic CCTV signal path."
+      ],
+      "explanation": [
+        "A CCTV system combines image capture, transport, recording or storage, and authorized viewing. IP cameras send digital video over a network to an NVR or video-management system; analog cameras commonly send video to a DVR for recording. Hybrid designs exist, so verify the actual equipment rather than relying on the name alone.",
+        "A visible live image does not prove recording, time accuracy, playback or export works. A complete handover test considers the customer’s agreed purpose and approved requirements. Camera resolution alone does not guarantee identification: lens, distance, angle, lighting and motion matter. All examples here are generic; AITS-specific acceptance criteria have not been supplied."
+      ],
+      "example": "Synthetic system: two IP cameras connect to a PoE switch; the recorder and authorized viewing workstation share the permitted network.",
+      "exercise": "Draw the path from a camera to stored footage and identify where recording could fail while live viewing still works.",
+      "model_response": "Camera → switch/network → recorder → storage. A disk or recording-schedule problem can affect storage while live video remains visible.",
+      "key_points": [
+        "Capture, transport, record and view are distinct",
+        "NVR and DVR describe common architectures",
+        "Test playback as well as live view"
+      ],
+      "references": [
+        "NET",
+        "EX"
+      ],
+      "thai_summary": "แยกการรับภาพ การส่งข้อมูล การบันทึก และการดูภาพ ตรวจสอบการเล่นย้อนหลังด้วย ไม่ใช่ดูภาพสดอย่างเดียว",
+      "id": "AITS-C04-L01",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01"
+      ],
+      "summary": "Capture, transport, record and view are distinct NVR and DVR describe common architectures Test playback as well as live view",
+      "visual_resources": [
+        "course-04-cctv-installation/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L01",
+        "course_id": "AITS-C04",
+        "title": "Cameras recorders and viewing",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C04-L01-Q1",
+        "AITS-C04-L01-Q2",
+        "AITS-C04-L01-Q3"
+      ],
+      "html": "<h1>Cameras recorders and viewing</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C04-L01 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Trace a basic CCTV signal path.</p><h2>Explanation</h2><p>A CCTV system combines image capture, transport, recording or storage, and authorized viewing. IP cameras send digital video over a network to an NVR or video-management system; analog cameras commonly send video to a DVR for recording. Hybrid designs exist, so verify the actual equipment rather than relying on the name alone.</p><p>A visible live image does not prove recording, time accuracy, playback or export works. A complete handover test considers the customer’s agreed purpose and approved requirements. Camera resolution alone does not guarantee identification: lens, distance, angle, lighting and motion matter. All examples here are generic; AITS-specific acceptance criteria have not been supplied.</p><h2>Synthetic example</h2><p>Synthetic system: two IP cameras connect to a PoE switch; the recorder and authorized viewing workstation share the permitted network.</p><h2>Practical exercise</h2><p>Draw the path from a camera to stored footage and identify where recording could fail while live viewing still works.</p><h2>Model response</h2><p>Camera → switch/network → recorder → storage. A disk or recording-schedule problem can affect storage while live video remains visible.</p><h2>Summary</h2><p>Capture, transport, record and view are distinct NVR and DVR describe common architectures Test playback as well as live view</p><h2>Thai summary — translation pending review</h2><p>แยกการรับภาพ การส่งข้อมูล การบันทึก และการดูภาพ ตรวจสอบการเล่นย้อนหลังด้วย ไม่ใช่ดูภาพสดอย่างเดียว</p><h2>References</h2><p>NET: Cisco networking basics — https://www.cisco.com/site/us/en/learn/topics/small-business/networking-basics.html</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "PoE cabling and equipment checks",
+      "objectives": [
+        "Review power compatibility and cabling before connection."
+      ],
+      "explanation": [
+        "Power over Ethernet can deliver power and data over compatible Ethernet cabling. Check both the device’s supported PoE type and the switch or injector’s capability. Do not assume every RJ45 port supplies power or every injector is standards-compatible. Manufacturer documentation takes priority for the actual model.",
+        "A switch has per-port limits and a total power budget. Compare planned loads against the documented budget, allowing for the manufacturer’s conditions and cable losses. Axis explains that typical and maximum camera consumption differ with features and operating conditions. Inspect cable category, route, terminations, labeling, damage and suitability for the environment. Never improvise mains wiring as part of a network exercise."
+      ],
+      "example": "Four fictional cameras each require a documented maximum allocation of 15 W. Their total is 60 W; a 50 W usable budget is insufficient even before other loads.",
+      "exercise": "Calculate the example load and list two checks beyond total watts.",
+      "model_response": "60 W exceeds 50 W. Also verify per-port support and the correct PoE type for every device.",
+      "key_points": [
+        "Check PoE type and per-port limit",
+        "Check total usable power budget",
+        "Inspect and label the cable path"
+      ],
+      "references": [
+        "POE",
+        "EX"
+      ],
+      "thai_summary": "ตรวจสอบชนิด PoE กำลังต่อพอร์ต และกำลังรวมของสวิตช์ กำลังใช้งานทั่วไปอาจต่ำกว่ากำลังสูงสุด",
+      "id": "AITS-C04-L02",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C04-L01"
+      ],
+      "summary": "Check PoE type and per-port limit Check total usable power budget Inspect and label the cable path",
+      "visual_resources": [
+        "course-04-cctv-installation/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L02",
+        "course_id": "AITS-C04",
+        "title": "PoE cabling and equipment checks",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "POE",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C04-L02-Q1",
+        "AITS-C04-L02-Q2",
+        "AITS-C04-L02-Q3"
+      ],
+      "html": "<h1>PoE cabling and equipment checks</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C04-L02 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Review power compatibility and cabling before connection.</p><h2>Explanation</h2><p>Power over Ethernet can deliver power and data over compatible Ethernet cabling. Check both the device’s supported PoE type and the switch or injector’s capability. Do not assume every RJ45 port supplies power or every injector is standards-compatible. Manufacturer documentation takes priority for the actual model.</p><p>A switch has per-port limits and a total power budget. Compare planned loads against the documented budget, allowing for the manufacturer’s conditions and cable losses. Axis explains that typical and maximum camera consumption differ with features and operating conditions. Inspect cable category, route, terminations, labeling, damage and suitability for the environment. Never improvise mains wiring as part of a network exercise.</p><h2>Synthetic example</h2><p>Four fictional cameras each require a documented maximum allocation of 15 W. Their total is 60 W; a 50 W usable budget is insufficient even before other loads.</p><h2>Practical exercise</h2><p>Calculate the example load and list two checks beyond total watts.</p><h2>Model response</h2><p>60 W exceeds 50 W. Also verify per-port support and the correct PoE type for every device.</p><h2>Summary</h2><p>Check PoE type and per-port limit Check total usable power budget Inspect and label the cable path</p><h2>Thai summary — translation pending review</h2><p>ตรวจสอบชนิด PoE กำลังต่อพอร์ต และกำลังรวมของสวิตช์ กำลังใช้งานทั่วไปอาจต่ำกว่ากำลังสูงสุด</p><h2>References</h2><p>POE: Axis typical and maximum camera power — https://whitepapers.axis.com/en-us/typical-and-maximum-power-consumption-in-axis-cameras</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Survey placement and installation preparation",
+      "objectives": [
+        "Prepare a survey that connects camera purpose to site constraints."
+      ],
+      "explanation": [
+        "Start with the intended task: observe an area, recognize activity or capture usable identification detail under agreed conditions. Record field of view, expected lighting, mounting constraints, cable route, weather exposure and maintenance access. Avoid assumptions about recording private areas or neighboring property; escalate privacy and lawful-purpose questions to the responsible reviewer.",
+        "Before installation, check model and quantities against the approved scope, inspect for damage and confirm compatible accessories. Verify that safe access and required permissions are ready. A drawing should label devices and cable routes clearly enough for another technician to follow. Do not treat a draft survey as permission to drill, energize or change a customer system."
+      ],
+      "example": "A fictional entrance faces bright afternoon sunlight. A site review should test the relevant lighting conditions instead of accepting a clear indoor bench image.",
+      "exercise": "Create a survey checklist with purpose, scene, route, power, privacy and access headings.",
+      "model_response": "For each heading record known evidence, an unresolved question and the person who must confirm it; leave unknown measurements blank.",
+      "key_points": [
+        "Define the viewing task",
+        "Check real site conditions",
+        "Confirm scope and safe access"
+      ],
+      "references": [
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "thai_summary": "สำรวจตามวัตถุประสงค์ของภาพ ตรวจแสง เส้นทางสาย ความเป็นส่วนตัว และทางเข้าทำงานที่ปลอดภัยก่อนติดตั้ง",
+      "id": "AITS-C04-L03",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C04-L02"
+      ],
+      "summary": "Define the viewing task Check real site conditions Confirm scope and safe access",
+      "visual_resources": [
+        "course-04-cctv-installation/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L03",
+        "course_id": "AITS-C04",
+        "title": "Survey placement and installation preparation",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "HEIGHT",
+          "QA"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C04-L03-Q1",
+        "AITS-C04-L03-Q2",
+        "AITS-C04-L03-Q3"
+      ],
+      "html": "<h1>Survey placement and installation preparation</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C04-L03 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Prepare a survey that connects camera purpose to site constraints.</p><h2>Explanation</h2><p>Start with the intended task: observe an area, recognize activity or capture usable identification detail under agreed conditions. Record field of view, expected lighting, mounting constraints, cable route, weather exposure and maintenance access. Avoid assumptions about recording private areas or neighboring property; escalate privacy and lawful-purpose questions to the responsible reviewer.</p><p>Before installation, check model and quantities against the approved scope, inspect for damage and confirm compatible accessories. Verify that safe access and required permissions are ready. A drawing should label devices and cable routes clearly enough for another technician to follow. Do not treat a draft survey as permission to drill, energize or change a customer system.</p><h2>Synthetic example</h2><p>A fictional entrance faces bright afternoon sunlight. A site review should test the relevant lighting conditions instead of accepting a clear indoor bench image.</p><h2>Practical exercise</h2><p>Create a survey checklist with purpose, scene, route, power, privacy and access headings.</p><h2>Model response</h2><p>For each heading record known evidence, an unresolved question and the person who must confirm it; leave unknown measurements blank.</p><h2>Summary</h2><p>Define the viewing task Check real site conditions Confirm scope and safe access</p><h2>Thai summary — translation pending review</h2><p>สำรวจตามวัตถุประสงค์ของภาพ ตรวจแสง เส้นทางสาย ความเป็นส่วนตัว และทางเข้าทำงานที่ปลอดภัยก่อนติดตั้ง</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>HEIGHT: ILO working at height — https://www.ilo.org/topics-and-sectors/occupational-safety-and-health-guide-labour-inspectors-and-other/working-height</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p>"
+    },
+    {
+      "title": "Faults maintenance and handover",
+      "objectives": [
+        "Separate symptom diagnosis from authorized corrective work."
+      ],
+      "explanation": [
+        "For a missing image, establish whether one camera or many are affected, when it began and whether live view or playback is missing. Observe authorized power/link indications and compare with a known-good path where permitted. Possible causes include power, cabling, addressing, authentication, stream compatibility and recording settings; do not jump straight to a factory reset.",
+        "Maintenance starts with approved intervals and model instructions. Review authorized health indicators, time accuracy, storage condition and image obstruction without changing settings unnecessarily. Handover evidence should identify devices, configuration versions, tests performed, results, limitations and open issues. Transfer credentials through the approved secure method, never in the ordinary completion report."
+      ],
+      "example": "Only playback is missing for camera C2; live view works. Investigate recording schedule, storage and timestamps before replacing the camera.",
+      "exercise": "Write a handover entry that records a passed live-view test and an unresolved playback problem.",
+      "model_response": "C2 live view passed at 14:00 in the agreed scene. Playback unavailable for the requested period. Recording/storage review pending; acceptance not claimed.",
+      "key_points": [
+        "Scope the symptom before changing equipment",
+        "Avoid destructive resets",
+        "Record results and unresolved items"
+      ],
+      "references": [
+        "EX",
+        "QA",
+        "POE"
+      ],
+      "thai_summary": "เริ่มจากขอบเขตอาการ ตรวจสอบอย่างมีเหตุผล และบันทึกผลกับงานค้าง ห้ามรีเซ็ตหรือเปิดเผยรหัสผ่านโดยไม่มีการอนุญาต",
+      "id": "AITS-C04-L04",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C04-L03"
+      ],
+      "summary": "Scope the symptom before changing equipment Avoid destructive resets Record results and unresolved items",
+      "visual_resources": [
+        "course-04-cctv-installation/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L04",
+        "course_id": "AITS-C04",
+        "title": "Faults maintenance and handover",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA",
+          "POE"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C04-L04-Q1",
+        "AITS-C04-L04-Q2",
+        "AITS-C04-L04-Q3"
+      ],
+      "html": "<h1>Faults maintenance and handover</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C04-L04 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Separate symptom diagnosis from authorized corrective work.</p><h2>Explanation</h2><p>For a missing image, establish whether one camera or many are affected, when it began and whether live view or playback is missing. Observe authorized power/link indications and compare with a known-good path where permitted. Possible causes include power, cabling, addressing, authentication, stream compatibility and recording settings; do not jump straight to a factory reset.</p><p>Maintenance starts with approved intervals and model instructions. Review authorized health indicators, time accuracy, storage condition and image obstruction without changing settings unnecessarily. Handover evidence should identify devices, configuration versions, tests performed, results, limitations and open issues. Transfer credentials through the approved secure method, never in the ordinary completion report.</p><h2>Synthetic example</h2><p>Only playback is missing for camera C2; live view works. Investigate recording schedule, storage and timestamps before replacing the camera.</p><h2>Practical exercise</h2><p>Write a handover entry that records a passed live-view test and an unresolved playback problem.</p><h2>Model response</h2><p>C2 live view passed at 14:00 in the agreed scene. Playback unavailable for the requested period. Recording/storage review pending; acceptance not claimed.</p><h2>Summary</h2><p>Scope the symptom before changing equipment Avoid destructive resets Record results and unresolved items</p><h2>Thai summary — translation pending review</h2><p>เริ่มจากขอบเขตอาการ ตรวจสอบอย่างมีเหตุผล และบันทึกผลกับงานค้าง ห้ามรีเซ็ตหรือเปิดเผยรหัสผ่านโดยไม่มีการอนุญาต</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p><p>POE: Axis typical and maximum camera power — https://whitepapers.axis.com/en-us/typical-and-maximum-power-consumption-in-axis-cameras</p>"
+    }
+  ],
+  "flow": [
+    "IP camera",
+    "PoE switch",
+    "NVR recorder",
+    "Storage",
+    "Authorized viewer"
+  ],
+  "id": "AITS-C04",
+  "folder": "course-04-cctv-installation",
+  "metadata": {
+    "document_id": "AITS-C04",
+    "course_id": "AITS-C04",
+    "title": "CCTV and Installation Fundamentals",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "HEIGHT",
+      "NET",
+      "POE",
+      "QA"
+    ]
+  },
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "estimated_minutes": 100,
+  "language": "en",
+  "translation_status": "Thai summaries only; AI translation pending native-speaker review",
+  "objectives": [
+    "Trace a basic CCTV signal path.",
+    "Review power compatibility and cabling before connection.",
+    "Prepare a survey that connects camera purpose to site constraints.",
+    "Separate symptom diagnosis from authorized corrective work."
+  ],
+  "assessments": [
+    {
+      "question": "Which device commonly records network-camera streams?",
+      "choices": [
+        "NVR",
+        "Passive patch panel",
+        "Unpowered cable reel"
+      ],
+      "correct_answer": "NVR",
+      "explanation": "An NVR receives network video for recording.",
+      "id": "AITS-C04-L01-Q1",
+      "related_lesson": "AITS-C04-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L01-Q1",
+        "course_id": "AITS-C04",
+        "title": "Which device commonly records network-camera streams?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does live viewing prove recording is working?",
+      "choices": [
+        "Yes",
+        "Only in daytime",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Storage and recording settings need separate verification.",
+      "id": "AITS-C04-L01-Q2",
+      "related_lesson": "AITS-C04-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L01-Q2",
+        "course_id": "AITS-C04",
+        "title": "Does live viewing prove recording is working?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What influences useful image detail?",
+      "choices": [
+        "Only the brand sticker",
+        "Lens, distance, lighting and motion",
+        "Only the camera color"
+      ],
+      "correct_answer": "Lens, distance, lighting and motion",
+      "explanation": "Image usefulness depends on the scene and imaging conditions.",
+      "id": "AITS-C04-L01-Q3",
+      "related_lesson": "AITS-C04-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L01-Q3",
+        "course_id": "AITS-C04",
+        "title": "What influences useful image detail?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Can four 15 W allocations fit a 50 W usable budget?",
+      "choices": [
+        "Yes, total is 30 W",
+        "Yes, port count is enough",
+        "No, total is 60 W"
+      ],
+      "correct_answer": "No, total is 60 W",
+      "explanation": "Power budget and port count are separate constraints.",
+      "id": "AITS-C04-L02-Q1",
+      "related_lesson": "AITS-C04-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "POE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L02-Q1",
+        "course_id": "AITS-C04",
+        "title": "Can four 15 W allocations fit a 50 W usable budget?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "POE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does every RJ45 port provide PoE?",
+      "choices": [
+        "Only when a camera is connected",
+        "No",
+        "Yes"
+      ],
+      "correct_answer": "No",
+      "explanation": "PoE capability must be verified.",
+      "id": "AITS-C04-L02-Q2",
+      "related_lesson": "AITS-C04-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "POE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L02-Q2",
+        "course_id": "AITS-C04",
+        "title": "Does every RJ45 port provide PoE?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "POE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Why check maximum rather than only typical consumption?",
+      "choices": [
+        "Operating features can raise demand",
+        "Typical always means maximum",
+        "It changes the camera IP address"
+      ],
+      "correct_answer": "Operating features can raise demand",
+      "explanation": "Load can change with IR, heaters and other functions.",
+      "id": "AITS-C04-L02-Q3",
+      "related_lesson": "AITS-C04-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "POE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L02-Q3",
+        "course_id": "AITS-C04",
+        "title": "Why check maximum rather than only typical consumption?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "POE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should guide camera placement first?",
+      "choices": [
+        "A random mounting point",
+        "The agreed viewing purpose and scene",
+        "The shortest cable at any cost"
+      ],
+      "correct_answer": "The agreed viewing purpose and scene",
+      "explanation": "Placement must support the intended task.",
+      "id": "AITS-C04-L03-Q1",
+      "related_lesson": "AITS-C04-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L03-Q1",
+        "course_id": "AITS-C04",
+        "title": "What should guide camera placement first?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "HEIGHT",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "What should happen before drilling an unfamiliar wall?",
+      "choices": [
+        "Verify permission, hidden-service risks and approved method",
+        "Drill a test hole",
+        "Ask the AI to guess"
+      ],
+      "correct_answer": "Verify permission, hidden-service risks and approved method",
+      "explanation": "Site hazards and authorization require verification.",
+      "id": "AITS-C04-L03-Q2",
+      "related_lesson": "AITS-C04-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L03-Q2",
+        "course_id": "AITS-C04",
+        "title": "What should happen before drilling an unfamiliar wall?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "HEIGHT",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Is a draft survey permission to install?",
+      "choices": [
+        "Yes",
+        "Only for small cameras",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Planning evidence is distinct from authorization.",
+      "id": "AITS-C04-L03-Q3",
+      "related_lesson": "AITS-C04-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L03-Q3",
+        "course_id": "AITS-C04",
+        "title": "Is a draft survey permission to install?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "HEIGHT",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Live view works but playback fails. Which area deserves review?",
+      "choices": [
+        "Recording settings and storage",
+        "Camera paint color",
+        "Only the monitor stand"
+      ],
+      "correct_answer": "Recording settings and storage",
+      "explanation": "The evidence points toward the recording path, though diagnosis remains open.",
+      "id": "AITS-C04-L04-Q1",
+      "related_lesson": "AITS-C04-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA",
+        "POE"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L04-Q1",
+        "course_id": "AITS-C04",
+        "title": "Live view works but playback fails. Which area deserves review?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA",
+          "POE"
+        ]
+      }
+    },
+    {
+      "question": "What is a poor first response to a missing image?",
+      "choices": [
+        "Determine affected devices",
+        "Record the start time",
+        "Factory reset without authorization"
+      ],
+      "correct_answer": "Factory reset without authorization",
+      "explanation": "A reset can destroy configuration and evidence.",
+      "id": "AITS-C04-L04-Q2",
+      "related_lesson": "AITS-C04-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA",
+        "POE"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L04-Q2",
+        "course_id": "AITS-C04",
+        "title": "What is a poor first response to a missing image?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA",
+          "POE"
+        ]
+      }
+    },
+    {
+      "question": "Customer passwords belong in the ordinary handover report.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "Routine reports should not expose secrets.",
+      "id": "AITS-C04-L04-Q3",
+      "related_lesson": "AITS-C04-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "EX",
+        "QA",
+        "POE"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L04-Q3",
+        "course_id": "AITS-C04",
+        "title": "Customer passwords belong in the ordinary handover report.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA",
+          "POE"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "AITS-C04-S01",
+      "title": "Insufficient PoE budget",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Installation planner",
+      "problem_description": "Four fictional cameras need 15 W each; the usable switch budget is 50 W.",
+      "available_information": [
+        "Per-port compatibility is not yet checked."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Flag the 60 W total and verify a suitable approved design.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Flag the 60 W total and verify a suitable approved design."
+      ],
+      "inappropriate_decisions": [
+        "Approve because four ports are available."
+      ],
+      "consequences": "An undersized budget can produce unstable operation.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Approve because four ports are available.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Flag the 60 W total and verify a suitable approved design."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-S01",
+        "course_id": "AITS-C04",
+        "title": "Insufficient PoE budget",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C04-S02",
+      "title": "Poor entrance image",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Technician trainee",
+      "problem_description": "A camera looks clear on the bench but silhouettes visitors at the entrance.",
+      "available_information": [
+        "Afternoon backlight differs from bench conditions."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Review scene, lens and lighting against the agreed purpose.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Review scene, lens and lighting against the agreed purpose."
+      ],
+      "inappropriate_decisions": [
+        "Claim megapixels alone guarantee identification."
+      ],
+      "consequences": "Testing relevant conditions reveals whether the objective is met.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Claim megapixels alone guarantee identification.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Review scene, lens and lighting against the agreed purpose."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-S02",
+        "course_id": "AITS-C04",
+        "title": "Poor entrance image",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C04-S03",
+      "title": "Live view without playback",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Support trainee",
+      "problem_description": "Fictional C2 has live video but no playback for yesterday.",
+      "available_information": [
+        "Other camera recordings exist; no reset is authorized."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Check recording path and preserve evidence.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Check recording path and preserve evidence."
+      ],
+      "inappropriate_decisions": [
+        "Reset every camera."
+      ],
+      "consequences": "Targeted diagnosis avoids unnecessary disruption.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Reset every camera.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Check recording path and preserve evidence."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-S03",
+        "course_id": "AITS-C04",
+        "title": "Live view without playback",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    }
+  ]
+}

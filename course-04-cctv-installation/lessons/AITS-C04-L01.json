@@ -1,0 +1,53 @@
+{
+  "title": "Cameras recorders and viewing",
+  "objectives": [
+    "Trace a basic CCTV signal path."
+  ],
+  "explanation": [
+    "A CCTV system combines image capture, transport, recording or storage, and authorized viewing. IP cameras send digital video over a network to an NVR or video-management system; analog cameras commonly send video to a DVR for recording. Hybrid designs exist, so verify the actual equipment rather than relying on the name alone.",
+    "A visible live image does not prove recording, time accuracy, playback or export works. A complete handover test considers the customer’s agreed purpose and approved requirements. Camera resolution alone does not guarantee identification: lens, distance, angle, lighting and motion matter. All examples here are generic; AITS-specific acceptance criteria have not been supplied."
+  ],
+  "example": "Synthetic system: two IP cameras connect to a PoE switch; the recorder and authorized viewing workstation share the permitted network.",
+  "exercise": "Draw the path from a camera to stored footage and identify where recording could fail while live viewing still works.",
+  "model_response": "Camera → switch/network → recorder → storage. A disk or recording-schedule problem can affect storage while live video remains visible.",
+  "key_points": [
+    "Capture, transport, record and view are distinct",
+    "NVR and DVR describe common architectures",
+    "Test playback as well as live view"
+  ],
+  "references": [
+    "NET",
+    "EX"
+  ],
+  "thai_summary": "แยกการรับภาพ การส่งข้อมูล การบันทึก และการดูภาพ ตรวจสอบการเล่นย้อนหลังด้วย ไม่ใช่ดูภาพสดอย่างเดียว",
+  "id": "AITS-C04-L01",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "summary": "Capture, transport, record and view are distinct NVR and DVR describe common architectures Test playback as well as live view",
+  "visual_resources": [
+    "course-04-cctv-installation/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C04-L01",
+    "course_id": "AITS-C04",
+    "title": "Cameras recorders and viewing",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "NET",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C04-L01-Q1",
+    "AITS-C04-L01-Q2",
+    "AITS-C04-L01-Q3"
+  ]
+}

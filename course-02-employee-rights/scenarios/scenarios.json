@@ -1,0 +1,263 @@
+[
+  {
+    "id": "AITS-C02-S01",
+    "title": "Conflicting leave pages",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "New employee",
+    "problem_description": "Two pages show different maternity allowances.",
+    "available_information": [
+      "One is an old overview; one explains the effective 2025 amendment."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Use the newer applicable official text and request HR verification.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Use the newer applicable official text and request HR verification."
+    ],
+    "inappropriate_decisions": [
+      "Copy the old number into the handbook."
+    ],
+    "consequences": "Version checks prevent outdated rights guidance.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Copy the old number into the handbook.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Use the newer applicable official text and request HR verification."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "EX",
+      "LEAVE",
+      "MOL",
+      "QA"
+    ],
+    "metadata": {
+      "document_id": "AITS-C02-S01",
+      "course_id": "AITS-C02",
+      "title": "Conflicting leave pages",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  },
+  {
+    "id": "AITS-C02-S02",
+    "title": "Roster without a break",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "Team member",
+    "problem_description": "A sample work plan appears to omit a rest period.",
+    "available_information": [
+      "Actual task category and agreement are unknown."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Record the schedule and ask the responsible reviewer to check it.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Record the schedule and ask the responsible reviewer to check it."
+    ],
+    "inappropriate_decisions": [
+      "Assume all work can continue without rest."
+    ],
+    "consequences": "A factual review can identify the applicable protection.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Assume all work can continue without rest.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Record the schedule and ask the responsible reviewer to check it."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "EX",
+      "LEAVE",
+      "MOL",
+      "QA"
+    ],
+    "metadata": {
+      "document_id": "AITS-C02-S02",
+      "course_id": "AITS-C02",
+      "title": "Roster without a break",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  },
+  {
+    "id": "AITS-C02-S03",
+    "title": "Misaddressed file",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "Administrator trainee",
+    "problem_description": "A fictional employee file reaches the wrong recipient.",
+    "available_information": [
+      "The file may include personal details; no actual data is used here."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Stop forwarding and report through a verified private channel.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Stop forwarding and report through a verified private channel."
+    ],
+    "inappropriate_decisions": [
+      "Upload the full file to a public AI chat."
+    ],
+    "consequences": "Limiting further disclosure reduces additional exposure.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Upload the full file to a public AI chat.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Stop forwarding and report through a verified private channel."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "EX",
+      "LEAVE",
+      "MOL",
+      "QA"
+    ],
+    "metadata": {
+      "document_id": "AITS-C02-S03",
+      "course_id": "AITS-C02",
+      "title": "Misaddressed file",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  }
+]

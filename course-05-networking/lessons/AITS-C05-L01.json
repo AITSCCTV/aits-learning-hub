@@ -1,0 +1,53 @@
+{
+  "title": "LAN switches routers and Wi-Fi",
+  "objectives": [
+    "Explain the path from a device to an external service."
+  ],
+  "explanation": [
+    "A local area network connects nearby devices. A switch commonly connects wired devices within that network, a router forwards traffic between networks, and an access point gives wireless devices access to a network. One physical product may combine these functions. A Wi-Fi connection alone does not prove internet access.",
+    "Trace the path from the client through access, local switching, gateway and upstream connection to the service. A fault can affect one device, one wireless area, one VLAN or the whole site. Start by asking what works as well as what fails. Comparing affected and unaffected paths narrows the investigation without changing the network."
+  ],
+  "example": "A fictional laptop sees the office Wi-Fi name but cannot open websites. Another wired workstation works. Begin with the laptop/wireless path rather than declaring a site-wide ISP outage.",
+  "exercise": "Draw a laptop-to-internet path and mark which observations would distinguish a client fault from a shared fault.",
+  "model_response": "Laptop → access point → switch → router → provider → service. Compare another client, wired access and another service using authorized tests.",
+  "key_points": [
+    "Wi-Fi connection is not proof of internet",
+    "Separate device and shared scope",
+    "Compare working and failing paths"
+  ],
+  "references": [
+    "NET",
+    "EX"
+  ],
+  "thai_summary": "การเชื่อมต่อ Wi-Fi ไม่ยืนยันว่าใช้อินเทอร์เน็ตได้ เปรียบเทียบเส้นทางที่ใช้งานได้กับเส้นทางที่มีปัญหา",
+  "id": "AITS-C05-L01",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "summary": "Wi-Fi connection is not proof of internet Separate device and shared scope Compare working and failing paths",
+  "visual_resources": [
+    "course-05-networking/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C05-L01",
+    "course_id": "AITS-C05",
+    "title": "LAN switches routers and Wi-Fi",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "NET",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C05-L01-Q1",
+    "AITS-C05-L01-Q2",
+    "AITS-C05-L01-Q3"
+  ]
+}

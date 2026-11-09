@@ -1,0 +1,53 @@
+{
+  "title": "Discover and record requirements",
+  "objectives": [
+    "Turn a customer inquiry into an actionable record."
+  ],
+  "explanation": [
+    "Begin with the outcome the customer wants and the problem they experience. Use open questions, then confirm specifics: site type, affected area, existing equipment, constraints and desired timing. Read back your understanding in plain language. Do not collect credentials or unnecessary personal data to make the record look complete.",
+    "A useful request record distinguishes customer statements from confirmed observations. Include a reference, contact channel authorized for follow-up, scope, open questions and the next responsible action. The fields in this lesson are a generic practice template; actual AITS systems and mandatory fields require company confirmation."
+  ],
+  "example": "Fictional Cedar Office says “we need better cameras.” Ask what must be visible, under what lighting and for what purpose before proposing a specification.",
+  "exercise": "Create an inquiry record using only synthetic details.",
+  "model_response": "Request CO-101: improve entrance image under afternoon light. Existing model unknown. Survey and privacy review needed. Customer prefers follow-up through the agreed business channel.",
+  "key_points": [
+    "Ask about outcome before product",
+    "Read back the requirement",
+    "Separate statements from verified facts"
+  ],
+  "references": [
+    "EX",
+    "QA"
+  ],
+  "thai_summary": "สอบถามผลลัพธ์ที่ลูกค้าต้องการก่อนเสนอสินค้า แยกคำบอกเล่าจากข้อเท็จจริงที่ตรวจสอบแล้ว",
+  "id": "AITS-C06-L01",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "summary": "Ask about outcome before product Read back the requirement Separate statements from verified facts",
+  "visual_resources": [
+    "course-06-customer-admin/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C06-L01",
+    "course_id": "AITS-C06",
+    "title": "Discover and record requirements",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C06-L01-Q1",
+    "AITS-C06-L01-Q2",
+    "AITS-C06-L01-Q3"
+  ]
+}

@@ -1,0 +1,437 @@
+{
+  "metadata": {
+    "document_id": "AITS-C03-QUIZ",
+    "course_id": "AITS-C03",
+    "title": "Course practice assessment",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "ELEC",
+      "EX",
+      "HEIGHT",
+      "QA"
+    ]
+  },
+  "passing_threshold_percent": 80,
+  "threshold_status": "Proposed practice threshold; not company competency policy",
+  "questions": [
+    {
+      "question": "What is a hazard?",
+      "choices": [
+        "Any customer complaint",
+        "A source of possible harm",
+        "Only a completed injury"
+      ],
+      "correct_answer": "A source of possible harm",
+      "explanation": "A hazard can exist before an incident occurs.",
+      "id": "AITS-C03-L01-Q1",
+      "related_lesson": "AITS-C03-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L01-Q1",
+        "course_id": "AITS-C03",
+        "title": "What is a hazard?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is stronger than relying only on a warning?",
+      "choices": [
+        "Removing the trip hazard through a safe approved method",
+        "Ignoring it",
+        "Walking faster"
+      ],
+      "correct_answer": "Removing the trip hazard through a safe approved method",
+      "explanation": "Reducing exposure is more reliable than a warning alone.",
+      "id": "AITS-C03-L01-Q2",
+      "related_lesson": "AITS-C03-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L01-Q2",
+        "course_id": "AITS-C03",
+        "title": "Which is stronger than relying only on a warning?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should an untrained beginner do with an unsafe task?",
+      "choices": [
+        "Try it quickly",
+        "Ask the customer to hold the ladder",
+        "Pause and seek qualified supervision"
+      ],
+      "correct_answer": "Pause and seek qualified supervision",
+      "explanation": "Awareness is not task competence.",
+      "id": "AITS-C03-L01-Q3",
+      "related_lesson": "AITS-C03-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L01-Q3",
+        "course_id": "AITS-C03",
+        "title": "What should an untrained beginner do with an unsafe task?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does unplugging one cable prove all energy is isolated?",
+      "choices": [
+        "No",
+        "Always",
+        "Only for a recorder"
+      ],
+      "correct_answer": "No",
+      "explanation": "Backup or other supplies may remain; qualified verification is required.",
+      "id": "AITS-C03-L02-Q1",
+      "related_lesson": "AITS-C03-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "ELEC",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L02-Q1",
+        "course_id": "AITS-C03",
+        "title": "Does unplugging one cable prove all energy is isolated?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "ELEC",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What is appropriate when a power supply smells burnt?",
+      "choices": [
+        "Open it while powered",
+        "Spray cleaner inside",
+        "Keep clear and request qualified response"
+      ],
+      "correct_answer": "Keep clear and request qualified response",
+      "explanation": "Avoid exposure to a possible electrical fault.",
+      "id": "AITS-C03-L02-Q2",
+      "related_lesson": "AITS-C03-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "ELEC",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L02-Q2",
+        "course_id": "AITS-C03",
+        "title": "What is appropriate when a power supply smells burnt?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "ELEC",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What does this awareness lesson provide?",
+      "choices": [
+        "Site work authorization",
+        "Hazard awareness",
+        "An electrical-work license"
+      ],
+      "correct_answer": "Hazard awareness",
+      "explanation": "Required task training and authorization remain separate.",
+      "id": "AITS-C03-L02-Q3",
+      "related_lesson": "AITS-C03-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "ELEC",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L02-Q3",
+        "course_id": "AITS-C03",
+        "title": "What does this awareness lesson provide?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "ELEC",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does wearing a harness make every anchor suitable?",
+      "choices": [
+        "Yes",
+        "Only indoors",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Anchors and the complete system need competent assessment.",
+      "id": "AITS-C03-L03-Q1",
+      "related_lesson": "AITS-C03-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L03-Q1",
+        "course_id": "AITS-C03",
+        "title": "Does wearing a harness make every anchor suitable?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is an appropriate training exercise here?",
+      "choices": [
+        "Testing an unknown ladder",
+        "A paper review of missing controls",
+        "Climbing a chair"
+      ],
+      "correct_answer": "A paper review of missing controls",
+      "explanation": "This is awareness training, not supervised practical height training.",
+      "id": "AITS-C03-L03-Q2",
+      "related_lesson": "AITS-C03-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L03-Q2",
+        "course_id": "AITS-C03",
+        "title": "Which is an appropriate training exercise here?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should be considered first?",
+      "choices": [
+        "Whether the task can be done without height exposure",
+        "The fastest climb",
+        "The smallest harness"
+      ],
+      "correct_answer": "Whether the task can be done without height exposure",
+      "explanation": "Avoiding the hazard is preferable when practicable.",
+      "id": "AITS-C03-L03-Q3",
+      "related_lesson": "AITS-C03-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L03-Q3",
+        "course_id": "AITS-C03",
+        "title": "What should be considered first?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Should a near miss be ignored because no one was hurt?",
+      "choices": [
+        "Only if it happened outdoors",
+        "No",
+        "Yes"
+      ],
+      "correct_answer": "No",
+      "explanation": "It can reveal a control failure before an injury.",
+      "id": "AITS-C03-L04-Q1",
+      "related_lesson": "AITS-C03-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L04-Q1",
+        "course_id": "AITS-C03",
+        "title": "Should a near miss be ignored because no one was hurt?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which photograph is appropriate?",
+      "choices": [
+        "Authorized evidence with unnecessary personal details excluded",
+        "Any customer CCTV image",
+        "A selfie in a restricted room"
+      ],
+      "correct_answer": "Authorized evidence with unnecessary personal details excluded",
+      "explanation": "Evidence collection must respect access and privacy boundaries.",
+      "id": "AITS-C03-L04-Q2",
+      "related_lesson": "AITS-C03-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L04-Q2",
+        "course_id": "AITS-C03",
+        "title": "Which photograph is appropriate?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "A completion report should disclose unresolved defects.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "Truthful limitations support safe follow-up.",
+      "id": "AITS-C03-L04-Q3",
+      "related_lesson": "AITS-C03-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "HEIGHT",
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L04-Q3",
+        "course_id": "AITS-C03",
+        "title": "A completion report should disclose unresolved defects.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "QA",
+          "EX"
+        ]
+      }
+    }
+  ]
+}

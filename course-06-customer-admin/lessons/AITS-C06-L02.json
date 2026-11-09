@@ -1,0 +1,53 @@
+{
+  "title": "Complaints and professional communication",
+  "objectives": [
+    "Acknowledge a complaint and agree a next step without unsupported promises."
+  ],
+  "explanation": [
+    "Listen without interrupting, summarize the issue and acknowledge its impact. Ask focused questions to establish what happened and what outcome the customer seeks. Avoid assigning blame before evidence is available. A respectful acknowledgement can be accurate without admitting an unverified cause or promising compensation.",
+    "Record the complaint, impact, evidence available, agreed contact method and next update. Escalate to the authorized responsible function when the request exceeds your role. Do not invent a refund rule or service deadline. If language becomes abusive or safety is threatened, seek the applicable supervisor/site response instead of escalating the confrontation."
+  ],
+  "example": "Cedar Office reports that a missed appointment interrupted work. “I understand this disrupted your schedule. I will record the details and ask the responsible team to confirm the next step.”",
+  "exercise": "Draft a complaint response containing acknowledgement, clarification and a realistic next action.",
+  "model_response": "I understand the disruption. Please confirm the appointment reference and what occurred. I will ask the responsible team to review it and agree the next update with you.",
+  "key_points": [
+    "Acknowledge impact",
+    "Clarify facts without blame",
+    "Agree the next update"
+  ],
+  "references": [
+    "EX",
+    "QA"
+  ],
+  "thai_summary": "รับฟังและยอมรับผลกระทบ ตรวจสอบข้อเท็จจริง และส่งต่อเมื่อเกินอำนาจ อย่าสัญญาชดเชยหรือกำหนดเวลาโดยไม่มีอำนาจ",
+  "id": "AITS-C06-L02",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C06-L01"
+  ],
+  "summary": "Acknowledge impact Clarify facts without blame Agree the next update",
+  "visual_resources": [
+    "course-06-customer-admin/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C06-L02",
+    "course_id": "AITS-C06",
+    "title": "Complaints and professional communication",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C06-L02-Q1",
+    "AITS-C06-L02-Q2",
+    "AITS-C06-L02-Q3"
+  ]
+}

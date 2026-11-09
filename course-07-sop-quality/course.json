@@ -1,0 +1,934 @@
+{
+  "slug": "sop-quality",
+  "title": "SOP Awareness and Quality Assurance",
+  "title_th": "ความเข้าใจ SOP และการประกันคุณภาพ",
+  "roles": [
+    "All employees",
+    "Reviewers"
+  ],
+  "lessons": [
+    {
+      "title": "Read an SOP before using it",
+      "objectives": [
+        "Check scope authority and version before following instructions."
+      ],
+      "explanation": [
+        "A standard operating procedure describes a repeatable task, its scope, responsible roles, prerequisites, steps and required evidence. A useful SOP also identifies exceptions, stop conditions and related documents. Standardization reduces avoidable variation only when the procedure is appropriate and current.",
+        "Before use, check document ID, version, approval, effective date and applicability to the actual equipment and site. An attractive draft is not an approved procedure. If two versions conflict, pause the affected task and ask the authorized owner to identify the current version. The generic templates in this course are Draft and must not be used as official AITS instructions."
+      ],
+      "example": "A printed checklist v1 and a digital v2 disagree about a test. The exercise asks you to resolve document authority, not choose whichever is easier.",
+      "exercise": "Mark the fields you would inspect on an SOP cover before starting work.",
+      "model_response": "ID, version, approval, effective date, task/equipment scope, prerequisites and responsible owner.",
+      "key_points": [
+        "Check scope before steps",
+        "Check version and approval",
+        "Resolve conflicts with the owner"
+      ],
+      "references": [
+        "QA",
+        "EX"
+      ],
+      "thai_summary": "ตรวจสอบขอบเขต เวอร์ชัน และการอนุมัติก่อนใช้ SOP แบบร่างในหลักสูตรยังไม่ใช่ขั้นตอนทางการของบริษัท",
+      "id": "AITS-C07-L01",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01"
+      ],
+      "summary": "Check scope before steps Check version and approval Resolve conflicts with the owner",
+      "visual_resources": [
+        "course-07-sop-quality/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L01",
+        "course_id": "AITS-C07",
+        "title": "Read an SOP before using it",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C07-L01-Q1",
+        "AITS-C07-L01-Q2",
+        "AITS-C07-L01-Q3"
+      ],
+      "html": "<h1>Read an SOP before using it</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C07-L01 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Check scope authority and version before following instructions.</p><h2>Explanation</h2><p>A standard operating procedure describes a repeatable task, its scope, responsible roles, prerequisites, steps and required evidence. A useful SOP also identifies exceptions, stop conditions and related documents. Standardization reduces avoidable variation only when the procedure is appropriate and current.</p><p>Before use, check document ID, version, approval, effective date and applicability to the actual equipment and site. An attractive draft is not an approved procedure. If two versions conflict, pause the affected task and ask the authorized owner to identify the current version. The generic templates in this course are Draft and must not be used as official AITS instructions.</p><h2>Synthetic example</h2><p>A printed checklist v1 and a digital v2 disagree about a test. The exercise asks you to resolve document authority, not choose whichever is easier.</p><h2>Practical exercise</h2><p>Mark the fields you would inspect on an SOP cover before starting work.</p><h2>Model response</h2><p>ID, version, approval, effective date, task/equipment scope, prerequisites and responsible owner.</p><h2>Summary</h2><p>Check scope before steps Check version and approval Resolve conflicts with the owner</p><h2>Thai summary — translation pending review</h2><p>ตรวจสอบขอบเขต เวอร์ชัน และการอนุมัติก่อนใช้ SOP แบบร่างในหลักสูตรยังไม่ใช่ขั้นตอนทางการของบริษัท</p><h2>References</h2><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Evidence and deviations",
+      "objectives": [
+        "Record actual results and disclose departures from the plan."
+      ],
+      "explanation": [
+        "Evidence connects a requirement to an observed result. Record what was checked, the method, time, relevant identifier and result. “Done” alone is weak evidence when the next reviewer cannot tell which requirement was tested. Do not fabricate a photo, measurement or signature.",
+        "A deviation is a departure from the applicable requirement or planned process. Record the difference and its impact; seek authorized disposition instead of silently changing the procedure. Depending on the risk, the task may need to pause. Preserve the original evidence and record any correction with traceable history. A failed check can be useful information when it is reported honestly."
+      ],
+      "example": "The required playback test was not performed because access was unavailable. Record “not tested, access pending,” rather than a pass.",
+      "exercise": "Rewrite “all OK” into a test record with an unresolved item.",
+      "model_response": "Device C2 live view verified at 14:00 under the agreed scene. Playback not tested; authorized access pending. Review requested before acceptance.",
+      "key_points": [
+        "Record method and observed result",
+        "Not tested is not passed",
+        "Keep deviations visible"
+      ],
+      "references": [
+        "QA",
+        "EX"
+      ],
+      "thai_summary": "บันทึกสิ่งที่ตรวจจริง วิธีตรวจ เวลา และผล งานที่ยังไม่ทดสอบต้องไม่บันทึกว่าผ่าน",
+      "id": "AITS-C07-L02",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C07-L01"
+      ],
+      "summary": "Record method and observed result Not tested is not passed Keep deviations visible",
+      "visual_resources": [
+        "course-07-sop-quality/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L02",
+        "course_id": "AITS-C07",
+        "title": "Evidence and deviations",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C07-L02-Q1",
+        "AITS-C07-L02-Q2",
+        "AITS-C07-L02-Q3"
+      ],
+      "html": "<h1>Evidence and deviations</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C07-L02 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Record actual results and disclose departures from the plan.</p><h2>Explanation</h2><p>Evidence connects a requirement to an observed result. Record what was checked, the method, time, relevant identifier and result. “Done” alone is weak evidence when the next reviewer cannot tell which requirement was tested. Do not fabricate a photo, measurement or signature.</p><p>A deviation is a departure from the applicable requirement or planned process. Record the difference and its impact; seek authorized disposition instead of silently changing the procedure. Depending on the risk, the task may need to pause. Preserve the original evidence and record any correction with traceable history. A failed check can be useful information when it is reported honestly.</p><h2>Synthetic example</h2><p>The required playback test was not performed because access was unavailable. Record “not tested, access pending,” rather than a pass.</p><h2>Practical exercise</h2><p>Rewrite “all OK” into a test record with an unresolved item.</p><h2>Model response</h2><p>Device C2 live view verified at 14:00 under the agreed scene. Playback not tested; authorized access pending. Review requested before acceptance.</p><h2>Summary</h2><p>Record method and observed result Not tested is not passed Keep deviations visible</p><h2>Thai summary — translation pending review</h2><p>บันทึกสิ่งที่ตรวจจริง วิธีตรวจ เวลา และผล งานที่ยังไม่ทดสอบต้องไม่บันทึกว่าผ่าน</p><h2>References</h2><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Quality assurance and completion review",
+      "objectives": [
+        "Distinguish process prevention from checking a finished result."
+      ],
+      "explanation": [
+        "Quality assurance builds reliable methods, training and review into the work. Quality control checks outputs against defined requirements. Both are useful: a final inspection can detect a defect, while a better preparation process may prevent it. The ISO overview supports this general distinction; this course makes no claim that AITS holds a particular certification.",
+        "For a completion review, compare the approved scope with evidence and open issues. Confirm that required tests have results, exceptions have an authorized disposition and the handover is understandable. Record recurring problems for improvement without changing a controlled procedure on your own. A customer signature alone does not erase an unresolved safety or technical issue."
+      ],
+      "example": "Repeated wrong device quantities suggest a preparation and reconciliation problem, even if a final count catches each error.",
+      "exercise": "Propose one preventive process check and one final output check for an installation kit.",
+      "model_response": "Preventive: reconcile approved scope and picking list before dispatch. Output: verify actual kit quantities and condition against the list.",
+      "key_points": [
+        "QA improves the process",
+        "QC checks the output",
+        "Close work against evidence and scope"
+      ],
+      "references": [
+        "QA",
+        "EX"
+      ],
+      "thai_summary": "QA ช่วยป้องกันปัญหาในกระบวนการ ส่วน QC ตรวจผลลัพธ์ ต้องปิดงานตามหลักฐานและขอบเขตที่ตกลง",
+      "id": "AITS-C07-L03",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C07-L02"
+      ],
+      "summary": "QA improves the process QC checks the output Close work against evidence and scope",
+      "visual_resources": [
+        "course-07-sop-quality/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L03",
+        "course_id": "AITS-C07",
+        "title": "Quality assurance and completion review",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C07-L03-Q1",
+        "AITS-C07-L03-Q2",
+        "AITS-C07-L03-Q3"
+      ],
+      "html": "<h1>Quality assurance and completion review</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C07-L03 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Distinguish process prevention from checking a finished result.</p><h2>Explanation</h2><p>Quality assurance builds reliable methods, training and review into the work. Quality control checks outputs against defined requirements. Both are useful: a final inspection can detect a defect, while a better preparation process may prevent it. The ISO overview supports this general distinction; this course makes no claim that AITS holds a particular certification.</p><p>For a completion review, compare the approved scope with evidence and open issues. Confirm that required tests have results, exceptions have an authorized disposition and the handover is understandable. Record recurring problems for improvement without changing a controlled procedure on your own. A customer signature alone does not erase an unresolved safety or technical issue.</p><h2>Synthetic example</h2><p>Repeated wrong device quantities suggest a preparation and reconciliation problem, even if a final count catches each error.</p><h2>Practical exercise</h2><p>Propose one preventive process check and one final output check for an installation kit.</p><h2>Model response</h2><p>Preventive: reconcile approved scope and picking list before dispatch. Output: verify actual kit quantities and condition against the list.</p><h2>Summary</h2><p>QA improves the process QC checks the output Close work against evidence and scope</p><h2>Thai summary — translation pending review</h2><p>QA ช่วยป้องกันปัญหาในกระบวนการ ส่วน QC ตรวจผลลัพธ์ ต้องปิดงานตามหลักฐานและขอบเขตที่ตกลง</p><h2>References</h2><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "AI checks and human authority",
+      "objectives": [
+        "Use AI feedback as practice support with source and approval controls."
+      ],
+      "explanation": [
+        "An AI can help compare a written report with a checklist, ask missing questions and explain a training example. It may still misunderstand images, omit context or produce an unsupported answer. It cannot verify hidden physical conditions from a photograph, grant approval or turn a draft SOP into company policy.",
+        "Before accepting AI feedback, inspect the cited source, version, approval and applicability. Keep company-authoritative retrieval restricted to approved company records. Draft and hypothetical items may support clearly labeled practice, but not a policy answer. Do not submit secrets or unnecessary personal data. An AI practice score is formative feedback; official competency assessment requires the company’s approved human-led process."
+      ],
+      "example": "An AI says a camera installation passes from one photograph. Ask which requirements and evidence were checked; unresolved physical tests remain unresolved.",
+      "exercise": "Write an AI response to “What is AITS’s travel allowance?” when no approved policy is available.",
+      "model_response": "I do not have verified AITS travel-allowance terms. Please ask HR or the responsible company department for the current approved policy.",
+      "key_points": [
+        "AI feedback needs source checks",
+        "Draft knowledge cannot establish policy",
+        "Practice scores are not certification"
+      ],
+      "references": [
+        "APP",
+        "EX"
+      ],
+      "thai_summary": "คำแนะนำจาก AI ต้องตรวจสอบแหล่งอ้างอิง AI ไม่สามารถอนุมัติ SOP หรือรับรองความสามารถพนักงานได้",
+      "id": "AITS-C07-L04",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C07-L03"
+      ],
+      "summary": "AI feedback needs source checks Draft knowledge cannot establish policy Practice scores are not certification",
+      "visual_resources": [
+        "course-07-sop-quality/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L04",
+        "course_id": "AITS-C07",
+        "title": "AI checks and human authority",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C07-L04-Q1",
+        "AITS-C07-L04-Q2",
+        "AITS-C07-L04-Q3"
+      ],
+      "html": "<h1>AI checks and human authority</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C07-L04 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Use AI feedback as practice support with source and approval controls.</p><h2>Explanation</h2><p>An AI can help compare a written report with a checklist, ask missing questions and explain a training example. It may still misunderstand images, omit context or produce an unsupported answer. It cannot verify hidden physical conditions from a photograph, grant approval or turn a draft SOP into company policy.</p><p>Before accepting AI feedback, inspect the cited source, version, approval and applicability. Keep company-authoritative retrieval restricted to approved company records. Draft and hypothetical items may support clearly labeled practice, but not a policy answer. Do not submit secrets or unnecessary personal data. An AI practice score is formative feedback; official competency assessment requires the company’s approved human-led process.</p><h2>Synthetic example</h2><p>An AI says a camera installation passes from one photograph. Ask which requirements and evidence were checked; unresolved physical tests remain unresolved.</p><h2>Practical exercise</h2><p>Write an AI response to “What is AITS’s travel allowance?” when no approved policy is available.</p><h2>Model response</h2><p>I do not have verified AITS travel-allowance terms. Please ask HR or the responsible company department for the current approved policy.</p><h2>Summary</h2><p>AI feedback needs source checks Draft knowledge cannot establish policy Practice scores are not certification</p><h2>Thai summary — translation pending review</h2><p>คำแนะนำจาก AI ต้องตรวจสอบแหล่งอ้างอิง AI ไม่สามารถอนุมัติ SOP หรือรับรองความสามารถพนักงานได้</p><h2>References</h2><p>APP: Existing AITS LMS content management — docs/CONTENT_MANAGEMENT.md</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    }
+  ],
+  "flow": [
+    "Check approved version",
+    "Confirm prerequisites",
+    "Follow applicable steps",
+    "Record real results",
+    "Review deviations"
+  ],
+  "id": "AITS-C07",
+  "folder": "course-07-sop-quality",
+  "metadata": {
+    "document_id": "AITS-C07",
+    "course_id": "AITS-C07",
+    "title": "SOP Awareness and Quality Assurance",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "APP",
+      "EX",
+      "QA"
+    ]
+  },
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "estimated_minutes": 100,
+  "language": "en",
+  "translation_status": "Thai summaries only; AI translation pending native-speaker review",
+  "objectives": [
+    "Check scope authority and version before following instructions.",
+    "Record actual results and disclose departures from the plan.",
+    "Distinguish process prevention from checking a finished result.",
+    "Use AI feedback as practice support with source and approval controls."
+  ],
+  "assessments": [
+    {
+      "question": "Which document should govern an actual task?",
+      "choices": [
+        "The current approved applicable procedure",
+        "The newest unapproved draft",
+        "The shortest checklist"
+      ],
+      "correct_answer": "The current approved applicable procedure",
+      "explanation": "Approval and applicability matter as well as age.",
+      "id": "AITS-C07-L01-Q1",
+      "related_lesson": "AITS-C07-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L01-Q1",
+        "course_id": "AITS-C07",
+        "title": "Which document should govern an actual task?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should happen when two SOP versions conflict?",
+      "choices": [
+        "Choose randomly",
+        "Combine both silently",
+        "Seek owner clarification before the affected task"
+      ],
+      "correct_answer": "Seek owner clarification before the affected task",
+      "explanation": "A controlled resolution avoids incompatible instructions.",
+      "id": "AITS-C07-L01-Q2",
+      "related_lesson": "AITS-C07-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L01-Q2",
+        "course_id": "AITS-C07",
+        "title": "What should happen when two SOP versions conflict?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Are these generic templates official AITS SOPs?",
+      "choices": [
+        "Only after downloading",
+        "No",
+        "Yes"
+      ],
+      "correct_answer": "No",
+      "explanation": "They require company review and approval.",
+      "id": "AITS-C07-L01-Q3",
+      "related_lesson": "AITS-C07-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L01-Q3",
+        "course_id": "AITS-C07",
+        "title": "Are these generic templates official AITS SOPs?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should an unperformed test be recorded as?",
+      "choices": [
+        "Passed",
+        "Blank but assumed passed",
+        "Not tested with a reason"
+      ],
+      "correct_answer": "Not tested with a reason",
+      "explanation": "The record must reflect what actually occurred.",
+      "id": "AITS-C07-L02-Q1",
+      "related_lesson": "AITS-C07-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L02-Q1",
+        "course_id": "AITS-C07",
+        "title": "What should an unperformed test be recorded as?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is useful evidence?",
+      "choices": [
+        "A stock photo",
+        "Identified test, method, time and result",
+        "Only “done”"
+      ],
+      "correct_answer": "Identified test, method, time and result",
+      "explanation": "Traceability lets another person assess the result.",
+      "id": "AITS-C07-L02-Q2",
+      "related_lesson": "AITS-C07-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L02-Q2",
+        "course_id": "AITS-C07",
+        "title": "Which is useful evidence?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Can a trainee silently waive an SOP step?",
+      "choices": [
+        "No",
+        "Yes if busy",
+        "Yes if AI agrees"
+      ],
+      "correct_answer": "No",
+      "explanation": "Exceptions require the applicable authorized disposition.",
+      "id": "AITS-C07-L02-Q3",
+      "related_lesson": "AITS-C07-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L02-Q3",
+        "course_id": "AITS-C07",
+        "title": "Can a trainee silently waive an SOP step?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is a preventive process check?",
+      "choices": [
+        "Wait for a complaint",
+        "Reconcile the picking list before dispatch",
+        "Hide a missing item"
+      ],
+      "correct_answer": "Reconcile the picking list before dispatch",
+      "explanation": "Preparation checks can prevent downstream defects.",
+      "id": "AITS-C07-L03-Q1",
+      "related_lesson": "AITS-C07-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L03-Q1",
+        "course_id": "AITS-C07",
+        "title": "Which is a preventive process check?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does a signature erase an unresolved technical defect?",
+      "choices": [
+        "No",
+        "Yes",
+        "Only if scanned"
+      ],
+      "correct_answer": "No",
+      "explanation": "A signature does not change the observed condition.",
+      "id": "AITS-C07-L03-Q2",
+      "related_lesson": "AITS-C07-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L03-Q2",
+        "course_id": "AITS-C07",
+        "title": "Does a signature erase an unresolved technical defect?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does this course assert AITS ISO certification?",
+      "choices": [
+        "Yes",
+        "Only for trainees",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Only general quality principles are taught.",
+      "id": "AITS-C07-L03-Q3",
+      "related_lesson": "AITS-C07-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L03-Q3",
+        "course_id": "AITS-C07",
+        "title": "Does this course assert AITS ISO certification?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Can an AI approve a draft company SOP?",
+      "choices": [
+        "No",
+        "Yes if confident",
+        "Yes after enough prompts"
+      ],
+      "correct_answer": "No",
+      "explanation": "Approval requires authorized company action.",
+      "id": "AITS-C07-L04-Q1",
+      "related_lesson": "AITS-C07-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L04-Q1",
+        "course_id": "AITS-C07",
+        "title": "Can an AI approve a draft company SOP?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should an AI do with missing internal policy?",
+      "choices": [
+        "Invent a likely rule",
+        "Use a competitor policy",
+        "State the gap and refer to the responsible department"
+      ],
+      "correct_answer": "State the gap and refer to the responsible department",
+      "explanation": "Unverified policy must not be presented as fact.",
+      "id": "AITS-C07-L04-Q2",
+      "related_lesson": "AITS-C07-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L04-Q2",
+        "course_id": "AITS-C07",
+        "title": "What should an AI do with missing internal policy?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "An AI practice score is official employee competency certification.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "Competency and authorization require separate approved processes.",
+      "id": "AITS-C07-L04-Q3",
+      "related_lesson": "AITS-C07-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L04-Q3",
+        "course_id": "AITS-C07",
+        "title": "An AI practice score is official employee competency certification.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "AITS-C07-S01",
+      "title": "Conflicting versions",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Technician trainee",
+      "problem_description": "A printed v1 and digital v2 disagree.",
+      "available_information": [
+        "The approval status of v2 is unclear."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Ask the document owner to confirm the current applicable version.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Ask the document owner to confirm the current applicable version."
+      ],
+      "inappropriate_decisions": [
+        "Assume v2 is approved because its number is higher."
+      ],
+      "consequences": "Authority checks prevent use of an uncontrolled revision.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Assume v2 is approved because its number is higher.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Ask the document owner to confirm the current applicable version."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-S01",
+        "course_id": "AITS-C07",
+        "title": "Conflicting versions",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C07-S02",
+      "title": "Missing test evidence",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Reviewer trainee",
+      "problem_description": "A completion report says all passed but playback was never tested.",
+      "available_information": [
+        "The operator confirms access was unavailable."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Correct the record to not tested and request disposition.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Correct the record to not tested and request disposition."
+      ],
+      "inappropriate_decisions": [
+        "Keep the pass to avoid delay."
+      ],
+      "consequences": "Honest evidence allows a valid completion decision.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Keep the pass to avoid delay.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Correct the record to not tested and request disposition."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-S02",
+        "course_id": "AITS-C07",
+        "title": "Missing test evidence",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C07-S03",
+      "title": "AI says pass",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Supervisor trainee",
+      "problem_description": "An AI approves a site from one photo.",
+      "available_information": [
+        "No electrical, playback or scope evidence is supplied."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Treat it as limited feedback and require applicable evidence.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Treat it as limited feedback and require applicable evidence."
+      ],
+      "inappropriate_decisions": [
+        "Issue competency certification from the score."
+      ],
+      "consequences": "Human review prevents unsupported acceptance.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Issue competency certification from the score.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Treat it as limited feedback and require applicable evidence."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-S03",
+        "course_id": "AITS-C07",
+        "title": "AI says pass",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    }
+  ]
+}

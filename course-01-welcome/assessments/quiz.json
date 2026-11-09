@@ -1,0 +1,431 @@
+{
+  "metadata": {
+    "document_id": "AITS-C01-QUIZ",
+    "course_id": "AITS-C01",
+    "title": "Course practice assessment",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "AITS",
+      "APP",
+      "EX",
+      "HOME"
+    ]
+  },
+  "passing_threshold_percent": 80,
+  "threshold_status": "Proposed practice threshold; not company competency policy",
+  "questions": [
+    {
+      "question": "Which year matches the published founding year 2548 BE?",
+      "choices": [
+        "2005 CE",
+        "2015 CE",
+        "1995 CE"
+      ],
+      "correct_answer": "2005 CE",
+      "explanation": "For this Thai calendar date, subtract 543.",
+      "id": "AITS-C01-L01-Q1",
+      "related_lesson": "AITS-C01-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "AITS",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L01-Q1",
+        "course_id": "AITS-C01",
+        "title": "Which year matches the published founding year 2548 BE?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "AITS",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What can the public website establish?",
+      "choices": [
+        "Your leave balance",
+        "Your direct manager",
+        "Published company history"
+      ],
+      "correct_answer": "Published company history",
+      "explanation": "Marketing information supports public facts, not personal employment details.",
+      "id": "AITS-C01-L01-Q2",
+      "related_lesson": "AITS-C01-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "AITS",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L01-Q2",
+        "course_id": "AITS-C01",
+        "title": "What can the public website establish?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "AITS",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which statement needs internal confirmation?",
+      "choices": [
+        "The About us page exists",
+        "My reporting manager is the service director",
+        "AITS publishes a service list"
+      ],
+      "correct_answer": "My reporting manager is the service director",
+      "explanation": "A reporting relationship requires a current approved organizational record.",
+      "id": "AITS-C01-L01-Q3",
+      "related_lesson": "AITS-C01-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "AITS",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L01-Q3",
+        "course_id": "AITS-C01",
+        "title": "Which statement needs internal confirmation?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "AITS",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which category directly addresses controlled door entry?",
+      "choices": [
+        "Telephone billing",
+        "Solar generation",
+        "Access control"
+      ],
+      "correct_answer": "Access control",
+      "explanation": "Entry permissions are an access-control requirement.",
+      "id": "AITS-C01-L02-Q1",
+      "related_lesson": "AITS-C01-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HOME",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L02-Q1",
+        "course_id": "AITS-C01",
+        "title": "Which category directly addresses controlled door entry?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HOME",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should precede a firm equipment recommendation?",
+      "choices": [
+        "A password request",
+        "Clarification of requirements",
+        "A guessed installation date"
+      ],
+      "correct_answer": "Clarification of requirements",
+      "explanation": "Requirements inform a suitable technical review.",
+      "id": "AITS-C01-L02-Q2",
+      "related_lesson": "AITS-C01-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HOME",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L02-Q2",
+        "course_id": "AITS-C01",
+        "title": "What should precede a firm equipment recommendation?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HOME",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which response is appropriate to an unfamiliar camera model?",
+      "choices": [
+        "Record the model and request compatibility review",
+        "Promise it works with every recorder",
+        "Reject every unfamiliar model"
+      ],
+      "correct_answer": "Record the model and request compatibility review",
+      "explanation": "Compatibility needs evidence from the relevant documentation.",
+      "id": "AITS-C01-L02-Q3",
+      "related_lesson": "AITS-C01-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "HOME",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L02-Q3",
+        "course_id": "AITS-C01",
+        "title": "Which response is appropriate to an unfamiliar camera model?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HOME",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What does the training collaboration map represent?",
+      "choices": [
+        "A list of current employees",
+        "A generic functional example",
+        "An approved AITS reporting chart"
+      ],
+      "correct_answer": "A generic functional example",
+      "explanation": "No approved current organizational structure was found.",
+      "id": "AITS-C01-L03-Q1",
+      "related_lesson": "AITS-C01-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "APP"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L03-Q1",
+        "course_id": "AITS-C01",
+        "title": "What does the training collaboration map represent?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "APP"
+        ]
+      }
+    },
+    {
+      "question": "Which handover is most useful?",
+      "choices": [
+        "Symptoms, scope, evidence and next action",
+        "Please fix urgently",
+        "The technician caused it"
+      ],
+      "correct_answer": "Symptoms, scope, evidence and next action",
+      "explanation": "Observable facts support the next investigation.",
+      "id": "AITS-C01-L03-Q2",
+      "related_lesson": "AITS-C01-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "APP"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L03-Q2",
+        "course_id": "AITS-C01",
+        "title": "Which handover is most useful?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "APP"
+        ]
+      }
+    },
+    {
+      "question": "Who should confirm your actual escalation route?",
+      "choices": [
+        "A fictional training customer",
+        "An AI guess",
+        "An authorized company supervisor or responsible department"
+      ],
+      "correct_answer": "An authorized company supervisor or responsible department",
+      "explanation": "Internal authority must come from the company.",
+      "id": "AITS-C01-L03-Q3",
+      "related_lesson": "AITS-C01-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "APP"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L03-Q3",
+        "course_id": "AITS-C01",
+        "title": "Who should confirm your actual escalation route?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "APP"
+        ]
+      }
+    },
+    {
+      "question": "Does completing a safety-awareness quiz authorize live electrical work?",
+      "choices": [
+        "No",
+        "Yes, automatically",
+        "Only if the score is 100%"
+      ],
+      "correct_answer": "No",
+      "explanation": "Task authorization and practical competence require separate controls.",
+      "id": "AITS-C01-L04-Q1",
+      "related_lesson": "AITS-C01-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L04-Q1",
+        "course_id": "AITS-C01",
+        "title": "Does completing a safety-awareness quiz authorize live electrical work?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should you check before relying on a library document?",
+      "choices": [
+        "Only its attractive design",
+        "Only its file size",
+        "Version, approval and applicability"
+      ],
+      "correct_answer": "Version, approval and applicability",
+      "explanation": "A document can be clear but obsolete or unapproved.",
+      "id": "AITS-C01-L04-Q2",
+      "related_lesson": "AITS-C01-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L04-Q2",
+        "course_id": "AITS-C01",
+        "title": "What should you check before relying on a library document?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "An unapproved sample lesson can establish official AITS policy.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "Unknown internal policy must remain unknown.",
+      "id": "AITS-C01-L04-Q3",
+      "related_lesson": "AITS-C01-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-L04-Q3",
+        "course_id": "AITS-C01",
+        "title": "An unapproved sample lesson can establish official AITS policy.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    }
+  ]
+}
