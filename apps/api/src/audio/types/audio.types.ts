@@ -1,0 +1,24 @@
+import type { StreamInitPayload, VoiceAction } from "@repo/shared";
+import type { UUIDType } from "src/common";
+
+export interface AudioProcessor<T = unknown, R = unknown> {
+  readonly name: string;
+  run: (data: T) => Promise<R>;
+}
+
+export type StopAudioMessage = {
+  clientId: string;
+  tenantId?: string;
+};
+
+export type StartAudioBody = {
+  voiceAction: VoiceAction;
+  lessonId?: UUIDType;
+  practiceSessionId?: UUIDType;
+  threadId?: UUIDType;
+  meta: StreamInitPayload;
+};
+
+export type SendTTSTriggerBody = {
+  content: string;
+};

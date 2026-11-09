@@ -1,0 +1,200 @@
+services:
+  db-preview-pr-${PR_ID}:
+    image: pgvector/pgvector:pg16
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD}"
+      POSTGRES_DB: guidebook
+    volumes:
+      - db-preview-pr-${PR_ID}-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+
+  redis-preview-pr-${PR_ID}:
+    image: redis:8.0-M02-alpine3.20
+    restart: always
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 3s
+      timeout: 3s
+      retries: 10
+    volumes:
+      - redis-preview-pr-${PR_ID}-data:/data
+
+  mailhog-preview-pr-${PR_ID}:
+    image: mailhog/mailhog
+    restart: always
+    x-ports:
+      - ${PREVIEW_MAILHOG_DOMAIN}:8025/https
+
+  rustfs-preview-pr-${PR_ID}:
+    image: rustfs/rustfs:latest
+    container_name: rustfs-preview-pr-${PR_ID}
+    restart: always
+    x-ports:
+      - ${PREVIEW_RUSTFS_DOMAIN}:9000/https
+    environment:
+      RUSTFS_ACCESS_KEY: rustfsadmin
+      RUSTFS_SECRET_KEY: "${RUSTFS_SECRET_KEY}"
+    volumes:
+      - rustfs-preview-pr-${PR_ID}-data:/data
+    command: /data
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:9000/health/ready >/dev/null"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  create-rustfs-bucket-preview-pr-${PR_ID}:
+    image: amazon/aws-cli:latest
+    container_name: rustfs-setup-preview-pr-${PR_ID}
+    depends_on:
+      rustfs-preview-pr-${PR_ID}:
+        condition: service_healthy
+    restart: "no"
+    environment:
+      AWS_ACCESS_KEY_ID: "rustfsadmin"
+      AWS_SECRET_ACCESS_KEY: "${RUSTFS_SECRET_KEY}"
+      AWS_DEFAULT_REGION: "us-east-1"
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - |
+        if aws --endpoint-url "http://rustfs-preview-pr-${PR_ID}:9000" s3api head-bucket --bucket "preview-pr-${PR_ID}" >/dev/null 2>&1; then
+          echo "Bucket already exists"
+        else
+          aws --endpoint-url "http://rustfs-preview-pr-${PR_ID}:9000" s3api create-bucket --bucket "preview-pr-${PR_ID}"
+        fi
+
+  migrate-preview-pr-${PR_ID}:
+    image: api-preview-pr-${PR_ID}:${VERSION_TAG}
+    depends_on:
+      db-preview-pr-${PR_ID}:
+        condition: service_healthy
+      redis-preview-pr-${PR_ID}:
+        condition: service_healthy
+      rustfs-preview-pr-${PR_ID}:
+        condition: service_healthy
+      create-rustfs-bucket-preview-pr-${PR_ID}:
+        condition: service_completed_successfully
+    restart: "no"
+    entrypoint:
+      - /bin/sh
+      - -ec
+      - |
+        npm i -g tsx drizzle-kit drizzle-orm
+        npm run db:migrate
+
+  api-preview-pr-${PR_ID}:
+    build:
+      context: .
+      dockerfile: api.Dockerfile
+      cache_from:
+        - type=gha,scope=api-preview-pr-${PR_ID}
+      cache_to:
+        - type=gha,mode=max,scope=api-preview-pr-${PR_ID}
+    image: api-preview-pr-${PR_ID}:${VERSION_TAG}
+    restart: always
+    depends_on:
+      db-preview-pr-${PR_ID}:
+        condition: service_healthy
+      redis-preview-pr-${PR_ID}:
+        condition: service_healthy
+      rustfs-preview-pr-${PR_ID}:
+        condition: service_healthy
+      create-rustfs-bucket-preview-pr-${PR_ID}:
+        condition: service_completed_successfully
+      migrate-preview-pr-${PR_ID}:
+        condition: service_completed_successfully
+    command: server
+    environment:
+      CORS_ORIGIN: "https://${PREVIEW_WEB_DOMAIN}"
+      EMAIL_ADAPTER: "mailhog"
+      TEST_KEY: ""
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD}@db-preview-pr-${PR_ID}:5432/guidebook"
+      REDIS_URL: "redis://redis-preview-pr-${PR_ID}:6379"
+      JWT_SECRET: "${JWT_SECRET}"
+      JWT_REFRESH_SECRET: "${JWT_REFRESH_SECRET}"
+      JWT_EXPIRATION_TIME: "24h"
+      GOOGLE_CLIENT_ID: ""
+      GOOGLE_CLIENT_SECRET: ""
+      GOOGLE_OAUTH_ENABLED: ""
+      MICROSOFT_CLIENT_ID: ""
+      MICROSOFT_CLIENT_SECRET: ""
+      MICROSOFT_OAUTH_ENABLED: ""
+      SLACK_CLIENT_ID: ""
+      SLACK_CLIENT_SECRET: ""
+      SLACK_OAUTH_ENABLED: ""
+      SMTP_HOST: "mailhog-preview-pr-${PR_ID}"
+      SMTP_PORT: "1025"
+      SMTP_USER: ""
+      SMTP_PASSWORD: ""
+      AWS_BUCKET_NAME: ""
+      AWS_REGION: ""
+      AWS_ACCESS_KEY_ID: ""
+      AWS_SECRET_ACCESS_KEY: ""
+      S3_ENDPOINT: "https://${PREVIEW_RUSTFS_DOMAIN}"
+      S3_REGION: "us-east-1"
+      S3_ACCESS_KEY_ID: "rustfsadmin"
+      S3_SECRET_ACCESS_KEY: "${RUSTFS_SECRET_KEY}"
+      S3_BUCKET_NAME: "preview-pr-${PR_ID}"
+      SMTP_EMAIL_FROM: "noreply@lms.selleo.app"
+      BUNNY_STREAM_API_KEY: ""
+      BUNNY_STREAM_READ_ONLY_API_KEY: ""
+      BUNNY_STREAM_LIBRARY_ID: ""
+      BUNNY_STREAM_CDN_URL: ""
+      STRIPE_SECRET_KEY: ""
+      STRIPE_PUBLISHABLE_KEY: ""
+      STRIPE_WEBHOOK_SECRET: ""
+      SENTRY_ENVIRONMENT: "development"
+      SENTRY_DSN: ""
+      OPENAI_API_KEY: ""
+      WORKER_CONCURRENCY: "10"
+      MASTER_KEY: "${MASTER_KEY}"
+    volumes:
+      - api-preview-pr-${PR_ID}-uploads:/app/apps/api/uploads
+
+  web-preview-pr-${PR_ID}:
+    build:
+      context: .
+      dockerfile: web.Dockerfile
+      cache_from:
+        - type=gha,scope=web-preview-pr-${PR_ID}
+      cache_to:
+        - type=gha,mode=max,scope=web-preview-pr-${PR_ID}
+      args:
+        VITE_API_URL: "https://${PREVIEW_WEB_DOMAIN}"
+        VITE_APP_URL: "https://${PREVIEW_WEB_DOMAIN}"
+    image: web-preview-pr-${PR_ID}:${VERSION_TAG}
+    restart: always
+    depends_on:
+      api-preview-pr-${PR_ID}:
+        condition: service_started
+    x-caddy: |
+      ${PREVIEW_WEB_DOMAIN} {
+        handle /.well-known/oauth-* {
+          reverse_proxy {{upstreams "api-preview-pr-${PR_ID}" 3000}}
+        }
+
+        handle /api/* {
+          reverse_proxy {{upstreams "api-preview-pr-${PR_ID}" 3000}}
+        }
+
+        handle {
+          reverse_proxy {{upstreams "web-preview-pr-${PR_ID}" 8080}}
+        }
+      }
+
+volumes:
+  db-preview-pr-${PR_ID}-data:
+    driver: local
+  redis-preview-pr-${PR_ID}-data:
+    driver: local
+  rustfs-preview-pr-${PR_ID}-data:
+    driver: local
+  api-preview-pr-${PR_ID}-uploads:
+    driver: local

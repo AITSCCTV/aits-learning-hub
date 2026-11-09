@@ -1,0 +1,31 @@
+import { Module } from "@nestjs/common";
+
+import { BunnyStreamModule } from "src/bunny/bunnyStream.module";
+import { BunnyStreamService } from "src/bunny/bunnyStream.service";
+import { EmailModule } from "src/common/emails/emails.module";
+import { DisallowInSupportModeGuard } from "src/common/guards/disallow-support-mode.guard";
+import { FileModule } from "src/file/files.module";
+import { LocalizationModule } from "src/localization/localization.module";
+import { PermissionsModule } from "src/permissions/permissions.module";
+import { S3Module } from "src/s3/s3.module";
+import { S3Service } from "src/s3/s3.service";
+import { StatisticsModule } from "src/statistics/statistics.module";
+
+import { SettingsController } from "./settings.controller";
+import { SettingsService } from "./settings.service";
+
+@Module({
+  imports: [
+    EmailModule,
+    FileModule,
+    PermissionsModule,
+    S3Module,
+    BunnyStreamModule,
+    StatisticsModule,
+    LocalizationModule,
+  ],
+  controllers: [SettingsController],
+  providers: [SettingsService, S3Service, BunnyStreamService, DisallowInSupportModeGuard],
+  exports: [SettingsService],
+})
+export class SettingsModule {}

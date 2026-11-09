@@ -1,0 +1,266 @@
+[
+  {
+    "id": "AITS-C04-S01",
+    "title": "Insufficient PoE budget",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "Installation planner",
+    "problem_description": "Four fictional cameras need 15 W each; the usable switch budget is 50 W.",
+    "available_information": [
+      "Per-port compatibility is not yet checked."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Flag the 60 W total and verify a suitable approved design.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Flag the 60 W total and verify a suitable approved design."
+    ],
+    "inappropriate_decisions": [
+      "Approve because four ports are available."
+    ],
+    "consequences": "An undersized budget can produce unstable operation.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Approve because four ports are available.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Flag the 60 W total and verify a suitable approved design."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "EX",
+      "HEIGHT",
+      "NET",
+      "POE",
+      "QA"
+    ],
+    "metadata": {
+      "document_id": "AITS-C04-S01",
+      "course_id": "AITS-C04",
+      "title": "Insufficient PoE budget",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  },
+  {
+    "id": "AITS-C04-S02",
+    "title": "Poor entrance image",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "Technician trainee",
+    "problem_description": "A camera looks clear on the bench but silhouettes visitors at the entrance.",
+    "available_information": [
+      "Afternoon backlight differs from bench conditions."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Review scene, lens and lighting against the agreed purpose.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Review scene, lens and lighting against the agreed purpose."
+    ],
+    "inappropriate_decisions": [
+      "Claim megapixels alone guarantee identification."
+    ],
+    "consequences": "Testing relevant conditions reveals whether the objective is met.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Claim megapixels alone guarantee identification.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Review scene, lens and lighting against the agreed purpose."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "EX",
+      "HEIGHT",
+      "NET",
+      "POE",
+      "QA"
+    ],
+    "metadata": {
+      "document_id": "AITS-C04-S02",
+      "course_id": "AITS-C04",
+      "title": "Poor entrance image",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  },
+  {
+    "id": "AITS-C04-S03",
+    "title": "Live view without playback",
+    "context": "Synthetic classroom exercise; not an AITS procedure.",
+    "employee_role": "Support trainee",
+    "problem_description": "Fictional C2 has live video but no playback for yesterday.",
+    "available_information": [
+      "Other camera recordings exist; no reset is authorized."
+    ],
+    "decision_points": [
+      "What would you check first, and why?",
+      "What requires confirmation or authorization?",
+      "What would you record and hand over?"
+    ],
+    "expected_actions": [
+      "Check recording path and preserve evidence.",
+      "Record evidence, uncertainty and the next authorized action."
+    ],
+    "appropriate_decisions": [
+      "Check recording path and preserve evidence."
+    ],
+    "inappropriate_decisions": [
+      "Reset every camera."
+    ],
+    "consequences": "Targeted diagnosis avoids unnecessary disruption.",
+    "evaluation_rubric": [
+      {
+        "criterion": "Evidence and scope",
+        "max_score": 2,
+        "anchors": {
+          "0": "Makes unsupported assumptions",
+          "1": "Identifies some relevant facts",
+          "2": "Uses the available facts and names missing evidence"
+        }
+      },
+      {
+        "criterion": "Decision quality",
+        "max_score": 2,
+        "anchors": {
+          "0": "Reset every camera.",
+          "1": "Partially appropriate but misses a necessary check",
+          "2": "Check recording path and preserve evidence."
+        }
+      },
+      {
+        "criterion": "Authority and safety",
+        "max_score": 2,
+        "anchors": {
+          "0": "Acts beyond authority or creates exposure",
+          "1": "Recognizes a limit but gives no next action",
+          "2": "Pauses where necessary and seeks the correct authorized review"
+        }
+      },
+      {
+        "criterion": "Handover",
+        "max_score": 2,
+        "anchors": {
+          "0": "No useful record",
+          "1": "Records symptom only",
+          "2": "Records result, uncertainty and next action"
+        }
+      }
+    ],
+    "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+    "source_references": [
+      "EX",
+      "EX",
+      "HEIGHT",
+      "NET",
+      "POE",
+      "QA"
+    ],
+    "metadata": {
+      "document_id": "AITS-C04-S03",
+      "course_id": "AITS-C04",
+      "title": "Live view without playback",
+      "version": "0.1.0",
+      "created_date": "2026-11-09",
+      "last_updated_date": "2026-11-09",
+      "author_source": "AI-assisted instructional draft; source references attached",
+      "information_classification": "Hypothetical examples",
+      "approval_status": "Draft",
+      "responsible_reviewer": "Company to designate",
+      "source_references": [
+        "EX"
+      ]
+    }
+  }
+]

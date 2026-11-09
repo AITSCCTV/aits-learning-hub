@@ -1,0 +1,704 @@
+{
+  "navigationSideBar": {
+    "ai": "AI",
+    "aiAssistant": "ผู้ช่วย AI",
+    "settings": "การตั้งค่า",
+    "logout": "ออกจากระบบ",
+    "panel": "แผงควบคุม",
+    "menu": "เมนู",
+    "close": "ปิด",
+    "profile": "โปรไฟล์",
+    "dashboard": "หน้าหลัก",
+    "statistics": "สถิติ",
+    "analytics": "การวิเคราะห์",
+    "progress": "ความก้าวหน้า",
+    "findInApplication": "ค้นหาในระบบ",
+    "courses": "หลักสูตร",
+    "learningPaths": "เส้นทางการเรียนรู้",
+    "calendar": "ปฏิทิน",
+    "content": "เนื้อหา",
+    "categories": "หมวดหมู่",
+    "users": "ผู้ใช้งาน",
+    "groups": "กลุ่ม",
+    "articles": "ฐานความรู้",
+    "news": "ข่าวสาร",
+    "providerInformation": "ข้อมูล",
+    "announcements": "ประกาศ",
+    "notifications": "การแจ้งเตือน",
+    "promotionCodes": "รหัสส่วนลด",
+    "manage": "จัดการ",
+    "ariaLabels": {
+      "goToAvailableCourses": "ไปยังหลักสูตรที่เปิดให้เรียน"
+    },
+    "qa": "คำถามที่พบบ่อย",
+    "tenants": "องค์กร",
+    "activityLogs": "บันทึกกิจกรรม",
+    "reports": "รายงาน"
+  },
+  "loginView": {
+    "header": "เข้าสู่ระบบ",
+    "validation": {
+      "email": "อีเมลไม่ถูกต้อง",
+      "password": "กรุณากรอกรหัสผ่าน"
+    },
+    "other": {
+      "forgotPassword": "ลืมรหัสผ่าน?",
+      "useMagicLink": "ส่งลิงก์เข้าสู่ระบบทางอีเมล",
+      "dontHaveAccount": "ยังไม่มีบัญชี?",
+      "rememberMe": "จดจำฉัน",
+      "signUp": "สมัครสมาชิก",
+      "orContinueWith": "หรือดำเนินการต่อด้วย"
+    },
+    "button": {
+      "login": "เข้าสู่ระบบ"
+    },
+    "field": {
+      "email": "อีเมล",
+      "password": "รหัสผ่าน"
+    },
+    "magicLink": {
+      "subHeader": "กำลังตรวจสอบลิงก์เข้าสู่ระบบ กรุณารอสักครู่",
+      "checking": "กำลังตรวจสอบลิงก์…",
+      "success": "ลิงก์ถูกต้อง กำลังเปลี่ยนหน้า…",
+      "error": "ลิงก์ไม่ถูกต้องหรือหมดอายุแล้ว",
+      "backToLogin": "กลับไปเข้าสู่ระบบ"
+    }
+  },
+  "changeUserLanguageView": {
+    "header": "เปลี่ยนภาษา",
+    "subHeader": "เลือกภาษาที่ต้องการ",
+    "field": {
+      "language": "ภาษา"
+    },
+    "options": {
+      "english": "English",
+      "thai": "ไทย",
+      "polish": "โปแลนด์",
+      "german": "เยอรมัน",
+      "czech": "เช็ก",
+      "lithuanian": "ลิทัวเนีย",
+      "spanish": "สเปน",
+      "french": "ฝรั่งเศส"
+    }
+  },
+  "common": {
+    "deletedUser": "ผู้ใช้ที่ถูกลบ",
+    "button": {
+      "save": "บันทึก",
+      "saving": "กำลังบันทึก…",
+      "delete": "ลบ",
+      "create": "สร้าง",
+      "cancel": "ยกเลิก",
+      "back": "กลับ",
+      "proceed": "ดำเนินการต่อ",
+      "add": "เพิ่ม",
+      "close": "ปิด",
+      "goToDashboard": "ไปหน้าหลัก",
+      "goBack": "ย้อนกลับ",
+      "ignore": "ข้าม",
+      "clearAll": "ล้างทั้งหมด",
+      "validate": "ตรวจสอบ",
+      "edit": "แก้ไข",
+      "uploading": "กำลังอัปโหลด…",
+      "sending": "กำลังส่ง…",
+      "loading": "กำลังโหลด…",
+      "previous": "ก่อนหน้า",
+      "next": "ถัดไป"
+    },
+    "toast": {
+      "noAccess": "คุณไม่มีสิทธิ์เข้าถึงข้อมูลนี้",
+      "globalSettingsNotFound": "ไม่พบการตั้งค่าระบบ",
+      "somethingWentWrong": "เกิดข้อผิดพลาด กรุณาลองใหม่",
+      "notFound": "ไม่พบข้อมูล",
+      "lessonAccessDenied": "คุณไม่มีสิทธิ์เข้าถึงบทเรียนนี้",
+      "tooManyRequests": "มีคำขอมากเกินไป กรุณาลองใหม่ใน {{seconds}} วินาที",
+      "invalidRequest": "คำขอไม่ถูกต้อง",
+      "courseAccessDenied": "คุณไม่มีสิทธิ์เข้าถึงหลักสูตรนี้"
+    },
+    "tableOfContents": "สารบัญ",
+    "roles": {
+      "admin": "ผู้ดูแลระบบ",
+      "contentCreator": "ผู้จัดทำเนื้อหา",
+      "trainer": "ผู้สอน",
+      "student": "พนักงาน / ผู้เรียน",
+      "groupManager": "ผู้จัดการกลุ่ม"
+    },
+    "languages": {
+      "en": "English",
+      "th": "ไทย"
+    },
+    "lessonTypes": {
+      "content": "เนื้อหา",
+      "quiz": "แบบทดสอบ",
+      "ai_mentor": "ที่ปรึกษา AI",
+      "embed": "สื่อฝังตัว",
+      "scorm": "SCORM",
+      "live_training": "การอบรมสด"
+    },
+    "other": {
+      "active": "ใช้งาน",
+      "archived": "เก็บถาวร",
+      "selected": "เลือกแล้ว",
+      "allStatuses": "ทุกสถานะ",
+      "draft": "ฉบับร่าง",
+      "all": "ทั้งหมด",
+      "search": "ค้นหา",
+      "published": "เผยแพร่แล้ว",
+      "private": "ส่วนตัว",
+      "publish": "เผยแพร่",
+      "uploadingImage": "กำลังอัปโหลดรูปภาพ…",
+      "copyUrl": "คัดลอกลิงก์แล้ว",
+      "dueDate": "กำหนดส่ง: {{date}}",
+      "appVersion": "เวอร์ชัน: {{version}}"
+    },
+    "refreshPage": "รีเฟรชหน้า",
+    "validation": {
+      "messageRequired": "กรุณากรอกข้อความ"
+    }
+  },
+  "aits": {
+    "title": "AITS Learning Hub",
+    "sample": "เนื้อหาตัวอย่าง — รอการอนุมัติจากบริษัท",
+    "sampleDescription": "ใช้เพื่อสาธิตการเรียนรู้เท่านั้น ไม่ใช่นโยบายหรือขั้นตอนปฏิบัติงานอย่างเป็นทางการ",
+    "knowledge": "ความรู้และ SOP",
+    "mentor": "ที่ปรึกษา AI",
+    "setupRequired": "ต้องตั้งค่า AI ก่อนใช้งาน",
+    "setupDescription": "ยังไม่ได้เปิดใช้งานคำตอบจาก AI ผู้ดูแลต้องตั้งค่าผู้ให้บริการ อนุมัติการส่งข้อมูล และเตรียมแหล่งความรู้ที่ผ่านการอนุมัติก่อน หากมีคำถามเกี่ยวกับนโยบาย กรุณาติดต่อฝ่ายบุคคลหรือหัวหน้างาน",
+    "placeholder": "รอสื่อการเรียนรู้ที่ได้รับอนุมัติ",
+    "placeholderHelp": "ผู้ดูแลสามารถแทนที่เนื้อหานี้ด้วยสื่อจริงในหน้าจัดการบทเรียน",
+    "video": "วิดีโอ",
+    "slides": "สไลด์",
+    "pdf": "เอกสาร PDF",
+    "image": "รูปภาพ",
+    "text": "บทความ",
+    "faq": "คำถามที่พบบ่อย",
+    "sop": "ขั้นตอนปฏิบัติงาน",
+    "document": "เอกสาร",
+    "newRecord": "เพิ่มข้อมูลความรู้",
+    "recordTitle": "ชื่อเรื่อง",
+    "body": "เนื้อหา / ขั้นตอน",
+    "owner": "ผู้รับผิดชอบ",
+    "category": "หมวดหมู่ / แผนก",
+    "version": "เวอร์ชัน",
+    "status": "สถานะ",
+    "draft": "ฉบับร่าง",
+    "pending": "รอตรวจสอบ",
+    "approved": "อนุมัติแล้ว",
+    "inactive": "ปิดใช้งาน",
+    "empty": "ยังไม่มีข้อมูลความรู้",
+    "save": "บันทึกเวอร์ชัน",
+    "saved": "บันทึกข้อมูลแล้ว",
+    "error": "ไม่สามารถดำเนินการได้ กรุณาลองใหม่",
+    "sampleLabel": "เป็นเนื้อหาตัวอย่างที่ยังไม่อนุมัติ",
+    "review": "ส่งตรวจสอบ",
+    "approve": "อนุมัติ",
+    "deactivate": "ปิดใช้งาน",
+    "source": "แหล่งข้อมูล",
+    "file": "ไฟล์ PDF, DOCX หรือข้อความ",
+    "upload": "อัปโหลดเอกสาร",
+    "edit": "สร้างเวอร์ชันใหม่",
+    "all": "ทั้งหมด",
+    "history": "ประวัติเวอร์ชัน",
+    "noCompliance": "รายการตรวจสอบนี้ใช้สาธิตเท่านั้น ไม่ได้ประเมินการปฏิบัติตาม SOP จริง",
+    "roles": "กลุ่มผู้มีสิทธิ์อ่าน",
+    "admin": "ผู้ดูแลระบบ",
+    "employee": "พนักงาน",
+    "manager": "หัวหน้างาน",
+    "reviewFirst": "ต้องยืนยันว่าไม่ใช่เนื้อหาตัวอย่างก่อนอนุมัติ",
+    "return": "กลับไปเรียน",
+    "catalog": "สำรวจหลักสูตร",
+    "loading": "กำลังโหลด…",
+    "authoringThaiUnavailable": "บริการสร้างหลักสูตรด้วย AI ยังไม่รองรับภาษาไทย กรุณาใช้ตัวแก้ไขหลักสูตรปกติ"
+  },
+  "dashboardHome": {
+    "title": "หน้าหลักของคุณ",
+    "subtitle": "เข้าถึงข้อมูลการเรียนรู้และสิ่งที่ต้องทำได้อย่างสะดวก",
+    "customize": "ปรับแต่งหน้าหลัก",
+    "edit": {
+      "badge": "Editing",
+      "widgetsButton": "Widgets",
+      "restore": "Restore default",
+      "restoreConfirm": "Restore the default widget layout? Your current arrangement will be replaced.",
+      "changeSize": "Change size of {{title}}",
+      "sizeTitle": "Widget size",
+      "sizes": {
+        "1x1": "Compact",
+        "2x1": "Wide",
+        "1x2": "Tall",
+        "2x2": "Large",
+        "3x2": "Expanded",
+        "4x1": "Extra wide",
+        "4x2": "Feature",
+        "4x3": "Tall feature"
+      },
+      "drag": "Move {{title}}",
+      "widgetLibrary": "Dashboard widgets",
+      "widgetLibraryDescription": "Choose which widgets should be visible on your dashboard.",
+      "required": "Required",
+      "toggle": "Toggle {{title}}",
+      "confirm": "Yes",
+      "cancel": "No"
+    },
+    "empty": {
+      "title": "หน้าหลักยังไม่มีข้อมูล",
+      "description": "Customize the dashboard to add the widgets that matter to you.",
+      "editDescription": "Enable at least one widget in the list above."
+    },
+    "error": {
+      "title": "ไม่สามารถโหลดหน้าหลักได้",
+      "description": "กรุณาลองใหม่อีกสักครู่",
+      "retry": "ลองใหม่",
+      "invalidWidgetWidth": "This width is not allowed for the selected widget.",
+      "invalidWidgetLayout": "The dashboard layout contains unavailable or duplicate widgets.",
+      "invalidWidgetSize": "This size is not allowed for the selected widget.",
+      "requiredWidgetMissing": "A required dashboard widget is missing.",
+      "staleLayout": "Your dashboard was updated elsewhere. Refresh and try again."
+    },
+    "toast": {
+      "layoutSaved": "Dashboard changes saved.",
+      "layoutSaveError": "We could not save the dashboard changes.",
+      "layoutReset": "The default dashboard layout was restored.",
+      "layoutResetError": "We could not restore the default dashboard layout."
+    },
+    "widgets": {
+      "loadError": "ไม่สามารถโหลดข้อมูลส่วนนี้ได้",
+      "dataScope": {
+        "personal": "ข้อมูลของคุณ",
+        "otherUsers": "ข้อมูลองค์กร",
+        "personalTooltip": "This widget shows your personal learning data.",
+        "otherUsersTooltip": "This widget shows learning data for other users in your organization."
+      },
+      "trainingCompletionChartLabel": "{{completed}} of {{total}} enrollments completed, {{percentage}} percent.",
+      "deadlineRisksPage": "Page {{page}} of {{totalPages}}",
+      "placeholderDescription": "Dashboard widget prepared for a dedicated data view",
+      "placeholderContent": "This widget is ready for its feature-specific content.",
+      "placeholderFooter": "Example widget",
+      "s_placeholder_1": {
+        "title": "Learner widget 1"
+      },
+      "s_placeholder_2": {
+        "title": "Learner widget 2"
+      },
+      "s_placeholder_3": {
+        "title": "Learner widget 3"
+      },
+      "studentTiles": {
+        "continueLearning": {
+          "description": "All courses you have started",
+          "empty": "ยังไม่มีหลักสูตรที่กำลังเรียน",
+          "nextLesson": "ถัดไป: {{title}}",
+          "openCourse": "เปิดหลักสูตร",
+          "viewAll": "{{count}} courses in progress"
+        },
+        "requiredCourse": {
+          "description": "All mandatory courses you still need to complete",
+          "empty": "You have no required courses to complete.",
+          "overdue": "เกินกำหนด",
+          "dueSoon": "Due soon",
+          "scheduled": "กำลังจะมาถึง",
+          "noDeadline": "ไม่มีกำหนดส่ง",
+          "dueDate": "Due {{date}}",
+          "noDueDate": "ไม่มีกำหนดส่ง",
+          "total": "{{count}} required courses",
+          "overdueCount": "{{count}} overdue"
+        },
+        "courseCompletion": {
+          "description": "A summary of your assigned course progress",
+          "empty": "ยังไม่มีหลักสูตรที่ได้รับมอบหมาย",
+          "completedOfTotal": "เสร็จแล้ว {{completed}} จาก {{total}}",
+          "completed": "เสร็จแล้ว",
+          "inProgress": "กำลังเรียน",
+          "notStarted": "ยังไม่เริ่ม"
+        },
+        "certificates": {
+          "description": "Your active certificates and upcoming expirations",
+          "empty": "You do not have any active certificates.",
+          "active": "Active certificates",
+          "expiringSoon": "Expiring within 30 days",
+          "cta": "View certificate",
+          "viewAll": "View all certificates",
+          "dialogTitle": "Your certificates",
+          "dialogDescription": "Review all active certificates you have earned.",
+          "issued": "Issued {{date}}",
+          "expires": "Expires {{date}}",
+          "noExpiry": "No expiration date",
+          "previous": "ก่อนหน้า",
+          "next": "ถัดไป",
+          "page": "Page {{page}} of {{totalPages}}"
+        },
+        "aiMentorPractice": {
+          "description": "Create one focused practice scenario each day",
+          "dailyRefreshInfo": "You can generate one new AI Practice Session per day.",
+          "empty": "Describe a situation and practice it with AI Mentor.",
+          "emptyPrompt": "What conversation would you like to handle with more confidence?",
+          "startCta": "Start practice",
+          "continueCta": "Continue practice",
+          "feedbackCta": "View feedback",
+          "completedEyebrow": "Rehearsal complete",
+          "privateHint": "A private place to try, adjust, and try again",
+          "status": {
+            "queued": "Your practice scenario is queued.",
+            "processing": "Your practice scenario is being prepared.",
+            "ready": "Today's practice is ready.",
+            "failed": "Scenario generation failed. Open it to retry."
+          }
+        }
+      },
+      "commonDescription": "Key information at a glance",
+      "training_completion": {
+        "title": "การสำเร็จการฝึกอบรม",
+        "description": "Completion status across all course enrollments",
+        "completed": "เสร็จแล้ว",
+        "inProgress": "กำลังเรียน",
+        "notStarted": "ยังไม่เริ่ม",
+        "viewAnalytics": "View analytics",
+        "empty": "No course enrollments yet.",
+        "assignCourses": "Assign courses"
+      },
+      "deadline_risks": {
+        "title": "Deadline risks",
+        "description": "Required courses that need attention",
+        "sort": "เรียงลำดับ",
+        "sortMostUrgent": "Most urgent first",
+        "sortLeastUrgent": "Least urgent first",
+        "student": "Student",
+        "group": "Group",
+        "learners": "Learners",
+        "deadline": "Deadline",
+        "status": "Status",
+        "searchStudents": "Search learners",
+        "searchGroups": "Search groups or learners",
+        "allStatuses": "All statuses",
+        "studentsEmpty": "No affected learners.",
+        "groupsEmpty": "No affected groups.",
+        "overdue": "เกินกำหนด",
+        "dueSoon": "Due soon",
+        "empty": "No deadline risks right now.",
+        "overdueTitle": "Overdue required courses",
+        "dueSoonTitle": "Required courses due soon",
+        "goToCourse": "Go to course",
+        "affected_one": "{{count}} affected learner",
+        "affected_other": "{{count}} affected learners"
+      },
+      "incomplete_courses": {
+        "title": "Incomplete courses",
+        "description": "Courses with the most incomplete enrollments",
+        "allCompleted": "All enrolled courses are completed.",
+        "noEnrollments": "No course enrollments yet.",
+        "enrollments": "enrollments",
+        "notCompleted": "{{count}} not completed"
+      },
+      "event_calendar": {
+        "title": "Event calendar",
+        "description": "Learning events and deadlines this month",
+        "previousMonth": "Previous month",
+        "nextMonth": "Next month",
+        "selectMonth": "Select month",
+        "selectYear": "Select year",
+        "selectedDay": "Selected day",
+        "upcoming": "Upcoming events",
+        "empty": "No events this month.",
+        "liveTraining": "Live training",
+        "courseDeadline": "Course deadline",
+        "weekdays": {
+          "mon": "Mon",
+          "tue": "Tue",
+          "wed": "Wed",
+          "thu": "Thu",
+          "fri": "Fri",
+          "sat": "Sat",
+          "sun": "Sun"
+        }
+      },
+      "continue_learning": {
+        "title": "เรียนต่อ"
+      },
+      "required_course": {
+        "title": "หลักสูตรที่ต้องเรียน"
+      },
+      "course_completion": {
+        "title": "Course progress"
+      },
+      "certificates": {
+        "title": "Certificates"
+      },
+      "ai_mentor_practice": {
+        "title": "AI Mentor practice",
+        "aiNotConfigured": "AI Mentor is not configured for this tenant."
+      },
+      "todoTasks": {
+        "title": "To-do list",
+        "description": "Small tasks for your workday",
+        "empty": "No tasks yet. Add one below.",
+        "placeholder": "Add a task",
+        "add": "Add task",
+        "toggle": "Toggle {{title}}",
+        "edit": "Edit task",
+        "delete": "Delete task",
+        "reorder": "Reorder task",
+        "toast": {
+          "createSuccess": "Task added.",
+          "createError": "We could not add the task.",
+          "updateSuccess": "Task updated.",
+          "updateError": "We could not update the task.",
+          "deleteSuccess": "Task deleted.",
+          "deleteError": "We could not delete the task.",
+          "reorderSuccess": "Task order saved.",
+          "reorderError": "We could not save the task order."
+        }
+      }
+    }
+  },
+  "studentCoursesView": {
+    "courseUnavailable": {
+      "accessTitle": "The course is unavailable",
+      "accessDescription": "Please sign in or create an account to continue to the course.",
+      "goToLogin": "Go to login",
+      "goToCourseList": "Go to course list",
+      "goToHome": "Go to home",
+      "notFoundTitle": "Course not found",
+      "notFoundDescription": "We could not find this course."
+    },
+    "other": {
+      "cannotFindCourses": "ไม่พบหลักสูตร",
+      "changeSearchCriteria": "กรุณาเปลี่ยนคำค้นหาหรือลองใหม่ภายหลัง",
+      "freeLessons": "Free Lessons!",
+      "successfullyEnrolledToCourse": "Successfully enrolled in the course"
+    },
+    "breadcrumbs": {
+      "courses": "หลักสูตร"
+    },
+    "button": {
+      "continue": "ดำเนินการต่อ",
+      "enroll": "ลงทะเบียน",
+      "view": "ดู",
+      "readMore": "อ่านเพิ่มเติม",
+      "playChapter": "Play chapter"
+    },
+    "enrolledCourses": {
+      "header": "หลักสูตรของคุณ",
+      "subHeader": "หลักสูตรที่คุณลงทะเบียนแล้ว"
+    },
+    "availableCourses": {
+      "header": "หลักสูตรที่เปิดให้เรียน",
+      "subHeader": "หลักสูตรทั้งหมดที่เปิดให้ลงทะเบียน",
+      "filters": {
+        "placeholder": {
+          "title": "ค้นหาตามชื่อ ...",
+          "categories": "หมวดหมู่",
+          "sort": "เรียงลำดับ"
+        }
+      },
+      "headerOptions": {
+        "image": "Image",
+        "title": "ชื่อหลักสูตร",
+        "category": "หมวดหมู่",
+        "description": "คำอธิบาย",
+        "author": "ผู้จัดทำ"
+      }
+    },
+    "modernView": {
+      "continueLearning": "เรียนต่อ",
+      "topCourses": "Top 5 most popular courses",
+      "hero": {
+        "start": "เริ่มเรียน",
+        "moreInfo": "ข้อมูลเพิ่มเติม",
+        "info": "Info"
+      },
+      "featuredCourse": {
+        "label": "Featured course",
+        "search": "Search published courses...",
+        "empty": "No published courses found",
+        "loadMore": "Load more courses",
+        "updated": "Featured course updated",
+        "updateFailed": "Could not update featured course",
+        "change": "Change featured",
+        "automatic": "Automatic (most popular course)",
+        "dialogDescription": "Pick the published course learners see first on the courses page.",
+        "clickToChange": "Click to change"
+      },
+      "lessonsCount_one": "{{count}} บทเรียน",
+      "lessonsCount_other": "{{count}} บทเรียน",
+      "inlineEdit": {
+        "addCourse": "เพิ่มหลักสูตร",
+        "addCourseTo": "Add course to {{category}}",
+        "addCategory": "เพิ่มหมวดหมู่",
+        "categoryPlaceholder": "ชื่อหมวดหมู่"
+      }
+    }
+  },
+  "studentLessonView": {
+    "error": {
+      "lessonIdNotFound": "Lesson ID not found",
+      "notAuthorizedTitle": "ไม่มีสิทธิ์เข้าถึง",
+      "notAuthorizedDescription": "You're not authorized to access this lesson.",
+      "goBackToCourse": "กลับสู่หลักสูตร",
+      "quizNotCompleted": "กรุณาทำแบบทดสอบก่อนจบบทเรียน",
+      "aiMentorDataRequired": "AI Mentor lesson results are required to complete this lesson."
+    },
+    "other": {
+      "lesson": "บทเรียน",
+      "chapter": "หน่วยการเรียน",
+      "correctAnswers": "คำตอบที่ถูกต้อง:",
+      "correctSentence": "Correct sentence:",
+      "question": "คำถาม",
+      "answers": "คำตอบ:",
+      "true": "จริง",
+      "false": "เท็จ",
+      "oneOrTwoWordSentence": "Instruction: Provide a brief response (1-2 sentences).",
+      "threeOrFiveWordSentence": "Instruction: Write a detailed response (3-5 sentences).",
+      "single": "Single",
+      "multiple": "Multiple",
+      "fillInTheBlanks": "Fill in the blanks.",
+      "notAnswered": "ยังไม่ตอบ",
+      "selectQuestion": "select question.",
+      "trueOrFalseQuestion": "True or false question.",
+      "multipleChoice": "Multiple choice question.",
+      "singleChoice": "Single choice question",
+      "passingThreshold": "Passing threshold: {{threshold}}% ({{correct}} of {{questionsNumber}} questions)",
+      "score": "คะแนน: {{score}}% ({{correct}} จาก {{questionsNumber}} ข้อ)",
+      "contentCantBeEmbedded": "This content can’t be embedded.",
+      "openInNewTab": "Open in new tab",
+      "scale_1_5": "Scale question (1-5)"
+    },
+    "aiMentor": {
+      "title": "AI Mentor Session",
+      "description": "This is an AI-powered mentoring session. The AI will guide you through the lesson based on the instructor's guidelines."
+    },
+    "scorm": {
+      "loading": "Loading SCORM content...",
+      "launchFailed": "SCORM content could not be launched.",
+      "launchFailedBody": "Please try again. If the problem continues, the SCORM package may need to be reuploaded.",
+      "saveFailed": "SCORM progress could not be saved.",
+      "saving": "Saving progress",
+      "previousSco": "Previous section",
+      "nextSco": "Next section",
+      "tryAgain": "ลองใหม่",
+      "lessonFinished": "SCORM lesson finished.",
+      "progressReset": "SCORM progress reset.",
+      "progressUpdated": "SCORM progress updated."
+    },
+    "liveTraining": {
+      "activeLabel": "Live Training",
+      "activeTitle": "Session is active",
+      "scheduledLabel": "Scheduled",
+      "scheduledTitle": "Live Training is scheduled",
+      "endedLabel": "Ended",
+      "endedTitle": "Live Training has already ended",
+      "inactiveLabel": "Live Training",
+      "inactiveTitle": "No Live Training is active",
+      "locationNotice": "Location",
+      "notAvailable": "Live Training is not available for this lesson."
+    },
+    "videoProcessing": {
+      "title": "Video is being processed",
+      "body": "Please wait a moment. It will appear here once it is ready."
+    },
+    "videoProgress": {
+      "label": "Video progress",
+      "completedSummary": "เสร็จแล้ว {{completed}} จาก {{total}}",
+      "overviewAriaLabel": "Lesson video progress",
+      "segmentAriaLabel": "Video {{index}} progress: {{progress}}% watched",
+      "requirementSingle": "Watch the entire video to complete this lesson.",
+      "requirementMultiple": "Watch all videos to complete this lesson.",
+      "errors": {
+        "resourceNotFound": "Video progress could not be saved for this lesson.",
+        "unsupportedLessonType": "Video progress is only available for content lessons.",
+        "unsupportedBucketSize": "Video progress uses an unsupported tracking interval.",
+        "invalidResourceType": "This resource cannot be tracked as a lesson video.",
+        "trackingDisabled": "Video completion tracking is disabled for this course.",
+        "accessDenied": "You do not have access to update video progress for this lesson."
+      }
+    },
+    "requiredVideoLeave": {
+      "title": "Finish watching before leaving?",
+      "descriptionSingle": "This lesson requires the entire video to be watched before it can be completed.",
+      "descriptionMultiple": "This lesson requires all videos to be watched before it can be completed.",
+      "exitAnyway": "Exit anyway",
+      "continueWatching": "Continue watching",
+      "remember": "Dismiss for this course"
+    },
+    "playNext": {
+      "title": "Up next",
+      "description": "Playing next in {{seconds}}s",
+      "descriptionNoCountdown": "Playing next",
+      "playNow": "Play now",
+      "cancel": "Cancel"
+    },
+    "placeholder": {
+      "openQuestion": "กรอกคำตอบที่นี่"
+    },
+    "tooltip": {
+      "retakeAvailableIn": "Locked for {{time}} hours after last retake.",
+      "cooldown": "Quiz will be locked for {{time}} hours after the last attempt.",
+      "noCooldown": "No cooldown period.",
+      "beta": "This functionality is provided in a test version. It may contain errors or may not work fully as intended and is used at your own risk."
+    },
+    "breadcrumbs": {
+      "availableCourses": "หลักสูตรที่เปิดให้เรียน",
+      "yourCourses": "หลักสูตรของคุณ",
+      "back": "กลับ"
+    },
+    "button": {
+      "previous": "ก่อนหน้า",
+      "complete": "เรียนจบแล้ว",
+      "next": "ถัดไป",
+      "submit": "ส่งคำตอบ",
+      "retake": "ทำใหม่",
+      "autoplay": "เล่นอัตโนมัติ"
+    },
+    "sideSection": {
+      "header": "สารบัญ:",
+      "other": {
+        "courseProgress": "ความก้าวหน้าของหลักสูตร:"
+      }
+    },
+    "validation": {
+      "answerCannotBeEmpty": "กรุณากรอกคำตอบ",
+      "atLeastOneOptionMustBeSelected": "At least one option must be selected for question {{questionId}}.",
+      "answerCannotBeEmptyForDragAndDropQuestion": "Answer cannot be empty for drag-and-drop question {{questionId}}.",
+      "answerCannotBeEmptyForTextQuestion": "Answer cannot be empty for text question {{questionId}}.",
+      "invalidSelectionForSingleAnswer": "Invalid selection for a single-answer question.",
+      "invalidFormatForMultiAnswer": "Invalid format for multi-answer questions.",
+      "trueOrFalseRequired": "กรุณาเลือกจริงหรือเท็จ",
+      "photoQuestionMustHaveAnswer": "An answer is required for this photo question.",
+      "unansweredQuestions": "It seems you haven't checked all the answers yet. Please review them and try again!",
+      "unansweredQuestionsWithNames": "Please answer the missing questions: {{questionNames}}",
+      "quizAlreadyAnswered": "You have already answered this quiz.",
+      "lessonAssignmentRequired": "You are not assigned to this lesson.",
+      "quizEvaluationFailed": "Quiz evaluation failed. Please try again.",
+      "quizNotAnsweredYet": "You have not answered this quiz yet.",
+      "courseEnrollmentRequired": "You are not enrolled in this course.",
+      "quizRetakeUnavailable": "Quiz answers cannot be reset because of the attempts limit or cooldown.",
+      "quizResetFailed": "Failed to reset quiz answers. Please try again."
+    },
+    "preview": {
+      "title": "You are previewing this course",
+      "enrollmentDescription": "Enroll to take quizzes, join activities and save your progress.",
+      "learningModeDescription": "Enable Learn mode to take quizzes, join activities and track your progress."
+    }
+  },
+  "studentQuizSummaryView": {
+    "header": "ยินดีด้วย!",
+    "subHeader": "คุณทำแบบทดสอบเสร็จแล้ว",
+    "other": {
+      "yourScore": "คะแนนของคุณ:",
+      "tryAgain": "ลองใหม่"
+    },
+    "button": {
+      "backToCourse": "กลับสู่หลักสูตร"
+    }
+  },
+  "studentChapterCardView": {
+    "other": {
+      "chapterProgress": "ความก้าวหน้าของหน่วย:"
+    }
+  },
+  "adminCourseView": {
+    "errors": {
+      "forbidden": {
+        "archivedCourseEnrollment": "ไม่สามารถลงทะเบียนหลักสูตรที่เก็บถาวรได้"
+      }
+    }
+  }
+}

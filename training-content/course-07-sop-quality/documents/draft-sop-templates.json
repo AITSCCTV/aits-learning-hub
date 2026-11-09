@@ -1,0 +1,222 @@
+[
+  {
+    "document_id": "AITS-C07-SOP01",
+    "course_id": "AITS-C07",
+    "title": "Technician troubleshooting",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "Original generic training template",
+    "information_classification": "Draft procedures awaiting approval",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "QA",
+      "EX"
+    ],
+    "scope": "Training template only; company must define applicability",
+    "prerequisites": "Company-approved scope, competent personnel, authorized access and applicable risk controls",
+    "steps": [
+      "Confirm safe access and diagnostic permission",
+      "Record symptom, scope, start time and recent changes",
+      "Gather read-only observations and compare a known-good path",
+      "Obtain authorization for any change and preserve rollback",
+      "Record result, open issues and escalation"
+    ],
+    "stop_conditions": "Unsafe condition, missing authorization, conflicting instructions or insufficient evidence",
+    "evidence_fields": [
+      "Task reference",
+      "Date/time",
+      "Applicable procedure version",
+      "Observation/test",
+      "Actual result",
+      "Deviation",
+      "Authorized disposition",
+      "Reviewer"
+    ],
+    "approval_fields": [
+      "Owner",
+      "Reviewer",
+      "Approval date",
+      "Effective date",
+      "Next review date"
+    ],
+    "warning": "Not an approved AITS SOP. Do not use to authorize live work."
+  },
+  {
+    "document_id": "AITS-C07-SOP02",
+    "course_id": "AITS-C07",
+    "title": "Equipment installation preparation",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "Original generic training template",
+    "information_classification": "Draft procedures awaiting approval",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "QA",
+      "EX"
+    ],
+    "scope": "Training template only; company must define applicability",
+    "prerequisites": "Company-approved scope, competent personnel, authorized access and applicable risk controls",
+    "steps": [
+      "Confirm approved scope and current device documentation",
+      "Reconcile models, quantities and compatible accessories",
+      "Check site permissions and competent risk assessment",
+      "Confirm access, power design and cable route review",
+      "Record readiness and unresolved conditions before work"
+    ],
+    "stop_conditions": "Unsafe condition, missing authorization, conflicting instructions or insufficient evidence",
+    "evidence_fields": [
+      "Task reference",
+      "Date/time",
+      "Applicable procedure version",
+      "Observation/test",
+      "Actual result",
+      "Deviation",
+      "Authorized disposition",
+      "Reviewer"
+    ],
+    "approval_fields": [
+      "Owner",
+      "Reviewer",
+      "Approval date",
+      "Effective date",
+      "Next review date"
+    ],
+    "warning": "Not an approved AITS SOP. Do not use to authorize live work."
+  },
+  {
+    "document_id": "AITS-C07-SOP03",
+    "course_id": "AITS-C07",
+    "title": "Customer support",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "Original generic training template",
+    "information_classification": "Draft procedures awaiting approval",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "QA",
+      "EX"
+    ],
+    "scope": "Training template only; company must define applicability",
+    "prerequisites": "Company-approved scope, competent personnel, authorized access and applicable risk controls",
+    "steps": [
+      "Confirm the request and authorized contact channel",
+      "Record impact and distinguish statements from verified facts",
+      "Clarify desired outcome without promising unapproved terms",
+      "Route to the authorized responsible function",
+      "Record agreed update and handover status"
+    ],
+    "stop_conditions": "Unsafe condition, missing authorization, conflicting instructions or insufficient evidence",
+    "evidence_fields": [
+      "Task reference",
+      "Date/time",
+      "Applicable procedure version",
+      "Observation/test",
+      "Actual result",
+      "Deviation",
+      "Authorized disposition",
+      "Reviewer"
+    ],
+    "approval_fields": [
+      "Owner",
+      "Reviewer",
+      "Approval date",
+      "Effective date",
+      "Next review date"
+    ],
+    "warning": "Not an approved AITS SOP. Do not use to authorize live work."
+  },
+  {
+    "document_id": "AITS-C07-SOP04",
+    "course_id": "AITS-C07",
+    "title": "Administrative data handling",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "Original generic training template",
+    "information_classification": "Draft procedures awaiting approval",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "QA",
+      "EX"
+    ],
+    "scope": "Training template only; company must define applicability",
+    "prerequisites": "Company-approved scope, competent personnel, authorized access and applicable risk controls",
+    "steps": [
+      "Confirm purpose and required minimum data",
+      "Check recipient authority and approved storage location",
+      "Verify accuracy, classification and version",
+      "Transfer through the approved protected channel",
+      "Follow confirmed retention and incident-reporting rules"
+    ],
+    "stop_conditions": "Unsafe condition, missing authorization, conflicting instructions or insufficient evidence",
+    "evidence_fields": [
+      "Task reference",
+      "Date/time",
+      "Applicable procedure version",
+      "Observation/test",
+      "Actual result",
+      "Deviation",
+      "Authorized disposition",
+      "Reviewer"
+    ],
+    "approval_fields": [
+      "Owner",
+      "Reviewer",
+      "Approval date",
+      "Effective date",
+      "Next review date"
+    ],
+    "warning": "Not an approved AITS SOP. Do not use to authorize live work."
+  },
+  {
+    "document_id": "AITS-C07-SOP05",
+    "course_id": "AITS-C07",
+    "title": "Work completion reporting",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "Original generic training template",
+    "information_classification": "Draft procedures awaiting approval",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "QA",
+      "EX"
+    ],
+    "scope": "Training template only; company must define applicability",
+    "prerequisites": "Company-approved scope, competent personnel, authorized access and applicable risk controls",
+    "steps": [
+      "Compare work with approved scope",
+      "Record test methods and actual results",
+      "List not-tested items, defects and deviations",
+      "Obtain authorized disposition and handover review",
+      "Store the controlled completion record"
+    ],
+    "stop_conditions": "Unsafe condition, missing authorization, conflicting instructions or insufficient evidence",
+    "evidence_fields": [
+      "Task reference",
+      "Date/time",
+      "Applicable procedure version",
+      "Observation/test",
+      "Actual result",
+      "Deviation",
+      "Authorized disposition",
+      "Reviewer"
+    ],
+    "approval_fields": [
+      "Owner",
+      "Reviewer",
+      "Approval date",
+      "Effective date",
+      "Next review date"
+    ],
+    "warning": "Not an approved AITS SOP. Do not use to authorize live work."
+  }
+]

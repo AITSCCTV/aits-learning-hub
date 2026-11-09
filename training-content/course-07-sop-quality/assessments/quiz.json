@@ -1,0 +1,430 @@
+{
+  "metadata": {
+    "document_id": "AITS-C07-QUIZ",
+    "course_id": "AITS-C07",
+    "title": "Course practice assessment",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "APP",
+      "EX",
+      "QA"
+    ]
+  },
+  "passing_threshold_percent": 80,
+  "threshold_status": "Proposed practice threshold; not company competency policy",
+  "questions": [
+    {
+      "question": "Which document should govern an actual task?",
+      "choices": [
+        "The current approved applicable procedure",
+        "The newest unapproved draft",
+        "The shortest checklist"
+      ],
+      "correct_answer": "The current approved applicable procedure",
+      "explanation": "Approval and applicability matter as well as age.",
+      "id": "AITS-C07-L01-Q1",
+      "related_lesson": "AITS-C07-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L01-Q1",
+        "course_id": "AITS-C07",
+        "title": "Which document should govern an actual task?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should happen when two SOP versions conflict?",
+      "choices": [
+        "Choose randomly",
+        "Combine both silently",
+        "Seek owner clarification before the affected task"
+      ],
+      "correct_answer": "Seek owner clarification before the affected task",
+      "explanation": "A controlled resolution avoids incompatible instructions.",
+      "id": "AITS-C07-L01-Q2",
+      "related_lesson": "AITS-C07-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L01-Q2",
+        "course_id": "AITS-C07",
+        "title": "What should happen when two SOP versions conflict?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Are these generic templates official AITS SOPs?",
+      "choices": [
+        "Only after downloading",
+        "No",
+        "Yes"
+      ],
+      "correct_answer": "No",
+      "explanation": "They require company review and approval.",
+      "id": "AITS-C07-L01-Q3",
+      "related_lesson": "AITS-C07-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L01-Q3",
+        "course_id": "AITS-C07",
+        "title": "Are these generic templates official AITS SOPs?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should an unperformed test be recorded as?",
+      "choices": [
+        "Passed",
+        "Blank but assumed passed",
+        "Not tested with a reason"
+      ],
+      "correct_answer": "Not tested with a reason",
+      "explanation": "The record must reflect what actually occurred.",
+      "id": "AITS-C07-L02-Q1",
+      "related_lesson": "AITS-C07-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L02-Q1",
+        "course_id": "AITS-C07",
+        "title": "What should an unperformed test be recorded as?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is useful evidence?",
+      "choices": [
+        "A stock photo",
+        "Identified test, method, time and result",
+        "Only “done”"
+      ],
+      "correct_answer": "Identified test, method, time and result",
+      "explanation": "Traceability lets another person assess the result.",
+      "id": "AITS-C07-L02-Q2",
+      "related_lesson": "AITS-C07-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L02-Q2",
+        "course_id": "AITS-C07",
+        "title": "Which is useful evidence?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Can a trainee silently waive an SOP step?",
+      "choices": [
+        "No",
+        "Yes if busy",
+        "Yes if AI agrees"
+      ],
+      "correct_answer": "No",
+      "explanation": "Exceptions require the applicable authorized disposition.",
+      "id": "AITS-C07-L02-Q3",
+      "related_lesson": "AITS-C07-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L02-Q3",
+        "course_id": "AITS-C07",
+        "title": "Can a trainee silently waive an SOP step?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is a preventive process check?",
+      "choices": [
+        "Wait for a complaint",
+        "Reconcile the picking list before dispatch",
+        "Hide a missing item"
+      ],
+      "correct_answer": "Reconcile the picking list before dispatch",
+      "explanation": "Preparation checks can prevent downstream defects.",
+      "id": "AITS-C07-L03-Q1",
+      "related_lesson": "AITS-C07-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L03-Q1",
+        "course_id": "AITS-C07",
+        "title": "Which is a preventive process check?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does a signature erase an unresolved technical defect?",
+      "choices": [
+        "No",
+        "Yes",
+        "Only if scanned"
+      ],
+      "correct_answer": "No",
+      "explanation": "A signature does not change the observed condition.",
+      "id": "AITS-C07-L03-Q2",
+      "related_lesson": "AITS-C07-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L03-Q2",
+        "course_id": "AITS-C07",
+        "title": "Does a signature erase an unresolved technical defect?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does this course assert AITS ISO certification?",
+      "choices": [
+        "Yes",
+        "Only for trainees",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Only general quality principles are taught.",
+      "id": "AITS-C07-L03-Q3",
+      "related_lesson": "AITS-C07-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L03-Q3",
+        "course_id": "AITS-C07",
+        "title": "Does this course assert AITS ISO certification?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Can an AI approve a draft company SOP?",
+      "choices": [
+        "No",
+        "Yes if confident",
+        "Yes after enough prompts"
+      ],
+      "correct_answer": "No",
+      "explanation": "Approval requires authorized company action.",
+      "id": "AITS-C07-L04-Q1",
+      "related_lesson": "AITS-C07-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L04-Q1",
+        "course_id": "AITS-C07",
+        "title": "Can an AI approve a draft company SOP?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should an AI do with missing internal policy?",
+      "choices": [
+        "Invent a likely rule",
+        "Use a competitor policy",
+        "State the gap and refer to the responsible department"
+      ],
+      "correct_answer": "State the gap and refer to the responsible department",
+      "explanation": "Unverified policy must not be presented as fact.",
+      "id": "AITS-C07-L04-Q2",
+      "related_lesson": "AITS-C07-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L04-Q2",
+        "course_id": "AITS-C07",
+        "title": "What should an AI do with missing internal policy?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "An AI practice score is official employee competency certification.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "Competency and authorization require separate approved processes.",
+      "id": "AITS-C07-L04-Q3",
+      "related_lesson": "AITS-C07-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "APP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-L04-Q3",
+        "course_id": "AITS-C07",
+        "title": "An AI practice score is official employee competency certification.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "APP",
+          "EX"
+        ]
+      }
+    }
+  ]
+}

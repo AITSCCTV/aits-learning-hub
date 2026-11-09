@@ -1,0 +1,55 @@
+{
+  "title": "Investigate internet unavailable",
+  "objectives": [
+    "Choose diagnostic steps that test a hypothesis."
+  ],
+  "explanation": [
+    "First establish safety, authorization, affected users, services, start time and recent changes. Ask whether all sites fail or one application fails. Observe link and connection state safely. Read the client’s address, prefix, gateway and DNS configuration before changing it. Compare a known-good device on the relevant network.",
+    "On an authorized test device, basic diagnostics can include ipconfig /all, a gateway reachability test and nslookup for an approved test name. A ping timeout is evidence, not proof that a device is offline: filtering or policy may block replies. If gateway and external connectivity appear available but name resolution fails, investigate the configured resolver and related policy. Change one authorized variable at a time, record before/after results and preserve a rollback route."
+  ],
+  "example": "Synthetic outage: all clients reach the gateway; an approved external TCP test succeeds; lookups through the configured resolver time out. This supports a DNS-path hypothesis, not a confirmed broken cable.",
+  "exercise": "Choose the next two read-only checks and explain what each result would tell you.",
+  "model_response": "Compare resolver configuration with the approved baseline and test the configured resolver from another affected client. Record results and escalate before changing settings.",
+  "key_points": [
+    "Define scope and recent changes",
+    "Observe before changing",
+    "A failed ping is not a complete diagnosis"
+  ],
+  "references": [
+    "NET",
+    "DHCP",
+    "EX"
+  ],
+  "thai_summary": "กำหนดขอบเขตปัญหาและเก็บข้อมูลก่อนเปลี่ยนค่า Ping ไม่ตอบไม่ได้แปลว่าอุปกรณ์ปิดเสมอไป",
+  "id": "AITS-C05-L03",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C05-L02"
+  ],
+  "summary": "Define scope and recent changes Observe before changing A failed ping is not a complete diagnosis",
+  "visual_resources": [
+    "course-05-networking/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C05-L03",
+    "course_id": "AITS-C05",
+    "title": "Investigate internet unavailable",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "NET",
+      "DHCP",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C05-L03-Q1",
+    "AITS-C05-L03-Q2",
+    "AITS-C05-L03-Q3"
+  ]
+}

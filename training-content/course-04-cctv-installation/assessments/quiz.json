@@ -1,0 +1,444 @@
+{
+  "metadata": {
+    "document_id": "AITS-C04-QUIZ",
+    "course_id": "AITS-C04",
+    "title": "Course practice assessment",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "HEIGHT",
+      "NET",
+      "POE",
+      "QA"
+    ]
+  },
+  "passing_threshold_percent": 80,
+  "threshold_status": "Proposed practice threshold; not company competency policy",
+  "questions": [
+    {
+      "question": "Which device commonly records network-camera streams?",
+      "choices": [
+        "NVR",
+        "Passive patch panel",
+        "Unpowered cable reel"
+      ],
+      "correct_answer": "NVR",
+      "explanation": "An NVR receives network video for recording.",
+      "id": "AITS-C04-L01-Q1",
+      "related_lesson": "AITS-C04-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L01-Q1",
+        "course_id": "AITS-C04",
+        "title": "Which device commonly records network-camera streams?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does live viewing prove recording is working?",
+      "choices": [
+        "Yes",
+        "Only in daytime",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Storage and recording settings need separate verification.",
+      "id": "AITS-C04-L01-Q2",
+      "related_lesson": "AITS-C04-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L01-Q2",
+        "course_id": "AITS-C04",
+        "title": "Does live viewing prove recording is working?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What influences useful image detail?",
+      "choices": [
+        "Only the brand sticker",
+        "Lens, distance, lighting and motion",
+        "Only the camera color"
+      ],
+      "correct_answer": "Lens, distance, lighting and motion",
+      "explanation": "Image usefulness depends on the scene and imaging conditions.",
+      "id": "AITS-C04-L01-Q3",
+      "related_lesson": "AITS-C04-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L01-Q3",
+        "course_id": "AITS-C04",
+        "title": "What influences useful image detail?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Can four 15 W allocations fit a 50 W usable budget?",
+      "choices": [
+        "Yes, total is 30 W",
+        "Yes, port count is enough",
+        "No, total is 60 W"
+      ],
+      "correct_answer": "No, total is 60 W",
+      "explanation": "Power budget and port count are separate constraints.",
+      "id": "AITS-C04-L02-Q1",
+      "related_lesson": "AITS-C04-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "POE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L02-Q1",
+        "course_id": "AITS-C04",
+        "title": "Can four 15 W allocations fit a 50 W usable budget?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "POE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does every RJ45 port provide PoE?",
+      "choices": [
+        "Only when a camera is connected",
+        "No",
+        "Yes"
+      ],
+      "correct_answer": "No",
+      "explanation": "PoE capability must be verified.",
+      "id": "AITS-C04-L02-Q2",
+      "related_lesson": "AITS-C04-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "POE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L02-Q2",
+        "course_id": "AITS-C04",
+        "title": "Does every RJ45 port provide PoE?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "POE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Why check maximum rather than only typical consumption?",
+      "choices": [
+        "Operating features can raise demand",
+        "Typical always means maximum",
+        "It changes the camera IP address"
+      ],
+      "correct_answer": "Operating features can raise demand",
+      "explanation": "Load can change with IR, heaters and other functions.",
+      "id": "AITS-C04-L02-Q3",
+      "related_lesson": "AITS-C04-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "POE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L02-Q3",
+        "course_id": "AITS-C04",
+        "title": "Why check maximum rather than only typical consumption?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "POE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should guide camera placement first?",
+      "choices": [
+        "A random mounting point",
+        "The agreed viewing purpose and scene",
+        "The shortest cable at any cost"
+      ],
+      "correct_answer": "The agreed viewing purpose and scene",
+      "explanation": "Placement must support the intended task.",
+      "id": "AITS-C04-L03-Q1",
+      "related_lesson": "AITS-C04-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L03-Q1",
+        "course_id": "AITS-C04",
+        "title": "What should guide camera placement first?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "HEIGHT",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "What should happen before drilling an unfamiliar wall?",
+      "choices": [
+        "Verify permission, hidden-service risks and approved method",
+        "Drill a test hole",
+        "Ask the AI to guess"
+      ],
+      "correct_answer": "Verify permission, hidden-service risks and approved method",
+      "explanation": "Site hazards and authorization require verification.",
+      "id": "AITS-C04-L03-Q2",
+      "related_lesson": "AITS-C04-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L03-Q2",
+        "course_id": "AITS-C04",
+        "title": "What should happen before drilling an unfamiliar wall?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "HEIGHT",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Is a draft survey permission to install?",
+      "choices": [
+        "Yes",
+        "Only for small cameras",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Planning evidence is distinct from authorization.",
+      "id": "AITS-C04-L03-Q3",
+      "related_lesson": "AITS-C04-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L03-Q3",
+        "course_id": "AITS-C04",
+        "title": "Is a draft survey permission to install?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "HEIGHT",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Live view works but playback fails. Which area deserves review?",
+      "choices": [
+        "Recording settings and storage",
+        "Camera paint color",
+        "Only the monitor stand"
+      ],
+      "correct_answer": "Recording settings and storage",
+      "explanation": "The evidence points toward the recording path, though diagnosis remains open.",
+      "id": "AITS-C04-L04-Q1",
+      "related_lesson": "AITS-C04-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA",
+        "POE"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L04-Q1",
+        "course_id": "AITS-C04",
+        "title": "Live view works but playback fails. Which area deserves review?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA",
+          "POE"
+        ]
+      }
+    },
+    {
+      "question": "What is a poor first response to a missing image?",
+      "choices": [
+        "Determine affected devices",
+        "Record the start time",
+        "Factory reset without authorization"
+      ],
+      "correct_answer": "Factory reset without authorization",
+      "explanation": "A reset can destroy configuration and evidence.",
+      "id": "AITS-C04-L04-Q2",
+      "related_lesson": "AITS-C04-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA",
+        "POE"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L04-Q2",
+        "course_id": "AITS-C04",
+        "title": "What is a poor first response to a missing image?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA",
+          "POE"
+        ]
+      }
+    },
+    {
+      "question": "Customer passwords belong in the ordinary handover report.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "Routine reports should not expose secrets.",
+      "id": "AITS-C04-L04-Q3",
+      "related_lesson": "AITS-C04-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "EX",
+        "QA",
+        "POE"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-L04-Q3",
+        "course_id": "AITS-C04",
+        "title": "Customer passwords belong in the ordinary handover report.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA",
+          "POE"
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,78 @@
+import { SupportedLanguages } from "@repo/shared";
+import { EmailContent } from "types";
+
+export const getCertificateExpirationWarningEmailTranslations = (
+  language: SupportedLanguages,
+  courseName: string,
+  expiresAt: string,
+) => {
+  const emailContent: Record<SupportedLanguages, EmailContent> = {
+    // English fallback until this optional feature is translated into Thai.
+    th: {
+      heading: "Certificate expires soon",
+      paragraphs: [
+        `Your certificate for ${courseName} expires on ${expiresAt}.`,
+        "After expiry, your course progress will reset and you will need to complete the course again to receive a new certificate.",
+      ],
+      buttonText: "OPEN COURSE",
+    },
+    en: {
+      heading: "Certificate expires soon",
+      paragraphs: [
+        `Your certificate for ${courseName} expires on ${expiresAt}.`,
+        "After expiry, your course progress will reset and you will need to complete the course again to receive a new certificate.",
+      ],
+      buttonText: "OPEN COURSE",
+    },
+    pl: {
+      heading: "Certyfikat wkrótce wygaśnie",
+      paragraphs: [
+        `Twój certyfikat z kursu ${courseName} wygaśnie ${expiresAt}.`,
+        "Po wygaśnięciu postęp kursu zostanie zresetowany. Aby otrzymać nowy certyfikat, ukończ kurs ponownie.",
+      ],
+      buttonText: "PRZEJDŹ DO KURSU",
+    },
+    de: {
+      heading: "Zertifikat läuft bald ab",
+      paragraphs: [
+        `Dein Zertifikat für ${courseName} läuft am ${expiresAt} ab.`,
+        "Nach Ablauf wird dein Kursfortschritt zurückgesetzt. Schließe den Kurs erneut ab, um ein neues Zertifikat zu erhalten.",
+      ],
+      buttonText: "KURS ÖFFNEN",
+    },
+    lt: {
+      heading: "Pažymėjimas netrukus baigs galioti",
+      paragraphs: [
+        `Tavo kurso ${courseName} pažymėjimas baigs galioti ${expiresAt}.`,
+        "Pasibaigus galiojimui, kurso pažanga bus nustatyta iš naujo. Norint gauti naują pažymėjimą, kursą reikės baigti dar kartą.",
+      ],
+      buttonText: "ATIDARYTI KURSĄ",
+    },
+    cs: {
+      heading: "Certifikát brzy vyprší",
+      paragraphs: [
+        `Tvůj certifikát ke kurzu ${courseName} vyprší ${expiresAt}.`,
+        "Po vypršení bude průběh kurzu resetován. Pro získání nového certifikátu kurz dokonči znovu.",
+      ],
+      buttonText: "OTEVŘÍT KURZ",
+    },
+    es: {
+      heading: "El certificado caduca pronto",
+      paragraphs: [
+        `Tu certificado del curso ${courseName} caduca el ${expiresAt}.`,
+        "Después de la caducidad, el progreso del curso se restablecerá. Completa el curso de nuevo para recibir un certificado nuevo.",
+      ],
+      buttonText: "ABRIR CURSO",
+    },
+    fr: {
+      heading: "Le certificat expire bientôt",
+      paragraphs: [
+        `Votre certificat pour le cours ${courseName} expire le ${expiresAt}.`,
+        "Après son expiration, votre progression dans le cours sera réinitialisée. Vous devrez terminer de nouveau le cours pour recevoir un nouveau certificat.",
+      ],
+      buttonText: "OUVRIR LE COURS",
+    },
+  };
+
+  return emailContent[language];
+};

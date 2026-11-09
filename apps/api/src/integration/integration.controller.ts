@@ -1,0 +1,782 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Put,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
+import { ApiForbiddenResponse, ApiHeader, ApiUnauthorizedResponse, ApiTags } from "@nestjs/swagger";
+import { PERMISSIONS, type SupportedLanguages } from "@repo/shared";
+import { type Static, Type } from "@sinclair/typebox";
+import { Validate } from "nestjs-typebox";
+
+import {
+  baseResponse,
+  BaseResponse,
+  paginatedResponse,
+  PaginatedResponse,
+  UUIDSchema,
+  type UUIDType,
+} from "src/common";
+import { API_HEADERS, ApiEndpointDocs } from "src/common/decorators/api-endpoint-docs.decorator";
+import { Public } from "src/common/decorators/public.decorator";
+import { RequirePermission } from "src/common/decorators/require-permission.decorator";
+import { CurrentUser } from "src/common/decorators/user.decorator";
+import { PermissionsGuard } from "src/common/guards/permissions.guard";
+import { CurrentUserType } from "src/common/types/current-user.type";
+import { learningFactSchema } from "src/competencies/schemas/competencies.schema";
+import { CourseService } from "src/courses/course.service";
+import { enrolledCourseGroupsPayload } from "src/courses/schemas/course.schema";
+import { createCoursesEnrollmentSchema } from "src/courses/schemas/createCoursesEnrollment";
+import {
+  allGroupsSchema,
+  groupLanguageSchema,
+  groupSortFieldsOptions,
+  groupsFilterSchema,
+} from "src/group/group.schema";
+import { GroupService } from "src/group/group.service";
+import { GroupSortFieldsOptions, GroupsFilterSchema } from "src/group/group.types";
+import { IntegrationKeyTenant } from "src/integration/decorators/integration-key-tenant.decorator";
+import { IntegrationTenantOptional } from "src/integration/decorators/tenant-optional.decorator";
+import { IntegrationApiKeyGuard } from "src/integration/guards/integration-api-key.guard";
+import { IntegrationService } from "src/integration/integration.service";
+import { IntegrationKeyTenantContext } from "src/integration/integration.types";
+import {
+  integrationUpdateTenantApiKeysSchema,
+  integrationUpdateTenantApiKeysResponseSchema,
+  type IntegrationUpdateTenantApiKeysBody,
+  type IntegrationUpdateTenantApiKeysResponse,
+} from "src/integration/schemas/integration-tenant-api-keys.schema";
+import {
+  integrationCreateTenantSchema,
+  integrationDeleteUserResponseSchema,
+  integrationMessageResponseSchema,
+  integrationTenantLifecycleResponseSchema,
+  integrationTenantsSchema,
+  integrationTrainingResultsSchema,
+  integrationTrainingResultsScopeSchema,
+  integrationUpdateTenantSchema,
+  type IntegrationCreateTenantBody,
+  type IntegrationTenantLifecycleResponse,
+  type IntegrationUpdateTenantBody,
+  setUserGroupsSchema,
+  unenrollGroupsPayloadSchema,
+  type IntegrationTrainingResult,
+  type IntegrationTrainingResultsScope,
+  type IntegrationTenant,
+  type SetUserGroupsBody,
+  type UnenrollGroupsPayload,
+} from "src/integration/schemas/integration.schema";
+import { createUserSchema } from "src/user/schemas/createUser.schema";
+import { type UpdateUserBody, updateUserSchema } from "src/user/schemas/updateUser.schema";
+import {
+  allUsersSchema,
+  baseUserResponseSchema,
+  type AllUsersResponse,
+  type UserResponse,
+  userSchema,
+} from "src/user/schemas/user.schema";
+import {
+  sortUserFieldsOptions,
+  type UsersFilterSchema,
+  type SortUserFieldsOptions,
+} from "src/user/schemas/userQuery";
+import { UserService } from "src/user/user.service";
+import { USER_CREATION_FLOW_TYPE } from "src/user/user.types";
+
+import { LearningFactsRepository } from "./repositories/learning-facts.repository";
+import {
+  integrationCompetenciesConnectionSchema,
+  type IntegrationCompetenciesConnection,
+  integrationPluginDiscoverySchema,
+  integrationPhishingConnectionSchema,
+  integrationPluginConfiguredSchema,
+  integrationPluginStatusSchema,
+  type IntegrationPluginDiscovery,
+  type IntegrationPhishingConnection,
+  type IntegrationPluginConfigured,
+  type IntegrationPluginStatus,
+} from "./schemas/integration-plugin-connection.schema";
+
+import type { GroupKeywordFilterBody } from "src/group/group.schema";
+import type { AllGroupsResponse } from "src/group/group.types";
+
+@ApiHeader({
+  name: "X-API-Key",
+  required: true,
+  description: "Integration API key used to authenticate every integration request.",
+})
+@ApiTags("Integration")
+@ApiUnauthorizedResponse({
+  description: "Missing or invalid integration API key.",
+})
+@ApiForbiddenResponse({
+  description: "Authenticated integration key owner is not authorized.",
+})
+@Public()
+@Controller("integration")
+@UseGuards(IntegrationApiKeyGuard, PermissionsGuard)
+export class IntegrationController {
+  constructor(
+    private readonly integrationService: IntegrationService,
+    private readonly userService: UserService,
+    private readonly groupService: GroupService,
+    private readonly courseService: CourseService,
+    private readonly learningFactsRepository: LearningFactsRepository,
+  ) {}
+
+  @ApiEndpointDocs({
+    summary: "Discover tenants for plugin setup",
+    description:
+      "Lists accessible tenants and whether the key can configure plugins. Configuration requires a managing tenant key with tenant management permission.",
+  })
+  @Get("plugins/connection")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @Validate({ response: baseResponse(integrationPluginDiscoverySchema) })
+  async discoverPluginConnection(
+    @CurrentUser() actor: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationPluginDiscovery>> {
+    return new BaseResponse(
+      await this.integrationService.discoverPluginConnection(actor, keyTenant),
+    );
+  }
+
+  @ApiEndpointDocs({
+    summary: "Connect a tenant to the phishing platform",
+    description:
+      "Atomically saves the plugin origin, API key and webhook secret, encrypted for the path tenant. Retrying with the same values is safe. Requires a managing tenant key with tenant management permission.",
+  })
+  @Put("tenants/:tenantId/plugins/phishing")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @Validate({
+    request: [
+      { type: "param", name: "tenantId", schema: UUIDSchema },
+      { type: "body", schema: integrationPhishingConnectionSchema },
+    ],
+    response: baseResponse(integrationPluginConfiguredSchema),
+  })
+  async configurePhishingConnection(
+    @Param("tenantId") tenantId: UUIDType,
+    @Body() body: IntegrationPhishingConnection,
+    @CurrentUser() actor: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationPluginConfigured>> {
+    return new BaseResponse(
+      await this.integrationService.configurePhishingConnection(tenantId, body, actor, keyTenant),
+    );
+  }
+
+  @ApiEndpointDocs({
+    summary: "Verify tenant phishing connectivity",
+    description:
+      "Checks that Mentingo can authenticate to the configured plugin and reports its enabled state. Requires a managing tenant key with tenant management permission. No credentials are returned.",
+  })
+  @Get("tenants/:tenantId/plugins/phishing")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @Validate({
+    request: [{ type: "param", name: "tenantId", schema: UUIDSchema }],
+    response: baseResponse(integrationPluginStatusSchema),
+  })
+  async phishingConnectionStatus(
+    @Param("tenantId") tenantId: UUIDType,
+    @CurrentUser() actor: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationPluginStatus>> {
+    return new BaseResponse(
+      await this.integrationService.phishingConnectionStatus(tenantId, actor, keyTenant),
+    );
+  }
+
+  @Put("tenants/:tenantId/plugins/competencies")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @Validate({
+    request: [
+      { type: "param", name: "tenantId", schema: UUIDSchema },
+      { type: "body", schema: integrationCompetenciesConnectionSchema },
+    ],
+    response: baseResponse(integrationPluginConfiguredSchema),
+  })
+  async configureCompetenciesConnection(
+    @Param("tenantId") tenantId: UUIDType,
+    @Body() body: IntegrationCompetenciesConnection,
+    @CurrentUser() actor: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationPluginConfigured>> {
+    return new BaseResponse(
+      await this.integrationService.configureCompetenciesConnection(
+        tenantId,
+        body,
+        actor,
+        keyTenant,
+      ),
+    );
+  }
+
+  @Get("tenants/:tenantId/plugins/competencies")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @Validate({
+    request: [{ type: "param", name: "tenantId", schema: UUIDSchema }],
+    response: baseResponse(integrationPluginStatusSchema),
+  })
+  async competenciesConnectionStatus(
+    @Param("tenantId") tenantId: UUIDType,
+    @CurrentUser() actor: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationPluginStatus>> {
+    return new BaseResponse(
+      await this.integrationService.competenciesConnectionStatus(tenantId, actor, keyTenant),
+    );
+  }
+
+  @Get("learning-facts")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @Validate({
+    request: [
+      { type: "query", name: "subjectId", schema: UUIDSchema },
+      { type: "query", name: "courseId", schema: UUIDSchema },
+    ],
+    response: baseResponse(
+      Type.Object({
+        subjectId: UUIDSchema,
+        courseId: UUIDSchema,
+        revision: Type.Integer(),
+        facts: Type.Array(learningFactSchema),
+      }),
+    ),
+  })
+  async getIntegrationLearningFacts(
+    @Query("subjectId") subjectId: string,
+    @Query("courseId") courseId: string,
+  ) {
+    return new BaseResponse(await this.learningFactsRepository.snapshot(subjectId, courseId));
+  }
+
+  @Get("tenants")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @ApiEndpointDocs({
+    summary: "List all tenants for integration selection",
+    description:
+      "Returns all tenants accessible to the current integration API key.\n\nUse this endpoint first to discover which tenant IDs you can operate on. For the rest of integration endpoints, pass one of those IDs in the X-Tenant-Id header.",
+    headers: [
+      {
+        ...API_HEADERS.X_TENANT_ID,
+        required: false,
+        description: "Tenant ID is optional for this endpoint.",
+      },
+    ],
+  })
+  @Validate({
+    response: baseResponse(integrationTenantsSchema),
+  })
+  async getTenants(
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<IntegrationTenant[]>> {
+    return new BaseResponse(await this.integrationService.getTenantsForActor(currentUser));
+  }
+
+  @Post("tenants")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @ApiEndpointDocs({
+    summary: "Create tenant via integration API",
+    description:
+      "Creates a new tenant and invites its initial admin user.\n\nOnly integration API keys owned by a managing tenant with tenant management permission can use this endpoint.",
+    headers: [
+      {
+        ...API_HEADERS.X_TENANT_ID,
+        required: false,
+        description: "Tenant ID is not required because the integration API key owner is used.",
+      },
+    ],
+  })
+  @Validate({
+    request: [{ type: "body", schema: integrationCreateTenantSchema }],
+    response: baseResponse(integrationTenantLifecycleResponseSchema),
+  })
+  async createTenant(
+    @Body() body: IntegrationCreateTenantBody,
+    @CurrentUser() currentUser: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationTenantLifecycleResponse>> {
+    return new BaseResponse(
+      await this.integrationService.createTenantForIntegration(body, currentUser, keyTenant),
+    );
+  }
+
+  @Patch("tenants/:tenantId")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @ApiEndpointDocs({
+    summary: "Update tenant via integration API",
+    description:
+      "Updates the target tenant's name, host, or status.\n\nOnly integration API keys owned by a managing tenant with tenant management permission can use this endpoint.",
+    headers: [
+      {
+        ...API_HEADERS.X_TENANT_ID,
+        required: false,
+        description: "Tenant ID is not required because the target tenant is in the path.",
+      },
+    ],
+  })
+  @Validate({
+    request: [
+      { type: "param", name: "tenantId", schema: UUIDSchema },
+      { type: "body", schema: integrationUpdateTenantSchema },
+    ],
+    response: baseResponse(integrationTenantLifecycleResponseSchema),
+  })
+  async updateTenant(
+    @Param("tenantId") tenantId: UUIDType,
+    @Body() body: IntegrationUpdateTenantBody,
+    @CurrentUser() currentUser: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationTenantLifecycleResponse>> {
+    return new BaseResponse(
+      await this.integrationService.updateTenantForIntegration(
+        tenantId,
+        body,
+        currentUser,
+        keyTenant,
+      ),
+    );
+  }
+
+  @Patch("tenants/:tenantId/api-keys")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @ApiEndpointDocs({
+    summary: "Update a tenant environment value",
+    description:
+      "Sets or replaces a supported tenant environment value by name. Uses the same supported names as the environment settings API. Only integration API keys owned by a managing tenant with tenant management permission can use this endpoint. Values are encrypted and never returned. The tenant in the path is authoritative, regardless of X-Tenant-Id.",
+    headers: [
+      {
+        ...API_HEADERS.X_TENANT_ID,
+        required: false,
+        description: "Not required; the target tenant is in the path.",
+      },
+    ],
+  })
+  @Validate({
+    request: [
+      { type: "param", name: "tenantId", schema: UUIDSchema },
+      { type: "body", schema: integrationUpdateTenantApiKeysSchema },
+    ],
+    response: baseResponse(integrationUpdateTenantApiKeysResponseSchema),
+  })
+  async updateTenantApiKeys(
+    @Param("tenantId") tenantId: UUIDType,
+    @Body() body: IntegrationUpdateTenantApiKeysBody,
+    @CurrentUser() currentUser: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationUpdateTenantApiKeysResponse>> {
+    return new BaseResponse(
+      await this.integrationService.updateTenantApiKeysForIntegration(
+        tenantId,
+        body,
+        currentUser,
+        keyTenant,
+      ),
+    );
+  }
+
+  @Post("tenants/:tenantId/deactivate")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @ApiEndpointDocs({
+    summary: "Deactivate tenant via integration API",
+    description:
+      "Marks the target tenant as inactive.\n\nOnly integration API keys owned by a managing tenant with tenant management permission can use this endpoint.",
+    headers: [
+      {
+        ...API_HEADERS.X_TENANT_ID,
+        required: false,
+        description: "Tenant ID is not required because the target tenant is in the path.",
+      },
+    ],
+  })
+  @Validate({
+    request: [{ type: "param", name: "tenantId", schema: UUIDSchema }],
+    response: baseResponse(integrationTenantLifecycleResponseSchema),
+  })
+  async deactivateTenant(
+    @Param("tenantId") tenantId: UUIDType,
+    @CurrentUser() currentUser: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<BaseResponse<IntegrationTenantLifecycleResponse>> {
+    return new BaseResponse(
+      await this.integrationService.deactivateTenantForIntegration(
+        tenantId,
+        currentUser,
+        keyTenant,
+      ),
+    );
+  }
+
+  @Delete("tenants/:tenantId")
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @IntegrationTenantOptional()
+  @ApiEndpointDocs({
+    summary: "Delete tenant via integration API",
+    description:
+      "Permanently deletes the target tenant and its tenant-owned data.\n\nOnly integration API keys owned by a managing tenant with tenant management permission can use this endpoint. The managing tenant cannot delete itself.",
+    headers: [
+      {
+        ...API_HEADERS.X_TENANT_ID,
+        required: false,
+        description: "Tenant ID is not required because the target tenant is in the path.",
+      },
+    ],
+  })
+  @Validate({
+    request: [{ type: "param", name: "tenantId", schema: UUIDSchema }],
+  })
+  async deleteTenant(
+    @Param("tenantId") tenantId: UUIDType,
+    @CurrentUser() currentUser: CurrentUserType,
+    @IntegrationKeyTenant() keyTenant: IntegrationKeyTenantContext,
+  ): Promise<void> {
+    await this.integrationService.deleteTenantForIntegration(tenantId, currentUser, keyTenant);
+  }
+
+  @Get("users")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "List users for integration",
+    description:
+      "Returns users from the tenant selected by X-Tenant-Id.\n\nSupports keyword search, role filtering, archived filtering ('true' or 'false'), group filtering, sorting, and pagination so integrations can sync user directories in batches.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      { type: "query", name: "keyword", schema: Type.String() },
+      { type: "query", name: "roleSlug", schema: Type.String() },
+      { type: "query", name: "archived", schema: Type.String() },
+      { type: "query", name: "page", schema: Type.Number({ minimum: 1 }) },
+      { type: "query", name: "perPage", schema: Type.Number() },
+      { type: "query", name: "sort", schema: sortUserFieldsOptions },
+      { type: "query", name: "groups", schema: groupsFilterSchema },
+    ],
+    response: paginatedResponse(allUsersSchema),
+  })
+  async getUsers(
+    @Query("keyword") keyword: string,
+    @Query("roleSlug") roleSlug: string,
+    @Query("archived") archived: string,
+    @Query("page") page: number,
+    @Query("perPage") perPage: number,
+    @Query("sort") sort: SortUserFieldsOptions,
+    @Query("groups") groups: GroupsFilterSchema,
+  ): Promise<PaginatedResponse<AllUsersResponse>> {
+    const filters: UsersFilterSchema = {
+      keyword,
+      roleSlug,
+      archived: archived ? archived === "true" : undefined,
+      groups,
+    };
+
+    const query = { filters, page, perPage, sort };
+    const users = await this.userService.getUsers(query);
+
+    return new PaginatedResponse(users);
+  }
+
+  @Get("training-results")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Get training results for integration reporting",
+    description:
+      "Returns training results in JSON for the tenant selected by X-Tenant-Id.\n\nEach response row represents one student-course pair.\n\nUse scope=tenant to list all rows for the tenant, scope=student to list rows for a specific student (studentId required), and scope=course to list rows for a specific course (courseId required). Optional extra filter can further narrow results.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      {
+        type: "query",
+        name: "scope",
+        schema: integrationTrainingResultsScopeSchema,
+        required: true,
+      },
+      { type: "query", name: "studentId", schema: UUIDSchema },
+      { type: "query", name: "courseId", schema: UUIDSchema },
+      { type: "query", name: "page", schema: Type.Number({ minimum: 1 }) },
+      { type: "query", name: "perPage", schema: Type.Number() },
+    ],
+    response: paginatedResponse(integrationTrainingResultsSchema),
+  })
+  async getTrainingResults(
+    @Query("scope") scope: IntegrationTrainingResultsScope,
+    @Query("studentId") studentId: UUIDType | undefined,
+    @Query("courseId") courseId: UUIDType | undefined,
+    @Query("page") page: number | undefined,
+    @Query("perPage") perPage: number | undefined,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<PaginatedResponse<IntegrationTrainingResult[]>> {
+    return new PaginatedResponse(
+      await this.integrationService.getTrainingResults(currentUser, {
+        scope,
+        studentId,
+        courseId,
+        page,
+        perPage,
+      }),
+    );
+  }
+
+  @Get("users/:userId")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Get user by ID for integration",
+    description:
+      "Returns the full current state of a single tenant user by userId.\n\nUse this endpoint when your integration needs an authoritative read before applying updates or enrollment changes.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [{ type: "param", name: "userId", schema: UUIDSchema }],
+    response: baseResponse(userSchema),
+  })
+  async getUserById(@Param("userId") userId: UUIDType): Promise<BaseResponse<UserResponse>> {
+    return new BaseResponse(await this.userService.getUserById(userId));
+  }
+
+  @Post("users")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Create user via integration API",
+    description:
+      "Creates a new user inside the tenant selected by X-Tenant-Id.\n\nProvide the user payload in the request body. The response returns the created user ID so your external system can persist the Mentingo mapping.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [{ type: "body", schema: createUserSchema }],
+    response: baseResponse(Type.Object({ id: UUIDSchema, message: Type.String() })),
+  })
+  async createUser(
+    @Body() data: Static<typeof createUserSchema>,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<{ id: UUIDType; message: string }>> {
+    const user = await this.userService.createUser(data, undefined, {
+      flowType: USER_CREATION_FLOW_TYPE.ADMIN,
+      creator: currentUser,
+    });
+
+    return new BaseResponse({ id: user.id, message: "User created successfully" });
+  }
+
+  @Patch("users/:userId")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Update user via integration API",
+    description:
+      "Updates an existing tenant user identified by userId.\n\nOnly fields included in the body are modified. Use this endpoint for profile, role, or status synchronization from an external identity source.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      { type: "param", name: "userId", schema: UUIDSchema },
+      { type: "body", schema: updateUserSchema },
+    ],
+    response: baseResponse(baseUserResponseSchema),
+  })
+  async updateUser(
+    @Param("userId") userId: UUIDType,
+    @Body() data: UpdateUserBody,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    const updatedUser = await this.userService.updateUser(userId, data, currentUser);
+    return new BaseResponse(updatedUser);
+  }
+
+  @Delete("users/:userId")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Delete user via integration API",
+    description:
+      "Deletes the tenant user identified by userId.\n\nUse this when your source-of-truth system has deprovisioned a user and Mentingo access should be removed as part of lifecycle automation.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [{ type: "param", name: "userId", schema: UUIDSchema }],
+    response: baseResponse(integrationDeleteUserResponseSchema),
+  })
+  async deleteUser(
+    @Param("userId") userId: UUIDType,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<{ message: string }>> {
+    await this.userService.deleteUser(currentUser, userId);
+
+    return new BaseResponse({ message: "User deleted successfully" });
+  }
+
+  @Get("groups")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "List groups for integration",
+    description:
+      "Returns groups from the tenant selected by X-Tenant-Id.\n\nSupports keyword filtering, sorting, and pagination so your integration can resolve external groups to Mentingo group IDs before assignment or enrollment operations.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      { type: "query", name: "keyword", schema: Type.String() },
+      { type: "query", name: "page", schema: Type.Number({ minimum: 1 }) },
+      { type: "query", name: "perPage", schema: Type.Number() },
+      { type: "query", name: "sort", schema: groupSortFieldsOptions },
+      { type: "query", name: "language", schema: Type.Optional(groupLanguageSchema) },
+    ],
+    response: paginatedResponse(allGroupsSchema),
+  })
+  async getGroups(
+    @Query("keyword") keyword: string,
+    @Query("page") page: number,
+    @Query("perPage") perPage: number,
+    @Query("sort") sort: GroupSortFieldsOptions,
+    @Query("language") language: SupportedLanguages | undefined,
+  ): Promise<PaginatedResponse<AllGroupsResponse>> {
+    const filters: GroupKeywordFilterBody = {
+      keyword,
+    };
+
+    const query = { filters, language, page, perPage, sort };
+    const groups = await this.groupService.getAllGroups(query);
+
+    return new PaginatedResponse(groups);
+  }
+
+  @Put("users/:userId/groups")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Set user groups via integration API",
+    description:
+      "Sets the complete group membership for a user in the selected tenant.\n\nThis operation treats the provided groupIds list as the source of truth and updates membership to match it.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      { type: "param", name: "userId", schema: UUIDSchema },
+      { type: "body", schema: setUserGroupsSchema },
+    ],
+    response: baseResponse(integrationMessageResponseSchema),
+  })
+  async setUserGroups(
+    @Param("userId") userId: UUIDType,
+    @Body() body: SetUserGroupsBody,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<{ message: string }>> {
+    await this.groupService.setUserGroups(body.groupIds, userId, { actor: currentUser });
+
+    return new BaseResponse({ message: "User groups updated successfully" });
+  }
+
+  @Post("courses/:courseId/enroll-users")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Enroll users to course via integration API",
+    description:
+      "Enrolls the provided user IDs into the specified course within the selected tenant.\n\nUse this endpoint to synchronize direct, user-level course access from your external system.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      { type: "param", name: "courseId", schema: UUIDSchema },
+      { type: "body", schema: createCoursesEnrollmentSchema },
+    ],
+    response: baseResponse(integrationMessageResponseSchema),
+  })
+  async enrollUsers(
+    @Param("courseId") courseId: UUIDType,
+    @Body() body: Static<typeof createCoursesEnrollmentSchema>,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<{ message: string }>> {
+    await this.courseService.enrollCourses(courseId, body, currentUser);
+
+    return new BaseResponse({ message: "Users enrolled successfully" });
+  }
+
+  @Delete("courses/:courseId/enroll-users")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Unenroll users from course via integration API",
+    description:
+      "Removes the provided user IDs from the specified course within the selected tenant.\n\nUse this endpoint to revoke direct course access when enrollment should no longer apply.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      { type: "param", name: "courseId", schema: UUIDSchema },
+      { type: "body", schema: createCoursesEnrollmentSchema },
+    ],
+    response: baseResponse(integrationMessageResponseSchema),
+  })
+  async unenrollUsers(
+    @Param("courseId") courseId: UUIDType,
+    @Body() body: Static<typeof createCoursesEnrollmentSchema>,
+  ): Promise<BaseResponse<{ message: string }>> {
+    await this.courseService.unenrollCourse(courseId, body.studentIds);
+
+    return new BaseResponse({ message: "Users unenrolled successfully" });
+  }
+
+  @Post("courses/:courseId/enroll-groups")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Enroll groups to course via integration API",
+    description:
+      "Enrolls members of the provided group IDs into the specified course within the selected tenant.\n\nUse this for group-driven provisioning where course access is managed at group level instead of per user.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      { type: "param", name: "courseId", schema: UUIDSchema },
+      { type: "body", schema: enrolledCourseGroupsPayload },
+    ],
+    response: baseResponse(integrationMessageResponseSchema),
+  })
+  async enrollGroups(
+    @Param("courseId") courseId: UUIDType,
+    @Body() body: Static<typeof enrolledCourseGroupsPayload>,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<{ message: string }>> {
+    await this.courseService.enrollGroupsToCourse(courseId, body.groups, currentUser);
+
+    return new BaseResponse({ message: "Groups enrolled successfully" });
+  }
+
+  @Delete("courses/:courseId/enroll-groups")
+  @RequirePermission(PERMISSIONS.INTEGRATION_API_USE)
+  @ApiEndpointDocs({
+    summary: "Unenroll groups from course via integration API",
+    description:
+      "Removes members of the provided group IDs from the specified course within the selected tenant.\n\nUse this for group-driven deprovisioning when course access is no longer required.",
+    headers: [API_HEADERS.X_TENANT_ID],
+  })
+  @Validate({
+    request: [
+      { type: "param", name: "courseId", schema: UUIDSchema },
+      { type: "body", schema: unenrollGroupsPayloadSchema },
+    ],
+    response: baseResponse(integrationMessageResponseSchema),
+  })
+  async unenrollGroups(
+    @Param("courseId") courseId: UUIDType,
+    @Body() body: UnenrollGroupsPayload,
+  ): Promise<BaseResponse<{ message: string }>> {
+    await this.courseService.unenrollGroupsFromCourse(courseId, body.groupIds);
+
+    return new BaseResponse({ message: "Groups unenrolled successfully" });
+  }
+}

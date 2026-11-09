@@ -1,0 +1,192 @@
+import {
+  BadRequestException,
+  ConflictException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import { SYSTEM_ROLE_SLUGS, TENANT_STATUSES } from "@repo/shared";
+import { and, eq, isNull } from "drizzle-orm";
+
+import { DefaultAutomationSetupService } from "src/automation-execution/services/default-automation-setup.service";
+import { DatabasePg } from "src/common";
+import { SampleEmailTemplateSetupService } from "src/email-templates/services/sample-email-template-setup.service";
+import { DEFAULT_GLOBAL_SETTINGS } from "src/settings/constants/settings.constants";
+import { TenantDbRunnerService } from "src/storage/db/tenant-db-runner.service";
+import { settings } from "src/storage/schema";
+import { UserService } from "src/user/user.service";
+import { USER_CREATION_FLOW_TYPE } from "src/user/user.types";
+import { invalidateCorsCache } from "src/utils/cors";
+import { settingsToJSONBuildObject } from "src/utils/settings-to-json-build-object";
+
+import { TenantsRepository } from "./tenants.repository";
+
+import type {
+  CreateTenantOptions,
+  CreateTenantBody,
+  ListTenantsQuery,
+  TenantsListItemResponse,
+  UpdateTenantBody,
+} from "./types";
+import type { PaginatedResponse } from "src/common";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+
+@Injectable()
+export class TenantsService {
+  constructor(
+    @Inject("DB") private readonly db: DatabasePg,
+    private readonly tenantsRepository: TenantsRepository,
+    private readonly tenantRunner: TenantDbRunnerService,
+    private readonly userService: UserService,
+    private readonly sampleEmailTemplateSetupService: SampleEmailTemplateSetupService,
+    private readonly defaultAutomationSetupService: DefaultAutomationSetupService,
+  ) {}
+
+  async findAllTenants(
+    { page = 1, perPage = 20, search, status, sort }: ListTenantsQuery,
+    currentTenantId: string,
+  ): Promise<PaginatedResponse<TenantsListItemResponse[]>> {
+    const normalizedSearch = search?.trim() ? search.trim() : undefined;
+
+    const [data, totalItems] = await Promise.all([
+      this.tenantsRepository.findAll({
+        page,
+        perPage,
+        search: normalizedSearch,
+        status,
+        sort,
+        currentTenantId,
+      }),
+      this.tenantsRepository.countAll({ search: normalizedSearch, status }),
+    ]);
+
+    return {
+      data,
+      pagination: {
+        totalItems,
+        page,
+        perPage,
+      },
+    };
+  }
+
+  async createTenant(
+    input: CreateTenantBody,
+    actor: CurrentUserType,
+    options: CreateTenantOptions = {},
+  ) {
+    const host = this.normalizeHost(input.host);
+
+    const existing = await this.tenantsRepository.findIdByHost(host);
+
+    if (existing) throw new ConflictException("superAdminTenants.error.hostAlreadyExists");
+
+    const createdTenant = await this.tenantsRepository.create({
+      name: input.name,
+      host,
+      status: input.status ?? TENANT_STATUSES.ACTIVE,
+    });
+
+    const { adminFirstName, adminLastName } = input;
+
+    const inviter = await this.getTenantCreator(actor.userId, options);
+    const invitedByUserName = `${inviter.firstName} ${inviter.lastName}`.trim();
+
+    await this.tenantRunner.runWithTenant(createdTenant.id, async () => {
+      const [existingSettings] = await this.db
+        .select({ id: settings.id })
+        .from(settings)
+        .where(and(eq(settings.tenantId, createdTenant.id), isNull(settings.userId)));
+
+      if (!existingSettings) {
+        await this.db.insert(settings).values({
+          tenantId: createdTenant.id,
+          userId: null,
+          settings: settingsToJSONBuildObject(DEFAULT_GLOBAL_SETTINGS),
+        });
+      }
+
+      await this.defaultAutomationSetupService.ensureTenantDefaultAutomations();
+
+      const adminUser = {
+        email: input.adminEmail,
+        firstName: adminFirstName,
+        lastName: adminLastName,
+        roleSlugs: [SYSTEM_ROLE_SLUGS.ADMIN],
+        language: input.adminLanguage,
+        tenantId: createdTenant.id,
+      };
+
+      await this.userService.createUser(adminUser, this.db, {
+        flowType: USER_CREATION_FLOW_TYPE.INVITE,
+        invitedByUserName,
+        origin: createdTenant.host,
+      });
+      await this.sampleEmailTemplateSetupService.ensureExampleEmailTemplate(createdTenant.id);
+    });
+
+    await invalidateCorsCache();
+
+    return createdTenant;
+  }
+
+  async findTenantById(id: string) {
+    const tenant = await this.tenantsRepository.findById(id);
+
+    if (!tenant) throw new NotFoundException("superAdminTenants.error.notFound");
+
+    return tenant;
+  }
+
+  async updateTenantById(id: string, input: UpdateTenantBody) {
+    const updates = { ...input };
+
+    if (updates.host) {
+      updates.host = this.normalizeHost(updates.host);
+
+      const existing = await this.tenantsRepository.findIdByHost(updates.host);
+
+      if (existing && existing.id !== id) {
+        throw new ConflictException("superAdminTenants.error.hostAlreadyExists");
+      }
+    }
+
+    const updatedTenant = await this.tenantsRepository.update(id, updates);
+
+    if (!updatedTenant) throw new NotFoundException("superAdminTenants.error.notFound");
+
+    await invalidateCorsCache();
+
+    return updatedTenant;
+  }
+
+  async deleteTenantById(id: string, currentTenantId: string): Promise<void> {
+    if (id === currentTenantId) {
+      throw new BadRequestException("superAdminTenants.error.currentTenantDeleteNotAllowed");
+    }
+
+    const deletedTenant = await this.tenantsRepository.deleteById(id);
+
+    if (!deletedTenant) throw new NotFoundException("superAdminTenants.error.notFound");
+
+    await invalidateCorsCache();
+  }
+
+  private normalizeHost(host: string) {
+    try {
+      return new URL(host).origin.replace(/\/$/, "");
+    } catch {
+      throw new BadRequestException("superAdminTenants.error.invalidHost");
+    }
+  }
+
+  private async getTenantCreator(userId: string, options: CreateTenantOptions) {
+    if (options.actorLookupTenantId) {
+      return this.tenantRunner.runWithTenant(options.actorLookupTenantId, () =>
+        this.userService.getUserById(userId),
+      );
+    }
+
+    return this.userService.getUserById(userId);
+  }
+}

@@ -1,0 +1,107 @@
+import { ForbiddenException, Injectable, NotFoundException } from "@nestjs/common";
+import { PERMISSIONS } from "@repo/shared";
+import { eq, inArray } from "drizzle-orm";
+
+import { AiRepository } from "src/ai/repositories/ai.repository";
+import { THREAD_STATUS } from "src/ai/utils/ai.type";
+import { hasPermission } from "src/common/permissions/permission.utils";
+import { aiMentorThreads } from "src/storage/schema";
+
+import type {
+  CreateThreadBody,
+  ResponseThreadBody,
+  ResponseThreadMessageBody,
+} from "src/ai/utils/ai.schema";
+import type { BaseResponse, UUIDType } from "src/common";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+
+type ThreadViewer = Pick<CurrentUserType, "userId" | "permissions">;
+
+@Injectable()
+export class ThreadService {
+  constructor(private readonly aiRepository: AiRepository) {}
+
+  async createThreadIfNoneExist(data: CreateThreadBody) {
+    const aiMentorLessonId = await this.findAiMentorLessonIdFromLesson(data.lessonId);
+
+    const thread = await this.aiRepository.findThread([
+      eq(aiMentorThreads.aiMentorLessonId, aiMentorLessonId),
+      inArray(aiMentorThreads.status, [THREAD_STATUS.ACTIVE, THREAD_STATUS.COMPLETED]),
+      eq(aiMentorThreads.userId, data.userId),
+    ]);
+
+    if (thread) return { thread, newThread: false };
+
+    const newThread = await this.aiRepository.createThread({
+      aiMentorLessonId: aiMentorLessonId,
+      ...data,
+    });
+
+    return { thread: newThread, newThread: true };
+  }
+
+  async findExistingThreadForLesson(lessonId: UUIDType, userId: UUIDType) {
+    const aiMentorLessonId = await this.findAiMentorLessonIdFromLesson(lessonId);
+
+    return this.aiRepository.findThread([
+      eq(aiMentorThreads.aiMentorLessonId, aiMentorLessonId),
+      inArray(aiMentorThreads.status, [THREAD_STATUS.ACTIVE, THREAD_STATUS.COMPLETED]),
+      eq(aiMentorThreads.userId, userId),
+    ]);
+  }
+
+  async findThread(
+    threadId: UUIDType,
+    currentUser: ThreadViewer,
+    includeCurrent = false,
+  ): Promise<BaseResponse<ResponseThreadBody>> {
+    const { userId } = currentUser;
+
+    const thread = await this.aiRepository.findThread(
+      [eq(aiMentorThreads.id, threadId)],
+      includeCurrent,
+    );
+
+    if (!thread) throw new NotFoundException("common.toast.notFound");
+
+    if (thread.practiceSessionId) {
+      if (thread.userId !== userId) throw new ForbiddenException("common.toast.noAccess");
+
+      return { data: thread };
+    }
+
+    const { lessonId } = await this.aiRepository.findLessonIdByThreadId(threadId);
+    if (!lessonId) throw new NotFoundException("common.toast.notFound");
+
+    const author = await this.aiRepository.getCourseAuthorByLesson(lessonId);
+
+    const canManageUsers = hasPermission(currentUser.permissions, PERMISSIONS.USER_MANAGE);
+    const isManagedLearner =
+      hasPermission(currentUser.permissions, PERMISSIONS.MANAGED_GROUP_RESULTS_READ) &&
+      (await this.aiRepository.isLearnerManagedByUser(thread.userId, userId));
+    const hasAccess = canManageUsers || author === userId || isManagedLearner;
+
+    if (!(thread.userId === userId || hasAccess))
+      throw new ForbiddenException("common.toast.noAccess");
+
+    return { data: thread };
+  }
+
+  async findAllMessagesByThread(
+    threadId: UUIDType,
+    currentUser: ThreadViewer,
+  ): Promise<BaseResponse<ResponseThreadMessageBody[]>> {
+    await this.findThread(threadId, currentUser, true);
+
+    const messages = await this.aiRepository.findMessageHistory(threadId);
+
+    return { data: messages };
+  }
+
+  private async findAiMentorLessonIdFromLesson(lessonId: UUIDType) {
+    const aiMentorLessonId = await this.aiRepository.findAiMentorLessonIdFromLesson(lessonId);
+    if (!aiMentorLessonId) throw new NotFoundException("common.toast.notFound");
+
+    return aiMentorLessonId.aiMentorLessonId;
+  }
+}

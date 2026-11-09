@@ -1,0 +1,77 @@
+import { ALLOWED_AGE_LIMITS, HEX_COLOR_REGEX } from "@repo/shared";
+import { Type } from "@sinclair/typebox";
+
+import { UUIDSchema } from "src/common";
+
+import { ALLOWED_CURRENCIES } from "../constants/settings.constants";
+
+import {
+  dashboardLayoutWidgetSchema,
+  adminSettingsJSONContentSchema,
+  studentSettingsJSONContentSchema,
+} from "./settings.schema";
+
+import type { Static } from "@sinclair/typebox";
+
+export type AllowedCurrency = (typeof ALLOWED_CURRENCIES)[number];
+export type AllowedAgeLimit = (typeof ALLOWED_AGE_LIMITS)[number];
+
+export const updateSettingsBodySchema = Type.Partial(
+  Type.Union([studentSettingsJSONContentSchema, adminSettingsJSONContentSchema]),
+);
+
+export const updateDashboardSettingsBodySchema = Type.Object({
+  expectedRevision: Type.Integer({ minimum: 0 }),
+  widgets: Type.Array(dashboardLayoutWidgetSchema),
+});
+
+export const resetDashboardSettingsBodySchema = Type.Object({
+  expectedRevision: Type.Integer({ minimum: 0 }),
+});
+
+export const updateMFAEnforcedRolesSchema = Type.Record(
+  Type.String({ minLength: 1 }),
+  Type.Optional(Type.Boolean()),
+);
+
+export const updateDefaultCourseCurrencySchema = Type.Object({
+  defaultCourseCurrency: Type.Union(ALLOWED_CURRENCIES.map((currency) => Type.Literal(currency))),
+});
+
+export const updateGlobalColorSchema = Type.Object({
+  primaryColor: Type.String({
+    pattern: HEX_COLOR_REGEX.source,
+  }),
+  contrastColor: Type.String({
+    pattern: HEX_COLOR_REGEX.source,
+  }),
+});
+
+export const updateConfigWarningDismissedSchema = Type.Object({
+  dismissed: Type.Boolean(),
+});
+
+export const updateAgeLimitSchema = Type.Object({
+  ageLimit: Type.Union(ALLOWED_AGE_LIMITS.map((age) => (!age ? Type.Null() : Type.Literal(age)))),
+});
+
+export const updateLiveTrainingMaxParallelSessionsSchema = Type.Object({
+  liveTrainingMaxParallelSessions: Type.Number({ minimum: 1 }),
+});
+
+export const updateFeaturedCourseSchema = Type.Object({
+  featuredCourseId: Type.Union([UUIDSchema, Type.Null()]),
+});
+
+export type UpdateSettingsBody = Static<typeof updateSettingsBodySchema>;
+export type UpdateDashboardSettingsBody = Static<typeof updateDashboardSettingsBodySchema>;
+export type ResetDashboardSettingsBody = Static<typeof resetDashboardSettingsBodySchema>;
+export type UpdateMFAEnforcedRolesRequest = Static<typeof updateMFAEnforcedRolesSchema>;
+export type UpdateDefaultCourseCurrencyBody = Static<typeof updateDefaultCourseCurrencySchema>;
+export type UpdateGlobalColorSchemaBody = Static<typeof updateGlobalColorSchema>;
+export type UpdateConfigWarningDismissedBody = Static<typeof updateConfigWarningDismissedSchema>;
+export type UpdateAgeLimitBody = Static<typeof updateAgeLimitSchema>;
+export type UpdateLiveTrainingMaxParallelSessionsBody = Static<
+  typeof updateLiveTrainingMaxParallelSessionsSchema
+>;
+export type UpdateFeaturedCourseBody = Static<typeof updateFeaturedCourseSchema>;

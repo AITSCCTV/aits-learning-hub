@@ -1,0 +1,319 @@
+import { LangfuseClient } from "@langfuse/client";
+import { observe } from "@langfuse/tracing";
+import { LUMA_VOICE_TIMING_PRECISION, type LumaVoiceTimingPrecision } from "@mentingo/luma-sdk";
+import { BadRequestException, Injectable } from "@nestjs/common";
+import { PROMPT_MAP, promptTemplates } from "@repo/prompts";
+import { AI_MENTOR_TYPE, type AiMentorType } from "@repo/shared";
+import { Value } from "@sinclair/typebox/value";
+import { eq } from "drizzle-orm";
+import Handlebars from "handlebars";
+import { match } from "ts-pattern";
+
+import { AiRepository } from "src/ai/repositories/ai.repository";
+import { MessageService } from "src/ai/services/message.service";
+import { RagService } from "src/ai/services/rag.service";
+import { TokenService } from "src/ai/services/token.service";
+import { MESSAGE_ROLE, OPENAI_MODELS } from "src/ai/utils/ai.type";
+import { EnvService } from "src/env/services/env.service";
+import { aiMentorThreads } from "src/storage/schema";
+
+import type { OnModuleInit } from "@nestjs/common";
+import type { promptId } from "@repo/prompts";
+import type { Static } from "@sinclair/typebox";
+import type { AiVoiceDeliveryContext } from "src/ai/ai-chat.types";
+import type { ThreadOwnershipBody } from "src/ai/utils/ai.schema";
+import type { MessageRole } from "src/ai/utils/ai.type";
+import type { CompiledTemplate } from "src/ai/utils/prompt.type";
+import type { UUIDType } from "src/common";
+
+@Injectable()
+export class PromptService implements OnModuleInit {
+  private prompts = new Map<promptId, CompiledTemplate>();
+  private langfuseClient?: LangfuseClient;
+  constructor(
+    private readonly aiRepository: AiRepository,
+    private readonly messageService: MessageService,
+    private readonly tokenService: TokenService,
+    private readonly ragService: RagService,
+    private readonly envService: EnvService,
+  ) {}
+
+  onModuleInit() {
+    const langfuseBaseUrl =
+      process.env.LANGFUSE_BASE_URL ?? process.env.LANGFUSE_HOST ?? "http://localhost:3002";
+
+    if (process.env.LANGFUSE_PUBLIC_KEY && process.env.LANGFUSE_SECRET_KEY) {
+      this.langfuseClient = new LangfuseClient({
+        secretKey: process.env.LANGFUSE_SECRET_KEY,
+        publicKey: process.env.LANGFUSE_PUBLIC_KEY,
+        baseUrl: langfuseBaseUrl,
+      });
+    }
+
+    Object.entries(promptTemplates).forEach(([id, template]) => {
+      const compiled = Handlebars.compile(template.template);
+
+      this.prompts.set(id as promptId, {
+        id: id as promptId,
+        template: compiled,
+        varsSchema: PROMPT_MAP[id as keyof typeof PROMPT_MAP],
+      });
+    });
+  }
+
+  async buildPrompt(
+    threadId: UUIDType,
+    content: string,
+    isVoiceMentor: boolean = false,
+    tempMessageId?: string,
+    voiceTurnWasInterrupted: boolean = false,
+    voiceDeliveryContext?: AiVoiceDeliveryContext,
+  ) {
+    const { history } = await this.messageService.findMessageHistory(threadId, false);
+
+    const systemPrompt = await this.aiRepository.findFirstMessageByRoleAndThread(
+      threadId,
+      MESSAGE_ROLE.SYSTEM,
+    );
+
+    const summary = await this.aiRepository.findFirstMessageByRoleAndThread(
+      threadId,
+      MESSAGE_ROLE.SUMMARY,
+    );
+
+    const metaMessages: Array<{
+      id: string;
+      role: MessageRole;
+      userName: null;
+      content: string;
+    }> = [];
+
+    if (systemPrompt) {
+      metaMessages.push({
+        id: systemPrompt.id,
+        role: systemPrompt.role,
+        userName: null,
+        content: systemPrompt.content,
+      });
+    }
+
+    if (isVoiceMentor) {
+      const thread = await this.aiRepository.findThread([eq(aiMentorThreads.id, threadId)]);
+      const { voiceTtsProvider } = await this.envService.getLumaConfigured();
+      const voicePromptId =
+        voiceTtsProvider === "elevenlabs" ? "voiceMentorElevenLabsAddon" : "voiceMentorAddon";
+      // All voice turns use bundled transport guidance; other prompts stay managed.
+      const voiceMentorAddon = this.loadBundledPrompt(voicePromptId, {
+        language: thread.userLanguage,
+      });
+      metaMessages.push({
+        id: "",
+        role: MESSAGE_ROLE.SYSTEM,
+        userName: null,
+        content: voiceMentorAddon,
+      });
+
+      metaMessages.push({
+        id: "",
+        role: MESSAGE_ROLE.SYSTEM,
+        userName: null,
+        content: await this.loadPrompt("voiceMentorInterruptionPolicy", {}),
+      });
+
+      if (voiceDeliveryContext) {
+        const voiceMentorTimingAddon = await this.loadPrompt("voiceMentorTimingAddon", {
+          elapsedMs: voiceDeliveryContext.elapsedMs,
+          speechMs: voiceDeliveryContext.speechMs,
+          pauseCount: voiceDeliveryContext.pauseCount,
+          longestPauseMs: voiceDeliveryContext.longestPauseMs,
+          averagePauseMs:
+            voiceDeliveryContext.averagePauseMs === null
+              ? "not available"
+              : `${voiceDeliveryContext.averagePauseMs} milliseconds`,
+          segmentCount: voiceDeliveryContext.segmentCount,
+          wordCount: voiceDeliveryContext.wordCount,
+          wordsPerMinute:
+            voiceDeliveryContext.wordsPerMinute === null
+              ? "not available"
+              : `${voiceDeliveryContext.wordsPerMinute} words per minute`,
+          timingPrecision: this.normalizeTimingPrecision(voiceDeliveryContext.timingPrecision),
+        });
+        metaMessages.push({
+          id: "",
+          role: MESSAGE_ROLE.SYSTEM,
+          userName: null,
+          content: voiceMentorTimingAddon,
+        });
+      }
+
+      if (voiceTurnWasInterrupted) {
+        const voiceMentorInterruptionEvent = await this.loadPrompt(
+          "voiceMentorInterruptionEvent",
+          {},
+        );
+        metaMessages.push({
+          id: "",
+          role: MESSAGE_ROLE.SYSTEM,
+          userName: null,
+          content: voiceMentorInterruptionEvent,
+        });
+      }
+    }
+
+    if (summary) {
+      metaMessages.push({
+        id: summary.id,
+        role: summary.role,
+        userName: null,
+        content: summary.content,
+      });
+    }
+
+    history.unshift(...metaMessages);
+
+    const { lessonId } = await this.aiRepository.findLessonIdByThreadId(threadId);
+    const lastHistoryEntry = history[history.length - 1];
+    const contextInfo = content + (lastHistoryEntry?.content ?? "");
+
+    const { chunks: context } = await observe(
+      async () => {
+        return lessonId ? this.ragService.getContext(contextInfo, lessonId) : { chunks: [] };
+      },
+      { name: "RAG", asType: "retriever" },
+    )();
+
+    history.push({ id: tempMessageId ?? "", role: MESSAGE_ROLE.USER, userName: null, content });
+    history.push(
+      ...context.map(({ role, content }) => ({ id: "", role, userName: null, content })),
+    );
+
+    return history;
+  }
+
+  private normalizeTimingPrecision(value: string): LumaVoiceTimingPrecision {
+    return (
+      Object.values(LUMA_VOICE_TIMING_PRECISION).find((precision) => precision === value) ??
+      LUMA_VOICE_TIMING_PRECISION.UNKNOWN
+    );
+  }
+
+  async setSystemPrompt(data: ThreadOwnershipBody, mentorType?: AiMentorType) {
+    const prompt = await this.buildSystemPrompt(data, mentorType);
+    await this.aiRepository.insertMessage({
+      tokenCount: this.tokenService.countTokens(OPENAI_MODELS.BASIC, prompt),
+      threadId: data.threadId,
+      role: MESSAGE_ROLE.SYSTEM,
+      content: prompt,
+    });
+    return prompt;
+  }
+
+  async buildSystemPrompt(data: ThreadOwnershipBody, mentorType?: AiMentorType) {
+    const { userLanguage } = await this.aiRepository.findThread([
+      eq(aiMentorThreads.id, data.threadId),
+    ]);
+
+    const lesson = await this.aiRepository.findMentorLessonByThreadId(data.threadId, userLanguage);
+
+    if (!lesson) {
+      throw new BadRequestException("common.error.aiMentorConfigurationIncomplete");
+    }
+
+    const groups = await this.aiRepository.findGroupsByThreadId(data.threadId, userLanguage);
+    const mode = mentorType ?? lesson.type;
+
+    const securityAndRagBlock = await this.loadPrompt("securityAndRagBlock", {
+      language: userLanguage,
+    });
+
+    const learnerNameAddon = await this.loadPrompt("learnerNameAddon", {
+      learnerFirstName: lesson.learnerFirstName,
+      language: userLanguage,
+    });
+
+    const commonPromptVariables = {
+      lessonTitle: lesson.title,
+      language: userLanguage,
+      name: lesson.name,
+      openingInstruction: lesson.openingInstruction ?? "",
+      additionalInstructions: lesson.additionalInstructions ?? "",
+      groups: groups.map((group) => `${group.name}: ${group.characteristic}\n`),
+      securityAndRagBlock,
+    };
+
+    const mentorPrompt = await match(mode)
+      .with(AI_MENTOR_TYPE.TEACHER, async () => {
+        if (!lesson.teachingStyle)
+          throw new BadRequestException("common.error.aiMentorConfigurationIncomplete");
+
+        return this.loadPrompt("teacherPrompt", {
+          ...commonPromptVariables,
+          taskGoal: lesson.taskGoal,
+          expertise: lesson.expertise,
+          contentScope: lesson.contentScope,
+          teachingStyle: lesson.teachingStyle,
+          feedbackGuidance: lesson.feedbackGuidance ?? "",
+        });
+      })
+      .with(AI_MENTOR_TYPE.ROLEPLAY, async () => {
+        if (!lesson.difficulty)
+          throw new BadRequestException("common.error.aiMentorConfigurationIncomplete");
+
+        return this.loadPrompt("roleplayPrompt", {
+          ...commonPromptVariables,
+          scenario: lesson.scenario,
+          aiRole: lesson.aiRole,
+          learnerRole: lesson.learnerRole,
+          characterGoal: lesson.characterGoal,
+          difficulty: lesson.difficulty,
+          factsAndConstraints: lesson.factsAndConstraints ?? "",
+        });
+      })
+      .otherwise(() => {
+        throw new BadRequestException("common.error.aiMentorConfigurationIncomplete");
+      });
+
+    const prompt = `${mentorPrompt}\n\n${learnerNameAddon}`;
+
+    return prompt;
+  }
+
+  async loadPrompt<K extends keyof typeof PROMPT_MAP>(id: K, vars: Static<(typeof PROMPT_MAP)[K]>) {
+    const langfusePrompt = await this.langfuseClient?.prompt
+      ?.get(id, { type: "text" })
+      .catch(() => undefined);
+
+    if (langfusePrompt?.prompt) {
+      return langfusePrompt.compile(vars as Record<string, string>);
+    }
+
+    return this.loadBundledPrompt(id, vars);
+  }
+
+  /** Render validated local guidance without reading or changing managed prompt versions. */
+  private loadBundledPrompt<K extends keyof typeof PROMPT_MAP>(
+    id: K,
+    vars: Static<(typeof PROMPT_MAP)[K]>,
+  ) {
+    const prompt = this.prompts.get(id);
+    if (!prompt) {
+      throw new Error(`Prompt ${id} not found`);
+    }
+
+    if (prompt.varsSchema && !Value.Check(prompt.varsSchema, vars)) {
+      throw new Error("Prompt template failed validation");
+    }
+
+    return prompt.template(vars);
+  }
+
+  async isNotEmpty(prompt: string) {
+    if (!prompt?.trim()) {
+      throw new BadRequestException("At least one message required");
+    }
+  }
+
+  async getOpenAI() {
+    return this.ragService.getAISdkOpenAI();
+  }
+}

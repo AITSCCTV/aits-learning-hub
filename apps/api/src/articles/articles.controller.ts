@@ -1,0 +1,503 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  Res,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
+} from "@nestjs/common";
+import { AnyFilesInterceptor, FileInterceptor } from "@nestjs/platform-express";
+import { ApiBody, ApiConsumes, ApiOperation } from "@nestjs/swagger";
+import {
+  ALLOWED_EXCEL_FILE_TYPES,
+  ALLOWED_LESSON_IMAGE_FILE_TYPES,
+  ALLOWED_PDF_FILE_TYPES,
+  ALLOWED_PRESENTATION_FILE_TYPES,
+  ALLOWED_VIDEO_FILE_TYPES,
+  ALLOWED_WORD_FILE_TYPES,
+  ENTITY_TYPES,
+  FEATURES,
+  PERMISSIONS,
+  RESOURCE_VISIBILITY,
+  SupportedLanguages,
+} from "@repo/shared";
+import { Type } from "@sinclair/typebox";
+import { Request, Response } from "express";
+import { Validate } from "nestjs-typebox";
+
+import {
+  type PreviewArticleRequest,
+  previewArticleRequestSchema,
+  type PreviewArticleResponse,
+  previewArticleResponseSchema,
+} from "src/articles/schemas/previewArticle.schema";
+import { BaseResponse, UUIDSchema, UUIDType, baseResponse } from "src/common";
+import { Public } from "src/common/decorators/public.decorator";
+import { RequireFeature } from "src/common/decorators/require-feature.decorator";
+import { RequirePermission } from "src/common/decorators/require-permission.decorator";
+import { CurrentUser } from "src/common/decorators/user.decorator";
+import { CurrentUserType } from "src/common/types/current-user.type";
+import { supportedLanguagesSchema } from "src/courses/schemas/course.schema";
+import { filePreviewQuerySchema, FilePreviewQuery } from "src/file/types/file-preview.type";
+import { getBaseFileTypePipe } from "src/file/utils/baseFileTypePipe";
+import { buildFileTypeRegex } from "src/file/utils/fileTypeRegex";
+import {
+  assertEditorialCoverUploadGrant,
+  assertEditorialUploadGrant,
+} from "src/mcp/mcp-upload-grant.assertions";
+import { McpRequest } from "src/mcp/mcp.types";
+import { ValidateMultipartPipe } from "src/utils/pipes/validateMultipartPipe";
+
+import { getArticleSectionResponseSchema as getArticleSectionDetailsResponseSchema } from "./schemas/articleSection.schema";
+import {
+  type GetArticleTocResponse,
+  getArticleSectionResponseSchema,
+} from "./schemas/articleToc.schema";
+import {
+  CreateArticle,
+  createArticleSchema,
+  CreateArticleSection,
+  createArticleSectionSchema,
+  CreateLanguageArticle,
+  createLanguageArticleSchema,
+  UploadFile,
+  uploadFileSchema,
+} from "./schemas/createArticle.schema";
+import {
+  createArticleResponseSchema,
+  createArticleSectionResponseSchema,
+  getArticleResponseSchema,
+  uploadArticleFileResponseSchema,
+  getArticlesResponseSchema,
+  type GetArticlesResponse,
+  type GetArticleResponse,
+} from "./schemas/selectArticle.schema";
+import {
+  UpdateArticle,
+  updateArticleMultipartSchema,
+  updateArticleSchema,
+  UpdateArticleSection,
+  updateArticleSectionSchema,
+} from "./schemas/updateArticle.schema";
+import { ArticlesService } from "./services/articles.service";
+
+const optionalBooleanQuerySchema = Type.Optional(
+  Type.Union([Type.Boolean(), Type.Literal("true"), Type.Literal("false")]),
+);
+
+type BooleanQuery = boolean | "true" | "false";
+
+const parseBooleanQuery = (value?: BooleanQuery) => value === true || value === "true";
+
+@Controller("articles")
+export class ArticlesController {
+  constructor(private readonly articlesService: ArticlesService) {}
+
+  @Post("section")
+  @Validate({
+    request: [{ type: "body", schema: createArticleSectionSchema }],
+    response: baseResponse(createArticleSectionResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async createArticleSection(
+    @Body() createArticleSectionBody: CreateArticleSection,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    const createdArticle = await this.articlesService.createArticleSection(
+      createArticleSectionBody,
+      currentUser,
+    );
+
+    return new BaseResponse(createdArticle);
+  }
+
+  @Get("section/:id")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+    ],
+    response: baseResponse(getArticleSectionDetailsResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async getArticleSection(
+    @Param("id") id: UUIDType,
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    const section = await this.articlesService.getArticleSection(id, language, currentUser);
+
+    return new BaseResponse(section);
+  }
+
+  @Patch("section/:id")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "body", schema: updateArticleSectionSchema },
+    ],
+    response: baseResponse(createArticleSectionResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async updateArticleSection(
+    @Param("id") id: UUIDType,
+    @Body() updateArticleSectionBody: UpdateArticleSection,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    const updatedSection = await this.articlesService.updateArticleSection(
+      id,
+      updateArticleSectionBody,
+      currentUser,
+    );
+
+    return new BaseResponse(updatedSection);
+  }
+
+  @ApiOperation({ summary: "Add a new language to an article section" })
+  @Post("section/:id/language")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "body", schema: createArticleSectionSchema },
+    ],
+    response: baseResponse(createArticleSectionResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async addNewLanguageToSection(
+    @Param("id") id: UUIDType,
+    @Body() createLanguageBody: CreateArticleSection,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    const createdLanguage = await this.articlesService.createArticleSectionLanguage(
+      id,
+      createLanguageBody,
+      currentUser,
+    );
+
+    return new BaseResponse(createdLanguage);
+  }
+
+  @Delete("section/:id/language")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+    ],
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async deleteArticleSectionLanguage(
+    @Param("id") id: UUIDType,
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    await this.articlesService.deleteArticleSectionLanguage(id, language, currentUser);
+  }
+
+  @Delete("section/:id")
+  @Validate({
+    request: [{ type: "param", name: "id", schema: UUIDSchema }],
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async deleteArticleSection(
+    @Param("id") id: UUIDType,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    await this.articlesService.deleteArticleSection(id, currentUser);
+  }
+
+  @Get("drafts")
+  @Validate({
+    request: [{ type: "query", name: "language", schema: supportedLanguagesSchema }],
+    response: getArticlesResponseSchema,
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  async getDraftArticles(
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<GetArticlesResponse> {
+    return this.articlesService.getDraftArticles(language, currentUser);
+  }
+
+  @Public()
+  @Get("toc")
+  @Validate({
+    request: [
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+      { type: "query", name: "isDraftMode", schema: optionalBooleanQuerySchema },
+    ],
+    response: baseResponse(getArticleSectionResponseSchema),
+  })
+  @RequireFeature({ features: [FEATURES.ARTICLES], allowUnregisteredUser: true })
+  async getArticleToc(
+    @Query("language") language: SupportedLanguages,
+    @Query("isDraftMode") isDraftMode?: BooleanQuery,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ): Promise<BaseResponse<GetArticleTocResponse>> {
+    const toc = await this.articlesService.getArticlesToc(
+      language,
+      parseBooleanQuery(isDraftMode),
+      currentUser,
+    );
+
+    return new BaseResponse(toc);
+  }
+
+  @Public()
+  @Get("articles-resource/:resourceId")
+  @Validate({
+    request: [
+      { type: "param", schema: UUIDSchema, name: "resourceId" },
+      { type: "query", name: "preview", schema: filePreviewQuerySchema },
+    ],
+  })
+  @RequireFeature({ features: [FEATURES.ARTICLES], allowUnregisteredUser: true })
+  async getArticleResource(
+    @Param("resourceId") resourceId: UUIDType,
+    @Query("preview") preview: FilePreviewQuery,
+    @Req() req: Request,
+    @Res() res: Response,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ) {
+    return this.articlesService.getArticleResource(req, res, resourceId, currentUser, preview);
+  }
+
+  @Public()
+  @Get(":id")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+      { type: "query", name: "isDraftMode", schema: optionalBooleanQuerySchema },
+    ],
+    response: baseResponse(getArticleResponseSchema),
+  })
+  @RequireFeature({ features: [FEATURES.ARTICLES], allowUnregisteredUser: true })
+  async getArticle(
+    @Param("id") id: string,
+    @Query("language") language: SupportedLanguages,
+    @Query("isDraftMode") isDraftMode?: BooleanQuery,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ): Promise<BaseResponse<GetArticleResponse>> {
+    const article = await this.articlesService.getArticle(
+      id,
+      language,
+      parseBooleanQuery(isDraftMode),
+      currentUser,
+    );
+
+    return new BaseResponse(article);
+  }
+
+  @Public()
+  @Get()
+  @Validate({
+    request: [{ type: "query", name: "language", schema: supportedLanguagesSchema }],
+    response: getArticlesResponseSchema,
+  })
+  @RequireFeature({ features: [FEATURES.ARTICLES], allowUnregisteredUser: true })
+  async getArticles(
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ): Promise<GetArticlesResponse> {
+    return this.articlesService.getArticles(language, currentUser);
+  }
+
+  @Post("article")
+  @Validate({
+    request: [{ type: "body", schema: createArticleSchema }],
+    response: baseResponse(createArticleResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async createArticle(
+    @Body() createArticleBody: CreateArticle,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    const createdNews = await this.articlesService.createArticle(createArticleBody, currentUser);
+
+    return new BaseResponse(createdNews);
+  }
+
+  @Patch(":id")
+  @UseInterceptors(AnyFilesInterceptor())
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ schema: updateArticleMultipartSchema })
+  @Validate({
+    request: [{ type: "param", name: "id", schema: UUIDSchema }],
+    response: baseResponse(createArticleResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async updateArticle(
+    @Param("id") id: string,
+    @Body(new ValidateMultipartPipe(updateArticleSchema)) updateArticleBody: UpdateArticle,
+    @UploadedFiles(
+      getBaseFileTypePipe(buildFileTypeRegex(ALLOWED_LESSON_IMAGE_FILE_TYPES)).build({
+        fileIsRequired: false,
+        errorHttpStatusCode: HttpStatus.BAD_REQUEST,
+      }),
+    )
+    covers: Express.Multer.File[] = [],
+    @CurrentUser() currentUser?: CurrentUserType,
+    @Req() request?: McpRequest,
+  ) {
+    if (request?.mcpUploadGrant)
+      assertEditorialCoverUploadGrant(
+        request.mcpUploadGrant,
+        ENTITY_TYPES.ARTICLES,
+        id,
+        covers,
+        updateArticleBody,
+      );
+    const updatedArticle = await this.articlesService.updateArticle(
+      id,
+      updateArticleBody,
+      currentUser,
+      covers,
+    );
+
+    return new BaseResponse(updatedArticle);
+  }
+
+  @ApiOperation({ summary: "Add a new language to an article" })
+  @Post("article/:id")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "body", schema: createLanguageArticleSchema },
+    ],
+    response: baseResponse(createArticleResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  async addNewLanguage(
+    @Param("id") id: string,
+    @Body() createLanguageBody: CreateLanguageArticle,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    const createdLanguage = await this.articlesService.createArticleLanguage(
+      id,
+      createLanguageBody,
+      currentUser,
+    );
+
+    return new BaseResponse(createdLanguage);
+  }
+
+  @Delete(":id/language")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+    ],
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async deleteArticleLanguage(
+    @Param("id") id: UUIDType,
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    await this.articlesService.deleteArticleLanguage(id, language, currentUser);
+  }
+
+  @Delete(":id")
+  @Validate({
+    request: [{ type: "param", name: "id", schema: UUIDSchema }],
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  @RequireFeature({ features: [FEATURES.ARTICLES] })
+  async deleteArticle(@Param("id") id: string, @CurrentUser() currentUser?: CurrentUserType) {
+    await this.articlesService.deleteArticle(id, currentUser);
+  }
+
+  @Post(":id/upload")
+  @UseInterceptors(FileInterceptor("file"))
+  @ApiConsumes("multipart/form-data")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "body", schema: uploadFileSchema },
+    ],
+    response: baseResponse(uploadArticleFileResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  async uploadFileToArticle(
+    @Param("id") id: string,
+    @Body(new ValidateMultipartPipe(uploadFileSchema)) uploadFileBody: UploadFile,
+    @UploadedFile(
+      "file",
+      getBaseFileTypePipe(
+        buildFileTypeRegex([
+          ...ALLOWED_PDF_FILE_TYPES,
+          ...ALLOWED_EXCEL_FILE_TYPES,
+          ...ALLOWED_WORD_FILE_TYPES,
+          ...ALLOWED_VIDEO_FILE_TYPES,
+          ...ALLOWED_LESSON_IMAGE_FILE_TYPES,
+          ...ALLOWED_PRESENTATION_FILE_TYPES,
+        ]),
+      ).build({ errorHttpStatusCode: HttpStatus.BAD_REQUEST }),
+    )
+    file: Express.Multer.File,
+    @CurrentUser() currentUser: CurrentUserType | undefined,
+    @Req() request: McpRequest,
+  ) {
+    if (request.mcpUploadGrant) {
+      assertEditorialUploadGrant(
+        request.mcpUploadGrant,
+        ENTITY_TYPES.ARTICLES,
+        id,
+        file,
+        uploadFileBody.language,
+        uploadFileBody.title,
+        uploadFileBody.description,
+        uploadFileBody.visibility ?? RESOURCE_VISIBILITY.PUBLIC,
+      );
+    }
+    const fileData = await this.articlesService.uploadFileToArticle(
+      id,
+      file,
+      uploadFileBody.language,
+      uploadFileBody.title,
+      uploadFileBody.description,
+      uploadFileBody.visibility,
+      currentUser,
+    );
+
+    return new BaseResponse(fileData);
+  }
+
+  @Post("preview")
+  @Validate({
+    request: [{ type: "body", schema: previewArticleRequestSchema }],
+    response: baseResponse(previewArticleResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.ARTICLE_MANAGE, PERMISSIONS.ARTICLE_MANAGE_OWN)
+  async generateArticlePreview(
+    @Body() body: PreviewArticleRequest,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<PreviewArticleResponse>> {
+    const { articleId, language, content } = body;
+    const previewContent = await this.articlesService.generateArticlePreview(
+      articleId,
+      language,
+      content,
+      currentUser,
+    );
+
+    return new BaseResponse({ parsedContent: previewContent });
+  }
+}

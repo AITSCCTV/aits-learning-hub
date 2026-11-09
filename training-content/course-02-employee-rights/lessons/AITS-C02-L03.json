@@ -1,0 +1,53 @@
+{
+  "title": "Leave categories and recent changes",
+  "objectives": [
+    "Locate current leave guidance and avoid outdated figures."
+  ],
+  "explanation": [
+    "Leave categories include sickness, necessary personal business, maternity, qualifying spouse support, sterilization, military service and training, each with conditions and payment rules. Sick leave and paid sick-leave limits are different concepts. Do not use an old overview as the sole source for current allowances.",
+    "The official explanation of the 2025 amendment, effective 7 December 2025, describes maternity leave of up to 120 days with employer-paid wages up to 60 days. It also describes up to 15 days of qualifying continuous child-care leave at 50% wages with the required medical evidence, and up to 15 days to assist a spouse who gives birth, paid in full, subject to the application and 90-day timing rules. These are statutory summaries, not AITS benefits. HR/legal review must confirm current text and individual eligibility before release."
+  ],
+  "example": "An older Ministry overview still says 90 maternity days. The newer official amendment explanation supersedes that figure for the relevant covered situation.",
+  "exercise": "Write a respectful request for current leave guidance without sharing medical details in a group chat.",
+  "model_response": "Please confirm the applicable leave category, current entitlement, required documents and private submission channel for my circumstances.",
+  "key_points": [
+    "Check amendment and effective date",
+    "Leave duration and pay are separate",
+    "Submit sensitive evidence privately"
+  ],
+  "references": [
+    "LEAVE",
+    "EX"
+  ],
+  "thai_summary": "ตรวจสอบกฎหมายฉบับแก้ไขและวันที่ใช้บังคับ วันลากับวันที่ได้รับค่าจ้างไม่ใช่เรื่องเดียวกัน ส่งเอกสารสุขภาพผ่านช่องทางที่ได้รับอนุญาต",
+  "id": "AITS-C02-L03",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C02-L02"
+  ],
+  "summary": "Check amendment and effective date Leave duration and pay are separate Submit sensitive evidence privately",
+  "visual_resources": [
+    "course-02-employee-rights/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C02-L03",
+    "course_id": "AITS-C02",
+    "title": "Leave categories and recent changes",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "LEAVE",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C02-L03-Q1",
+    "AITS-C02-L03-Q2",
+    "AITS-C02-L03-Q3"
+  ]
+}

@@ -1,0 +1,203 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UnauthorizedException,
+  UseGuards,
+} from "@nestjs/common";
+import { PERMISSIONS, TENANT_STATUSES } from "@repo/shared";
+import { Type } from "@sinclair/typebox";
+import { Validate } from "nestjs-typebox";
+
+import { BaseResponse, baseResponse, PaginatedResponse, paginatedResponse } from "src/common";
+import { RequirePermission } from "src/common/decorators/require-permission.decorator";
+import { CurrentUser } from "src/common/decorators/user.decorator";
+import { ManagingTenantAdminGuard } from "src/common/guards/managing-tenant-admin.guard";
+import { PermissionsGuard } from "src/common/guards/permissions.guard";
+import { CurrentUserType } from "src/common/types/current-user.type";
+import { SupportModeService } from "src/support-mode/support-mode.service";
+
+import {
+  createTenantSchema,
+  createSupportSessionResponseSchema,
+  createSupportSessionSchema,
+  supportRolesSchema,
+  supportUserScopeSchema,
+  supportUsersSchema,
+  tenantListSortSchema,
+  tenantResponseSchema,
+  tenantsListSchema,
+  updateTenantSchema,
+} from "./schemas/tenant.schema";
+import { TenantsService } from "./tenants.service";
+import {
+  CreateSupportSessionBody,
+  CreateTenantBody,
+  TenantListSort,
+  UpdateTenantBody,
+} from "./types";
+
+import type {
+  CreateSupportSessionResponse,
+  SupportRolesResponse,
+  SupportUsersResponse,
+  TenantResponse,
+  TenantsListResponse,
+  ListSupportUsersQuery,
+  ListTenantsQuery,
+} from "./types";
+
+@Controller("super-admin/tenants")
+@UseGuards(PermissionsGuard, ManagingTenantAdminGuard)
+@RequirePermission(PERMISSIONS.TENANT_MANAGE)
+export class TenantsController {
+  constructor(
+    private readonly tenantsService: TenantsService,
+    private readonly supportModeService: SupportModeService,
+  ) {}
+
+  @Get()
+  @Validate({
+    request: [
+      { type: "query", name: "page", schema: Type.Optional(Type.Number({ minimum: 1 })) },
+      { type: "query", name: "perPage", schema: Type.Optional(Type.Number({ minimum: 1 })) },
+      { type: "query", name: "search", schema: Type.Optional(Type.String()) },
+      { type: "query", name: "status", schema: Type.Optional(Type.Enum(TENANT_STATUSES)) },
+      { type: "query", name: "sort", schema: Type.Optional(tenantListSortSchema) },
+    ],
+    response: paginatedResponse(tenantsListSchema),
+  })
+  async findAllTenants(
+    @Query("page") page?: number,
+    @Query("perPage") perPage?: number,
+    @Query("search") search?: string,
+    @Query("status") status?: ListTenantsQuery["status"],
+    @Query("sort") sort?: TenantListSort,
+    @CurrentUser("tenantId") currentTenantId?: string,
+  ): Promise<PaginatedResponse<TenantsListResponse>> {
+    if (!currentTenantId) throw new UnauthorizedException("auth.error.unauthenticated");
+
+    const result = await this.tenantsService.findAllTenants(
+      { page, perPage, search, status, sort },
+      currentTenantId,
+    );
+    return new PaginatedResponse(result);
+  }
+
+  @Get(":id")
+  @Validate({
+    request: [{ type: "param", name: "id", schema: Type.String({ format: "uuid" }) }],
+    response: baseResponse(tenantResponseSchema),
+  })
+  async findTenantById(@Param("id") id: string): Promise<BaseResponse<TenantResponse>> {
+    const tenant = await this.tenantsService.findTenantById(id);
+    return new BaseResponse(tenant);
+  }
+
+  @Post()
+  @Validate({
+    request: [{ type: "body", schema: createTenantSchema }],
+    response: baseResponse(tenantResponseSchema),
+  })
+  async createTenant(
+    @Body() body: CreateTenantBody,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<TenantResponse>> {
+    const tenant = await this.tenantsService.createTenant(body, currentUser);
+    return new BaseResponse(tenant);
+  }
+
+  @Patch(":id")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: Type.String({ format: "uuid" }) },
+      { type: "body", schema: updateTenantSchema },
+    ],
+    response: baseResponse(tenantResponseSchema),
+  })
+  async updateTenantById(
+    @Param("id") id: string,
+    @Body() body: UpdateTenantBody,
+  ): Promise<BaseResponse<TenantResponse>> {
+    const tenant = await this.tenantsService.updateTenantById(id, body);
+    return new BaseResponse(tenant);
+  }
+
+  @Delete(":id")
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Validate({
+    request: [{ type: "param", name: "id", schema: Type.String({ format: "uuid" }) }],
+  })
+  async deleteTenantById(
+    @Param("id") id: string,
+    @CurrentUser("tenantId") currentTenantId: string,
+  ): Promise<void> {
+    await this.tenantsService.deleteTenantById(id, currentTenantId);
+  }
+
+  @Get(":id/support-roles")
+  @Validate({
+    request: [{ type: "param", name: "id", schema: Type.String({ format: "uuid" }) }],
+    response: baseResponse(supportRolesSchema),
+  })
+  async findSupportRoles(@Param("id") id: string): Promise<BaseResponse<SupportRolesResponse>> {
+    const roles = await this.supportModeService.listSupportRoles(id);
+
+    return new BaseResponse(roles);
+  }
+
+  @Get(":id/support-users")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: Type.String({ format: "uuid" }) },
+      { type: "query", name: "page", schema: Type.Optional(Type.Number({ minimum: 1 })) },
+      { type: "query", name: "perPage", schema: Type.Optional(Type.Number({ minimum: 1 })) },
+      { type: "query", name: "search", schema: Type.Optional(Type.String()) },
+      { type: "query", name: "scope", schema: Type.Optional(supportUserScopeSchema) },
+      { type: "query", name: "roleSlug", schema: Type.Optional(Type.String()) },
+    ],
+    response: paginatedResponse(supportUsersSchema),
+  })
+  async findSupportUsers(
+    @Param("id") id: string,
+    @Query("page") page?: number,
+    @Query("perPage") perPage?: number,
+    @Query("search") search?: string,
+    @Query("scope") scope?: ListSupportUsersQuery["scope"],
+    @Query("roleSlug") roleSlug?: string,
+  ): Promise<PaginatedResponse<SupportUsersResponse>> {
+    const query: ListSupportUsersQuery = { page, perPage, search, scope, roleSlug };
+    const users = await this.supportModeService.listSupportUsers(id, query);
+
+    return new PaginatedResponse(users);
+  }
+
+  @Post(":id/support-session")
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: Type.String({ format: "uuid" }) },
+      { type: "body", schema: createSupportSessionSchema },
+    ],
+    response: baseResponse(createSupportSessionResponseSchema),
+  })
+  async createSupportSession(
+    @Param("id") id: string,
+    @Body() body: CreateSupportSessionBody,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<CreateSupportSessionResponse>> {
+    const session = await this.supportModeService.createSupportSession(
+      currentUser,
+      id,
+      body.targetUserId,
+    );
+
+    return new BaseResponse(session);
+  }
+}

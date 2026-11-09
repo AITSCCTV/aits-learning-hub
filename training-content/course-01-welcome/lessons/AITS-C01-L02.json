@@ -1,0 +1,53 @@
+{
+  "title": "Services and customer needs",
+  "objectives": [
+    "Match customer needs to relevant service categories."
+  ],
+  "explanation": [
+    "AITS publicly lists CCTV, network cabling, security systems, internet, telephone systems, access control, home automation and solar services. Learn what each category addresses before proposing a product. CCTV supports visual monitoring; access control manages entry; network infrastructure connects devices and services.",
+    "A customer request may span several categories. Ask about the problem, location, existing equipment and desired outcome. Record uncertainty instead of promising compatibility, price, installation dates or a service level. A technical survey and approved quotation process are separate from this introductory training."
+  ],
+  "example": "Fictional Lotus Workshop wants to see its entrance remotely and restrict staff-door access. CCTV and access control are relevant; connectivity also needs investigation.",
+  "exercise": "List three discovery questions for Lotus Workshop without collecting passwords.",
+  "model_response": "What areas need coverage? Who should be allowed through the door? What network equipment and connection already exist?",
+  "key_points": [
+    "Start with the customer outcome",
+    "Several services may be involved",
+    "Do not promise unverified compatibility"
+  ],
+  "references": [
+    "HOME",
+    "EX"
+  ],
+  "thai_summary": "เริ่มจากความต้องการของลูกค้า แล้วเลือกบริการที่เกี่ยวข้อง อย่ารับรองราคา กำหนดส่ง หรือความเข้ากันได้โดยไม่มีข้อมูล",
+  "id": "AITS-C01-L02",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C01-L01"
+  ],
+  "summary": "Start with the customer outcome Several services may be involved Do not promise unverified compatibility",
+  "visual_resources": [
+    "course-01-welcome/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C01-L02",
+    "course_id": "AITS-C01",
+    "title": "Services and customer needs",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "HOME",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C01-L02-Q1",
+    "AITS-C01-L02-Q2",
+    "AITS-C01-L02-Q3"
+  ]
+}

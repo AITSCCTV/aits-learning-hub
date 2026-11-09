@@ -1,0 +1,3603 @@
+export { courseLearningStates } from "./course-learning-state.schema";
+import {
+  EMAIL_TEMPLATE_STATUSES,
+  type EmailTemplateEvent,
+  type EmailTemplateStatus,
+  type LocalizedEmailTemplateContent,
+  type PublishedEmailTemplate,
+} from "@repo/email-templates";
+import {
+  COURSE_TYPE,
+  AUTOMATION_NODE_KINDS,
+  AUTOMATION_STATUSES,
+  AUTOMATION_RUN_STATUSES,
+  COURSE_ORIGIN_TYPES,
+  MASTER_COURSE_EXPORT_SYNC_STATUSES,
+  LEARNING_PATH_ENROLLMENT_TYPES,
+  LEARNING_PATH_CERTIFICATE_STATUSES,
+  LEARNING_PATH_PROGRESS_STATUSES,
+  LEARNING_PATH_STATUSES,
+  CALENDAR_EVENT_STATUSES,
+  LIVE_TRAINING_DELIVERY_TYPES,
+  LIVE_TRAINING_LINK_ENTITY_TYPES,
+  LIVE_TRAINING_MEMBER_ROLES,
+  LIVE_TRAINING_SESSION_STATUSES,
+  LIVE_TRAINING_STATUSES,
+  LIVE_TRAINING_VISIBILITY_SCOPES,
+  SCORM_COMPLETION_STATUS,
+  SCORM_PACKAGE_ENTITY_TYPE,
+  SCORM_PACKAGE_STATUS,
+  SCORM_STANDARD,
+  SCORM_SUCCESS_STATUS,
+  CERTIFICATE_STATUSES,
+  SUPPORTED_LANGUAGES,
+  SUPPORT_SESSION_STATUSES,
+  ANNOUNCEMENT_EMAIL_TEMPLATES,
+  ANNOUNCEMENT_SOURCE_TYPES,
+  ANNOUNCEMENT_STATUSES,
+  COURSE_GENERATION_SYNC_STATUS,
+  MICROSOFT_CALENDAR_CONNECTION_STATUSES,
+  MICROSOFT_CALENDAR_OUTBOUND_STATUSES,
+  ANNOUNCEMENT_AUDIENCES,
+  AI_MENTOR_ROLEPLAY_DIFFICULTY,
+  AI_MENTOR_TEACHING_STYLE,
+  AI_MENTOR_TYPE,
+  RESOURCE_VISIBILITY,
+  type AutomationStepTrace,
+  type AutomationDefinitionKind,
+  type AutomationStepConfiguration,
+  type AutomationEmailDeliveryStatus,
+  type AutomationEventKind,
+  type AutomationPlaceholderDefinition,
+  type AutomationPlaceholderValue,
+  type AutomationTemplateReference,
+  type CourseStatus,
+  type CourseType,
+  type CourseOriginType,
+  type FormType,
+  type LocalizedText,
+  type MasterCourseEntityType,
+  type MasterCourseExportSyncStatus,
+  type LearningPathEntityType,
+  type LearningPathCertificateStatus,
+  type RegistrationFormFieldType,
+  type ScormCompletionStatus,
+  type ScormPackageEntityType,
+  type ScormPackageStatus,
+  type ScormStandard,
+  type ScormSuccessStatus,
+  type SupportedLanguages,
+  type PermissionKey,
+  type SupportSessionStatus,
+  type LearningPathEnrollmentType,
+  type LearningPathProgressStatus,
+  type LearningPathStatus,
+  type CertificateArchiveReason,
+  type CertificateStatus,
+  type CalendarEventStatus,
+  type CalendarProvider,
+  type AnnouncementEmailTemplate,
+  type AnnouncementSourceType,
+  type AnnouncementStatus,
+  type CourseGenerationSyncStatus,
+  type LiveTrainingDeliveryType,
+  type LiveTrainingLinkEntityType,
+  type LiveTrainingMemberRole,
+  type LiveTrainingParticipantRole,
+  type LiveTrainingSettings,
+  type LiveTrainingSessionStatus,
+  type LiveTrainingStatus,
+  type LiveTrainingVisibilityScope,
+  type MicrosoftCalendarConnectionStatus,
+  type MicrosoftCalendarOutboundStatus,
+  type OutlookEventAvailability,
+  type OutlookEventSensitivity,
+  type AnnouncementAudience,
+  type AiMentorRoleplayDifficulty,
+  type AiMentorTeachingStyle,
+  type AiMentorType,
+  type ResourceVisibility,
+  type VideoProviderType,
+} from "@repo/shared";
+import { sql } from "drizzle-orm";
+import {
+  bigint,
+  boolean,
+  check,
+  date,
+  index,
+  integer,
+  jsonb,
+  numeric,
+  pgTable,
+  pgEnum,
+  primaryKey,
+  text,
+  timestamp,
+  unique,
+  uniqueIndex,
+  type AnyPgColumn,
+  uuid,
+  varchar,
+  vector,
+} from "drizzle-orm/pg-core";
+
+import { coursesSettingsSchema } from "src/courses/types/settings";
+import {
+  DEFAULT_LEARNING_PATH_SETTINGS,
+  type LearningPathSettings,
+} from "src/learning-path/types/learning-path-settings.types";
+import { safeJsonb } from "src/utils/safe-jsonb";
+
+import { courseLearningStates } from "./course-learning-state.schema";
+import { int4multirange, nativeJsonb, tsvector } from "./custom-types";
+export * from "./quiz.schema";
+export { tenants } from "./tenant.schema";
+import { tenants } from "./tenant.schema";
+import {
+  archived,
+  availableLocales,
+  baseLanguage,
+  id,
+  tenantId,
+  timestamps,
+  timestampWithTimezone,
+  withTenantIdIndex,
+} from "./utils";
+
+import type { CourseAuthoringApplicationResult } from "./course-authoring.schema";
+import type { ActivityLogActionType, ActivityLogMetadata } from "src/activity-logs/types";
+import type { AiMentorPracticeStatus } from "src/ai/ai-practice.types";
+import type { AiJudgeCriterionStatus } from "src/ai/judge-configuration/judge-configuration.types";
+import type {
+  EncryptedAccountActionToken,
+  NotificationAccountActionKind,
+} from "src/automation-execution/automation-execution.types";
+import type { MicrosoftCalendarOutboundErrorCode } from "src/calendar/calendar.constants";
+import type { ActivityHistory, AllSettings } from "src/common/types";
+import type {
+  CourseTransferKind,
+  CourseTransferStatus,
+} from "src/course-transfer/course-transfer.types";
+import type { CourseDurationEstimatesByLanguage } from "src/courses/duration/course-duration.types";
+import type { CourseLearningOutcomesByLanguage } from "src/courses/types/course-learning-outcomes.types";
+import type { CourseAuthorMetadata } from "src/courses/types/course.types";
+import type { HostedVideoStatus } from "src/file/hosted-video.types";
+import type { ResourceMetadata } from "src/file/types/resource-metadata.type";
+import type {
+  ReportConfigurationVisibility,
+  ReportExportFormat,
+  ReportExportStatus,
+} from "src/report/constants/reports.constants";
+import type { ReportDefinition, ReportsQuery } from "src/report/schemas/reports.schema";
+
+export const users = pgTable(
+  "users",
+  {
+    ...id,
+    ...timestamps,
+    email: text("email").notNull(),
+    firstName: text("first_name").notNull(),
+    lastName: text("last_name").notNull(),
+    avatarReference: varchar("avatar_reference", { length: 500 }),
+    archived,
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("users", (table) => ({
+    emailUniqueIdx: uniqueIndex("users_tenant_id_email_unique_idx").on(table.tenantId, table.email),
+  })),
+);
+
+export const userDetails = pgTable(
+  "user_details",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull()
+      .unique(),
+    contactPhoneNumber: text("contact_phone_number"),
+    description: text("description"),
+    contactEmail: text("contact_email"),
+    jobTitle: text("job_title"),
+    tenantId,
+  },
+  withTenantIdIndex("user_details"),
+);
+
+export const userStatistics = pgTable(
+  "user_statistics",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull()
+      .unique(),
+
+    currentStreak: integer("current_streak").notNull().default(0),
+    longestStreak: integer("longest_streak").notNull().default(0),
+    lastActivityDate: timestamp("last_activity_date", { withTimezone: true }),
+
+    activityHistory: jsonb("activity_history").$type<ActivityHistory>().default({}),
+    tenantId,
+  },
+  withTenantIdIndex("user_statistics"),
+);
+
+export const credentials = pgTable(
+  "credentials",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    password: text("password").notNull(),
+    requiresPasswordChange: boolean("requires_password_change").notNull().default(false),
+    tenantId,
+  },
+  withTenantIdIndex("credentials"),
+);
+
+export const categories = pgTable(
+  "categories",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").$type<LocalizedText>().default({}).notNull(),
+    baseLanguage,
+    availableLocales,
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("categories")(table),
+    tenantTitleUniqueIdx: uniqueIndex("categories_tenant_id_base_title_unique").on(
+      table.tenantId,
+      sql`(${table.title}->>${table.baseLanguage})`,
+    ),
+  }),
+);
+
+export const createTokens = pgTable(
+  "create_tokens",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    tokenHash: text("token_hash").notNull(),
+    expiryDate: timestamp("expiry_date", {
+      precision: 3,
+      withTimezone: true,
+    }).notNull(),
+    reminderCount: integer("reminder_count").notNull().default(0),
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("create_tokens")(table),
+    tokenHashIdx: index("create_tokens_token_hash_idx").on(table.tokenHash),
+  }),
+);
+
+export const resetTokens = pgTable(
+  "reset_tokens",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    tokenHash: text("token_hash").notNull(),
+    expiryDate: timestamp("expiry_date", {
+      precision: 3,
+      withTimezone: true,
+    }).notNull(),
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("reset_tokens")(table),
+    tokenHashIdx: index("reset_tokens_token_hash_idx").on(table.tokenHash),
+  }),
+);
+
+export const courseTypeEnum = pgEnum(
+  "course_type",
+  Object.values(COURSE_TYPE) as [string, ...string[]],
+);
+export const coursesStatusEnum = pgEnum("status", ["draft", "published", "private"]);
+export const scormStandardEnum = pgEnum(
+  "scorm_standard",
+  Object.values(SCORM_STANDARD) as [string, ...string[]],
+);
+export const scormPackageEntityTypeEnum = pgEnum(
+  "scorm_package_entity_type",
+  Object.values(SCORM_PACKAGE_ENTITY_TYPE) as [string, ...string[]],
+);
+export const scormPackageStatusEnum = pgEnum(
+  "scorm_package_status",
+  Object.values(SCORM_PACKAGE_STATUS) as [string, ...string[]],
+);
+export const scormCompletionStatusEnum = pgEnum(
+  "scorm_completion_status",
+  Object.values(SCORM_COMPLETION_STATUS) as [string, ...string[]],
+);
+export const scormSuccessStatusEnum = pgEnum(
+  "scorm_success_status",
+  Object.values(SCORM_SUCCESS_STATUS) as [string, ...string[]],
+);
+
+const coursesSettings = safeJsonb("settings", coursesSettingsSchema);
+export const courses = pgTable(
+  "courses",
+  {
+    ...id,
+    shortId: varchar("short_id", { length: 5 }),
+    ...timestamps,
+    title: jsonb("title").$type<LocalizedText>().default({}).notNull(),
+    description: jsonb("description").$type<LocalizedText>().default({}).notNull(),
+    authorMetadata: jsonb("author_metadata").$type<CourseAuthorMetadata | null>().default(null),
+    thumbnailS3Key: varchar("thumbnail_s3_key", { length: 500 }),
+    status: coursesStatusEnum("status").$type<CourseStatus>().notNull().default("draft"),
+    isArchived: boolean("is_archived").notNull().default(false),
+    thumbnailPositionY: integer("thumbnail_position_y").notNull().default(50),
+    hasCertificate: boolean("has_certificate").notNull().default(false),
+    priceInCents: integer("price_in_cents").notNull().default(0),
+    showAuthorSection: boolean("show_author_section").notNull().default(true),
+    currency: varchar("currency").notNull().default("usd"),
+    chapterCount: integer("chapter_count").notNull().default(0),
+    learningOutcomes: jsonb("learning_outcomes")
+      .$type<CourseLearningOutcomesByLanguage>()
+      .default({})
+      .notNull(),
+    durationEstimates: jsonb("duration_estimates")
+      .$type<CourseDurationEstimatesByLanguage>()
+      .default({})
+      .notNull(),
+    courseType: courseTypeEnum("course_type")
+      .$type<CourseType>()
+      .notNull()
+      .default(COURSE_TYPE.DEFAULT),
+    authorId: uuid("author_id")
+      .references(() => users.id)
+      .notNull(),
+    categoryId: uuid("category_id")
+      .references(() => categories.id)
+      .notNull(),
+    stripeProductId: text("stripe_product_id"),
+    stripePriceId: text("stripe_price_id"),
+    originType: text("origin_type")
+      .notNull()
+      .$type<CourseOriginType>()
+      .default(COURSE_ORIGIN_TYPES.REGULAR),
+    sourceCourseId: uuid("source_course_id"),
+    sourceTenantId: uuid("source_tenant_id"),
+    originalId: uuid("original_id"),
+    settings: coursesSettings.column.notNull(),
+    baseLanguage,
+    availableLocales,
+    tenantId,
+  },
+  withTenantIdIndex("courses", (table) => ({
+    shortIdUniqueIdx: uniqueIndex("courses_short_id_unique_idx").on(table.shortId),
+    originalIdUniqueIdx: uniqueIndex("courses_tenant_original_id_unique_idx").on(
+      table.tenantId,
+      table.originalId,
+    ),
+  })),
+);
+export const coursesSettingsHelpers = coursesSettings.getHelpers(courses.settings);
+
+export const lumaCourseGenerationSyncs = pgTable(
+  "luma_course_generation_syncs",
+  {
+    ...id,
+    ...timestamps,
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull()
+      .unique(),
+    draftId: uuid("draft_id"),
+    status: text("status")
+      .$type<CourseGenerationSyncStatus>()
+      .notNull()
+      .default(COURSE_GENERATION_SYNC_STATUS.NOT_STARTED),
+    attemptCount: integer("attempt_count").notNull().default(0),
+    startedAt: timestampWithTimezone({ name: "started_at" }),
+    processedAt: timestampWithTimezone({ name: "processed_at" }),
+    failedAt: timestampWithTimezone({ name: "failed_at" }),
+    dismissedAt: timestampWithTimezone({ name: "dismissed_at" }),
+    lastError: text("last_error"),
+    tenantId,
+  },
+  withTenantIdIndex("luma_course_generation_syncs", (table) => ({
+    courseIdIdx: index("luma_course_generation_syncs_course_id_idx").on(table.courseId),
+    statusIdx: index("luma_course_generation_syncs_status_idx").on(table.status),
+  })),
+);
+
+export const courseSlugs = pgTable(
+  "course_slugs",
+  {
+    ...id,
+    ...timestamps,
+    slug: text("slug").notNull(),
+    courseShortId: varchar("course_short_id", { length: 5 })
+      .references(() => courses.shortId, { onDelete: "cascade", onUpdate: "cascade" })
+      .notNull(),
+    lang: text("lang").$type<SupportedLanguages>().notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("course_slugs", (table) => ({
+    courseSlugCourseShortIdLangUniqueIdx: uniqueIndex(
+      "course_slug_course_short_id_lang_unique_idx",
+    ).on(table.courseShortId, table.lang),
+  })),
+);
+
+export const chapters = pgTable(
+  "chapters",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").default({}).notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    authorId: uuid("author_id")
+      .references(() => users.id)
+      .notNull(),
+    isFreemium: boolean("is_freemium").notNull().default(false),
+    displayOrder: integer("display_order"),
+    lessonCount: integer("lesson_count").notNull().default(0),
+    durationEstimates: jsonb("duration_estimates")
+      .$type<CourseDurationEstimatesByLanguage>()
+      .default({})
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("chapters", (table) => ({
+    courseIdIdx: index("chapters_tenant_id_course_id_idx").on(table.tenantId, table.courseId),
+  })),
+);
+
+export const lessons = pgTable(
+  "lessons",
+  {
+    ...id,
+    ...timestamps,
+    chapterId: uuid("chapter_id")
+      .references(() => chapters.id, { onDelete: "cascade" })
+      .notNull(),
+    type: varchar("type", { length: 20 }).notNull(),
+    title: jsonb("title").$type<LocalizedText>().default({}).notNull(),
+    description: jsonb("description").$type<LocalizedText>(),
+    thresholdScore: integer("threshold_score"),
+    attemptsLimit: integer("attempts_limit"),
+    quizCooldownInHours: integer("quiz_cooldown_in_hours"),
+    displayOrder: integer("display_order"),
+    fileS3Key: varchar("file_s3_key", { length: 500 }),
+    fileType: varchar("file_type", { length: 20 }),
+    isExternal: boolean("is_external").default(false),
+    durationEstimates: jsonb("duration_estimates")
+      .$type<CourseDurationEstimatesByLanguage>()
+      .default({})
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("lessons", (table) => ({
+    chapterTypeIdx: index("lessons_tenant_id_chapter_id_type_idx").on(
+      table.tenantId,
+      table.chapterId,
+      table.type,
+    ),
+  })),
+);
+
+export const calendarEvents = pgTable(
+  "calendar_events",
+  {
+    ...id,
+    ...timestamps,
+    uid: text("uid").notNull(),
+    sequence: integer("sequence").notNull().default(0),
+    status: text("status")
+      .notNull()
+      .$type<CalendarEventStatus>()
+      .default(CALENDAR_EVENT_STATUSES.SCHEDULED),
+    baseLanguage,
+    availableLocales,
+    title: jsonb("title").default({}).notNull().$type<LocalizedText>(),
+    description: jsonb("description").$type<LocalizedText>(),
+    startsAt: timestamp("starts_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }).notNull(),
+    endsAt: timestamp("ends_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }).notNull(),
+    allDay: boolean("all_day").notNull().default(false),
+    timezone: text("timezone").notNull(),
+    location: text("location"),
+    organizerUserId: uuid("organizer_user_id").references(() => users.id, {
+      onDelete: "set null",
+    }),
+    rrule: text("rrule"),
+    exdates: jsonb("exdates"),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("calendar_events", (table) => ({
+    scheduleIdx: index("calendar_events_tenant_starts_ends_idx").on(
+      table.tenantId,
+      table.startsAt,
+      table.endsAt,
+    ),
+    uidUniqueIdx: uniqueIndex("calendar_events_tenant_uid_unique_idx").on(
+      table.tenantId,
+      table.uid,
+    ),
+  })),
+);
+
+export const calendarConnections = pgTable(
+  "calendar_connections",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    provider: text("provider").$type<CalendarProvider>().notNull(),
+    accountId: text("account_id").notNull(),
+    accountEmail: text("account_email").notNull(),
+    refreshTokenCiphertext: text("refresh_token_ciphertext").notNull(),
+    refreshTokenIv: text("refresh_token_iv").notNull(),
+    refreshTokenTag: text("refresh_token_tag").notNull(),
+    refreshTokenEncryptedDek: text("refresh_token_encrypted_dek").notNull(),
+    refreshTokenEncryptedDekIv: text("refresh_token_encrypted_dek_iv").notNull(),
+    refreshTokenEncryptedDekTag: text("refresh_token_encrypted_dek_tag").notNull(),
+    status: text("status")
+      .$type<MicrosoftCalendarConnectionStatus>()
+      .notNull()
+      .default(MICROSOFT_CALENDAR_CONNECTION_STATUSES.SYNCING),
+    errorCode: text("error_code"),
+    syncCursor: text("sync_cursor"),
+    syncWindowStart: timestampWithTimezone({ name: "sync_window_start" }),
+    syncWindowEnd: timestampWithTimezone({ name: "sync_window_end" }),
+    windowBuiltAt: timestampWithTimezone({ name: "window_built_at" }),
+    lastSuccessfulSyncAt: timestampWithTimezone({ name: "last_successful_sync_at" }),
+    lastSyncCompletedAt: timestampWithTimezone({ name: "last_sync_completed_at" }),
+    subscriptionId: text("subscription_id"),
+    subscriptionClientState: text("subscription_client_state"),
+    subscriptionExpiresAt: timestampWithTimezone({ name: "subscription_expires_at" }),
+    outboundSyncEnabled: boolean("outbound_sync_enabled").notNull().default(false),
+    outboundStatus: text("outbound_status")
+      .$type<MicrosoftCalendarOutboundStatus>()
+      .notNull()
+      .default(MICROSOFT_CALENDAR_OUTBOUND_STATUSES.DISABLED),
+    outboundCalendarId: text("outbound_calendar_id"),
+    outboundErrorCode: text(
+      "outbound_error_code",
+    ).$type<MicrosoftCalendarOutboundErrorCode | null>(),
+    lastOutboundSyncAt: timestampWithTimezone({ name: "last_outbound_sync_at" }),
+    tenantId,
+  },
+  withTenantIdIndex("calendar_connections", (table) => ({
+    tenantUserProviderUniqueIdx: uniqueIndex(
+      "calendar_connections_tenant_user_provider_unique_idx",
+    ).on(table.tenantId, table.userId, table.provider),
+    subscriptionIdx: index("calendar_connections_subscription_idx").on(table.subscriptionId),
+  })),
+);
+
+export const calendarOutboundEvents = pgTable(
+  "calendar_outbound_events",
+  {
+    ...id,
+    ...timestamps,
+    connectionId: uuid("connection_id")
+      .references(() => calendarConnections.id, { onDelete: "cascade" })
+      .notNull(),
+    calendarEventId: uuid("calendar_event_id")
+      .references(() => calendarEvents.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    externalEventId: text("external_event_id").notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("calendar_outbound_events", (table) => ({
+    recipientUniqueIdx: uniqueIndex("calendar_outbound_events_connection_event_user_unique_idx").on(
+      table.tenantId,
+      table.connectionId,
+      table.calendarEventId,
+      table.userId,
+    ),
+    microsoftEventUniqueIdx: uniqueIndex(
+      "calendar_outbound_events_connection_external_event_unique_idx",
+    ).on(table.tenantId, table.connectionId, table.externalEventId),
+    eventIdx: index("calendar_outbound_events_calendar_event_idx").on(
+      table.tenantId,
+      table.calendarEventId,
+    ),
+  })),
+);
+
+export const calendarExternalEvents = pgTable(
+  "calendar_external_events",
+  {
+    ...id,
+    ...timestamps,
+    connectionId: uuid("connection_id")
+      .references(() => calendarConnections.id, { onDelete: "cascade" })
+      .notNull(),
+    calendarEventId: uuid("calendar_event_id")
+      .references(() => calendarEvents.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    externalEventId: text("external_event_id").notNull(),
+    webLink: text("web_link"),
+    sensitivity: text("sensitivity").$type<OutlookEventSensitivity>().notNull(),
+    availability: text("availability").$type<OutlookEventAvailability>().notNull(),
+    isCancelled: boolean("is_cancelled").notNull().default(false),
+    tenantId,
+  },
+  withTenantIdIndex("calendar_external_events", (table) => ({
+    calendarEventUniqueIdx: uniqueIndex("calendar_external_events_calendar_event_unique_idx").on(
+      table.calendarEventId,
+    ),
+    connectionEventUniqueIdx: uniqueIndex(
+      "calendar_external_events_tenant_connection_event_unique_idx",
+    ).on(table.tenantId, table.connectionId, table.externalEventId),
+    ownerIdx: index("calendar_external_events_tenant_user_idx").on(table.tenantId, table.userId),
+  })),
+);
+
+export const liveTrainings = pgTable(
+  "live_trainings",
+  {
+    ...id,
+    ...timestamps,
+    calendarEventId: uuid("calendar_event_id")
+      .references(() => calendarEvents.id, { onDelete: "cascade" })
+      .notNull()
+      .unique(),
+    authorId: uuid("author_id")
+      .references(() => users.id)
+      .notNull(),
+    baseLanguage,
+    availableLocales,
+    deliveryType: text("delivery_type")
+      .notNull()
+      .$type<LiveTrainingDeliveryType>()
+      .default(LIVE_TRAINING_DELIVERY_TYPES.ONLINE),
+    visibilityScope: text("visibility_scope")
+      .notNull()
+      .$type<LiveTrainingVisibilityScope>()
+      .default(LIVE_TRAINING_VISIBILITY_SCOPES.LINKED_COURSES),
+    status: text("status")
+      .notNull()
+      .$type<LiveTrainingStatus>()
+      .default(LIVE_TRAINING_STATUSES.SCHEDULED),
+    maxParticipants: integer("max_participants").notNull().default(100),
+    settings: jsonb("settings")
+      .default({
+        viewerPermissions: {
+          microphoneEnabled: false,
+          cameraEnabled: false,
+        },
+      })
+      .notNull()
+      .$type<LiveTrainingSettings>(),
+    metadata: jsonb("metadata").default({}).notNull(),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("live_trainings", (table) => ({
+    statusIdx: index("live_trainings_tenant_status_idx").on(table.tenantId, table.status),
+    authorIdx: index("live_trainings_author_idx").on(table.authorId),
+  })),
+);
+
+export const liveTrainingMembers = pgTable(
+  "live_training_members",
+  {
+    ...id,
+    ...timestamps,
+    liveTrainingId: uuid("live_training_id")
+      .references(() => liveTrainings.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: uuid("user_id")
+      .references(() => users.id)
+      .notNull(),
+    role: text("role")
+      .notNull()
+      .$type<LiveTrainingMemberRole>()
+      .default(LIVE_TRAINING_MEMBER_ROLES.HOST),
+    displayOrder: integer("display_order"),
+    settings: jsonb("settings").default({}).notNull(),
+    metadata: jsonb("metadata").default({}).notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("live_training_members", (table) => ({
+    memberUniqueIdx: uniqueIndex("live_training_members_training_user_unique_idx").on(
+      table.liveTrainingId,
+      table.userId,
+    ),
+    liveTrainingIdx: index("live_training_members_training_idx").on(
+      table.tenantId,
+      table.liveTrainingId,
+    ),
+    userIdx: index("live_training_members_user_idx").on(table.tenantId, table.userId),
+    roleIdx: index("live_training_members_role_idx").on(table.tenantId, table.role),
+  })),
+);
+
+export const liveTrainingLinks = pgTable(
+  "live_training_links",
+  {
+    ...id,
+    ...timestamps,
+    liveTrainingId: uuid("live_training_id")
+      .references(() => liveTrainings.id, { onDelete: "cascade" })
+      .notNull(),
+    entityType: text("entity_type")
+      .notNull()
+      .$type<LiveTrainingLinkEntityType>()
+      .default(LIVE_TRAINING_LINK_ENTITY_TYPES.COURSE),
+    entityId: uuid("entity_id").notNull(),
+    metadata: jsonb("metadata").default({}).notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("live_training_links", (table) => ({
+    linkUniqueIdx: uniqueIndex("live_training_links_training_entity_unique_idx").on(
+      table.liveTrainingId,
+      table.entityType,
+      table.entityId,
+    ),
+    liveTrainingIdx: index("live_training_links_training_idx").on(
+      table.tenantId,
+      table.liveTrainingId,
+    ),
+    entityIdx: index("live_training_links_entity_idx").on(
+      table.tenantId,
+      table.entityType,
+      table.entityId,
+    ),
+  })),
+);
+
+export const liveLessons = pgTable(
+  "live_lessons",
+  {
+    ...id,
+    ...timestamps,
+    liveTrainingId: uuid("live_training_id")
+      .references(() => liveTrainings.id, { onDelete: "cascade" })
+      .notNull(),
+    liveTrainingLinkId: uuid("live_training_link_id")
+      .references(() => liveTrainingLinks.id, { onDelete: "cascade" })
+      .notNull(),
+    lessonId: uuid("lesson_id")
+      .references(() => lessons.id, { onDelete: "cascade" })
+      .notNull(),
+    language: text("language")
+      .$type<SupportedLanguages>()
+      .notNull()
+      .default(SUPPORTED_LANGUAGES.EN),
+    tenantId,
+  },
+  withTenantIdIndex("live_lessons", (table) => ({
+    lessonLanguageUniqueIdx: uniqueIndex("live_lessons_lesson_language_unique_idx").on(
+      table.lessonId,
+      table.language,
+    ),
+    liveTrainingLinkIdx: index("live_lessons_training_link_idx").on(
+      table.tenantId,
+      table.liveTrainingLinkId,
+    ),
+    liveTrainingIdx: index("live_lessons_training_idx").on(table.tenantId, table.liveTrainingId),
+  })),
+);
+
+export const liveTrainingSessions = pgTable(
+  "live_training_sessions",
+  {
+    ...id,
+    ...timestamps,
+    liveTrainingId: uuid("live_training_id")
+      .references(() => liveTrainings.id, { onDelete: "cascade" })
+      .notNull(),
+    status: text("status")
+      .notNull()
+      .$type<LiveTrainingSessionStatus>()
+      .default(LIVE_TRAINING_SESSION_STATUSES.WAITING),
+    startedAt: timestamp("started_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    endedAt: timestamp("ended_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    startedByUserId: uuid("started_by_user_id").references(() => users.id),
+    endedByUserId: uuid("ended_by_user_id").references(() => users.id),
+    endReason: text("end_reason"),
+    livekitRoomName: text("livekit_room_name"),
+    livekitRoomSid: text("livekit_room_sid"),
+    peakParticipantCount: integer("peak_participant_count").notNull().default(0),
+    uniqueParticipantCount: integer("unique_participant_count").notNull().default(0),
+    metadata: jsonb("metadata").default({}).notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("live_training_sessions", (table) => ({
+    liveTrainingIdx: index("live_training_sessions_training_idx").on(
+      table.tenantId,
+      table.liveTrainingId,
+    ),
+    statusIdx: index("live_training_sessions_status_idx").on(table.tenantId, table.status),
+    livekitRoomNameIdx: index("live_training_sessions_livekit_room_name_idx").on(
+      table.tenantId,
+      table.livekitRoomName,
+    ),
+  })),
+);
+
+export const liveTrainingSessionParticipants = pgTable(
+  "live_training_session_participants",
+  {
+    ...id,
+    ...timestamps,
+    liveTrainingSessionId: uuid("live_training_session_id")
+      .references(() => liveTrainingSessions.id, { onDelete: "cascade" })
+      .notNull(),
+    liveTrainingId: uuid("live_training_id")
+      .references(() => liveTrainings.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: uuid("user_id")
+      .references(() => users.id)
+      .notNull(),
+    role: text("role").notNull().$type<LiveTrainingParticipantRole>(),
+    firstJoinedAt: timestamp("first_joined_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    lastLeftAt: timestamp("last_left_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    totalSeconds: integer("total_seconds").notNull().default(0),
+    joinCount: integer("join_count").notNull().default(0),
+    livekitIdentity: text("livekit_identity"),
+    metadata: jsonb("metadata").default({}).notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("live_training_session_participants", (table) => ({
+    sessionUserUniqueIdx: uniqueIndex(
+      "live_training_session_participants_session_user_unique_idx",
+    ).on(table.liveTrainingSessionId, table.userId),
+    sessionIdx: index("live_training_session_participants_session_idx").on(
+      table.tenantId,
+      table.liveTrainingSessionId,
+    ),
+    trainingUserIdx: index("live_training_session_participants_training_user_idx").on(
+      table.tenantId,
+      table.liveTrainingId,
+      table.userId,
+    ),
+    userIdx: index("live_training_session_participants_user_idx").on(table.tenantId, table.userId),
+  })),
+);
+
+export const liveTrainingAttendance = pgTable(
+  "live_training_attendance",
+  {
+    ...id,
+    ...timestamps,
+    liveTrainingSessionParticipantId: uuid("live_training_session_participant_id")
+      .references(() => liveTrainingSessionParticipants.id, { onDelete: "cascade" })
+      .notNull(),
+    liveTrainingSessionId: uuid("live_training_session_id")
+      .references(() => liveTrainingSessions.id, { onDelete: "cascade" })
+      .notNull(),
+    liveTrainingId: uuid("live_training_id")
+      .references(() => liveTrainings.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: uuid("user_id")
+      .references(() => users.id)
+      .notNull(),
+    joinedAt: timestamp("joined_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }).notNull(),
+    leftAt: timestamp("left_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    livekitParticipantSid: text("livekit_participant_sid"),
+    disconnectReason: text("disconnect_reason"),
+    metadata: jsonb("metadata").default({}).notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("live_training_attendance", (table) => ({
+    sessionUserIdx: index("live_training_attendance_session_user_idx").on(
+      table.tenantId,
+      table.liveTrainingSessionId,
+      table.userId,
+    ),
+    trainingUserIdx: index("live_training_attendance_training_user_idx").on(
+      table.tenantId,
+      table.liveTrainingId,
+      table.userId,
+    ),
+    joinedAtIdx: index("live_training_attendance_joined_at_idx").on(table.tenantId, table.joinedAt),
+  })),
+);
+
+export const aiMentorLessons = pgTable(
+  "ai_mentor_lessons",
+  {
+    ...id,
+    ...timestamps,
+    lessonId: uuid("lesson_id")
+      .references(() => lessons.id, { onDelete: "cascade" })
+      .notNull(),
+    name: jsonb("name").$type<LocalizedText>().default({}).notNull(),
+    avatarReference: varchar("avatar_reference", { length: 500 }),
+    voiceMode: text("voice_mode").notNull().default("preset"),
+    ttsPreset: text("tts_preset").notNull().default("male"),
+    customTtsReference: jsonb("custom_tts_reference"),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_lessons"),
+);
+
+export const structuredAiMentorTypeEnum = pgEnum(
+  "structured_ai_mentor_type",
+  Object.values(AI_MENTOR_TYPE) as [string, ...string[]],
+);
+export const aiMentorTeachingStyleEnum = pgEnum(
+  "ai_mentor_teaching_style",
+  Object.values(AI_MENTOR_TEACHING_STYLE) as [string, ...string[]],
+);
+export const aiMentorRoleplayDifficultyEnum = pgEnum(
+  "ai_mentor_roleplay_difficulty",
+  Object.values(AI_MENTOR_ROLEPLAY_DIFFICULTY) as [string, ...string[]],
+);
+
+export const aiMentorConfigurations = pgTable(
+  "ai_mentor_configurations",
+  {
+    ...id,
+    ...timestamps,
+    aiMentorLessonId: uuid("ai_mentor_lesson_id").references(() => aiMentorLessons.id, {
+      onDelete: "cascade",
+    }),
+    practiceSessionId: uuid("practice_session_id").references(
+      (): AnyPgColumn => aiMentorPracticeSessions.id,
+      { onDelete: "cascade" },
+    ),
+    type: structuredAiMentorTypeEnum("type").$type<AiMentorType>().notNull(),
+    openingInstruction: jsonb("opening_instruction").$type<LocalizedText>(),
+    additionalInstructions: jsonb("additional_instructions").$type<LocalizedText>(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_configurations", (table) => ({
+    lessonUniqueIdx: uniqueIndex("ai_mentor_configurations_lesson_unique_idx").on(
+      table.aiMentorLessonId,
+    ),
+    practiceSessionUniqueIdx: uniqueIndex(
+      "ai_mentor_configurations_practice_session_unique_idx",
+    ).on(table.practiceSessionId),
+    sourceCheck: check(
+      "ai_mentor_configurations_exactly_one_source_check",
+      sql`(${table.aiMentorLessonId} IS NOT NULL) <> (${table.practiceSessionId} IS NOT NULL)`,
+    ),
+  })),
+);
+
+export const aiMentorTeacherConfigurations = pgTable(
+  "ai_mentor_teacher_configurations",
+  {
+    ...id,
+    ...timestamps,
+    configurationId: uuid("configuration_id")
+      .references(() => aiMentorConfigurations.id, { onDelete: "cascade" })
+      .notNull()
+      .unique(),
+    taskGoal: jsonb("task_goal").$type<LocalizedText>().default({}).notNull(),
+    expertise: jsonb("expertise").$type<LocalizedText>().default({}).notNull(),
+    contentScope: jsonb("content_scope").$type<LocalizedText>().default({}).notNull(),
+    teachingStyle: aiMentorTeachingStyleEnum("teaching_style")
+      .$type<AiMentorTeachingStyle>()
+      .notNull(),
+    feedbackGuidance: jsonb("feedback_guidance").$type<LocalizedText>(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_teacher_configurations"),
+);
+
+export const aiMentorRoleplayConfigurations = pgTable(
+  "ai_mentor_roleplay_configurations",
+  {
+    ...id,
+    ...timestamps,
+    configurationId: uuid("configuration_id")
+      .references(() => aiMentorConfigurations.id, { onDelete: "cascade" })
+      .notNull()
+      .unique(),
+    scenario: jsonb("scenario").$type<LocalizedText>().default({}).notNull(),
+    aiRole: jsonb("ai_role").$type<LocalizedText>().default({}).notNull(),
+    learnerRole: jsonb("learner_role").$type<LocalizedText>().default({}).notNull(),
+    characterGoal: jsonb("character_goal").$type<LocalizedText>().default({}).notNull(),
+    difficulty: aiMentorRoleplayDifficultyEnum("difficulty")
+      .$type<AiMentorRoleplayDifficulty>()
+      .notNull(),
+    factsAndConstraints: jsonb("facts_and_constraints").$type<LocalizedText>(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_roleplay_configurations"),
+);
+
+export const aiMentorThreads = pgTable(
+  "ai_mentor_threads",
+  {
+    ...id,
+    learningStateId: uuid("learning_state_id").references(() => courseLearningStates.id, {
+      onDelete: "cascade",
+    }),
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    aiMentorLessonId: uuid("ai_mentor_lesson_id").references(() => aiMentorLessons.id, {
+      onDelete: "cascade",
+    }),
+    practiceSessionId: uuid("practice_session_id").references(
+      (): AnyPgColumn => aiMentorPracticeSessions.id,
+      { onDelete: "cascade" },
+    ),
+    status: varchar("status", { length: 20 }).notNull().default("active"),
+    userLanguage: varchar("user_language", { length: 20 }).notNull().default("en"),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_threads", (table) => ({
+    practiceSessionUniqueIdx: uniqueIndex("ai_mentor_threads_practice_session_unique_idx")
+      .on(table.practiceSessionId)
+      .where(sql`${table.status} <> 'archived'`),
+    practiceSessionIdx: index("ai_mentor_threads_practice_session_idx").on(table.practiceSessionId),
+    createdAtIdx: index("ai_mentor_threads_tenant_created_at_idx").on(
+      table.tenantId,
+      table.createdAt,
+      table.id,
+    ),
+    sourceCheck: check(
+      "ai_mentor_threads_exactly_one_source_check",
+      sql`(${table.aiMentorLessonId} IS NOT NULL) <> (${table.practiceSessionId} IS NOT NULL)`,
+    ),
+  })),
+);
+
+export const aiMentorPracticeSessions = pgTable(
+  "ai_mentor_practice_sessions",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    practiceDate: date("practice_date", { mode: "string" }).notNull(),
+    language: varchar("language", { length: 20 }).$type<SupportedLanguages>().notNull(),
+    title: text("title"),
+    aiMentorName: text("ai_mentor_name"),
+    scenario: text("scenario").notNull(),
+    status: varchar("status", { length: 20 })
+      .$type<AiMentorPracticeStatus>()
+      .notNull()
+      .default("queued"),
+    errorCode: text("error_code"),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_practice_sessions", (table) => ({
+    dailyUniqueIdx: uniqueIndex("ai_mentor_practice_sessions_daily_unique_idx").on(
+      table.tenantId,
+      table.userId,
+      table.practiceDate,
+    ),
+    statusIdx: index("ai_mentor_practice_sessions_status_idx").on(table.tenantId, table.status),
+  })),
+);
+
+export const aiMentorThreadMessages = pgTable(
+  "ai_mentor_thread_messages",
+  {
+    ...id,
+    ...timestamps,
+    threadId: uuid("thread_id")
+      .notNull()
+      .references(() => aiMentorThreads.id, { onDelete: "cascade" }),
+    role: varchar("role", { length: 20 }).notNull(),
+    content: text("content").notNull(),
+    tokenCount: integer("token_count").notNull().default(0),
+    archived: boolean("archived").default(false),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_thread_messages", (table) => ({
+    threadCreatedAtIdx: index("ai_mentor_thread_messages_thread_created_at_idx").on(
+      table.threadId,
+      table.createdAt,
+      table.id,
+    ),
+  })),
+);
+
+export const aiJudgeConfigurations = pgTable(
+  "ai_judge_configurations",
+  {
+    ...id,
+    ...timestamps,
+    aiMentorLessonId: uuid("ai_mentor_lesson_id").references(() => aiMentorLessons.id, {
+      onDelete: "cascade",
+    }),
+    practiceSessionId: uuid("practice_session_id").references(
+      (): AnyPgColumn => aiMentorPracticeSessions.id,
+      { onDelete: "cascade" },
+    ),
+    taskGoal: jsonb("task_goal").$type<LocalizedText>().default({}).notNull(),
+    passingThresholdPercent: integer("passing_threshold_percent").notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_judge_configurations", (table) => ({
+    lessonUniqueIdx: uniqueIndex("ai_judge_configurations_lesson_unique_idx").on(
+      table.aiMentorLessonId,
+    ),
+    practiceSessionUniqueIdx: uniqueIndex("ai_judge_configurations_practice_session_unique_idx").on(
+      table.practiceSessionId,
+    ),
+    sourceCheck: check(
+      "ai_judge_configurations_exactly_one_source_check",
+      sql`(${table.aiMentorLessonId} IS NOT NULL) <> (${table.practiceSessionId} IS NOT NULL)`,
+    ),
+  })),
+);
+
+export const aiJudgeCriteria = pgTable(
+  "ai_judge_criteria",
+  {
+    ...id,
+    ...timestamps,
+    configurationId: uuid("configuration_id")
+      .references(() => aiJudgeConfigurations.id, { onDelete: "cascade" })
+      .notNull(),
+    maxScore: integer("max_score").notNull(),
+    title: jsonb("title").$type<LocalizedText>().default({}).notNull(),
+    expectedBehavior: jsonb("expected_behavior").$type<LocalizedText>().default({}).notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_judge_criteria", (table) => ({
+    configurationCreatedAtIdx: index("ai_judge_criteria_configuration_id_created_at_idx").on(
+      table.configurationId,
+      table.createdAt,
+    ),
+  })),
+);
+
+export const aiJudgeScoreGuidance = pgTable(
+  "ai_judge_score_guidance",
+  {
+    ...id,
+    ...timestamps,
+    criterionId: uuid("criterion_id")
+      .references(() => aiJudgeCriteria.id, { onDelete: "cascade" })
+      .notNull(),
+    score: integer("score").notNull(),
+    description: jsonb("description").$type<LocalizedText>().default({}).notNull(),
+    example: jsonb("example").$type<LocalizedText>(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_judge_score_guidance", (table) => ({
+    criterionScoreUniqueIdx: uniqueIndex("ai_judge_score_guidance_criterion_id_score_unique").on(
+      table.criterionId,
+      table.score,
+    ),
+  })),
+);
+
+export const aiJudgeBlockingErrors = pgTable(
+  "ai_judge_blocking_errors",
+  {
+    ...id,
+    ...timestamps,
+    configurationId: uuid("configuration_id")
+      .references(() => aiJudgeConfigurations.id, { onDelete: "cascade" })
+      .notNull(),
+    description: jsonb("description").$type<LocalizedText>().default({}).notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_judge_blocking_errors", (table) => ({
+    configurationCreatedAtIdx: index("ai_judge_blocking_errors_configuration_id_created_at_idx").on(
+      table.configurationId,
+      table.createdAt,
+    ),
+  })),
+);
+
+export const aiMentorJudgements = pgTable(
+  "ai_mentor_judgements",
+  {
+    ...id,
+    ...timestamps,
+    threadId: uuid("thread_id")
+      .references(() => aiMentorThreads.id, { onDelete: "cascade" })
+      .notNull()
+      .unique(),
+    configurationId: uuid("configuration_id")
+      .references(() => aiJudgeConfigurations.id, { onDelete: "cascade" })
+      .notNull(),
+    language: varchar("language", { length: 20 }).$type<SupportedLanguages>().notNull(),
+    earnedPoints: integer("earned_points").notNull(),
+    maxScore: integer("max_score").notNull(),
+    percentage: integer("percentage").notNull(),
+    passed: boolean("passed").notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_judgements"),
+);
+
+export const aiMentorJudgementCriteria = pgTable(
+  "ai_mentor_judgement_criteria",
+  {
+    ...id,
+    ...timestamps,
+    judgementId: uuid("judgement_id")
+      .references(() => aiMentorJudgements.id, { onDelete: "cascade" })
+      .notNull(),
+    criterionId: uuid("criterion_id").references(() => aiJudgeCriteria.id, {
+      onDelete: "set null",
+    }),
+    criterionTitle: text("criterion_title").notNull().default(""),
+    awardedPoints: integer("awarded_points").notNull(),
+    maxScoreAtJudgement: integer("max_score_at_judgement").notNull(),
+    status: varchar("status", { length: 20 }).$type<AiJudgeCriterionStatus>().notNull(),
+    learnerSafeFeedback: text("learner_safe_feedback"),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_judgement_criteria", (table) => ({
+    judgementCriterionUniqueIdx: uniqueIndex(
+      "ai_mentor_judgement_criteria_judgement_id_criterion_id_unique",
+    ).on(table.judgementId, table.criterionId),
+  })),
+);
+
+export const aiMentorJudgementBlockingErrors = pgTable(
+  "ai_mentor_judgement_blocking_errors",
+  {
+    ...id,
+    ...timestamps,
+    judgementId: uuid("judgement_id")
+      .references(() => aiMentorJudgements.id, { onDelete: "cascade" })
+      .notNull(),
+    blockingErrorId: uuid("blocking_error_id").references(() => aiJudgeBlockingErrors.id, {
+      onDelete: "set null",
+    }),
+    blockingErrorDescription: text("blocking_error_description").notNull().default(""),
+    learnerSafeFeedback: text("learner_safe_feedback").notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_judgement_blocking_errors", (table) => ({
+    judgementBlockingErrorUniqueIdx: uniqueIndex(
+      "ai_mentor_judgement_blocking_errors_judgement_id_blocking_error_id_unique",
+    ).on(table.judgementId, table.blockingErrorId),
+  })),
+);
+
+export const courseChatThreads = pgTable(
+  "course_chat_threads",
+  {
+    ...id,
+    ...timestamps,
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    createdByUserId: uuid("created_by_user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    archived,
+    tenantId,
+  },
+  withTenantIdIndex("course_chat_threads", (table) => ({
+    courseCreatedAtIdx: index("course_chat_threads_course_id_created_at_idx").on(
+      table.courseId,
+      table.createdAt,
+    ),
+    courseUpdatedAtIdx: index("course_chat_threads_course_id_updated_at_idx").on(
+      table.courseId,
+      table.updatedAt,
+    ),
+  })),
+);
+
+export const courseChatMessages = pgTable(
+  "course_chat_messages",
+  {
+    ...id,
+    ...timestamps,
+    threadId: uuid("thread_id")
+      .references(() => courseChatThreads.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    content: text("content").notNull(),
+    parentMessageId: uuid("parent_message_id").references(
+      (): AnyPgColumn => courseChatMessages.id,
+      { onDelete: "set null" },
+    ),
+    deletedAt: timestamp("deleted_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("course_chat_messages", (table) => ({
+    courseCreatedAtIdx: index("course_chat_messages_course_id_created_at_idx").on(
+      table.courseId,
+      table.createdAt,
+    ),
+    threadCreatedAtIdx: index("course_chat_messages_thread_id_created_at_idx").on(
+      table.threadId,
+      table.createdAt,
+    ),
+    parentCreatedAtIdx: index("course_chat_messages_parent_message_id_created_at_idx").on(
+      table.parentMessageId,
+      table.createdAt,
+    ),
+  })),
+);
+
+export const courseChatMessageReactions = pgTable(
+  "course_chat_message_reactions",
+  {
+    ...id,
+    ...timestamps,
+    messageId: uuid("message_id")
+      .references(() => courseChatMessages.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    reaction: text("reaction").notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("course_chat_message_reactions", (table) => ({
+    messageReactionIdx: index("course_chat_message_reactions_message_id_reaction_idx").on(
+      table.messageId,
+      table.reaction,
+    ),
+    userMessageReactionUniqueIdx: uniqueIndex(
+      "course_chat_message_reactions_user_message_reaction_unique_idx",
+    ).on(table.userId, table.messageId, table.reaction),
+  })),
+);
+
+export const studentCourses = pgTable(
+  "student_courses",
+  {
+    ...id,
+    ...timestamps,
+    studentId: uuid("student_id")
+      .references(() => users.id)
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id)
+      .notNull(),
+    progress: varchar("progress").notNull().default("not_started"),
+    finishedChapterCount: integer("finished_chapter_count").default(0).notNull(),
+    completedAt: timestamp("completed_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    courseCompletionMetadata: jsonb("course_completion_metadata"),
+    enrolledAt: timestamp("enrolled_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }).defaultNow(),
+    status: varchar("status").notNull().default("enrolled"), // enrolled/not_enrolled
+    paymentId: varchar("payment_id", { length: 50 }),
+    enrolledByGroupId: uuid("enrolled_by_group_id").references(() => groups.id),
+    lastOpenedAt: timestamp("last_opened_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("student_courses", (table) => ({
+    unq: unique().on(table.studentId, table.courseId),
+    reportLearnerIdx: index("student_courses_report_learner_idx")
+      .on(table.tenantId, table.studentId, table.courseId)
+      .where(sql`${table.status} = 'enrolled'`),
+    reportEnrollmentIdx: index("student_courses_report_enrollment_idx")
+      .on(table.tenantId, table.enrolledAt, table.id)
+      .where(sql`${table.status} = 'enrolled'`),
+    reportCompletionIdx: index("student_courses_report_completion_idx")
+      .on(table.tenantId, table.completedAt, table.id)
+      .where(sql`${table.status} = 'enrolled' AND ${table.completedAt} IS NOT NULL`),
+    courseStatusStudentIdx: index("student_courses_tenant_id_course_status_student_idx").on(
+      table.tenantId,
+      table.courseId,
+      table.status,
+      table.studentId,
+    ),
+  })),
+);
+
+export const courseStudentMode = pgTable(
+  "course_student_mode",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("course_student_mode", (table) => ({
+    unq: unique().on(table.userId, table.courseId),
+  })),
+);
+
+export const studentLessonProgress = pgTable(
+  "student_lesson_progress",
+  {
+    ...id,
+    learningStateId: uuid("learning_state_id").references(() => courseLearningStates.id, {
+      onDelete: "cascade",
+    }),
+    ...timestamps,
+    studentId: uuid("student_id")
+      .references(() => users.id, { onDelete: "set null" })
+      .notNull(),
+    chapterId: uuid("chapter_id")
+      .references(() => chapters.id, { onDelete: "cascade" })
+      .notNull(),
+    lessonId: uuid("lesson_id")
+      .references(() => lessons.id, { onDelete: "cascade" })
+      .notNull(),
+    completedQuestionCount: integer("completed_question_count").default(0).notNull(),
+    quizScore: integer("quiz_score"),
+    attempts: integer("attempts"),
+    isQuizPassed: boolean("is_quiz_passed"),
+    isStarted: boolean("is_started").default(false),
+    completedAt: timestamp("completed_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    languageAnswered: text("language_answered").default(SUPPORTED_LANGUAGES.EN),
+    tenantId,
+  },
+  withTenantIdIndex("student_lesson_progress", (table) => ({
+    unq: unique()
+      .on(table.studentId, table.lessonId, table.chapterId, table.learningStateId)
+      .nullsNotDistinct(),
+    reportLearnerChapterIdx: index("student_lesson_progress_report_learner_chapter_idx").on(
+      table.tenantId,
+      table.studentId,
+      table.chapterId,
+    ),
+    completedQuizScoreIdx: index("student_lesson_progress_completed_quiz_score_idx")
+      .on(table.tenantId, table.lessonId, table.studentId)
+      .where(sql`${table.completedAt} IS NOT NULL AND ${table.quizScore} IS NOT NULL`),
+  })),
+);
+
+export const aiMentorStudentLessonProgress = pgTable(
+  "ai_mentor_student_lesson_progress",
+  {
+    ...id,
+    ...timestamps,
+    studentLessonProgressId: uuid("student_lesson_progress_id")
+      .references(() => studentLessonProgress.id, { onDelete: "cascade" })
+      .notNull(),
+    score: integer("score"),
+    minScore: integer("min_score"),
+    maxScore: integer("max_score"),
+    percentage: integer("percentage"),
+    passed: boolean("passed").default(false),
+    tenantId,
+  },
+  withTenantIdIndex("ai_mentor_student_lesson_progress"),
+);
+
+export const studentChapterProgress = pgTable(
+  "student_chapter_progress",
+  {
+    ...id,
+    learningStateId: uuid("learning_state_id").references(() => courseLearningStates.id, {
+      onDelete: "cascade",
+    }),
+    ...timestamps,
+    studentId: uuid("student_id")
+      .references(() => users.id)
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id)
+      .notNull(),
+    chapterId: uuid("chapter_id")
+      .references(() => chapters.id, { onDelete: "cascade" })
+      .notNull(),
+    completedLessonCount: integer("completed_lesson_count").default(0).notNull(),
+    completedAt: timestamp("completed_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    completedAsFreemium: boolean("completed_as_freemium").notNull().default(false),
+    tenantId,
+  },
+  withTenantIdIndex("student_chapter_progress", (table) => ({
+    unq: unique()
+      .on(table.studentId, table.courseId, table.chapterId, table.learningStateId)
+      .nullsNotDistinct(),
+  })),
+);
+
+export const coursesSummaryStats = pgTable(
+  "courses_summary_stats",
+  {
+    ...id,
+    ...timestamps,
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .unique()
+      .notNull(),
+    authorId: uuid("author_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    freePurchasedCount: integer("free_purchased_count").notNull().default(0),
+    paidPurchasedCount: integer("paid_purchased_count").notNull().default(0),
+    paidPurchasedAfterFreemiumCount: integer("paid_purchased_after_freemium_count")
+      .notNull()
+      .default(0),
+    completedFreemiumStudentCount: integer("completed_freemium_student_count").notNull().default(0),
+    completedCourseStudentCount: integer("completed_course_student_count").notNull().default(0),
+    tenantId,
+  },
+  withTenantIdIndex("courses_summary_stats"),
+);
+
+export const courseStudentsStats = pgTable(
+  "course_students_stats",
+  {
+    ...id,
+    ...timestamps,
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    authorId: uuid("author_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    month: integer("month").notNull(),
+    year: integer("year").notNull(),
+    newStudentsCount: integer("new_students_count").notNull().default(0),
+    tenantId,
+  },
+  withTenantIdIndex("course_students_stats", (table) => ({
+    unq: unique().on(table.courseId, table.month, table.year),
+  })),
+);
+
+export const lessonLearningTime = pgTable(
+  "lesson_learning_time",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    lessonId: uuid("lesson_id")
+      .references(() => lessons.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    totalSeconds: integer("total_seconds").notNull().default(0),
+    tenantId,
+  },
+  withTenantIdIndex("lesson_learning_time", (table) => ({
+    unq: unique().on(table.userId, table.lessonId),
+    userCourseIdx: index("lesson_learning_time_user_course_idx").on(table.userId, table.courseId),
+  })),
+);
+
+export const scormPackages = pgTable(
+  "scorm_packages",
+  {
+    ...id,
+    ...timestamps,
+    entityType: scormPackageEntityTypeEnum("entity_type").$type<ScormPackageEntityType>().notNull(),
+    entityId: uuid("entity_id").notNull(),
+    language: text("language")
+      .$type<SupportedLanguages>()
+      .notNull()
+      .default(SUPPORTED_LANGUAGES.EN),
+    standard: scormStandardEnum("standard").$type<ScormStandard>().notNull(),
+    originalFileReference: text("original_file_reference").notNull(),
+    extractedFilesReference: text("extracted_files_reference").notNull(),
+    manifestEntryPoint: text("manifest_entry_point").notNull(),
+    manifestJson: jsonb("manifest_json").default({}).notNull(),
+    status: scormPackageStatusEnum("status")
+      .$type<ScormPackageStatus>()
+      .notNull()
+      .default(SCORM_PACKAGE_STATUS.PROCESSING),
+    tenantId,
+  },
+  withTenantIdIndex("scorm_packages", (table) => ({
+    entityIdx: index("scorm_packages_entity_idx").on(
+      table.entityType,
+      table.entityId,
+      table.language,
+    ),
+    entityUniqueIdx: uniqueIndex("scorm_packages_entity_unique_idx").on(
+      table.entityType,
+      table.entityId,
+      table.language,
+    ),
+  })),
+);
+
+export const scormScos = pgTable(
+  "scorm_scos",
+  {
+    ...id,
+    ...timestamps,
+    packageId: uuid("package_id")
+      .references(() => scormPackages.id, { onDelete: "cascade" })
+      .notNull(),
+    lessonId: uuid("lesson_id")
+      .references(() => lessons.id, { onDelete: "cascade" })
+      .notNull(),
+    organizationIdentifier: text("organization_identifier"),
+    identifier: text("identifier").notNull(),
+    identifierRef: text("identifier_ref"),
+    resourceIdentifier: text("resource_identifier"),
+    resourceType: text("resource_type"),
+    scormType: text("scorm_type"),
+    title: text("title").notNull(),
+    href: text("href"),
+    launchPath: text("launch_path").notNull(),
+    parameters: text("parameters"),
+    displayOrder: integer("display_order").notNull(),
+    parentIdentifier: text("parent_identifier"),
+    isVisible: boolean("is_visible").notNull().default(true),
+    itemMetadataJson: jsonb("item_metadata_json"),
+    resourceMetadataJson: jsonb("resource_metadata_json"),
+    tenantId,
+  },
+  withTenantIdIndex("scorm_scos", (table) => ({
+    packageIdx: index("scorm_scos_package_id_idx").on(table.packageId),
+    lessonIdx: index("scorm_scos_lesson_id_idx").on(table.lessonId),
+    packageIdentifierUniqueIdx: uniqueIndex("scorm_scos_package_identifier_unique_idx").on(
+      table.packageId,
+      table.identifier,
+    ),
+  })),
+);
+
+export const scormAttempts = pgTable(
+  "scorm_attempts",
+  {
+    ...id,
+    learningStateId: uuid("learning_state_id").references(() => courseLearningStates.id, {
+      onDelete: "cascade",
+    }),
+    ...timestamps,
+    studentId: uuid("student_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    lessonId: uuid("lesson_id")
+      .references(() => lessons.id, { onDelete: "cascade" })
+      .notNull(),
+    packageId: uuid("package_id")
+      .references(() => scormPackages.id, { onDelete: "cascade" })
+      .notNull(),
+    scoId: uuid("sco_id")
+      .references(() => scormScos.id, { onDelete: "cascade" })
+      .notNull(),
+    attemptNumber: integer("attempt_number").notNull().default(1),
+    startedAt: timestamp("started_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    completedAt: timestamp("completed_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("scorm_attempts", (table) => ({
+    studentLessonIdx: index("scorm_attempts_student_lesson_idx").on(
+      table.studentId,
+      table.lessonId,
+    ),
+    studentPackageIdx: index("scorm_attempts_student_package_idx").on(
+      table.studentId,
+      table.packageId,
+    ),
+    scoIdx: index("scorm_attempts_sco_id_idx").on(table.scoId),
+    studentPackageScoAttemptUniqueIdx: unique(
+      "scorm_attempts_student_package_sco_attempt_unique_idx",
+    )
+      .on(table.studentId, table.packageId, table.scoId, table.attemptNumber, table.learningStateId)
+      .nullsNotDistinct(),
+  })),
+);
+
+export const scormRuntimeState = pgTable(
+  "scorm_runtime_state",
+  {
+    ...id,
+    ...timestamps,
+    attemptId: uuid("attempt_id")
+      .references(() => scormAttempts.id, { onDelete: "cascade" })
+      .notNull(),
+    completionStatus: scormCompletionStatusEnum("completion_status")
+      .$type<ScormCompletionStatus>()
+      .notNull()
+      .default(SCORM_COMPLETION_STATUS.UNKNOWN),
+    successStatus: scormSuccessStatusEnum("success_status")
+      .$type<ScormSuccessStatus>()
+      .notNull()
+      .default(SCORM_SUCCESS_STATUS.UNKNOWN),
+    scoreRaw: numeric("score_raw", { precision: 10, scale: 4 }),
+    scoreMin: numeric("score_min", { precision: 10, scale: 4 }),
+    scoreMax: numeric("score_max", { precision: 10, scale: 4 }),
+    scoreScaled: numeric("score_scaled", { precision: 10, scale: 4 }),
+    lessonLocation: text("lesson_location"),
+    suspendData: text("suspend_data"),
+    sessionTime: text("session_time"),
+    totalTime: text("total_time"),
+    progressMeasure: numeric("progress_measure", { precision: 10, scale: 4 }),
+    entry: text("entry"),
+    exit: text("exit"),
+    rawCmiJson: jsonb("raw_cmi_json").default({}).notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("scorm_runtime_state", (table) => ({
+    attemptUniqueIdx: uniqueIndex("scorm_runtime_state_attempt_id_unique_idx").on(table.attemptId),
+  })),
+);
+
+export const groups = pgTable(
+  "groups",
+  {
+    ...id,
+    ...timestamps,
+    name: jsonb("name").$type<LocalizedText>().default({}).notNull(),
+    characteristic: jsonb("characteristic").$type<LocalizedText>(),
+    baseLanguage,
+    availableLocales,
+    tenantId,
+  },
+  withTenantIdIndex("groups"),
+);
+
+export const groupUsers = pgTable(
+  "group_users",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    groupId: uuid("group_id")
+      .references(() => groups.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("group_users", (table) => ({
+    unq: unique().on(table.userId, table.groupId),
+    reportGroupLearnerIdx: index("group_users_report_group_learner_idx").on(
+      table.tenantId,
+      table.groupId,
+      table.userId,
+    ),
+    groupUserIdx: index("group_users_group_id_user_id_idx").on(table.groupId, table.userId),
+  })),
+);
+
+export const groupManagerGroups = pgTable(
+  "group_manager_groups",
+  {
+    ...id,
+    ...timestamps,
+    managerUserId: uuid("manager_user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    groupId: uuid("group_id")
+      .references(() => groups.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("group_manager_groups", (table) => ({
+    managerGroupUniqueIdx: uniqueIndex("group_manager_groups_manager_user_id_group_id_unique").on(
+      table.managerUserId,
+      table.groupId,
+    ),
+    groupIdx: index("group_manager_groups_group_id_idx").on(table.groupId),
+  })),
+);
+
+export const groupCourses = pgTable(
+  "group_courses",
+  {
+    ...id,
+    ...timestamps,
+    groupId: uuid("group_id")
+      .references(() => groups.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    enrolledBy: uuid("enrolled_by").references(() => users.id),
+    isMandatory: boolean("is_mandatory").notNull().default(false),
+    dueDate: timestamp("due_date", { withTimezone: true }),
+    calendarEventId: uuid("calendar_event_id")
+      .references(() => calendarEvents.id, { onDelete: "set null" })
+      .unique(),
+    tenantId,
+  },
+  withTenantIdIndex("group_courses", (table) => ({
+    unq: unique().on(table.groupId, table.courseId),
+  })),
+);
+
+export const settings = pgTable(
+  "settings",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id").references(() => users.id, { onDelete: "cascade" }),
+    settings: jsonb("settings").$type<AllSettings>().notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("settings"),
+);
+
+export const forms = pgTable(
+  "forms",
+  {
+    ...id,
+    ...timestamps,
+    type: varchar("type", { length: 50 }).$type<FormType>().notNull(),
+    isActive: boolean("is_active").notNull().default(true),
+    tenantId,
+  },
+  withTenantIdIndex("forms", (table) => ({
+    tenantTypeUniqueIdx: uniqueIndex("forms_tenant_id_type_unique_idx").on(
+      table.tenantId,
+      table.type,
+    ),
+  })),
+);
+
+export const formFields = pgTable(
+  "form_fields",
+  {
+    ...id,
+    ...timestamps,
+    formId: uuid("form_id")
+      .references(() => forms.id, { onDelete: "cascade" })
+      .notNull(),
+    type: varchar("type", { length: 50 }).$type<RegistrationFormFieldType>().notNull(),
+    label: jsonb("label").$type<LocalizedText>().notNull().default({}),
+    required: boolean("required").notNull().default(false),
+    displayOrder: integer("display_order").notNull().default(0),
+    baseLanguage,
+    availableLocales,
+    archived: boolean("archived").notNull().default(false),
+    tenantId,
+  },
+  withTenantIdIndex("form_fields", (table) => ({
+    formDisplayOrderIdx: index("form_fields_form_id_display_order_idx").on(
+      table.formId,
+      table.displayOrder,
+    ),
+  })),
+);
+
+export const formFieldAnswers = pgTable(
+  "form_field_answers",
+  {
+    ...id,
+    ...timestamps,
+    formFieldId: uuid("form_field_id")
+      .references(() => formFields.id, { onDelete: "restrict" })
+      .notNull(),
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    value: boolean("value").notNull(),
+    labelSnapshot: jsonb("label_snapshot").$type<LocalizedText>().notNull().default({}),
+    answeredLanguage: text("answered_language")
+      .$type<SupportedLanguages>()
+      .notNull()
+      .default(SUPPORTED_LANGUAGES.EN),
+    tenantId,
+  },
+  withTenantIdIndex("form_field_answers", (table) => ({
+    userFieldUniqueIdx: uniqueIndex("form_field_answers_user_id_form_field_id_unique").on(
+      table.userId,
+      table.formFieldId,
+    ),
+    userIdx: index("form_field_answers_user_id_idx").on(table.userId),
+  })),
+);
+
+export const certificates = pgTable(
+  "certificates",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    status: text("status")
+      .$type<CertificateStatus>()
+      .notNull()
+      .default(CERTIFICATE_STATUSES.ACTIVE),
+    issuedAt: timestampWithTimezone({ name: "issued_at" })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    expiresAt: timestampWithTimezone({ name: "expires_at" }),
+    archivedAt: timestampWithTimezone({ name: "archived_at" }),
+    archiveReason: text("archive_reason").$type<CertificateArchiveReason>(),
+    expirationWarningSentAt: timestampWithTimezone({ name: "expiration_warning_sent_at" }),
+    tenantId,
+  },
+  withTenantIdIndex("certificates", (table) => ({
+    activeExpiryIdx: index("certificates_active_expiry_idx").on(table.status, table.expiresAt),
+    userCourseIdx: index("certificates_user_course_idx").on(table.userId, table.courseId),
+  })),
+);
+
+export const todoTasks = pgTable(
+  "todo_tasks",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    title: varchar("title", { length: 200 }).notNull(),
+    position: integer("position").notNull().default(0),
+    completedAt: timestampWithTimezone({ name: "completed_at" }),
+    tenantId,
+  },
+  withTenantIdIndex("todo_tasks", (table) => ({
+    userPositionIdx: index("todo_tasks_user_position_idx").on(
+      table.userId,
+      table.completedAt,
+      table.position,
+    ),
+  })),
+);
+
+export const announcements = pgTable(
+  "announcements",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").$type<LocalizedText>().default({}).notNull(),
+    content: jsonb("content").$type<LocalizedText>().default({}).notNull(),
+    authorId: uuid("author_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    audience: text("audience")
+      .$type<AnnouncementAudience>()
+      .notNull()
+      .default(ANNOUNCEMENT_AUDIENCES.ALL_USERS),
+    status: text("status")
+      .$type<AnnouncementStatus>()
+      .notNull()
+      .default(ANNOUNCEMENT_STATUSES.PUBLISHED),
+    scheduledAt: timestampWithTimezone({ name: "scheduled_at" }),
+    publishedAt: timestampWithTimezone({ name: "published_at" }),
+    sendEmail: boolean("send_email").notNull().default(false),
+    emailTemplate: text("email_template")
+      .$type<AnnouncementEmailTemplate>()
+      .notNull()
+      .default(ANNOUNCEMENT_EMAIL_TEMPLATES.DEFAULT),
+    sourceType: text("source_type")
+      .$type<AnnouncementSourceType>()
+      .notNull()
+      .default(ANNOUNCEMENT_SOURCE_TYPES.MANUAL),
+    sourceId: uuid("source_id"),
+    baseLanguage,
+    availableLocales,
+    deletedAt: timestampWithTimezone({ name: "deleted_at" }),
+    tenantId,
+  },
+  withTenantIdIndex("announcements"),
+);
+
+export const userAnnouncements = pgTable(
+  "user_announcements",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    announcementId: uuid("announcement_id")
+      .references(() => announcements.id, { onDelete: "cascade" })
+      .notNull(),
+    isRead: boolean("is_read").notNull().default(false),
+    readAt: timestamp("read_at", { mode: "string", withTimezone: true, precision: 3 }),
+    tenantId,
+  },
+  withTenantIdIndex("user_announcements", (table) => ({
+    unq: unique().on(table.userId, table.announcementId),
+  })),
+);
+
+export const groupAnnouncements = pgTable(
+  "group_announcements",
+  {
+    ...id,
+    ...timestamps,
+    groupId: uuid("group_id")
+      .references(() => groups.id, { onDelete: "cascade" })
+      .notNull(),
+    announcementId: uuid("announcement_id")
+      .references(() => announcements.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("group_announcements", (table) => ({
+    unq: unique().on(table.groupId, table.announcementId),
+  })),
+);
+
+export const documents = pgTable(
+  "documents",
+  {
+    ...id,
+    ...timestamps,
+    fileName: text("file_name").notNull(),
+    contentType: text("content_type").notNull(),
+    byteSize: bigint("byte_size", { mode: "number" }).notNull(),
+    checksum: text("check_sum").notNull().unique(),
+    status: text("status").notNull().default("processing"), // 'processing' | 'ready' | 'failed'
+    errorMessage: text("error_message"),
+    metadata: jsonb("metadata"),
+    tenantId,
+  },
+  withTenantIdIndex("documents"),
+);
+
+export const docChunks = pgTable(
+  "doc_chunks",
+  {
+    ...id,
+    ...timestamps,
+    documentId: uuid("document_id")
+      .notNull()
+      .references(() => documents.id, { onDelete: "cascade" }),
+    chunkIndex: integer("chunk_index").notNull(),
+    metadata: jsonb("metadata"),
+    content: text("content").notNull(),
+    embedding: vector("embedding", { dimensions: 1536 }),
+    tenantId,
+  },
+  withTenantIdIndex("doc_chunks", (t) => ({
+    uniqueOrder: { columns: [t.documentId, t.chunkIndex], unique: true },
+  })),
+);
+
+export const documentToAiMentorLesson = pgTable(
+  "document_to_ai_mentor_lesson",
+  {
+    ...id,
+    ...timestamps,
+    documentId: uuid("document_id")
+      .notNull()
+      .references(() => documents.id, { onDelete: "cascade" }),
+    aiMentorLessonId: uuid("ai_mentor_lesson_id")
+      .references(() => aiMentorLessons.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("document_to_ai_mentor_lesson", (t) => ({
+    unq: unique().on(t.documentId, t.aiMentorLessonId),
+  })),
+);
+
+export const secrets = pgTable(
+  "secrets",
+  {
+    ...id,
+    ...timestamps,
+    secretName: text("secret_name").notNull(),
+    version: integer("version").default(1).notNull(),
+    ciphertext: text("ciphertext").notNull(),
+    iv: text("iv").notNull(),
+    tag: text("tag").notNull(),
+    encryptedDek: text("encrypted_dek").notNull(),
+    encryptedDekIV: text("encrypted_dek_iv").notNull(),
+    encryptedDekTag: text("encrypted_dek_tag").notNull(),
+    alg: text("alg").notNull().default("AES-256-GCM"),
+    metadata: jsonb("metadata"),
+    tenantId,
+  },
+  withTenantIdIndex("secrets", (t) => ({
+    nameUnique: uniqueIndex("secrets_tenant_secret_name_uq").on(t.tenantId, t.secretName),
+    nameIdx: index("secrets_name_idx").on(t.secretName),
+  })),
+);
+
+export const integrationApiKeys = pgTable(
+  "integration_api_keys",
+  {
+    ...id,
+    ...timestamps,
+    keyPrefix: text("key_prefix").notNull(),
+    keyHash: text("key_hash").notNull(),
+    createdByUserId: uuid("created_by_user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    lastUsedAt: timestamp("last_used_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    revokedAt: timestamp("revoked_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("integration_api_keys", (t) => ({
+    keyPrefixIdx: index("integration_api_keys_key_prefix_idx").on(t.keyPrefix),
+    createdByIdx: index("integration_api_keys_created_by_idx").on(t.createdByUserId),
+  })),
+);
+
+export const supportSessions = pgTable(
+  "support_sessions",
+  {
+    ...id,
+    ...timestamps,
+    originalUserId: uuid("original_user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    originalTenantId: uuid("original_tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    targetTenantId: uuid("target_tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    targetUserId: uuid("target_user_id").references(() => users.id, { onDelete: "cascade" }),
+    hashedGrantToken: text("hashed_grant_token").notNull(),
+    grantExpiresAt: timestamp("grant_expires_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }).notNull(),
+    activatedAt: timestamp("activated_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    expiresAt: timestamp("expires_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }).notNull(),
+    revokedAt: timestamp("revoked_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    returnUrl: text("return_url").notNull(),
+    status: text("status")
+      .notNull()
+      .$type<SupportSessionStatus>()
+      .default(SUPPORT_SESSION_STATUSES.PENDING),
+  },
+  (table) => ({
+    hashedGrantTokenUniqueIdx: uniqueIndex("support_sessions_hashed_grant_token_unique").on(
+      table.hashedGrantToken,
+    ),
+    statusIdx: index("support_sessions_status_idx").on(table.status),
+    originalUserIdx: index("support_sessions_original_user_idx").on(table.originalUserId),
+    targetTenantIdx: index("support_sessions_target_tenant_idx").on(table.targetTenantId),
+    targetUserIdx: index("support_sessions_target_user_idx").on(table.targetUserId),
+  }),
+);
+
+export const userOnboarding = pgTable(
+  "user_onboarding",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    dashboard: boolean("dashboard").notNull().default(false),
+    courses: boolean("courses").notNull().default(false),
+    announcements: boolean("announcements").notNull().default(false),
+    profile: boolean("profile").notNull().default(false),
+    settings: boolean("settings").notNull().default(false),
+    providerInformation: boolean("provider_information").notNull().default(false),
+    tenantId,
+  },
+  withTenantIdIndex("user_onboarding", (table) => ({
+    unq: unique().on(table.userId),
+  })),
+);
+
+export const activityLogs = pgTable(
+  "activity_logs",
+  {
+    ...id,
+    ...timestamps,
+    actorId: uuid("actor_id")
+      .references(() => users.id, { onDelete: "restrict" })
+      .notNull(),
+    actorEmail: text("actor_email").notNull(),
+    actorRole: text("actor_role").notNull(),
+    actionType: text("action_type").$type<ActivityLogActionType>().notNull(),
+    resourceType: text("resource_type"),
+    resourceId: uuid("resource_id"),
+    metadata: jsonb("metadata").$type<ActivityLogMetadata>().notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("activity_logs", (table) => ({
+    tenantTimeframeIdx: index("activity_logs_tenant_timeframe_idx").on(
+      table.tenantId,
+      table.createdAt,
+    ),
+    actorIdx: index("activity_logs_actor_idx").on(table.actorId, table.createdAt),
+    actionIdx: index("activity_logs_action_idx").on(table.actionType, table.createdAt),
+    timeframeIdx: index("activity_logs_timeframe_idx").on(table.createdAt),
+    resourceIdx: index("activity_logs_resource_idx").on(table.resourceType, table.resourceId),
+  })),
+);
+
+export const outboxEvents = pgTable(
+  "outbox_events",
+  {
+    ...id,
+    ...timestamps,
+    eventType: text("event_type").notNull(),
+    payload: nativeJsonb<Record<string, unknown>>("payload").notNull(),
+    status: text("status").notNull().default("pending"),
+    attemptCount: integer("attempt_count").notNull().default(0),
+    publishedAt: timestamp("published_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    lastError: text("last_error"),
+    tenantId,
+  },
+  withTenantIdIndex("outbox_events", (table) => ({
+    pollIdx: index("outbox_events_poll_idx").on(table.tenantId, table.status, table.createdAt),
+  })),
+);
+
+export const searchDocuments = pgTable(
+  "search_documents",
+  {
+    ...id,
+    ...timestamps,
+    entityType: text("entity_type").notNull(),
+    entityId: uuid("entity_id").notNull(),
+    documentType: text("document_type").notNull(),
+    language: text("language").$type<SupportedLanguages>().notNull(),
+    content: text("content").notNull(),
+    searchVector: tsvector("search_vector").notNull(),
+    metadata: jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+    tenantId,
+  },
+  withTenantIdIndex("search_documents", (table) => ({
+    vectorIdx: index("search_documents_vector_idx").using("gin", table.searchVector),
+    languageEntityTypeIdx: index("search_documents_language_entity_type_idx").on(
+      table.tenantId,
+      table.language,
+      table.entityType,
+    ),
+    entityIdx: index("search_documents_entity_idx").on(
+      table.tenantId,
+      table.entityType,
+      table.entityId,
+    ),
+    documentUniqueIdx: uniqueIndex("search_documents_document_unique_idx").on(
+      table.tenantId,
+      table.entityType,
+      table.entityId,
+      table.documentType,
+      table.language,
+    ),
+  })),
+);
+
+export const searchChunks = pgTable(
+  "search_chunks",
+  {
+    ...id,
+    ...timestamps,
+    tenantId,
+    entityType: text("entity_type").notNull(),
+    entityId: uuid("entity_id").notNull(),
+    documentType: text("document_type").notNull(),
+    language: text("language").$type<SupportedLanguages>().notNull(),
+    chunkIndex: integer("chunk_index").notNull(),
+    content: text("content").notNull(),
+    searchVector: tsvector("search_vector").notNull(),
+    embedding: vector("embedding", { dimensions: 1536 }).notNull(),
+    sourceHash: text("source_hash").notNull(),
+    sourceRevision: text("source_revision").notNull().default(""),
+    embeddingModel: text("embedding_model").notNull(),
+    indexVersion: integer("index_version").notNull(),
+    metadata: jsonb("metadata").$type<Record<string, unknown>>().notNull().default({}),
+  },
+  withTenantIdIndex("search_chunks", (table) => ({
+    embeddingHnswIdx: index("search_chunks_embedding_hnsw_idx")
+      .using("hnsw", table.embedding.op("vector_cosine_ops"))
+      .with({ m: 16, ef_construction: 64 }),
+    vectorIdx: index("search_chunks_vector_idx").using("gin", table.searchVector),
+    entityIdx: index("search_chunks_entity_idx").on(
+      table.tenantId,
+      table.entityType,
+      table.entityId,
+    ),
+    sourceUniqueIdx: uniqueIndex("search_chunks_source_unique_idx").on(
+      table.tenantId,
+      table.entityType,
+      table.entityId,
+      table.documentType,
+      table.language,
+      table.chunkIndex,
+    ),
+  })),
+);
+
+export const questionsAndAnswers = pgTable(
+  "questions_and_answers",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").default({}).notNull(),
+    description: jsonb("description").default({}).notNull(),
+    metadata: jsonb("metadata").default({}),
+    baseLanguage,
+    availableLocales: text("available_locales")
+      .array()
+      .$type<SupportedLanguages[]>()
+      .notNull()
+      .default(sql`ARRAY['en']::text[]`),
+    tenantId,
+  },
+  withTenantIdIndex("questions_and_answers"),
+);
+
+export const resources = pgTable(
+  "resources",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").notNull().default({}),
+    description: jsonb("description").notNull().default({}),
+    reference: varchar("reference", { length: 500 }).notNull(),
+    contentType: varchar("content_type", { length: 100 }).notNull(),
+    metadata: jsonb("metadata").$type<ResourceMetadata>().default({}),
+    uploadedBy: uuid("uploaded_by_id").references(() => users.id, { onDelete: "set null" }),
+    visibility: varchar("visibility", { length: 20 })
+      .$type<ResourceVisibility>()
+      .notNull()
+      .default(RESOURCE_VISIBILITY.PUBLIC),
+    archived,
+    tenantId,
+  },
+  withTenantIdIndex("resources"),
+);
+
+export const resourceEntity = pgTable(
+  "resource_entity",
+  {
+    ...id,
+    ...timestamps,
+    resourceId: uuid("resource_id")
+      .references(() => resources.id, { onDelete: "cascade" })
+      .notNull(),
+    entityId: uuid("entity_id").notNull(),
+    entityType: varchar("entity_type", { length: 100 }).notNull(),
+    relationshipType: varchar("relationship_type", { length: 100 }).notNull().default("attachment"), // attachment / cover_image / live_training_before / live_training_after
+    tenantId,
+  },
+  withTenantIdIndex("resource_entity", (table) => ({
+    resourceIdx: index("resource_entity_resource_idx").on(table.resourceId),
+    entityIdx: index("resource_entity_entity_idx").on(table.entityId, table.entityType),
+    relationshipIdx: index("resource_entity_relationship_idx").on(
+      table.entityId,
+      table.entityType,
+      table.relationshipType,
+    ),
+    assessmentQuestionPromptImageUniqueIdx: uniqueIndex(
+      "resource_entity_assessment_question_prompt_image_unique_idx",
+    )
+      .on(table.tenantId, table.entityId)
+      .where(
+        sql`${table.entityType} = 'assessment_question' AND ${table.relationshipType} = 'prompt_image'`,
+      ),
+    unq: unique().on(table.resourceId, table.entityId, table.entityType, table.relationshipType),
+  })),
+);
+
+export const lessonVideoProgress = pgTable(
+  "lesson_video_progress",
+  {
+    ...id,
+    learningStateId: uuid("learning_state_id").references(() => courseLearningStates.id, {
+      onDelete: "cascade",
+    }),
+    ...timestamps,
+    studentId: uuid("student_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    lessonId: uuid("lesson_id")
+      .references(() => lessons.id, { onDelete: "cascade" })
+      .notNull(),
+    resourceEntityId: uuid("resource_entity_id")
+      .references(() => resourceEntity.id, { onDelete: "cascade" })
+      .notNull(),
+    durationSeconds: integer("duration_seconds").notNull(),
+    bucketSizeSeconds: integer("bucket_size_seconds").default(1).notNull(),
+    watchedRanges: int4multirange("watched_ranges")
+      .default(sql`'{}'::int4multirange`)
+      .notNull(),
+    coveredBucketCount: integer("covered_bucket_count").default(0).notNull(),
+    coveragePercent: numeric("coverage_percent", { precision: 5, scale: 4 })
+      .$type<number>()
+      .default(0)
+      .notNull(),
+    activeWatchSeconds: numeric("active_watch_seconds", { precision: 10, scale: 2 })
+      .$type<number>()
+      .default(0)
+      .notNull(),
+    isWatched: boolean("is_watched").default(false).notNull(),
+    watchedAt: timestamp("watched_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("lesson_video_progress", (table) => ({
+    lessonIdx: index("lesson_video_progress_lesson_idx").on(table.lessonId),
+    resourceEntityIdx: index("lesson_video_progress_resource_entity_idx").on(
+      table.resourceEntityId,
+    ),
+    unq: unique()
+      .on(table.studentId, table.lessonId, table.resourceEntityId, table.learningStateId)
+      .nullsNotDistinct(),
+  })),
+);
+
+export const articleStatusEnum = pgEnum("article_status", ["draft", "published"]);
+
+export const articles = pgTable(
+  "articles",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").notNull().default({}),
+    summary: jsonb("summary").notNull().default({}),
+    content: jsonb("content").notNull().default({}),
+    status: articleStatusEnum("status").notNull().default("draft"),
+    isPublic: boolean("is_public").notNull().default(true),
+    archived,
+    baseLanguage,
+    availableLocales,
+    publishedAt: timestamp("published_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    articleSectionId: uuid("article_section_id").references(() => articleSections.id, {
+      onDelete: "cascade",
+    }),
+    authorId: uuid("author_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    updatedBy: uuid("updated_by_id").references(() => users.id, { onDelete: "set null" }),
+    tenantId,
+  },
+  withTenantIdIndex("articles", (table) => ({
+    articleSectionIdx: index("article_section_idx").on(table.articleSectionId),
+  })),
+);
+
+export const articleSections = pgTable(
+  "article_sections",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").notNull().default({}),
+    baseLanguage,
+    availableLocales,
+    tenantId,
+  },
+  withTenantIdIndex("article_sections"),
+);
+
+export const newsStatusEnum = pgEnum("news_status", ["draft", "published"]);
+
+export const news = pgTable(
+  "news",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").notNull().default({}),
+    summary: jsonb("summary").default({}),
+    content: jsonb("content").default({}),
+    status: newsStatusEnum("status").notNull().default("draft"),
+    isPublic: boolean("is_public").notNull().default(true),
+    archived,
+    baseLanguage,
+    availableLocales,
+    publishedAt: timestamp("published_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    authorId: uuid("author_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("news"),
+);
+
+export const courseTransferStreams = pgTable(
+  "course_transfer_streams",
+  {
+    ...id,
+    ...timestamps,
+    kind: text("kind").$type<CourseTransferKind>().notNull(),
+    exportId: uuid("export_id").notNull(),
+    sourceTenantId: uuid("source_tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    targetTenantId: uuid("target_tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    requestedRevision: integer("requested_revision").notNull().default(0),
+    appliedRevision: integer("applied_revision").notNull().default(0),
+    latestOperationId: uuid("latest_operation_id"),
+    claimToken: uuid("claim_token"),
+    leaseExpiresAt: timestampWithTimezone({ name: "lease_expires_at" }),
+    nextRecoveryAt: timestampWithTimezone({ name: "next_recovery_at" }).notNull().defaultNow(),
+    targetId: uuid("target_id"),
+  },
+  (table) => ({
+    relationshipIdx: uniqueIndex("course_transfer_streams_relationship_idx").on(
+      table.kind,
+      table.exportId,
+    ),
+    recoveryIdx: index("course_transfer_streams_recovery_idx").on(table.nextRecoveryAt),
+    revisionCheck: check(
+      "course_transfer_streams_revision_check",
+      sql`${table.appliedRevision} >= 0 AND ${table.requestedRevision} >= ${table.appliedRevision}`,
+    ),
+  }),
+);
+
+export const hostedVideos = pgTable(
+  "hosted_videos",
+  {
+    ...id,
+    ...timestamps,
+    tenantId: uuid("tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    provider: text("provider").$type<VideoProviderType>().notNull(),
+    providerVideoId: text("provider_video_id"),
+    reference: text("reference"),
+    providerConfigurationSignature: text("provider_configuration_signature").notNull(),
+    status: text("status").$type<HostedVideoStatus>().notNull(),
+    statusChangedAt: timestampWithTimezone({ name: "status_changed_at" }).notNull().defaultNow(),
+    copiedFromTenantId: uuid("copied_from_tenant_id").references(() => tenants.id, {
+      onDelete: "cascade",
+    }),
+    copiedFromReference: text("copied_from_reference"),
+    lastCheckedAt: timestampWithTimezone({ name: "last_checked_at" }),
+  },
+  (table) => ({
+    providerVideoIdx: uniqueIndex("hosted_videos_provider_video_idx").on(
+      table.provider,
+      table.providerVideoId,
+    ),
+    tenantReferenceIdx: index("hosted_videos_tenant_reference_idx").on(
+      table.tenantId,
+      table.reference,
+    ),
+    statusIdx: index("hosted_videos_status_idx").on(table.status),
+    copyIdx: uniqueIndex("hosted_videos_copy_idx")
+      .on(
+        table.tenantId,
+        table.provider,
+        table.providerConfigurationSignature,
+        table.copiedFromTenantId,
+        table.copiedFromReference,
+      )
+      .where(sql`${table.copiedFromReference} IS NOT NULL`),
+  }),
+);
+
+export const courseTransferOperations = pgTable(
+  "course_transfer_operations",
+  {
+    ...id,
+    ...timestamps,
+    streamId: uuid("stream_id")
+      .references(() => courseTransferStreams.id, { onDelete: "cascade" })
+      .notNull(),
+    revision: integer("revision").notNull(),
+    status: text("status").$type<CourseTransferStatus>().notNull().default("pending"),
+    payload: jsonb("payload").$type<Record<string, unknown>>().notNull(),
+    attemptCount: integer("attempt_count").notNull().default(0),
+    errorCode: text("error_code"),
+    completedAt: timestampWithTimezone({ name: "completed_at" }),
+    targetId: uuid("target_id"),
+  },
+  (table) => ({
+    revisionIdx: uniqueIndex("course_transfer_operations_revision_idx").on(
+      table.streamId,
+      table.revision,
+    ),
+  }),
+);
+
+export const courseTransferDependencies = pgTable(
+  "course_transfer_dependencies",
+  {
+    ...id,
+    ...timestamps,
+    operationId: uuid("operation_id")
+      .references(() => courseTransferOperations.id, { onDelete: "cascade" })
+      .notNull(),
+    dependencyStreamId: uuid("dependency_stream_id")
+      .references(() => courseTransferStreams.id, { onDelete: "cascade" })
+      .notNull(),
+    requiredRevision: integer("required_revision").notNull(),
+    sourceId: uuid("source_id").notNull(),
+  },
+  (table) => ({
+    operationDependencyIdx: uniqueIndex("course_transfer_dependencies_operation_stream_idx").on(
+      table.operationId,
+      table.dependencyStreamId,
+    ),
+    dependencyStreamIdx: index("course_transfer_dependencies_stream_idx").on(
+      table.dependencyStreamId,
+    ),
+  }),
+);
+
+export const masterCourseExports = pgTable(
+  "master_course_exports",
+  {
+    ...id,
+    ...timestamps,
+    sourceTenantId: uuid("source_tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    sourceCourseId: uuid("source_course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    targetTenantId: uuid("target_tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    targetCourseId: uuid("target_course_id").references(() => courses.id, { onDelete: "cascade" }),
+    syncStatus: text("sync_status")
+      .notNull()
+      .$type<MasterCourseExportSyncStatus>()
+      .default(MASTER_COURSE_EXPORT_SYNC_STATUSES.ACTIVE),
+    lastSyncedAt: timestamp("last_synced_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+  },
+  (table) => ({
+    sourceCourseIdx: index("master_course_exports_source_course_idx").on(
+      table.sourceTenantId,
+      table.sourceCourseId,
+    ),
+    targetCourseIdx: index("master_course_exports_target_course_idx").on(
+      table.targetTenantId,
+      table.targetCourseId,
+    ),
+    sourceTargetUniqueIdx: uniqueIndex("master_course_exports_source_target_unique_idx").on(
+      table.sourceTenantId,
+      table.sourceCourseId,
+      table.targetTenantId,
+    ),
+  }),
+);
+
+export const masterCourseEntityMap = pgTable(
+  "master_course_entity_map",
+  {
+    ...id,
+    ...timestamps,
+    exportId: uuid("export_id")
+      .references(() => masterCourseExports.id, { onDelete: "cascade" })
+      .notNull(),
+    entityType: text("entity_type").notNull().$type<MasterCourseEntityType>(),
+    sourceEntityId: uuid("source_entity_id").notNull(),
+    targetEntityId: uuid("target_entity_id").notNull(),
+  },
+  (table) => ({
+    exportIdx: index("master_course_entity_map_export_idx").on(table.exportId),
+    sourceEntityIdx: index("master_course_entity_map_source_entity_idx").on(
+      table.entityType,
+      table.sourceEntityId,
+    ),
+    sourceUniqueIdx: uniqueIndex("master_course_entity_map_source_unique_idx").on(
+      table.exportId,
+      table.entityType,
+      table.sourceEntityId,
+    ),
+  }),
+);
+
+export const magicLinkTokens = pgTable(
+  "magic_link_tokens",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    tokenHash: text("token_hash").notNull(),
+    expiryDate: timestamp("expiry_date", {
+      precision: 3,
+      withTimezone: true,
+    }).notNull(),
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("magic_link_tokens")(table),
+    tokenHashIdx: index("magic_link_tokens_token_hash_idx").on(table.tokenHash),
+  }),
+);
+
+export const permissionRoles = pgTable(
+  "permission_roles",
+  {
+    ...id,
+    ...timestamps,
+    name: text("name").notNull(),
+    slug: text("slug").notNull(),
+    isSystem: boolean("is_system").notNull().default(false),
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("permission_roles")(table),
+    tenantSlugUniqueIdx: uniqueIndex("permission_roles_tenant_id_slug_unique").on(
+      table.tenantId,
+      table.slug,
+    ),
+  }),
+);
+
+export const permissionRuleSets = pgTable(
+  "permission_rule_sets",
+  {
+    ...id,
+    ...timestamps,
+    name: text("name").notNull(),
+    slug: text("slug").notNull(),
+    isSystem: boolean("is_system").notNull().default(false),
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("permission_rule_sets")(table),
+    tenantSlugUniqueIdx: uniqueIndex("permission_rule_sets_tenant_id_slug_unique").on(
+      table.tenantId,
+      table.slug,
+    ),
+  }),
+);
+
+export const permissionRoleRuleSets = pgTable(
+  "permission_role_rule_sets",
+  {
+    ...id,
+    ...timestamps,
+    roleId: uuid("role_id")
+      .references(() => permissionRoles.id, { onDelete: "cascade" })
+      .notNull(),
+    ruleSetId: uuid("rule_set_id")
+      .references(() => permissionRuleSets.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("permission_role_rule_sets")(table),
+    roleRuleSetUniqueIdx: uniqueIndex("permission_role_rule_sets_role_id_rule_set_id_unique").on(
+      table.roleId,
+      table.ruleSetId,
+    ),
+  }),
+);
+
+export const permissionRuleSetPermissions = pgTable(
+  "permission_rule_set_permissions",
+  {
+    ...id,
+    ...timestamps,
+    ruleSetId: uuid("rule_set_id")
+      .references(() => permissionRuleSets.id, { onDelete: "cascade" })
+      .notNull(),
+    permission: text("permission").$type<PermissionKey>().notNull(),
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("permission_rule_set_permissions")(table),
+    ruleSetPermissionUniqueIdx: uniqueIndex(
+      "permission_rule_set_permissions_rule_set_id_permission_unique",
+    ).on(table.ruleSetId, table.permission),
+  }),
+);
+
+export const permissionUserRoles = pgTable(
+  "permission_user_roles",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    roleId: uuid("role_id")
+      .references(() => permissionRoles.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  (table) => ({
+    ...withTenantIdIndex("permission_user_roles")(table),
+    userRoleUniqueIdx: uniqueIndex("permission_user_roles_user_id_role_id_unique").on(
+      table.userId,
+      table.roleId,
+    ),
+  }),
+);
+
+export const learningPaths = pgTable(
+  "learning_paths",
+  {
+    ...id,
+    ...timestamps,
+    title: jsonb("title").default({}).notNull().$type<LocalizedText>(),
+    description: jsonb("description").default({}).notNull().$type<LocalizedText>(),
+    thumbnailReference: varchar("thumbnail_reference", { length: 500 }),
+    status: text("status")
+      .notNull()
+      .$type<LearningPathStatus>()
+      .default(LEARNING_PATH_STATUSES.DRAFT),
+    includesCertificate: boolean("includes_certificate").notNull().default(false),
+    settings: jsonb("settings")
+      .default(DEFAULT_LEARNING_PATH_SETTINGS)
+      .notNull()
+      .$type<LearningPathSettings>(),
+    sequenceEnabled: boolean("sequence_enabled").notNull().default(false),
+    authorId: uuid("author_id")
+      .references(() => users.id)
+      .notNull(),
+    originType: text("origin_type")
+      .notNull()
+      .$type<CourseOriginType>()
+      .default(COURSE_ORIGIN_TYPES.REGULAR),
+    sourceLearningPathId: uuid("source_learning_path_id"),
+    sourceTenantId: uuid("source_tenant_id"),
+    originalId: uuid("original_id"),
+    baseLanguage,
+    availableLocales,
+    tenantId,
+  },
+  withTenantIdIndex("learning_paths", (table) => ({
+    originalIdUniqueIdx: uniqueIndex("learning_paths_tenant_original_id_unique_idx").on(
+      table.tenantId,
+      table.originalId,
+    ),
+  })),
+);
+
+export const learningPathCourses = pgTable(
+  "learning_path_courses",
+  {
+    ...id,
+    ...timestamps,
+    learningPathId: uuid("learning_path_id")
+      .references(() => learningPaths.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    displayOrder: integer("display_order").notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("learning_path_courses", (table) => ({
+    pathCourseUniqueIdx: uniqueIndex("learning_path_courses_path_id_course_id_unique_idx").on(
+      table.learningPathId,
+      table.courseId,
+    ),
+    pathOrderUniqueIdx: uniqueIndex("learning_path_courses_path_id_display_order_unique_idx").on(
+      table.learningPathId,
+      table.displayOrder,
+    ),
+    pathOrderIdx: index("learning_path_courses_path_id_display_order_idx").on(
+      table.learningPathId,
+      table.displayOrder,
+    ),
+  })),
+);
+
+export const studentLearningPaths = pgTable(
+  "student_learning_paths",
+  {
+    ...id,
+    ...timestamps,
+    studentId: uuid("student_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    learningPathId: uuid("learning_path_id")
+      .references(() => learningPaths.id, { onDelete: "cascade" })
+      .notNull(),
+    progress: text("progress")
+      .notNull()
+      .$type<LearningPathProgressStatus>()
+      .default(LEARNING_PATH_PROGRESS_STATUSES.NOT_STARTED),
+    completedAt: timestamp("completed_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    enrolledAt: timestamp("enrolled_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }).defaultNow(),
+    enrollmentType: text("enrollment_type")
+      .notNull()
+      .$type<LearningPathEnrollmentType>()
+      .default(LEARNING_PATH_ENROLLMENT_TYPES.DIRECT),
+    tenantId,
+  },
+  withTenantIdIndex("student_learning_paths", (table) => ({
+    unq: unique().on(table.studentId, table.learningPathId),
+    reportPathLearnerIdx: index("student_learning_paths_report_path_learner_idx").on(
+      table.tenantId,
+      table.learningPathId,
+      table.studentId,
+    ),
+  })),
+);
+
+export const studentLearningPathCourses = pgTable(
+  "student_learning_path_courses",
+  {
+    ...id,
+    ...timestamps,
+    studentId: uuid("student_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    learningPathId: uuid("learning_path_id")
+      .references(() => learningPaths.id, { onDelete: "cascade" })
+      .notNull(),
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("student_learning_path_courses", (table) => ({
+    unq: unique().on(table.studentId, table.learningPathId, table.courseId),
+    reportLearnerCoursePathIdx: index(
+      "student_learning_path_courses_report_learner_course_path_idx",
+    ).on(table.tenantId, table.studentId, table.courseId, table.learningPathId),
+    studentPathIdx: index("student_learning_path_courses_student_path_idx").on(
+      table.studentId,
+      table.learningPathId,
+    ),
+    courseIdx: index("student_learning_path_courses_course_idx").on(table.courseId),
+  })),
+);
+
+export const groupLearningPaths = pgTable(
+  "group_learning_paths",
+  {
+    ...id,
+    ...timestamps,
+    groupId: uuid("group_id")
+      .references(() => groups.id, { onDelete: "cascade" })
+      .notNull(),
+    learningPathId: uuid("learning_path_id")
+      .references(() => learningPaths.id, { onDelete: "cascade" })
+      .notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("group_learning_paths", (table) => ({
+    unq: unique().on(table.groupId, table.learningPathId),
+    learningPathIdx: index("group_learning_paths_learning_path_idx").on(table.learningPathId),
+  })),
+);
+
+export const learningPathCertificates = pgTable(
+  "learning_path_certificates",
+  {
+    ...id,
+    ...timestamps,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    learningPathId: uuid("learning_path_id")
+      .references(() => learningPaths.id, { onDelete: "cascade" })
+      .notNull(),
+    status: text("status")
+      .notNull()
+      .$type<LearningPathCertificateStatus>()
+      .default(LEARNING_PATH_CERTIFICATE_STATUSES.ACTIVE),
+    issuedAt: timestamp("issued_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    })
+      .notNull()
+      .defaultNow(),
+    expiresAt: timestamp("expires_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+    tenantId,
+  },
+  withTenantIdIndex("learning_path_certificates"),
+);
+
+export const learningPathExports = pgTable(
+  "learning_path_exports",
+  {
+    ...id,
+    ...timestamps,
+    sourceTenantId: uuid("source_tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    sourceLearningPathId: uuid("source_learning_path_id").notNull(),
+    targetTenantId: uuid("target_tenant_id")
+      .references(() => tenants.id, { onDelete: "cascade" })
+      .notNull(),
+    targetLearningPathId: uuid("target_learning_path_id").references(() => learningPaths.id, {
+      onDelete: "cascade",
+    }),
+    syncStatus: text("sync_status")
+      .notNull()
+      .$type<MasterCourseExportSyncStatus>()
+      .default(MASTER_COURSE_EXPORT_SYNC_STATUSES.ACTIVE),
+    lastSyncedAt: timestamp("last_synced_at", {
+      mode: "string",
+      withTimezone: true,
+      precision: 3,
+    }),
+  },
+  (table) => ({
+    sourceLearningPathIdx: index("learning_path_exports_source_learning_path_idx").on(
+      table.sourceTenantId,
+      table.sourceLearningPathId,
+    ),
+    targetLearningPathIdx: index("learning_path_exports_target_learning_path_idx").on(
+      table.targetTenantId,
+      table.targetLearningPathId,
+    ),
+    sourceTargetUniqueIdx: uniqueIndex("learning_path_exports_source_target_unique_idx").on(
+      table.sourceTenantId,
+      table.sourceLearningPathId,
+      table.targetTenantId,
+    ),
+  }),
+);
+
+export const learningPathEntityMap = pgTable(
+  "learning_path_entity_map",
+  {
+    ...id,
+    ...timestamps,
+    exportId: uuid("export_id")
+      .references(() => learningPathExports.id, { onDelete: "cascade" })
+      .notNull(),
+    entityType: text("entity_type").notNull().$type<LearningPathEntityType>(),
+    sourceEntityId: uuid("source_entity_id").notNull(),
+    targetEntityId: uuid("target_entity_id").notNull(),
+  },
+  (table) => ({
+    exportIdx: index("learning_path_entity_map_export_idx").on(table.exportId),
+    sourceEntityIdx: index("learning_path_entity_map_source_entity_idx").on(
+      table.entityType,
+      table.sourceEntityId,
+    ),
+    sourceUniqueIdx: uniqueIndex("learning_path_entity_map_source_unique_idx").on(
+      table.exportId,
+      table.entityType,
+      table.sourceEntityId,
+    ),
+  }),
+);
+
+export const emailTemplates = pgTable(
+  "email_templates",
+  {
+    ...id,
+    ...timestamps,
+    name: jsonb("name").$type<LocalizedText>().notNull(),
+    subject: jsonb("subject").$type<LocalizedText>().notNull(),
+    content: jsonb("content").$type<LocalizedEmailTemplateContent>().notNull(),
+    status: text("status")
+      .$type<EmailTemplateStatus>()
+      .notNull()
+      .default(EMAIL_TEMPLATE_STATUSES.DRAFT),
+    event: text("event").$type<EmailTemplateEvent>(),
+    triggerEventKind: text("trigger_event_kind").$type<AutomationEventKind>(),
+    placeholders: nativeJsonb<AutomationPlaceholderDefinition[]>("placeholders")
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    publication: nativeJsonb<PublishedEmailTemplate>("publication"),
+    publicationVersion: integer("publication_version").notNull().default(0),
+    baseLanguage,
+    availableLocales,
+    publishedAt: timestampWithTimezone({ name: "published_at" }),
+    archivedAt: timestampWithTimezone({ name: "archived_at" }),
+    deletedAt: timestampWithTimezone({ name: "deleted_at" }),
+    tenantId,
+  },
+  (table) => ({
+    tenantEventIdx: index("email_templates_tenant_event_idx").on(table.tenantId, table.event),
+  }),
+);
+
+/** A committed row is the receipt: failed transactions never leave a success marker. */
+export const courseAuthoringApplications = pgTable(
+  "course_authoring_applications",
+  {
+    ...id,
+    tenantId,
+    courseId: uuid("course_id")
+      .notNull()
+      .references(() => courses.id, { onDelete: "cascade" }),
+    sessionId: uuid("session_id").notNull(),
+    exportId: uuid("export_id").notNull(),
+    exportHash: text("export_hash").notNull(),
+    receiptDeliveredAt: timestampWithTimezone({ name: "receipt_delivered_at" }),
+    actorId: uuid("actor_id").notNull(),
+    result: jsonb("result").$type<CourseAuthoringApplicationResult>().notNull(),
+    ...timestamps,
+  },
+  withTenantIdIndex("course_authoring_applications", (table) => ({
+    exportUnique: uniqueIndex("course_authoring_applications_export_unique").on(
+      table.tenantId,
+      table.exportId,
+    ),
+    courseIndex: index("course_authoring_applications_course_idx").on(table.courseId),
+  })),
+);
+
+/** Tracks uploaded authoring assets before apply so abandoned objects can be reclaimed by index. */
+export const courseAuthoringStagedAssets = pgTable(
+  "course_authoring_staged_assets",
+  {
+    ...id,
+    tenantId,
+    sessionId: uuid("session_id").notNull(),
+    exportId: uuid("export_id").notNull(),
+    storageKey: text("storage_key").notNull(),
+    appliedAt: timestampWithTimezone({ name: "applied_at" }),
+    ...timestamps,
+  },
+  withTenantIdIndex("course_authoring_staged_assets", (table) => ({
+    keyUnique: uniqueIndex("course_authoring_staged_assets_key_unique").on(
+      table.tenantId,
+      table.storageKey,
+    ),
+    cleanupIndex: index("course_authoring_staged_assets_cleanup_idx").on(
+      table.tenantId,
+      table.appliedAt,
+      table.updatedAt,
+    ),
+  })),
+);
+
+/** Durable Core identity and event cursor for an AI authoring conversation. */
+export const courseAuthoringContextBindings = pgTable(
+  "course_authoring_context_bindings",
+  {
+    ...id,
+    tenantId,
+    courseId: uuid("course_id")
+      .notNull()
+      .references(() => courses.id, { onDelete: "cascade" }),
+    sessionId: uuid("session_id").notNull(),
+    actorId: uuid("actor_id").notNull(),
+    language: text("language").notNull(),
+    cursorSequence: integer("cursor_sequence").notNull().default(0),
+    ...timestamps,
+  },
+  withTenantIdIndex("course_authoring_context_bindings", (table) => ({
+    sessionUnique: uniqueIndex("course_authoring_context_bindings_session_unique").on(
+      table.tenantId,
+      table.sessionId,
+    ),
+    pollIndex: index("course_authoring_context_bindings_poll_idx").on(
+      table.tenantId,
+      table.updatedAt,
+    ),
+    courseIndex: index("course_authoring_context_bindings_course_idx").on(table.courseId),
+  })),
+);
+
+/** Persisted context requests make polling and fulfillment safe across disconnects/restarts. */
+export const courseAuthoringContextRequests = pgTable(
+  "course_authoring_context_requests",
+  {
+    ...id,
+    tenantId,
+    bindingId: uuid("binding_id")
+      .notNull()
+      .references(() => courseAuthoringContextBindings.id, { onDelete: "cascade" }),
+    eventId: uuid("event_id").notNull(),
+    sequence: integer("sequence").notNull(),
+    contextRequestId: uuid("context_request_id").notNull(),
+    requestId: uuid("request_id").notNull(),
+    taskId: uuid("task_id").notNull(),
+    taskFence: integer("task_fence").notNull(),
+    payload: jsonb("payload").$type<Record<string, unknown>>().notNull(),
+    status: text("status").notNull().default("pending"),
+    fulfilledAt: timestampWithTimezone({ name: "fulfilled_at" }),
+    failureCode: text("failure_code"),
+    ...timestamps,
+  },
+  withTenantIdIndex("course_authoring_context_requests", (table) => ({
+    requestUnique: uniqueIndex("course_authoring_context_requests_identity_unique").on(
+      table.tenantId,
+      table.contextRequestId,
+    ),
+    sequenceUnique: uniqueIndex("course_authoring_context_requests_sequence_unique").on(
+      table.tenantId,
+      table.bindingId,
+      table.sequence,
+    ),
+    pendingIndex: index("course_authoring_context_requests_pending_idx").on(
+      table.status,
+      table.createdAt,
+    ),
+  })),
+);
+
+export const automationStatusEnum = pgEnum("automation_status", [
+  AUTOMATION_STATUSES.ENABLED,
+  AUTOMATION_STATUSES.DISABLED,
+  AUTOMATION_STATUSES.ARCHIVED,
+  AUTOMATION_STATUSES.DRAFT,
+]);
+
+export const automations = pgTable(
+  "automations",
+  {
+    ...id,
+    ...timestamps,
+    tenantId,
+    status: automationStatusEnum("status").notNull().default(AUTOMATION_STATUSES.DRAFT),
+    name: nativeJsonb<LocalizedText>("name").notNull(),
+    description: nativeJsonb<LocalizedText>("description").notNull(),
+    appliedName: nativeJsonb<LocalizedText>("applied_name"),
+    appliedDescription: nativeJsonb<LocalizedText>("applied_description"),
+    draftRootStepId: uuid("draft_root_step_id"),
+    appliedRootStepId: uuid("applied_root_step_id"),
+    baseLanguage,
+    availableLocales,
+    executionVersion: integer("execution_version").notNull().default(0),
+    deletedAt: timestampWithTimezone({ name: "deleted_at" }),
+    builtInKey: text("built_in_key").$type<AutomationEventKind>(),
+  },
+  withTenantIdIndex("automations", (table) => ({
+    builtInKeyIdx: uniqueIndex("automations_built_in_key_unique_idx").on(
+      table.tenantId,
+      table.builtInKey,
+    ),
+  })),
+);
+
+export const automationNodeKindEnum = pgEnum("automation_node_kind", [
+  AUTOMATION_NODE_KINDS.ACTION,
+  AUTOMATION_NODE_KINDS.CONDITION,
+  AUTOMATION_NODE_KINDS.TRIGGER,
+]);
+
+export const automationSteps = pgTable(
+  "automation_steps",
+  {
+    id: uuid("id").notNull(),
+    ...timestamps,
+    tenantId,
+    automationId: uuid("automation_id")
+      .references(() => automations.id, { onDelete: "cascade" })
+      .notNull(),
+    definitionKind: text("definition_kind").$type<AutomationDefinitionKind>().notNull(),
+    parentId: uuid("parent_id"),
+    position: integer("position").notNull().default(0),
+    nodeKind: automationNodeKindEnum("node_kind").notNull(),
+    configuration: nativeJsonb<AutomationStepConfiguration>("configuration").notNull(),
+  },
+  (table) => ({
+    identity: primaryKey({ columns: [table.automationId, table.id, table.definitionKind] }),
+    ...withTenantIdIndex("automation_steps")(table),
+  }),
+);
+
+export const automationOccurrences = pgTable(
+  "automation_occurrences",
+  {
+    tenantId,
+    occurrenceId: text("occurrence_id").notNull(),
+    createdAt: timestampWithTimezone({ name: "created_at" })
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  withTenantIdIndex("automation_occurrences", (table) => ({
+    identity: primaryKey({ columns: [table.tenantId, table.occurrenceId] }),
+  })),
+);
+
+export const automationRunStatusEnum = pgEnum("automation_run_status", [
+  AUTOMATION_RUN_STATUSES.PENDING,
+  AUTOMATION_RUN_STATUSES.PROCESSING,
+  AUTOMATION_RUN_STATUSES.SUCCEEDED,
+  AUTOMATION_RUN_STATUSES.WARNINGS,
+  AUTOMATION_RUN_STATUSES.FAILED,
+  AUTOMATION_RUN_STATUSES.CANCELLED,
+]);
+
+export const automationRuns = pgTable(
+  "automation_runs",
+  {
+    ...id,
+    ...timestamps,
+    tenantId,
+    automationId: uuid("automation_id")
+      .references(() => automations.id)
+      .notNull(),
+    automationName: text("automation_name").notNull().default(""),
+    failureReasonCode: text("failure_reason_code"),
+    steps: nativeJsonb<AutomationStepTrace[]>("steps")
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    emailAddresses: nativeJsonb<string[]>("email_addresses")
+      .notNull()
+      .default(sql`'[]'::jsonb`),
+    occurrenceId: text("occurrence_id").notNull(),
+    eventKind: text("event_kind").$type<AutomationEventKind>().notNull(),
+    executionVersion: integer("execution_version").notNull(),
+    status: automationRunStatusEnum("status").notNull().default(AUTOMATION_RUN_STATUSES.PENDING),
+    completedAt: timestampWithTimezone({ name: "completed_at" }),
+    succeededCount: integer("succeeded_count").notNull().default(0),
+    failedCount: integer("failed_count").notNull().default(0),
+    cancelledCount: integer("cancelled_count").notNull().default(0),
+  },
+  withTenantIdIndex("automation_runs", (table) => ({
+    occurrenceIdx: uniqueIndex("automation_runs_occurrence_idx").on(
+      table.tenantId,
+      table.automationId,
+      table.occurrenceId,
+    ),
+    retentionIdx: index("automation_runs_retention_idx").on(table.tenantId, table.completedAt),
+  })),
+);
+
+export const automationEmailDeliveries = pgTable(
+  "automation_email_deliveries",
+  {
+    ...id,
+    ...timestamps,
+    tenantId,
+    runId: uuid("run_id")
+      .references(() => automationRuns.id, { onDelete: "cascade" })
+      .notNull(),
+    stepId: text("step_id").notNull(),
+    recipientItemId: text("recipient_item_id").notNull(),
+    stepOrder: integer("step_order").notNull().default(0),
+    recipientEmail: text("recipient_email").notNull(),
+    language: text("language").$type<SupportedLanguages>(),
+    template: nativeJsonb<AutomationTemplateReference>("template").notNull(),
+    templateVersion: integer("template_version").notNull(),
+    status: text("status").$type<AutomationEmailDeliveryStatus>().notNull().default("pending"),
+    attemptCount: integer("attempt_count").notNull().default(0),
+    eventFields: nativeJsonb<Record<string, AutomationPlaceholderValue>>("event_fields"),
+    accountActionIntentId: uuid("account_action_intent_id"),
+    claimedAt: timestampWithTimezone({ name: "claimed_at" }),
+    completedAt: timestampWithTimezone({ name: "completed_at" }),
+    reasonCode: text("reason_code"),
+  },
+  withTenantIdIndex("automation_email_deliveries", (table) => ({
+    identityIdx: uniqueIndex("automation_email_deliveries_identity_idx").on(
+      table.tenantId,
+      table.runId,
+      table.stepId,
+      table.recipientItemId,
+    ),
+    statusIdx: index("automation_email_deliveries_status_idx").on(table.tenantId, table.status),
+  })),
+);
+
+export const notificationAccountActionIntents = pgTable(
+  "notification_account_action_intents",
+  {
+    ...id,
+    ...timestamps,
+    tenantId,
+    userId: uuid("user_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    recipientEmail: text("recipient_email"),
+    kind: text("kind").$type<NotificationAccountActionKind>().notNull(),
+    applicationOrigin: text("application_origin").notNull(),
+    tokenTtlMs: bigint("token_ttl_ms", { mode: "number" }).notNull(),
+    usesCalendarYearExpiry: boolean("uses_calendar_year_expiry").notNull().default(false),
+    reminderCount: integer("reminder_count").notNull().default(0),
+    revokePreviousPasswordSetupTokens: boolean("revoke_previous_password_setup_tokens")
+      .notNull()
+      .default(false),
+    authTokenId: uuid("auth_token_id"),
+    encryptedToken: nativeJsonb<EncryptedAccountActionToken>("encrypted_token"),
+    tokenCreatedAt: timestampWithTimezone({ name: "token_created_at" }),
+    tokenExpiresAt: timestampWithTimezone({ name: "token_expires_at" }),
+  },
+  withTenantIdIndex("notification_account_action_intents"),
+);
+
+export const reportsConfigurations = pgTable(
+  "reports_configurations",
+  {
+    ...id,
+    tenantId,
+    ownerId: uuid("owner_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    name: text("name").notNull(),
+    visibility: text("visibility").$type<ReportConfigurationVisibility>().notNull(),
+    query: jsonb("query").$type<ReportDefinition>().notNull(),
+    ...timestamps,
+  },
+  withTenantIdIndex("reports_configurations", (table) => ({
+    ownerIdx: index("reports_configurations_tenant_owner_idx").on(table.tenantId, table.ownerId),
+    visibilityIdx: index("reports_configurations_tenant_visibility_idx").on(
+      table.tenantId,
+      table.visibility,
+    ),
+  })),
+);
+
+export const reportsExports = pgTable(
+  "reports_exports",
+  {
+    ...id,
+    tenantId,
+    actorId: uuid("actor_id")
+      .references(() => users.id, { onDelete: "cascade" })
+      .notNull(),
+    format: text("format").$type<ReportExportFormat>().notNull(),
+    status: text("status").$type<ReportExportStatus>().notNull(),
+    processingToken: text("processing_token"),
+    query: jsonb("query").$type<ReportsQuery>().notNull(),
+    accessFingerprint: text("access_fingerprint").notNull(),
+    expiresAt: timestampWithTimezone({ name: "expires_at" }),
+    artifactKey: text("artifact_key"),
+    failureCode: text("failure_code"),
+    ...timestamps,
+  },
+  withTenantIdIndex("reports_exports", (table) => ({
+    expiryIdx: index("reports_exports_tenant_expiry_idx").on(table.tenantId, table.expiresAt),
+  })),
+);
+
+export const contentMarketplaceCourseLineages = pgTable(
+  "content_marketplace_course_lineages",
+  {
+    ...id,
+    ...timestamps,
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .unique()
+      .notNull(),
+    listingId: uuid("listing_id").notNull(),
+    versionId: uuid("version_id").notNull(),
+    acquisitionId: uuid("acquisition_id").notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("content_marketplace_course_lineages"),
+);
+
+export const nativeArchiveEntityMap = pgTable(
+  "native_archive_entity_map",
+  {
+    ...id,
+    ...timestamps,
+    courseId: uuid("course_id")
+      .references(() => courses.id, { onDelete: "cascade" })
+      .notNull(),
+    entityType: text("entity_type").notNull().$type<MasterCourseEntityType>(),
+    sourceEntityId: uuid("source_entity_id").notNull(),
+    targetEntityId: uuid("target_entity_id").notNull(),
+    tenantId,
+  },
+  withTenantIdIndex("native_archive_entity_map", (table) => ({
+    sourceUniqueIdx: uniqueIndex("native_archive_entity_map_source_unique_idx").on(
+      table.courseId,
+      table.entityType,
+      table.sourceEntityId,
+    ),
+  })),
+);
+
+export * from "./assistant.schema";

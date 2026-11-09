@@ -1,0 +1,309 @@
+import { BadRequestException, Inject, Injectable, NotFoundException } from "@nestjs/common";
+import { COURSE_FEATURE, ENTITY_TYPES } from "@repo/shared";
+import { eq, sql } from "drizzle-orm";
+import { isEqual } from "lodash";
+
+import { DatabasePg, type UUIDType } from "src/common";
+import { CourseFeaturePolicyService } from "src/courses/authoring/course-feature-policy.service";
+import { MasterCourseService } from "src/courses/master-course/master-course.service";
+import { CreateChapterEvent, DeleteChapterEvent, UpdateChapterEvent } from "src/events";
+import { MAX_LESSON_TITLE_LENGTH } from "src/lesson/repositories/lesson.constants";
+import { AdminLessonService } from "src/lesson/services/adminLesson.service";
+import { LocalizationService } from "src/localization/localization.service";
+import { ENTITY_TYPE } from "src/localization/localization.types";
+import { OutboxPublisher } from "src/outbox/outbox.publisher";
+import { chapters } from "src/storage/schema";
+
+import { AdminChapterRepository } from "./repositories/adminChapter.repository";
+
+import type { CreateChapterBody, UpdateChapterBody } from "./schemas/chapter.schema";
+import type { SupportedLanguages } from "@repo/shared";
+import type { ChapterActivityLogSnapshot } from "src/activity-logs/types";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+
+@Injectable()
+export class AdminChapterService {
+  constructor(
+    @Inject("DB") private readonly db: DatabasePg,
+    private readonly adminChapterRepository: AdminChapterRepository,
+    private readonly adminLessonService: AdminLessonService,
+    private readonly masterCourseService: MasterCourseService,
+    private readonly courseFeaturePolicyService: CourseFeaturePolicyService,
+    private readonly localizationService: LocalizationService,
+    private readonly outboxPublisher: OutboxPublisher,
+  ) {}
+
+  async createChapterForCourse(
+    body: CreateChapterBody,
+    currentUser: CurrentUserType,
+    language?: SupportedLanguages,
+  ) {
+    await this.masterCourseService.assertCourseContentEditable(body.courseId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabled(
+      body.courseId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    const chapter = await this.db.transaction(async (trx) => {
+      await this.adminLessonService.validateAccess(ENTITY_TYPES.COURSE, currentUser, body.courseId);
+
+      const [maxDisplayOrder] = await trx
+        .select({ displayOrder: sql<number>`COALESCE(MAX(${chapters.displayOrder}), 0)` })
+        .from(chapters)
+        .where(eq(chapters.courseId, body.courseId));
+
+      const localization = await this.localizationService.getBaseLanguage(
+        ENTITY_TYPE.COURSE,
+        body.courseId,
+        language,
+      );
+      if (language && !localization.availableLocales.includes(language))
+        throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+      const resolvedLanguage = localization.language;
+
+      if (body.title && body.title.length > MAX_LESSON_TITLE_LENGTH) {
+        throw new BadRequestException({
+          message: `adminCourseView.toast.maxTitleLengthExceeded`,
+          count: MAX_LESSON_TITLE_LENGTH,
+        });
+      }
+
+      const chapter = await this.adminChapterRepository.createChapterForCourse(
+        {
+          courseId: body.courseId,
+          authorId: currentUser.userId,
+          title: body.title,
+          displayOrder: maxDisplayOrder.displayOrder + 1,
+          language: resolvedLanguage,
+          isFreemium: body.isFreemium,
+        },
+        trx,
+      );
+
+      if (!chapter) throw new NotFoundException("adminCourseView.errors.notFound.chapter");
+
+      await this.adminChapterRepository.updateChapterDisplayOrder(body.courseId, trx);
+
+      await this.adminChapterRepository.updateChapterCountForCourse(chapter.courseId, trx);
+
+      return chapter;
+    });
+
+    if (!chapter) throw new BadRequestException("adminCourseView.errors.create.chapterFailed");
+
+    const createdChapterSnapshot = await this.buildChapterActivitySnapshot(chapter.id, language);
+
+    await this.outboxPublisher.publish(
+      new CreateChapterEvent({
+        chapterId: chapter.id,
+        actor: currentUser,
+        createdChapter: createdChapterSnapshot,
+      }),
+    );
+
+    return chapter;
+  }
+
+  async updateFreemiumStatus(
+    chapterId: UUIDType,
+    isFreemium: boolean,
+    currentUser: CurrentUserType,
+  ) {
+    await this.masterCourseService.assertCourseContentEditableByChapterId(chapterId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      chapterId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.adminLessonService.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, chapterId);
+
+    if (isFreemium) {
+      await this.assertFreemiumStatusCanBeEnabled(chapterId);
+    }
+
+    return await this.adminChapterRepository.updateFreemiumStatus(chapterId, isFreemium);
+  }
+
+  async updateChapterDisplayOrder(chapterObject: {
+    chapterId: UUIDType;
+    displayOrder: number;
+    currentUser: CurrentUserType;
+  }): Promise<void> {
+    await this.masterCourseService.assertCourseContentEditableByChapterId(chapterObject.chapterId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      chapterObject.chapterId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.adminLessonService.validateAccess(
+      "chapter",
+      chapterObject.currentUser,
+      chapterObject.chapterId,
+    );
+
+    const { language } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.CHAPTER,
+      chapterObject.chapterId,
+    );
+
+    const [chapterToUpdate] = await this.adminChapterRepository.getChapterById(
+      chapterObject.chapterId,
+      language,
+    );
+
+    if (!chapterToUpdate || chapterToUpdate.displayOrder === null) {
+      throw new NotFoundException("adminCourseView.errors.notFound.chapter");
+    }
+
+    const newDisplayOrder = chapterObject.displayOrder;
+
+    const previousSnapshot = await this.buildChapterActivitySnapshot(
+      chapterObject.chapterId,
+      language,
+    );
+
+    await this.adminChapterRepository.changeChapterDisplayOrder(
+      chapterToUpdate.courseId,
+      chapterToUpdate.id,
+      newDisplayOrder,
+      language,
+    );
+
+    const updatedSnapshot = await this.buildChapterActivitySnapshot(
+      chapterObject.chapterId,
+      language,
+    );
+
+    if (this.areChapterSnapshotsEqual(previousSnapshot, updatedSnapshot)) return;
+
+    await this.outboxPublisher.publish(
+      new UpdateChapterEvent({
+        chapterId: chapterToUpdate.id,
+        actor: chapterObject.currentUser,
+        previousChapterData: previousSnapshot,
+        updatedChapterData: updatedSnapshot,
+      }),
+    );
+  }
+
+  async updateChapter(id: UUIDType, body: UpdateChapterBody, currentUser: CurrentUserType) {
+    await this.masterCourseService.assertCourseContentEditableByChapterId(id);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      id,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.adminLessonService.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, id);
+
+    if (body.title && body.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    const { availableLocales, language: resolvedLanguage } =
+      await this.localizationService.getBaseLanguage(ENTITY_TYPE.CHAPTER, id, body.language);
+
+    const previousSnapshot = await this.buildChapterActivitySnapshot(id, resolvedLanguage);
+
+    if (!availableLocales.includes(body.language)) {
+      throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+    }
+
+    const [chapter] = await this.adminChapterRepository.updateChapter(id, body);
+
+    if (!chapter) throw new NotFoundException("adminCourseView.errors.notFound.chapter");
+
+    const updatedSnapshot = await this.buildChapterActivitySnapshot(id, resolvedLanguage);
+
+    if (this.areChapterSnapshotsEqual(previousSnapshot, updatedSnapshot)) return;
+
+    await this.outboxPublisher.publish(
+      new UpdateChapterEvent({
+        chapterId: chapter.id,
+        actor: currentUser,
+        previousChapterData: previousSnapshot,
+        updatedChapterData: updatedSnapshot,
+      }),
+    );
+  }
+
+  async removeChapter(chapterId: UUIDType, currentUser: CurrentUserType) {
+    await this.masterCourseService.assertCourseContentEditableByChapterId(chapterId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      chapterId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.adminLessonService.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, chapterId);
+
+    const [chapter] = await this.adminChapterRepository.getChapterById(chapterId);
+
+    if (!chapter) throw new NotFoundException("adminCourseView.errors.notFound.chapter");
+
+    await this.db.transaction(async (trx) => {
+      await this.adminChapterRepository.removeChapter(chapterId, trx);
+      await this.adminChapterRepository.updateChapterDisplayOrder(chapter.courseId, trx);
+      await this.adminChapterRepository.updateChapterCountForCourse(chapter.courseId, trx);
+
+      await this.outboxPublisher.publish(
+        new DeleteChapterEvent({
+          chapterId: chapter.id,
+          courseId: chapter.courseId,
+          actor: currentUser,
+          chapterName: chapter.title,
+        }),
+        trx,
+      );
+    });
+  }
+
+  private async buildChapterActivitySnapshot(
+    chapterId: UUIDType,
+    language?: SupportedLanguages,
+  ): Promise<ChapterActivityLogSnapshot> {
+    const resolvedLanguage =
+      language ??
+      (await this.localizationService.getBaseLanguage(ENTITY_TYPE.CHAPTER, chapterId)).language;
+
+    const [chapter] = await this.adminChapterRepository.getChapterById(chapterId, resolvedLanguage);
+
+    if (!chapter) throw new NotFoundException("adminCourseView.errors.notFound.chapter");
+
+    return {
+      id: chapter.id,
+      title: chapter.title,
+      courseId: chapter.courseId,
+      authorId: chapter.authorId,
+      displayOrder: chapter.displayOrder,
+      isFreemium: chapter.isFreemium,
+      lessonCount: chapter.lessonCount,
+    };
+  }
+
+  private areChapterSnapshotsEqual(
+    previousSnapshot: ChapterActivityLogSnapshot | null,
+    updatedSnapshot: ChapterActivityLogSnapshot | null,
+  ) {
+    return isEqual(previousSnapshot, updatedSnapshot);
+  }
+
+  private async assertFreemiumStatusCanBeEnabled(chapterId: UUIDType) {
+    const eligibility = await this.adminChapterRepository.getFreemiumStatusEligibility(chapterId);
+
+    if (!eligibility) throw new NotFoundException("adminCourseView.errors.notFound.chapter");
+
+    if (eligibility.priceInCents === 0 && !eligibility.unregisteredUserCoursesAccessibility) {
+      throw new BadRequestException(
+        "adminCourseView.curriculum.chapter.errors.publicRequiresCourseAccess",
+      );
+    }
+
+    if (eligibility.lessonCount === 0 || eligibility.nonContentLessonCount > 0) {
+      throw new BadRequestException(
+        "adminCourseView.curriculum.chapter.errors.freemiumRequiresContentLessons",
+      );
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Evidence and deviations",
+  "objectives": [
+    "Record actual results and disclose departures from the plan."
+  ],
+  "explanation": [
+    "Evidence connects a requirement to an observed result. Record what was checked, the method, time, relevant identifier and result. “Done” alone is weak evidence when the next reviewer cannot tell which requirement was tested. Do not fabricate a photo, measurement or signature.",
+    "A deviation is a departure from the applicable requirement or planned process. Record the difference and its impact; seek authorized disposition instead of silently changing the procedure. Depending on the risk, the task may need to pause. Preserve the original evidence and record any correction with traceable history. A failed check can be useful information when it is reported honestly."
+  ],
+  "example": "The required playback test was not performed because access was unavailable. Record “not tested, access pending,” rather than a pass.",
+  "exercise": "Rewrite “all OK” into a test record with an unresolved item.",
+  "model_response": "Device C2 live view verified at 14:00 under the agreed scene. Playback not tested; authorized access pending. Review requested before acceptance.",
+  "key_points": [
+    "Record method and observed result",
+    "Not tested is not passed",
+    "Keep deviations visible"
+  ],
+  "references": [
+    "QA",
+    "EX"
+  ],
+  "thai_summary": "บันทึกสิ่งที่ตรวจจริง วิธีตรวจ เวลา และผล งานที่ยังไม่ทดสอบต้องไม่บันทึกว่าผ่าน",
+  "id": "AITS-C07-L02",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C07-L01"
+  ],
+  "summary": "Record method and observed result Not tested is not passed Keep deviations visible",
+  "visual_resources": [
+    "course-07-sop-quality/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C07-L02",
+    "course_id": "AITS-C07",
+    "title": "Evidence and deviations",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "QA",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C07-L02-Q1",
+    "AITS-C07-L02-Q2",
+    "AITS-C07-L02-Q3"
+  ]
+}

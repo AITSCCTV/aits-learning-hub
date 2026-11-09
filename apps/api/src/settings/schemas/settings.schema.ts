@@ -1,0 +1,132 @@
+import {
+  ALLOWED_AGE_LIMITS,
+  DASHBOARD_SCHEMA_VERSION,
+  DASHBOARD_WIDGET_SIZES,
+  DASHBOARD_WIDGET_TYPES,
+  SUPPORTED_LANGUAGES,
+} from "@repo/shared";
+import { Type } from "@sinclair/typebox";
+
+import { UUIDSchema } from "src/common";
+
+import { ALLOWED_CURRENCIES } from "../constants/settings.constants";
+
+import type { Static } from "@sinclair/typebox";
+
+export const companyInformationJSONSchema = Type.Object({
+  companyName: Type.Optional(Type.String()),
+  companyShortName: Type.Optional(Type.String({ maxLength: 10 })),
+  registeredAddress: Type.Optional(Type.String()),
+  taxNumber: Type.Optional(Type.String()),
+  emailAddress: Type.Optional(Type.String()),
+  courtRegisterNumber: Type.Optional(Type.String()),
+});
+
+export const globalSettingsJSONSchema = Type.Object({
+  unregisteredUserCoursesAccessibility: Type.Boolean(),
+  modernCourseListEnabled: Type.Boolean(),
+  publicCoursePreviewEnabled: Type.Boolean(),
+  featuredCourseId: Type.Union([UUIDSchema, Type.Null()]),
+  courseDiscussionsEnabled: Type.Boolean(),
+  calendarEnabled: Type.Boolean(),
+  liveTrainingEnabled: Type.Boolean(),
+  liveTrainingMaxParallelSessions: Type.Number({ minimum: 1 }),
+  trainerRoleUserCount: Type.Optional(Type.Number()),
+  enforceSSO: Type.Boolean(),
+  certificateBackgroundImage: Type.Union([Type.String(), Type.Null()]),
+  companyInformation: Type.Optional(companyInformationJSONSchema),
+  platformLogoS3Key: Type.Union([Type.String(), Type.Null()]),
+  loginBackgroundImageS3Key: Type.Union([Type.String(), Type.Null()]),
+  platformSimpleLogoS3Key: Type.Union([Type.String(), Type.Null()]),
+  MFAEnforcedRoles: Type.Array(Type.String()),
+  defaultCourseCurrency: Type.Union(ALLOWED_CURRENCIES.map((currency) => Type.Literal(currency))),
+  inviteOnlyRegistration: Type.Boolean(),
+  primaryColor: Type.Union([Type.String(), Type.Null()]),
+  contrastColor: Type.Union([Type.String(), Type.Null()]),
+  unregisteredUserQAAccessibility: Type.Boolean(),
+  QAEnabled: Type.Boolean(),
+  unregisteredUserNewsAccessibility: Type.Boolean(),
+  newsEnabled: Type.Boolean(),
+  unregisteredUserArticlesAccessibility: Type.Boolean(),
+  articlesEnabled: Type.Boolean(),
+  learningPathsEnabled: Type.Boolean(),
+  ageLimit: Type.Union(ALLOWED_AGE_LIMITS.map((age) => (!age ? Type.Null() : Type.Literal(age)))),
+  loginPageFiles: Type.Array(Type.String()),
+});
+
+export const dashboardLayoutWidgetSchema = Type.Object({
+  type: Type.Enum(DASHBOARD_WIDGET_TYPES),
+  size: Type.Enum(DASHBOARD_WIDGET_SIZES),
+  visible: Type.Boolean(),
+});
+
+export const dashboardSettingsSchema = Type.Object({
+  schemaVersion: Type.Literal(DASHBOARD_SCHEMA_VERSION),
+  revision: Type.Integer({ minimum: 0 }),
+  widgets: Type.Array(dashboardLayoutWidgetSchema),
+});
+
+export const dashboardWidgetCatalogEntrySchema = Type.Object({
+  type: Type.Enum(DASHBOARD_WIDGET_TYPES),
+  alwaysVisible: Type.Boolean(),
+  allowedSizes: Type.Array(Type.Enum(DASHBOARD_WIDGET_SIZES), { minItems: 1 }),
+  defaultSize: Type.Enum(DASHBOARD_WIDGET_SIZES),
+});
+
+export const dashboardSettingsResponseSchema = Type.Object({
+  layout: dashboardSettingsSchema,
+  catalog: Type.Array(dashboardWidgetCatalogEntrySchema),
+});
+
+export const studentSettingsJSONContentSchema = Type.Object({
+  language: Type.Enum(SUPPORTED_LANGUAGES),
+  isMFAEnabled: Type.Boolean({ default: false }),
+  MFASecret: Type.Union([Type.String({ default: null }), Type.Null()]),
+});
+
+export const adminSettingsJSONContentSchema = Type.Object({
+  ...studentSettingsJSONContentSchema.properties,
+  adminNewUserNotification: Type.Boolean(),
+  adminFinishedCourseNotification: Type.Boolean(),
+  configWarningDismissed: Type.Boolean(),
+});
+
+export const settingsJSONContentSchema = Type.Union([
+  studentSettingsJSONContentSchema,
+  adminSettingsJSONContentSchema,
+]);
+
+export const userSettingsJSONContentSchema = Type.Union([
+  studentSettingsJSONContentSchema,
+  adminSettingsJSONContentSchema,
+]);
+
+export const uploadFilesToLoginPageSchema = Type.Object({
+  name: Type.String({ minLength: 1 }),
+});
+
+export const loginPageResourceResponseSchema = Type.Object({
+  resources: Type.Array(
+    Type.Object({
+      id: UUIDSchema,
+      name: Type.String(),
+      resourceUrl: Type.String(),
+    }),
+  ),
+});
+
+export type LoginPageResourceResponseBody = Static<typeof loginPageResourceResponseSchema>;
+
+export type UploadFilesToLoginPageBody = Static<typeof uploadFilesToLoginPageSchema>;
+
+export type DashboardLayoutWidgetSchema = Static<typeof dashboardLayoutWidgetSchema>;
+export type DashboardSettingsSchema = Static<typeof dashboardSettingsSchema>;
+export type DashboardWidgetCatalogEntrySchema = Static<typeof dashboardWidgetCatalogEntrySchema>;
+export type DashboardSettingsResponseSchema = Static<typeof dashboardSettingsResponseSchema>;
+export type SettingsJSONContentSchema = Static<typeof settingsJSONContentSchema>;
+export type StudentSettingsJSONContentSchema = Static<typeof studentSettingsJSONContentSchema>;
+export type AdminSettingsJSONContentSchema = Static<typeof adminSettingsJSONContentSchema>;
+export type UserSettingsJSONContentSchema = Static<typeof userSettingsJSONContentSchema>;
+
+export type CompanyInformationSchema = Static<typeof companyInformationJSONSchema>;
+export type GlobalSettingsJSONContentSchema = Static<typeof globalSettingsJSONSchema>;

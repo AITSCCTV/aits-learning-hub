@@ -1,0 +1,67 @@
+# Build outputs
+**/dist
+**/build
+**/.next
+**/.cache
+**/out
+**/storybook-static
+
+# Package managers
+**/node_modules
+**/pnpm-lock.yaml
+**/package-lock.json
+**/yarn.lock
+.pnpm-store
+
+# Generated files
+**/coverage
+**/*.generated.*
+**/generated
+**/generated-api.ts
+**/api/src/swagger/*
+**/.docusaurus
+**/*.d.ts
+**/public
+packages/email-templates/**/index.ts
+apps/api/src/storage/migrations/**
+apps/web/e2e/**/*.json
+apps/web/app/components/ui
+
+# Cache
+**/.turbo
+.cache
+.eslintcache
+.stylelintcache
+*.tsbuildinfo
+
+# Misc
+**/.DS_Store
+.git
+.github
+.husky
+
+# IDE
+.idea
+.vscode
+*.swp
+*.swo
+
+# Logs
+**/logs
+**/*.log
+**/npm-debug.log*
+**/yarn-debug.log*
+**/yarn-error.log*
+
+# Environment
+**/.env
+**/.env.*
+!**/.env.example
+
+# Test files
+**/test-results
+**/playwright-report
+
+# Release film skill: its generic files are kept identical to the skill's source copy, so they are synced, not
+# reformatted
+.agents/skills/release-film

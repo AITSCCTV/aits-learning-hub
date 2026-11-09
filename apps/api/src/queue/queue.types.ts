@@ -1,0 +1,126 @@
+import type { VideoProviderType } from "@repo/shared";
+import type { UUIDType } from "src/common";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+
+export const QUEUE_NAMES = {
+  COMPETENCIES: "competencies",
+  AUTOMATION_EMAIL: "automation-email",
+  EMAIL_TEMPLATE_TEST: "email-template-test",
+  SEMANTIC_SEARCH_INDEX: "semantic-search-index",
+  DOCUMENT_INGESTION: "document-ingestion",
+  LEARNING_TIME: "learning-time",
+  MASTER_COURSE_EXPORT: "master-course-export",
+  MASTER_COURSE_SYNC: "master-course-sync",
+  LEARNING_PATH_EXPORT: "learning-path-export",
+  LEARNING_PATH_SYNC: "learning-path-sync",
+  AUDIO: "audio",
+  SCORM_IMPORT: "scorm-import",
+  NATIVE_ARCHIVE: "native-archive",
+  COURSE_DUPLICATION: "course-duplication",
+  COURSE_AUTHORING_APPLY: "course-authoring-apply",
+  COURSE_AUTHORING_CONTEXT: "course-authoring-context",
+  COURSE_AUTHORING_AUTONOMOUS: "course-authoring-autonomous",
+  AI_JUDGE_CONFIGURATION_GENERATION: "ai-judge-configuration-generation",
+  AI_MENTOR_CONFIGURATION_GENERATION: "ai-mentor-configuration-generation",
+  MICROSOFT_CALENDAR_SYNC: "microsoft-calendar-sync",
+  AI_MENTOR_PRACTICE: "ai-mentor-practice",
+  VIDEO_METADATA: "video-metadata",
+  REPORT_EXPORT: "report-export",
+  CONTENT_MARKETPLACE_EVENTS: "content-marketplace-events",
+} as const;
+
+export type QueueName = (typeof QUEUE_NAMES)[keyof typeof QUEUE_NAMES];
+
+export interface LearningTimeJobData {
+  userId: string;
+  lessonId: string;
+  courseId: string;
+  tenantId?: string;
+  secondsToAdd: number;
+  timestamp: number;
+}
+
+export interface DocumentIngestionJobData {
+  tenantId: UUIDType;
+  lessonId: UUIDType;
+  file: Express.Multer.File;
+}
+
+export interface MasterCourseExportJobData {
+  operationId?: string;
+  sourceCourseId: string;
+  sourceTenantId: string;
+  targetTenantId: string;
+  actorId: string;
+}
+
+export interface MasterCourseSyncJobData {
+  operationId?: string;
+  exportId: string;
+  sourceCourseId: string;
+  sourceTenantId: string;
+  targetTenantId: string;
+  triggerEventType: string;
+}
+
+export interface LearningPathExportJobData {
+  operationId?: string;
+  exportId: string;
+  sourceLearningPathId: string;
+  sourceTenantId: string;
+  targetTenantId: string;
+  actorId: string;
+}
+
+export interface LearningPathSyncJobData {
+  operationId?: string;
+  exportId: string;
+  sourceLearningPathId: string;
+  sourceTenantId: string;
+  targetTenantId: string;
+  triggerEventType: string;
+}
+
+export interface CourseDuplicationJobData {
+  tenantId: UUIDType;
+  sourceCourseId: UUIDType;
+  targetCourseId: UUIDType;
+  actor: CurrentUserType;
+}
+
+export interface CourseAuthoringContextFulfillmentJob {
+  tenantId: UUIDType;
+  contextRequestId: UUIDType;
+}
+
+/** Durable event data for a fenced, unattended authoring export. */
+export interface CourseAuthoringAutonomousApplyJob {
+  tenantId: UUIDType;
+  eventId: UUIDType;
+  sessionId: UUIDType;
+  courseId: UUIDType;
+  requestId: UUIDType;
+  actorId: UUIDType;
+  controlEpoch: number;
+  proposalIds: UUIDType[];
+  /** True after the producer durably acknowledges the sanitized terminal outcome. */
+  failureReported?: boolean;
+}
+
+export type VideoMetadataProvider = VideoProviderType;
+
+export interface VideoMetadataJobData {
+  tenantId: UUIDType;
+  resourceId: UUIDType;
+  uploadId?: string;
+  provider: VideoMetadataProvider;
+  fileKey?: string;
+  bunnyVideoId?: string;
+}
+
+export interface ReportExportJobData {
+  tenantId: UUIDType;
+  exportId: UUIDType;
+  actorId: UUIDType;
+  action?: "generate" | "expire";
+}

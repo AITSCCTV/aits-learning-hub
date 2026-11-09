@@ -1,0 +1,152 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from "@nestjs/common";
+import { PERMISSIONS, SupportedLanguages, FEATURES } from "@repo/shared";
+import { Validate } from "nestjs-typebox";
+
+import { BaseResponse, baseResponse, UUIDSchema, UUIDType } from "src/common";
+import { Public } from "src/common/decorators/public.decorator";
+import { RequireFeature } from "src/common/decorators/require-feature.decorator";
+import { RequirePermission } from "src/common/decorators/require-permission.decorator";
+import { CurrentUser } from "src/common/decorators/user.decorator";
+import { PermissionsGuard } from "src/common/guards/permissions.guard";
+import { CurrentUserType } from "src/common/types/current-user.type";
+import { supportedLanguagesSchema } from "src/courses/schemas/course.schema";
+import {
+  type AllQAResponseBody,
+  allQAResponseSchema,
+  type CreateQABody,
+  type CreateQAResponseBody,
+  createQAResponseSchema,
+  createQASchema,
+  type QAResponseBody,
+  QAResponseSchema,
+  QAUpdateBody,
+  QAUpdateSchema,
+} from "src/qa/schemas/qa.schema";
+import { QAService } from "src/qa/services/qa.service";
+
+@Controller("qa")
+@UseGuards(PermissionsGuard)
+export class QAController {
+  constructor(private readonly qaService: QAService) {}
+
+  @Get(":qaId")
+  @Validate({
+    request: [
+      { type: "param", name: "qaId", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+    ],
+    response: QAResponseSchema,
+  })
+  @RequirePermission(PERMISSIONS.QA_READ_PUBLIC)
+  @RequireFeature({ features: [FEATURES.QA] })
+  async getQA(
+    @Param("qaId") qaId: UUIDType,
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<QAResponseBody> {
+    return this.qaService.getQA(qaId, language, currentUser);
+  }
+
+  @Public()
+  @Get()
+  @Validate({
+    request: [{ type: "query", name: "language", schema: supportedLanguagesSchema }],
+    response: allQAResponseSchema,
+  })
+  @RequireFeature({ features: [FEATURES.QA], allowUnregisteredUser: true })
+  async getAllQA(
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ): Promise<AllQAResponseBody> {
+    return this.qaService.getAllQA(language, currentUser);
+  }
+
+  @Post()
+  @Validate({
+    request: [{ type: "body", schema: createQASchema }],
+    response: baseResponse(createQAResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.QA_MANAGE)
+  @RequireFeature({ features: [FEATURES.QA] })
+  async createQA(
+    @Body() data: CreateQABody,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<CreateQAResponseBody>> {
+    const createdQA = await this.qaService.createQA(data, currentUser);
+
+    return new BaseResponse(createdQA);
+  }
+
+  @Post("create-language/:qaId")
+  @RequireFeature({ features: [FEATURES.QA] })
+  @Validate({
+    request: [
+      { type: "param", name: "qaId", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+    ],
+  })
+  @RequirePermission(PERMISSIONS.QA_MANAGE)
+  async createLanguage(
+    @Param("qaId") qaId: UUIDType,
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.qaService.createLanguage(qaId, language, currentUser);
+  }
+
+  @Patch(":qaId")
+  @Validate({
+    request: [
+      { type: "param", name: "qaId", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+      { type: "body", schema: QAUpdateSchema },
+    ],
+  })
+  @RequirePermission(PERMISSIONS.QA_MANAGE)
+  @RequireFeature({ features: [FEATURES.QA] })
+  async updateQA(
+    @Param("qaId") qaId: UUIDType,
+    @Query("language") language: SupportedLanguages,
+    @Body() data: QAUpdateBody,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.qaService.updateQA(data, qaId, language, currentUser);
+  }
+
+  @Delete(":qaId")
+  @Validate({
+    request: [{ type: "param", name: "qaId", schema: UUIDSchema }],
+  })
+  @RequirePermission(PERMISSIONS.QA_MANAGE)
+  @RequireFeature({ features: [FEATURES.QA] })
+  async deleteQA(@Param("qaId") qaId: UUIDType, @CurrentUser() currentUser: CurrentUserType) {
+    return this.qaService.deleteQA(qaId, currentUser);
+  }
+
+  @Delete("language/:qaId")
+  @Validate({
+    request: [
+      { type: "param", name: "qaId", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+    ],
+  })
+  @RequirePermission(PERMISSIONS.QA_MANAGE)
+  @RequireFeature({ features: [FEATURES.QA] })
+  async deleteLanguage(
+    @Param("qaId") qaId: UUIDType,
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    return this.qaService.deleteLanguage(qaId, language, currentUser);
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "title": "Company identity and history",
+  "objectives": [
+    "Explain AITS using supported public facts."
+  ],
+  "explanation": [
+    "The official About us page identifies A.I.T.S. Company Limited and dates its founding to Buddhist year 2548, equivalent to 2005. It describes a business concerned with installation quality and professional service. These are public company statements; they do not establish an employee contract or a field acceptance standard.",
+    "The public mission text emphasizes service standards, technology, attention to customer needs and responsibility. In this course, these themes introduce the business. Specific targets, individual duties and performance measures require current approved internal documents. Do not infer a reporting line or an employee benefit from marketing language."
+  ],
+  "example": "A fictional new colleague asks whether the company began in 2548 or 2005. Explain the calendar conversion and identify the company page as the source.",
+  "exercise": "Write a two-sentence company introduction and name one fact that still requires internal confirmation.",
+  "model_response": "AITS publicly dates its founding to 2005 and describes IT and security installation services. My reporting manager must be confirmed from current internal records.",
+  "key_points": [
+    "Public history: founded in 2005",
+    "Service quality and responsibility are public themes",
+    "Internal duties need approved records"
+  ],
+  "references": [
+    "AITS",
+    "EX"
+  ],
+  "thai_summary": "ข้อมูลเว็บไซต์ระบุว่าก่อตั้งใน พ.ศ. 2548 หรือ ค.ศ. 2005 ข้อมูลตำแหน่งและผู้บังคับบัญชาต้องยืนยันจากบริษัท",
+  "id": "AITS-C01-L01",
+  "estimated_minutes": 15,
+  "prerequisites": [],
+  "summary": "Public history: founded in 2005 Service quality and responsibility are public themes Internal duties need approved records",
+  "visual_resources": [
+    "course-01-welcome/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C01-L01",
+    "course_id": "AITS-C01",
+    "title": "Company identity and history",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "AITS",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C01-L01-Q1",
+    "AITS-C01-L01-Q2",
+    "AITS-C01-L01-Q3"
+  ]
+}

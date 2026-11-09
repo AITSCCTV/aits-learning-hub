@@ -1,0 +1,74 @@
+import { SupportedLanguages } from "@repo/shared";
+import { EmailContent } from "types";
+
+export const getWelcomeEmailTranslations = (language: SupportedLanguages) => {
+  const emailContent: Record<SupportedLanguages, EmailContent> = {
+    // English fallback until this optional feature is translated into Thai.
+    th: {
+      heading: "Welcome",
+      paragraphs: [
+        "Good to have you here 🙂",
+        "Your account has been successfully created. Checkout available courses.",
+      ],
+      buttonText: "VIEW COURSES",
+    },
+    en: {
+      heading: "Welcome",
+      paragraphs: [
+        "Good to have you here 🙂",
+        "Your account has been successfully created. Checkout available courses.",
+      ],
+      buttonText: "VIEW COURSES",
+    },
+    pl: {
+      heading: "Witamy",
+      paragraphs: [
+        "Dobrze, że jesteś 🙂",
+        "Twoje konto zostało pomyślnie utworzone. Sprawdź dostępne kursy.",
+      ],
+      buttonText: "ZOBACZ KURSY",
+    },
+    de: {
+      heading: "Willkommen",
+      paragraphs: [
+        "Schön, dass du da bist 🙂",
+        "Dein Konto wurde erfolgreich erstellt. Sieh dir die verfügbaren Kurse an.",
+      ],
+      buttonText: "KURSE ANSEHEN",
+    },
+    lt: {
+      heading: "Sveiki atvykę",
+      paragraphs: [
+        "Džiugu, kad esi čia 🙂",
+        "Tavo paskyra buvo sėkmingai sukurta. Peržiūrėk galimus kursus.",
+      ],
+      buttonText: "PERŽIŪRĖTI KURSUS",
+    },
+    cs: {
+      heading: "Vítejte",
+      paragraphs: [
+        "Rádi tě tu máme 🙂",
+        "Tvůj účet byl úspěšně vytvořen. Prohlédni si dostupné kurzy.",
+      ],
+      buttonText: "PROHLÉDNOUT KURZY",
+    },
+    es: {
+      heading: "Bienvenido",
+      paragraphs: [
+        "Nos alegra tenerte aquí 🙂",
+        "Tu cuenta se ha creado correctamente. Revisa los cursos disponibles.",
+      ],
+      buttonText: "VER CURSOS",
+    },
+    fr: {
+      heading: "Bienvenue",
+      paragraphs: [
+        "Nous sommes ravis de vous accueillir 🙂",
+        "Votre compte a bien été créé. Consultez les cours disponibles.",
+      ],
+      buttonText: "VOIR LES COURS",
+    },
+  };
+
+  return emailContent[language];
+};

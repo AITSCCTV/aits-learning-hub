@@ -1,0 +1,53 @@
+{
+  "title": "Isolation escalation and customer updates",
+  "objectives": [
+    "Hand over an investigation with evidence and a clear next action."
+  ],
+  "explanation": [
+    "Device isolation has two meanings: narrowing a fault to a device/path, and restricting a device for security containment. Do not disconnect equipment or change VLANs under the second meaning without the applicable authorization. For diagnosis, compare a known-good cable, port or client only where the test is safe and approved. Preserve the original state and record each change.",
+    "An escalation includes impact, scope, timestamps, relevant topology, tests and results, changes made, rollback status and the requested help. Exclude passwords and unnecessary personal information. Tell the customer what is known, what remains uncertain and when the next agreed update will occur. Do not promise resolution times or quote an AITS SLA that has not been verified."
+  ],
+  "example": "Synthetic update: “Two office devices cannot resolve names. Gateway checks passed. We are checking the resolver path and will update you at the agreed time.”",
+  "exercise": "Write a support escalation with three observations and one explicit request.",
+  "model_response": "Two clients affected since 09:10; gateway reachable; configured resolver times out. No configuration changed. Please review resolver/service policy and advise the authorized next test.",
+  "key_points": [
+    "One controlled comparison at a time",
+    "Escalate evidence and uncertainty",
+    "Promise only an agreed update"
+  ],
+  "references": [
+    "EX",
+    "QA"
+  ],
+  "thai_summary": "ส่งต่อผลทดสอบ การเปลี่ยนแปลง และสิ่งที่ยังไม่ทราบ แจ้งเวลาติดตามที่ตกลงกันโดยไม่รับรอง SLA ที่ยังไม่ยืนยัน",
+  "id": "AITS-C05-L04",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C05-L03"
+  ],
+  "summary": "One controlled comparison at a time Escalate evidence and uncertainty Promise only an agreed update",
+  "visual_resources": [
+    "course-05-networking/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C05-L04",
+    "course_id": "AITS-C05",
+    "title": "Isolation escalation and customer updates",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C05-L04-Q1",
+    "AITS-C05-L04-Q2",
+    "AITS-C05-L04-Q3"
+  ]
+}

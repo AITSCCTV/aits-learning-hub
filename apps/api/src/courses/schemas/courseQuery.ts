@@ -1,0 +1,267 @@
+import { type Static, Type } from "@sinclair/typebox";
+
+import { groupsFilterSchema } from "src/group/group.schema";
+
+import type { PermissionKey, SupportedLanguages } from "@repo/shared";
+import type { UUIDType } from "src/common";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+
+export const courseSortFields = [
+  "title",
+  "category",
+  "creationDate",
+  "author",
+  "chapterCount",
+  "enrolledParticipantsCount",
+] as const;
+
+export const CourseSortFields: Record<CourseSortField, CourseSortField> = {
+  title: "title",
+  category: "category",
+  creationDate: "creationDate",
+  author: "author",
+  chapterCount: "chapterCount",
+  enrolledParticipantsCount: "enrolledParticipantsCount",
+};
+
+export type CourseSortField = (typeof courseSortFields)[number];
+
+export const sortCourseFieldsOptions = Type.Union([
+  Type.Literal("title"),
+  Type.Literal("category"),
+  Type.Literal("creationDate"),
+  Type.Literal("author"),
+  Type.Literal("chapterCount"),
+  Type.Literal("enrolledParticipantsCount"),
+  Type.Literal("-title"),
+  Type.Literal("-category"),
+  Type.Literal("-creationDate"),
+  Type.Literal("-author"),
+  Type.Literal("-chapterCount"),
+  Type.Literal("-enrolledParticipantsCount"),
+]);
+
+export type SortCourseFieldsOptions = Static<typeof sortCourseFieldsOptions>;
+
+export const coursesStatusOptions = Type.Union([
+  Type.Literal("draft"),
+  Type.Literal("published"),
+  Type.Literal("private"),
+]);
+
+export type CoursesStatusOptions = Static<typeof coursesStatusOptions>;
+
+export const coursesFilterFiled = Type.Union([
+  Type.Literal("title"),
+  Type.Literal("category"),
+  Type.Literal("creationDateRange"),
+  Type.Literal("author"),
+]);
+
+export type CoursesFilterFiled = Static<typeof coursesFilterFiled>;
+
+export const coursesFilterSchema = Type.Object({
+  /** Filter by course title only */
+  title: Type.Optional(Type.String()),
+  category: Type.Optional(Type.String()),
+  status: Type.Optional(coursesStatusOptions),
+  isArchived: Type.Optional(Type.Boolean()),
+  creationDateRange: Type.Optional(
+    Type.Tuple([Type.String({ format: "date-time" }), Type.String({ format: "date-time" })]),
+  ),
+  author: Type.Optional(Type.String()),
+  /** Filter by course description only */
+  description: Type.Optional(Type.String()),
+});
+
+export type CoursesFilterSchema = Static<typeof coursesFilterSchema>;
+
+export type CoursesQuery = {
+  filters?: CoursesFilterSchema;
+  page?: number;
+  perPage?: number;
+  sort?: SortCourseFieldsOptions;
+  currentUserId?: UUIDType;
+  currentUserPermissions?: PermissionKey[];
+  currentUser?: CurrentUserType;
+  includeArchived?: boolean;
+  excludeCourseId?: UUIDType;
+  language: SupportedLanguages;
+};
+
+export const COURSE_ENROLLMENT_SCOPES = {
+  ALL: "all",
+  ENROLLED: "enrolled",
+  AVAILABLE: "available",
+} as const;
+
+export type CourseEnrollmentScope =
+  (typeof COURSE_ENROLLMENT_SCOPES)[keyof typeof COURSE_ENROLLMENT_SCOPES];
+
+// enrolledStudent query
+
+export const enrolledStudentSortFields = [
+  "enrolledAt",
+  "firstName",
+  "lastName",
+  "email",
+  "isEnrolledByGroup",
+] as const;
+
+export const EnrolledStudentSortFields: Record<string, string> = {
+  enrolledAt: "enrolledAt",
+  firstName: "firstName",
+  lastName: "lastName",
+  email: "email",
+  isEnrolledByGroup: "isEnrolledByGroup",
+};
+
+export type EnrolledStudentSortField = (typeof enrolledStudentSortFields)[number];
+
+export const sortEnrolledStudentsOptions = Type.Union([
+  ...enrolledStudentSortFields.map((field) => Type.Literal(field)),
+  ...enrolledStudentSortFields.map((field) => Type.Literal(`-${field}`)),
+]);
+
+export type SortEnrolledStudentsOptions = Static<typeof sortEnrolledStudentsOptions>;
+
+export const enrolledStudentFilterSchema = Type.Object({
+  keyword: Type.Optional(Type.String()),
+  sort: Type.Optional(sortEnrolledStudentsOptions),
+  groups: Type.Optional(groupsFilterSchema),
+});
+
+export type EnrolledStudentFilterSchema = Static<typeof enrolledStudentFilterSchema>;
+
+export type EnrolledStudentsQuery = {
+  courseId: UUIDType;
+  page?: number;
+  perPage?: number;
+  filters?: EnrolledStudentFilterSchema;
+  language?: SupportedLanguages;
+};
+
+// Course student progression query options
+
+export const courseStudentProgressionSortFields = [
+  "studentName",
+  "groupName",
+  "completedLessonsCount",
+  "lastActivity",
+  "lastCompletedLessonName",
+] as const;
+
+export type CourseStudentProgressionSortField = (typeof courseStudentProgressionSortFields)[number];
+
+export const CourseStudentProgressionSortFields: Record<CourseStudentProgressionSortField, string> =
+  {
+    studentName: "studentName",
+    groupName: "groupName",
+    completedLessonsCount: "completedLessonsCount",
+    lastActivity: "lastActivity",
+    lastCompletedLessonName: "lastCompletedLessonName",
+  };
+
+export const sortCourseStudentProgressionOptions = Type.Union([
+  ...courseStudentProgressionSortFields.map((field) => Type.Literal(field)),
+  ...courseStudentProgressionSortFields.map((field) => Type.Literal(`-${field}`)),
+]);
+
+export type SortCourseStudentProgressionOptions = Static<
+  typeof sortCourseStudentProgressionOptions
+>;
+
+export type CourseStudentProgressionQuery = {
+  courseId: UUIDType;
+  page?: number;
+  perPage?: number;
+  searchQuery?: string;
+  groupId: UUIDType;
+  sort?: SortCourseStudentProgressionOptions;
+  language: SupportedLanguages;
+};
+
+// Course student quiz results query options
+
+export const courseStudentQuizResultsSortFields = [
+  "studentName",
+  "quizName",
+  "quizScore",
+  "attempts",
+  "lastAttempt",
+] as const;
+
+export type CourseStudentQuizResultsSortField = (typeof courseStudentQuizResultsSortFields)[number];
+
+export const CourseStudentQuizResultsSortFields: Record<CourseStudentQuizResultsSortField, string> =
+  {
+    studentName: "studentName",
+    quizName: "quizName",
+    quizScore: "quizScore",
+    attempts: "attempts",
+    lastAttempt: "lastAttempt",
+  };
+
+export const sortCourseStudentQuizResultsOptions = Type.Union([
+  ...courseStudentQuizResultsSortFields.map((field) => Type.Literal(field)),
+  ...courseStudentQuizResultsSortFields.map((field) => Type.Literal(`-${field}`)),
+]);
+
+export type SortCourseStudentQuizResultsOptions = Static<
+  typeof sortCourseStudentQuizResultsOptions
+>;
+
+export type CourseStudentQuizResultsQuery = {
+  courseId: UUIDType;
+  page?: number;
+  perPage?: number;
+  quizId?: string;
+  groupId?: UUIDType;
+  searchQuery?: string;
+  sort?: SortCourseStudentQuizResultsOptions;
+  language: SupportedLanguages;
+};
+
+// Course student ai mentor results query options
+
+export const courseStudentAiMentorResultsSortFields = [
+  "studentName",
+  "lessonName",
+  "score",
+  "lastSession",
+  "lastCompletedLessonName",
+] as const;
+
+export type CourseStudentAiMentorResultsSortField =
+  (typeof courseStudentAiMentorResultsSortFields)[number];
+
+export const CourseStudentAiMentorResultsSortFields: Record<
+  CourseStudentAiMentorResultsSortField,
+  string
+> = {
+  studentName: "studentName",
+  lessonName: "lessonName",
+  score: "score",
+  lastSession: "lastSession",
+  lastCompletedLessonName: "lastCompletedLessonName",
+};
+
+export const sortCourseStudentAiMentorResultsOptions = Type.Union([
+  ...courseStudentAiMentorResultsSortFields.map((field) => Type.Literal(field)),
+  ...courseStudentAiMentorResultsSortFields.map((field) => Type.Literal(`-${field}`)),
+]);
+
+export type SortCourseStudentAiMentorResultsOptions = Static<
+  typeof sortCourseStudentAiMentorResultsOptions
+>;
+
+export type CourseStudentAiMentorResultsQuery = {
+  courseId: UUIDType;
+  page?: number;
+  perPage?: number;
+  lessonId?: UUIDType;
+  groupId?: UUIDType;
+  searchQuery?: string;
+  sort?: SortCourseStudentAiMentorResultsOptions;
+  language: SupportedLanguages;
+};

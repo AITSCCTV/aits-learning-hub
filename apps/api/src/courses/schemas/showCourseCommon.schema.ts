@@ -1,0 +1,90 @@
+import { COURSE_ORIGIN_TYPES, COURSE_TYPE, SUPPORTED_LANGUAGES } from "@repo/shared";
+import { type Static, Type } from "@sinclair/typebox";
+
+import { chapterSchema, showChapterSchema } from "src/chapter/schemas/chapter.schema";
+import { UUIDSchema } from "src/common";
+import { courseRepetitionSchema } from "src/course-repetition/course-repetition.schema";
+
+import { coursesStatusOptions } from "./courseQuery";
+
+export const commonShowCourseSchema = Type.Object({
+  learningState: Type.Optional(courseRepetitionSchema),
+  isArchived: Type.Optional(Type.Boolean()),
+  authorId: Type.Optional(UUIDSchema),
+  author: Type.Optional(
+    Type.Object({
+      firstName: Type.Union([Type.String(), Type.Null()]),
+      lastName: Type.Union([Type.String(), Type.Null()]),
+      jobTitle: Type.Union([Type.String(), Type.Null()]),
+      description: Type.Union([Type.String(), Type.Null()]),
+      profilePictureUrl: Type.Union([Type.String(), Type.Null()]),
+    }),
+  ),
+  category: Type.String(),
+  categoryId: Type.Optional(Type.String({ format: "uuid" })),
+  chapters: Type.Array(showChapterSchema),
+  completedChapterCount: Type.Optional(Type.Number()),
+  courseChapterCount: Type.Number(),
+  currency: Type.String(),
+  description: Type.String(),
+  enrolled: Type.Optional(Type.Boolean()),
+  hasFreeChapter: Type.Optional(Type.Boolean()),
+  hasCertificate: Type.Optional(Type.Boolean()),
+  id: Type.String({ format: "uuid" }),
+  status: coursesStatusOptions,
+  originType: Type.Enum(COURSE_ORIGIN_TYPES),
+  isContentReadonly: Type.Boolean(),
+  courseType: Type.Enum(COURSE_TYPE),
+  priceInCents: Type.Number(),
+  thumbnailUrl: Type.Optional(Type.String()),
+  thumbnailPositionY: Type.Number(),
+  estimatedDurationSeconds: Type.Optional(
+    Type.Number({
+      minimum: 0,
+    }),
+  ),
+  learningOutcomes: Type.Optional(Type.Array(Type.String())),
+  showAuthorSection: Type.Optional(Type.Boolean()),
+  trailerUrl: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  title: Type.String(),
+  slug: Type.String(),
+  stripeProductId: Type.Union([Type.String(), Type.Null()]),
+  stripePriceId: Type.Union([Type.String(), Type.Null()]),
+  availableLocales: Type.Array(Type.Enum(SUPPORTED_LANGUAGES)),
+  baseLanguage: Type.Enum(SUPPORTED_LANGUAGES),
+  dueDate: Type.Union([Type.String(), Type.Null()]),
+  isManagerPreview: Type.Optional(Type.Boolean()),
+});
+
+export const commonShowBetaCourseSchema = Type.Object({
+  isArchived: Type.Optional(Type.Boolean()),
+  authorId: Type.Optional(UUIDSchema),
+  category: Type.String(),
+  categoryId: Type.Optional(Type.String({ format: "uuid" })),
+  chapters: Type.Array(chapterSchema),
+  completedChapterCount: Type.Optional(Type.Number()),
+  courseChapterCount: Type.Number(),
+  currency: Type.String(),
+  description: Type.String(),
+  enrolled: Type.Optional(Type.Boolean()),
+  hasFreeChapter: Type.Optional(Type.Boolean()),
+  hasCertificate: Type.Optional(Type.Boolean()),
+  id: Type.String({ format: "uuid" }),
+  status: coursesStatusOptions,
+  originType: Type.Enum(COURSE_ORIGIN_TYPES),
+  isContentReadonly: Type.Boolean(),
+  courseType: Type.Enum(COURSE_TYPE),
+  priceInCents: Type.Number(),
+  thumbnailUrl: Type.Optional(Type.String()),
+  thumbnailS3Key: Type.Optional(Type.String()),
+  thumbnailS3SingedUrl: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  trailerUrl: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  title: Type.String(),
+  availableLocales: Type.Array(Type.Enum(SUPPORTED_LANGUAGES)),
+  baseLanguage: Type.Enum(SUPPORTED_LANGUAGES),
+  sourceCourseId: Type.Optional(Type.Union([UUIDSchema, Type.Null()])),
+  sourceTenantId: Type.Optional(Type.Union([UUIDSchema, Type.Null()])),
+});
+
+export type CommonShowCourse = Static<typeof commonShowCourseSchema>;
+export type CommonShowBetaCourse = Static<typeof commonShowBetaCourseSchema>;

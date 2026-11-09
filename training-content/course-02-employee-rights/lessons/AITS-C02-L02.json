@@ -1,0 +1,53 @@
+{
+  "title": "Hours rest and holidays",
+  "objectives": [
+    "Recognize the ordinary statutory baseline and its limits."
+  ],
+  "explanation": [
+    "For ordinary work, Ministry of Labour guidance describes normal limits of eight hours a day and 48 hours a week, with lawful arrangements and sector exceptions requiring review. Specified hazardous work has a seven-hour daily and 42-hour weekly limit. The ordinary rest rule provides at least one hour after no more than five consecutive working hours; agreed split breaks and statutory exceptions must be checked.",
+    "The general baseline includes at least one weekly holiday with no more than six days between, at least 13 traditional holidays including National Labour Day, and at least six working days of annual holiday after one continuous year. These are legal baselines, not a statement of the AITS roster. Overtime consent, exceptions and pay should be checked separately; do not infer that a customer deadline overrides them."
+  ],
+  "example": "A fictional roster appears to schedule continuous work without a break. Identify the concern and ask HR to check the actual arrangement and exceptions.",
+  "exercise": "Annotate a sample 09:00–18:00 schedule with a one-hour midday break, then list what remains unknown.",
+  "model_response": "Eight working hours are shown. Weekly total, holiday arrangements, actual duties and any overtime remain to be verified.",
+  "key_points": [
+    "Ordinary baseline: 8 hours/day and 48/week",
+    "Rest and weekly holidays matter",
+    "AITS schedules remain unverified"
+  ],
+  "references": [
+    "MOL",
+    "EX"
+  ],
+  "thai_summary": "ชั่วโมงทำงานและวันหยุดที่กล่าวถึงเป็นหลักกฎหมายทั่วไป ไม่ใช่ตารางทำงานของ AITS ต้องตรวจสอบข้อยกเว้นและข้อเท็จจริง",
+  "id": "AITS-C02-L02",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C02-L01"
+  ],
+  "summary": "Ordinary baseline: 8 hours/day and 48/week Rest and weekly holidays matter AITS schedules remain unverified",
+  "visual_resources": [
+    "course-02-employee-rights/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C02-L02",
+    "course_id": "AITS-C02",
+    "title": "Hours rest and holidays",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "MOL",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C02-L02-Q1",
+    "AITS-C02-L02-Q2",
+    "AITS-C02-L02-Q3"
+  ]
+}

@@ -1,0 +1,63 @@
+import type { TenantStatus } from "@repo/shared";
+import type { Static } from "@sinclair/typebox";
+import type { InferSelectModel } from "drizzle-orm";
+import type { tenants } from "src/storage/schema";
+import type {
+  createSupportSessionResponseSchema,
+  createSupportSessionSchema,
+  createTenantSchema,
+  listTenantsQuerySchema,
+  supportRolesSchema,
+  supportUsersSchema,
+  tenantListSortSchema,
+  tenantsListItemSchema,
+  tenantResponseSchema,
+  tenantsListSchema,
+  updateTenantSchema,
+} from "src/super-admin/schemas/tenant.schema";
+import type { ListSupportUsersQuery } from "src/support-mode/support-mode.types";
+
+export type Tenant = InferSelectModel<typeof tenants>;
+
+export type CreateTenantBody = Static<typeof createTenantSchema>;
+export type UpdateTenantBody = Static<typeof updateTenantSchema>;
+export type CreateSupportSessionBody = Static<typeof createSupportSessionSchema>;
+export type CreateSupportSessionResponse = Static<typeof createSupportSessionResponseSchema>;
+export type ListTenantsQuery = Static<typeof listTenantsQuerySchema>;
+export type TenantListSort = Static<typeof tenantListSortSchema>;
+export type { ListSupportUsersQuery };
+export type TenantResponse = Static<typeof tenantResponseSchema>;
+export type TenantsListItemResponse = Static<typeof tenantsListItemSchema>;
+export type TenantsListResponse = Static<typeof tenantsListSchema>;
+export type SupportUsersResponse = Static<typeof supportUsersSchema>;
+export type SupportRolesResponse = Static<typeof supportRolesSchema>;
+
+export type FindAllTenantsParams = {
+  page: number;
+  perPage: number;
+  search?: string;
+  status?: TenantStatus;
+  sort?: TenantListSort;
+  currentTenantId: string;
+};
+
+export type CountAllTenantsParams = {
+  search?: string;
+  status?: TenantStatus;
+};
+
+export type CreateTenantRecord = {
+  name: string;
+  host: string;
+  status: TenantStatus;
+};
+
+export type CreateTenantOptions = {
+  actorLookupTenantId?: string;
+};
+
+export type UpdateTenantRecord = {
+  name?: string;
+  host?: string;
+  status?: TenantStatus;
+};

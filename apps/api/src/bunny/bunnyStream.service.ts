@@ -1,0 +1,452 @@
+import { createHash, createHmac, timingSafeEqual } from "crypto";
+
+import { Injectable, InternalServerErrorException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import axios from "axios";
+
+import { BUNNY_CDN_TOKEN_EXPIRY } from "src/bunny/bunnyStream.constants";
+import { EnvService } from "src/env/services/env.service";
+import { dbAls } from "src/storage/db/db-als.store";
+
+import type { AxiosInstance } from "axios";
+import type { Readable } from "node:stream";
+import type {
+  BunnyMp4DownloadResult,
+  BunnyMp4FallbackResolution,
+  BunnyConfig,
+  BunnyVideoDetails,
+} from "src/bunny/bunnyStream.types";
+
+const BUNNY_MP4_FALLBACK_RESOLUTIONS: BunnyMp4FallbackResolution[] = [720, 480, 360, 240];
+
+@Injectable()
+export class BunnyStreamService {
+  private cache = new Map<string, { cfg: BunnyConfig; expiresAt: number }>();
+
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly envService: EnvService,
+  ) {}
+
+  private async getConfig(): Promise<BunnyConfig> {
+    const now = Date.now();
+    const cacheKey = dbAls.getStore()?.tenantId ?? "global";
+    const cachedConfig = this.cache.get(cacheKey);
+    if (cachedConfig && cachedConfig.expiresAt > now) {
+      return cachedConfig.cfg;
+    }
+
+    const [apiKey, readOnlyApiKey, libraryId, cdnUrl, tokenSigningKey] = await Promise.all([
+      this.envService
+        .getEnv("BUNNY_STREAM_API_KEY")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_API_KEY")),
+
+      this.envService
+        .getEnv("BUNNY_STREAM_READ_ONLY_API_KEY")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_READ_ONLY_API_KEY")),
+
+      this.envService
+        .getEnv("BUNNY_STREAM_LIBRARY_ID")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_LIBRARY_ID")),
+
+      this.envService
+        .getEnv("BUNNY_STREAM_CDN_URL")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_CDN_URL")),
+
+      this.envService
+        .getEnv("BUNNY_STREAM_TOKEN_SIGNING_KEY")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_TOKEN_SIGNING_KEY")),
+    ]);
+
+    if (!apiKey) {
+      throw new InternalServerErrorException(
+        "BunnyStream configuration is missing API key (BUNNY_STREAM_API_KEY).",
+      );
+    }
+
+    if (!libraryId) {
+      throw new InternalServerErrorException(
+        "BunnyStream configuration is missing library ID (BUNNY_STREAM_LIBRARY_ID).",
+      );
+    }
+
+    if (!readOnlyApiKey) {
+      throw new InternalServerErrorException(
+        "BunnyStream configuration is missing read-only API key (BUNNY_STREAM_READ_ONLY_API_KEY).",
+      );
+    }
+
+    if (!tokenSigningKey) {
+      throw new InternalServerErrorException(
+        "BunnyStream configuration is missing token signing key (BUNNY_STREAM_TOKEN_SIGNING_KEY).",
+      );
+    }
+
+    if (!cdnUrl) {
+      throw new InternalServerErrorException(
+        "BunnyStream configuration is missing CDN URL (BUNNY_STREAM_CDN_URL).",
+      );
+    }
+
+    const cfg: BunnyConfig = {
+      apiKey,
+      readOnlyApiKey,
+      libraryId,
+      tokenSigningKey,
+      cdnUrl,
+    };
+
+    this.cache.set(cacheKey, { cfg, expiresAt: now + 60000 });
+    return cfg;
+  }
+
+  private createHttpClient(cfg: BunnyConfig): AxiosInstance {
+    return axios.create({
+      baseURL: `https://video.bunnycdn.com/library/${cfg.libraryId}`,
+      headers: {
+        AccessKey: cfg.apiKey,
+      },
+      timeout: 60000,
+      maxContentLength: Infinity,
+      maxBodyLength: Infinity,
+    });
+  }
+
+  async isConfigured(): Promise<boolean> {
+    const [apiKey, readOnlyApiKey, libraryId, cdnUrl, tokenSigningKey] = await Promise.all([
+      this.envService
+        .getEnv("BUNNY_STREAM_API_KEY")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_API_KEY")),
+      this.envService
+        .getEnv("BUNNY_STREAM_READ_ONLY_API_KEY")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_READ_ONLY_API_KEY")),
+      this.envService
+        .getEnv("BUNNY_STREAM_LIBRARY_ID")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_LIBRARY_ID")),
+      this.envService
+        .getEnv("BUNNY_STREAM_CDN_URL")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_CDN_URL")),
+      this.envService
+        .getEnv("BUNNY_STREAM_TOKEN_SIGNING_KEY")
+        .then((r) => r.value)
+        .catch(() => this.configService.get("bunny.BUNNY_STREAM_TOKEN_SIGNING_KEY")),
+    ]);
+
+    return Boolean(apiKey && readOnlyApiKey && libraryId && cdnUrl && tokenSigningKey);
+  }
+
+  async getMediaConfigurationSignature(): Promise<string> {
+    const cfg = await this.getConfig();
+
+    return createHash("sha256")
+      .update([cfg.libraryId, cfg.apiKey, cfg.cdnUrl ?? "", cfg.tokenSigningKey].join("\0"))
+      .digest("hex");
+  }
+
+  async upload(file: Express.Multer.File): Promise<{
+    fileKey: string;
+    fileUrl: string;
+  }> {
+    try {
+      const cfg = await this.getConfig();
+      const httpClient = this.createHttpClient(cfg);
+
+      const { data: video } = await httpClient.post("/videos", {
+        title: file.originalname,
+      });
+
+      await httpClient.put(`/videos/${video.guid}`, file.buffer, {
+        headers: { "Content-Type": "application/octet-stream" },
+      });
+
+      return {
+        fileKey: `bunny-${video.guid}`,
+        fileUrl: await this.getUrl(video.guid),
+      };
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  /** Uploads video bytes into a Bunny video that was already created with `createVideo`. */
+  async uploadVideoContent(params: {
+    videoId: string;
+    stream: Readable;
+    contentType?: string;
+  }): Promise<void> {
+    const cfg = await this.getConfig();
+    const httpClient = this.createHttpClient(cfg);
+
+    try {
+      await httpClient.put(`/videos/${params.videoId}`, params.stream, {
+        headers: { "Content-Type": params.contentType ?? "application/octet-stream" },
+        timeout: 0,
+      });
+    } catch (error) {
+      throw new Error(
+        `Bunny stream upload failed for video ${params.videoId}: ${this.getAxiosErrorMessage(
+          error,
+        )}`,
+      );
+    }
+  }
+
+  async createVideo(title: string): Promise<{ guid: string }> {
+    const cfg = await this.getConfig();
+    const httpClient = this.createHttpClient(cfg);
+
+    const { data } = await httpClient.post("/videos", {
+      title,
+    });
+
+    return { guid: data.guid };
+  }
+
+  async getTusUploadConfig(videoId: string): Promise<{
+    tusEndpoint: string;
+    tusHeaders: Record<string, string>;
+    expiresAt: string;
+  }> {
+    const cfg = await this.getConfig();
+
+    const expiresAt = Math.floor(Date.now() / 1000) + 60 * 60;
+    const signature = createHash("sha256")
+      .update(`${cfg.libraryId}${cfg.apiKey}${expiresAt}${videoId}`)
+      .digest("hex");
+
+    return {
+      tusEndpoint: "https://video.bunnycdn.com/tusupload",
+      tusHeaders: {
+        AuthorizationSignature: signature,
+        AuthorizationExpire: String(expiresAt),
+        VideoId: videoId,
+        LibraryId: cfg.libraryId,
+      },
+      expiresAt: new Date(expiresAt * 1000).toISOString(),
+    };
+  }
+
+  async delete(videoId: string): Promise<{ success: boolean }> {
+    try {
+      const cfg = await this.getConfig();
+      const httpClient = this.createHttpClient(cfg);
+
+      await httpClient.delete(`/videos/${videoId}`);
+      return { success: true };
+    } catch (error) {
+      throw new Error(`Failed to delete video: ${error.message}`);
+    }
+  }
+
+  async findVideosByTitle(title: string): Promise<BunnyVideoDetails[]> {
+    const cfg = await this.getConfig();
+    const httpClient = this.createHttpClient(cfg);
+
+    const { data } = await httpClient.get<{ items?: BunnyVideoDetails[] }>("/videos", {
+      params: { search: title, itemsPerPage: 10 },
+    });
+
+    return data.items ?? [];
+  }
+
+  async getVideo(videoId: string): Promise<BunnyVideoDetails> {
+    const cfg = await this.getConfig();
+    const httpClient = this.createHttpClient(cfg);
+    const { data } = await httpClient.get<BunnyVideoDetails>(`/videos/${videoId}`);
+    return data;
+  }
+
+  async validateWebhookSignature(
+    rawBody: Buffer,
+    signature: string,
+    version: string,
+    algorithm: string,
+  ): Promise<boolean> {
+    if (version !== "v1" || algorithm !== "hmac-sha256") return false;
+    const cfg = await this.getConfig();
+    const expected = createHmac("sha256", cfg.readOnlyApiKey).update(rawBody).digest("hex");
+    const supplied = signature.trim();
+    if (!/^[0-9a-f]{64}$/.test(supplied)) return false;
+    const expectedBuffer = Buffer.from(expected, "utf8");
+    const actualBuffer = Buffer.from(supplied, "utf8");
+    return (
+      expectedBuffer.length === actualBuffer.length && timingSafeEqual(expectedBuffer, actualBuffer)
+    );
+  }
+
+  async getUrl(videoId: string): Promise<string> {
+    const cfg = await this.getConfig();
+
+    const httpClient = this.createHttpClient(cfg);
+
+    const { data } = await httpClient.get(`/videos/${videoId}/play`);
+    const expiresAt = Math.floor(Date.now() / 1000) + BUNNY_CDN_TOKEN_EXPIRY;
+
+    return this.signBunnyUrl(data.videoPlaylistUrl, expiresAt, cfg.tokenSigningKey, {
+      pathAllowed: this.getTokenPath(new URL(data.videoPlaylistUrl).pathname),
+      outputFormat: "path",
+    });
+  }
+
+  async getThumbnailUrl(videoId: string): Promise<string> {
+    const cfg = await this.getConfig();
+
+    const url = `https://${cfg.cdnUrl}/${videoId}/thumbnail.jpg`;
+    const expiresAt = Math.floor(Date.now() / 1000) + BUNNY_CDN_TOKEN_EXPIRY;
+
+    return this.signBunnyUrl(url, expiresAt, cfg.tokenSigningKey);
+  }
+
+  async downloadMp4Fallback(
+    videoId: string,
+    preferredResolution: BunnyMp4FallbackResolution = 720,
+    referer?: string | null,
+  ): Promise<BunnyMp4DownloadResult> {
+    const cfg = await this.getConfig();
+    const resolutions = this.getMp4FallbackResolutionOrder(preferredResolution);
+
+    for (const resolution of resolutions) {
+      const downloaded = await this.tryDownloadMp4Fallback(videoId, resolution, cfg, referer);
+      if (downloaded) return downloaded;
+    }
+
+    throw new Error(`No MP4 fallback was available for Bunny video ${videoId}.`);
+  }
+
+  private getMp4FallbackResolutionOrder(preferredResolution: BunnyMp4FallbackResolution) {
+    return [
+      preferredResolution,
+      ...BUNNY_MP4_FALLBACK_RESOLUTIONS.filter((resolution) => resolution !== preferredResolution),
+    ];
+  }
+
+  private async tryDownloadMp4Fallback(
+    videoId: string,
+    resolution: BunnyMp4FallbackResolution,
+    cfg: BunnyConfig,
+    referer?: string | null,
+  ): Promise<BunnyMp4DownloadResult | null> {
+    const fallbackUrl = `https://${cfg.cdnUrl}/${videoId}/play_${resolution}p.mp4`;
+    const expiresAt = Math.floor(Date.now() / 1000) + BUNNY_CDN_TOKEN_EXPIRY;
+    const signedUrl = await this.signBunnyUrl(fallbackUrl, expiresAt, cfg.tokenSigningKey, {
+      pathAllowed: this.getTokenPath(new URL(fallbackUrl).pathname),
+      outputFormat: "path",
+    });
+
+    try {
+      const response = await axios.get<Readable>(signedUrl, {
+        responseType: "stream",
+        headers: this.buildMp4FallbackHeaders(referer),
+        timeout: 120000,
+        maxContentLength: Infinity,
+        maxBodyLength: Infinity,
+      });
+
+      return {
+        stream: response.data,
+        contentType: response.headers["content-type"] ?? "video/mp4",
+        filename: `play_${resolution}p.mp4`,
+        resolution,
+      };
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.status === 404) return null;
+
+      throw new Error(
+        `Bunny MP4 fallback download failed for video ${videoId} at ${resolution}p: ${this.getAxiosErrorMessage(
+          error,
+        )}`,
+      );
+    }
+  }
+
+  private getAxiosErrorMessage(error: unknown) {
+    if (!axios.isAxiosError(error)) {
+      return error instanceof Error ? error.message : String(error);
+    }
+
+    const status = error.response?.status;
+    const statusText = error.response?.statusText;
+    const detail = [status, statusText].filter(Boolean).join(" ");
+
+    return detail || error.message;
+  }
+
+  private buildMp4FallbackHeaders(referer?: string | null) {
+    if (!referer) return undefined;
+
+    return {
+      Referer: referer,
+      Origin: new URL(referer).origin,
+    };
+  }
+
+  async signBunnyUrl(
+    url: string,
+    expires: number,
+    securityKey: string,
+    options?: { pathAllowed?: string; userIp?: string; outputFormat?: "query" | "path" },
+  ) {
+    const signUrl = new URL(url);
+    const parameters = new URLSearchParams(signUrl.search);
+    const signaturePath = options?.pathAllowed ?? decodeURIComponent(signUrl.pathname);
+    const userIp = options?.userIp ?? "";
+
+    if (options?.pathAllowed) {
+      parameters.set("token_path", options.pathAllowed);
+    }
+
+    const sortedParams = Array.from(parameters.entries())
+      .filter(([key]) => key !== "token" && key !== "expires")
+      .sort(([a], [b]) => a.localeCompare(b))
+      .reduce((acc, [key, value], idx, _) => acc + (idx ? "&" : "") + `${key}=${value}`, "");
+
+    const base = securityKey + signaturePath + String(expires) + userIp + sortedParams;
+
+    const token = createHash("sha256")
+      .update(base)
+      .digest("base64")
+      .replace(/\+/g, "-")
+      .replace(/\//g, "_")
+      .replace(/=+$/g, "");
+
+    parameters.set("token", token);
+    parameters.set("expires", String(expires));
+
+    if (options?.outputFormat === "path") {
+      const tokenPart = new URLSearchParams();
+      tokenPart.set("bcdn_token", token);
+      tokenPart.set("expires", String(expires));
+
+      const tokenPath = parameters.get("token_path");
+      if (tokenPath) {
+        tokenPart.set("token_path", tokenPath);
+      }
+
+      const passthroughParams = new URLSearchParams(parameters);
+      passthroughParams.delete("token");
+      passthroughParams.delete("expires");
+      passthroughParams.delete("token_path");
+
+      const passthroughQuery = passthroughParams.toString();
+      const signedPathUrl = `${signUrl.origin}/${tokenPart.toString()}${signUrl.pathname}`;
+      return passthroughQuery ? `${signedPathUrl}?${passthroughQuery}` : signedPathUrl;
+    }
+
+    const query = parameters.toString();
+    return `${signUrl.origin}${signUrl.pathname}${query ? `?${query}` : ""}`;
+  }
+
+  private getTokenPath(pathname: string): string {
+    const lastSlashIndex = pathname.lastIndexOf("/");
+    return lastSlashIndex >= 0 ? pathname.slice(0, lastSlashIndex + 1) : "/";
+  }
+}

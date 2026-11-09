@@ -1,0 +1,1480 @@
+import { randomUUID } from "crypto";
+import { Readable } from "stream";
+
+import {
+  BadRequestException,
+  ForbiddenException,
+  Inject,
+  Injectable,
+  NotFoundException,
+} from "@nestjs/common";
+import {
+  AI_MENTOR_TTS_PRESET,
+  AI_MENTOR_VOICE_MODE,
+  COURSE_FEATURE,
+  ENTITY_TYPES,
+  PERMISSIONS,
+  RESOURCE_VISIBILITY,
+  type EditableResourceVisibility,
+  type SupportedLanguages,
+} from "@repo/shared";
+import { CacheManagerStore } from "cache-manager";
+
+import { AiRepository } from "src/ai/repositories/ai.repository";
+import { DatabasePg } from "src/common";
+import { hasPermission } from "src/common/permissions/permission.utils";
+import { annotateVideoAutoplayAndBlockIndexesInContent } from "src/common/utils/annotateVideoAutoplayAndBlockIndexesInContent";
+import { CourseFeaturePolicyService } from "src/courses/authoring/course-feature-policy.service";
+import { MasterCourseService } from "src/courses/master-course/master-course.service";
+import { CreateLessonEvent, DeleteLessonEvent, UpdateLessonEvent } from "src/events";
+import { RESOURCE_CATEGORIES, RESOURCE_RELATIONSHIP_TYPES } from "src/file/file.constants";
+import { FileService } from "src/file/file.service";
+import { IMAGE_QUALITY } from "src/file/image-variants/image-variant.constants";
+import { CONTEXT_TTL, getContextKey } from "src/file/utils/resourceCacheKeys";
+import { SEARCH_ENTITY_TYPES } from "src/global-search/global-search.constants";
+import { SearchIndexService } from "src/global-search/search-index.service";
+import { DocumentService } from "src/ingestion/services/document.service";
+import { MAX_LESSON_TITLE_LENGTH } from "src/lesson/repositories/lesson.constants";
+import { LessonService } from "src/lesson/services/lesson.service";
+import { LiveTrainingService } from "src/live-training/live-training.service";
+import { LocalizationService } from "src/localization/localization.service";
+import { ENTITY_TYPE } from "src/localization/localization.types";
+import { OutboxPublisher } from "src/outbox/outbox.publisher";
+import { QuizAuthoringService } from "src/quiz/services/quiz-authoring.service";
+import { ResourceLibraryService } from "src/resource-library/resource-library.service";
+import { StudentLessonProgressService } from "src/studentLessonProgress/studentLessonProgress.service";
+
+import { AiJudgeConfigurationGraphService } from "../ai-judge-configuration/ai-judge-configuration-graph.service";
+import { AiMentorConfigurationGraphService } from "../ai-mentor-configuration/services/ai-mentor-configuration-graph.service";
+import { LESSON_TYPES } from "../lesson.type";
+import { AdminLessonRepository } from "../repositories/adminLesson.repository";
+import { LessonRepository } from "../repositories/lesson.repository";
+
+import type { LessonResourceMetadata, ResourceWithUrlError } from "../lesson-resource.types";
+import type {
+  CreateAiMentorLessonBody,
+  CreateEmbedLessonBody,
+  CreateLessonBody,
+  AttachLiveTrainingLessonBody,
+  CreateLiveTrainingLessonBody,
+  CreateLiveTrainingLessonResult,
+  CreateQuizLessonBody,
+  UpdateAiMentorLessonBody,
+  UpdateEmbedLessonBody,
+  UpdateLessonBody,
+  UpdateQuizLessonBody,
+} from "../lesson.schema";
+import type { EmbedLessonResourceType, LessonTypes } from "../lesson.type";
+import type { LessonActivityLogSnapshot } from "src/activity-logs/types";
+import type { UUIDType } from "src/common";
+import type { CourseContentEntityType } from "src/common/types/course-content-entity.type";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+import type { QuizAuthoringInput } from "src/quiz/types/quiz-authoring.types";
+
+type LiveTrainingLessonAssignmentInput = Pick<
+  CreateLiveTrainingLessonBody,
+  "liveTraining" | "liveTrainingId"
+>;
+
+@Injectable()
+export class AdminLessonService {
+  constructor(
+    @Inject("DB") private readonly db: DatabasePg,
+    private adminLessonRepository: AdminLessonRepository,
+    private lessonRepository: LessonRepository,
+    private aiRepository: AiRepository,
+    private documentService: DocumentService,
+    private fileService: FileService,
+    private localizationService: LocalizationService,
+    private readonly outboxPublisher: OutboxPublisher,
+    private lessonService: LessonService,
+    private readonly studentLessonProgressService: StudentLessonProgressService,
+    private readonly masterCourseService: MasterCourseService,
+    private readonly courseFeaturePolicyService: CourseFeaturePolicyService,
+    private readonly resourceLibraryService: ResourceLibraryService,
+    private readonly quizAuthoringService: QuizAuthoringService,
+    private readonly liveTrainingService: LiveTrainingService,
+    private readonly searchIndexService: SearchIndexService,
+    private readonly aiJudgeConfigurationGraphService: AiJudgeConfigurationGraphService,
+    private readonly aiMentorConfigurationGraphService: AiMentorConfigurationGraphService,
+    @Inject("CACHE_MANAGER") private readonly cache: CacheManagerStore,
+  ) {}
+
+  async createLessonForChapter(
+    data: CreateLessonBody,
+    currentUser: CurrentUserType,
+    requestedLanguage?: SupportedLanguages,
+  ) {
+    const { lessonId, language } = await this.db.transaction((trx) =>
+      this.createLessonForChapterInTransaction(data, currentUser, trx, requestedLanguage),
+    );
+
+    await this.publishCreateLessonEvent(lessonId, language, currentUser);
+
+    return lessonId;
+  }
+
+  async createLessonForChapterInTransaction(
+    data: CreateLessonBody,
+    currentUser: CurrentUserType,
+    dbInstance: DatabasePg,
+    requestedLanguage?: SupportedLanguages,
+  ) {
+    await this.masterCourseService.assertCourseContentEditableByChapterId(data.chapterId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      data.chapterId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+    await this.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, data.chapterId);
+
+    const localization = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.CHAPTER,
+      data.chapterId,
+      requestedLanguage,
+    );
+    if (requestedLanguage && !localization.availableLocales.includes(requestedLanguage))
+      throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+    const { language } = localization;
+
+    if (data.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    const maxDisplayOrder = await this.adminLessonRepository.getMaxDisplayOrder(
+      data.chapterId,
+      dbInstance,
+    );
+
+    const lesson = await this.adminLessonRepository.createLessonForChapter(
+      {
+        ...data,
+        displayOrder: maxDisplayOrder + 1,
+      },
+      language,
+      dbInstance,
+    );
+
+    if (data.contextId) {
+      const resourceIds = await this.getResourcesByContextId(data.contextId);
+
+      if (resourceIds.length) {
+        await this.adminLessonRepository.linkResourcesToLesson(lesson.id, resourceIds, dbInstance);
+      }
+
+      await this.cache.del(getContextKey(data.contextId));
+    }
+
+    await this.resourceLibraryService.syncLessonAssetRelations(lesson.id, dbInstance);
+
+    await this.adminLessonRepository.updateLessonCountForChapter(lesson.chapterId, dbInstance);
+    await this.searchIndexService.refreshLesson(lesson.id, dbInstance);
+
+    return { lessonId: lesson.id, language };
+  }
+
+  async createLiveTrainingLesson(
+    data: CreateLiveTrainingLessonBody,
+    currentUser: CurrentUserType,
+  ): Promise<CreateLiveTrainingLessonResult> {
+    const { lessonId, liveTrainingId, language } = await this.db.transaction(async (trx) => {
+      await this.masterCourseService.assertCourseContentEditableByChapterId(data.chapterId);
+      await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+        data.chapterId,
+        COURSE_FEATURE.CURRICULUM_EDITING,
+      );
+      await this.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, data.chapterId);
+
+      this.assertLiveTrainingLessonMode(data);
+      this.assertCanCreateLiveTrainingForLessonMode(data, currentUser);
+
+      const [course] = await this.adminLessonRepository.getCourseByChapter(data.chapterId);
+
+      if (!course) {
+        throw new NotFoundException("adminCourseView.errors.notFound.course");
+      }
+
+      const language = data.language;
+      const courseLocales = course.availableLocales;
+      const courseBaseLanguage = course.baseLanguage;
+
+      if (!courseLocales.includes(language)) {
+        throw new BadRequestException("liveTraining.errors.unsupportedLessonLanguage");
+      }
+
+      if (language !== courseBaseLanguage) {
+        throw new BadRequestException("liveTraining.errors.baseLanguageAssignmentRequired");
+      }
+
+      const maxDisplayOrder = await this.adminLessonRepository.getMaxDisplayOrder(
+        data.chapterId,
+        trx,
+      );
+      const lesson = await this.adminLessonRepository.createLessonForChapter(
+        {
+          title: data.title,
+          description: data.description,
+          type: LESSON_TYPES.LIVE_TRAINING,
+          chapterId: data.chapterId,
+          displayOrder: data.displayOrder ?? maxDisplayOrder + 1,
+          contextId: data.contextId,
+        },
+        language,
+        trx,
+      );
+      const existingLiveLesson =
+        await this.adminLessonRepository.getLiveLessonByLessonIdAndLanguage(
+          lesson.id,
+          language,
+          trx,
+        );
+
+      if (existingLiveLesson) {
+        throw new BadRequestException("liveTraining.errors.lessonAlreadyLinked");
+      }
+
+      const liveTraining = await this.createOrLinkLiveTrainingForLesson(
+        data,
+        course.id,
+        language,
+        currentUser,
+        trx,
+      );
+
+      await this.adminLessonRepository.createLiveLesson(
+        {
+          lessonId: lesson.id,
+          liveTrainingId: liveTraining.liveTrainingId,
+          liveTrainingLinkId: liveTraining.liveTrainingLinkId,
+          language,
+        },
+        trx,
+      );
+
+      await this.adminLessonRepository.updateLessonCountForChapter(lesson.chapterId, trx);
+      await this.searchIndexService.refreshLesson(lesson.id, trx);
+
+      return { lessonId: lesson.id, liveTrainingId: liveTraining.liveTrainingId, language };
+    });
+
+    await this.publishCreateLessonEvent(lessonId, language, currentUser);
+
+    return { lessonId, liveTrainingId };
+  }
+
+  async attachLiveTrainingLesson(
+    lessonId: UUIDType,
+    data: AttachLiveTrainingLessonBody,
+    currentUser: CurrentUserType,
+  ): Promise<CreateLiveTrainingLessonResult> {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(lessonId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      lessonId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+    await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, lessonId);
+
+    this.assertLiveTrainingLessonMode(data);
+    this.assertCanCreateLiveTrainingForLessonMode(data, currentUser);
+
+    const [lesson] = await this.adminLessonRepository.getLesson(lessonId, data.language);
+
+    if (!lesson) {
+      throw new NotFoundException("adminCourseView.errors.notFound.lesson");
+    }
+
+    if (lesson.type !== LESSON_TYPES.LIVE_TRAINING) {
+      throw new BadRequestException("liveTraining.errors.invalidLessonType");
+    }
+
+    const [course] = await this.adminLessonRepository.getCourseByLesson(lessonId);
+
+    if (!course) {
+      throw new NotFoundException("adminCourseView.errors.notFound.course");
+    }
+
+    const language = data.language;
+    const courseLocales = course.availableLocales;
+    const courseBaseLanguage = course.baseLanguage;
+
+    if (!courseLocales.includes(language)) {
+      throw new BadRequestException("liveTraining.errors.unsupportedLessonLanguage");
+    }
+
+    const existingLanguageAssignment =
+      await this.adminLessonRepository.getLiveLessonByLessonIdAndLanguage(lessonId, language);
+
+    if (existingLanguageAssignment) {
+      throw new BadRequestException("liveTraining.errors.lessonAlreadyLinked");
+    }
+
+    const isBaseLanguageAssignment = language === courseBaseLanguage;
+    const baseLanguageAssignment = isBaseLanguageAssignment
+      ? null
+      : await this.adminLessonRepository.getLiveLessonByLessonIdAndLanguage(
+          lessonId,
+          courseBaseLanguage,
+        );
+
+    if (!isBaseLanguageAssignment && !baseLanguageAssignment) {
+      throw new BadRequestException("liveTraining.errors.baseLanguageAssignmentRequired");
+    }
+
+    const previousLessonSnapshot = await this.buildLessonActivitySnapshot(lessonId, language);
+
+    const liveTraining = await this.db.transaction(async (trx) => {
+      await this.adminLessonRepository.updateLesson(
+        lessonId,
+        {
+          title: data.title,
+          language,
+        },
+        trx,
+      );
+
+      const assignedLiveTraining = await this.createOrLinkLiveTrainingForLesson(
+        data,
+        course.id,
+        language,
+        currentUser,
+        trx,
+      );
+
+      await this.adminLessonRepository.createLiveLesson(
+        {
+          lessonId,
+          liveTrainingId: assignedLiveTraining.liveTrainingId,
+          liveTrainingLinkId: assignedLiveTraining.liveTrainingLinkId,
+          language,
+        },
+        trx,
+      );
+
+      await this.searchIndexService.refreshLesson(lessonId, trx);
+
+      return assignedLiveTraining;
+    });
+
+    const updatedLessonSnapshot = await this.buildLessonActivitySnapshot(lessonId, language);
+
+    await this.outboxPublisher.publish(
+      new UpdateLessonEvent({
+        lessonId,
+        actor: currentUser,
+        previousLessonData: previousLessonSnapshot,
+        updatedLessonData: updatedLessonSnapshot,
+      }),
+    );
+
+    return { lessonId, liveTrainingId: liveTraining.liveTrainingId };
+  }
+
+  private assertLiveTrainingLessonMode(data: LiveTrainingLessonAssignmentInput) {
+    const hasNewLiveTraining = Boolean(data.liveTraining);
+    const hasExistingLiveTraining = Boolean(data.liveTrainingId);
+
+    if (hasNewLiveTraining === hasExistingLiveTraining) {
+      throw new BadRequestException("liveTraining.errors.invalidLessonLinkMode");
+    }
+  }
+
+  private assertCanCreateLiveTrainingForLessonMode(
+    data: LiveTrainingLessonAssignmentInput,
+    currentUser: CurrentUserType,
+  ) {
+    if (!data.liveTraining) {
+      return;
+    }
+
+    if (!hasPermission(currentUser.permissions, PERMISSIONS.LIVE_TRAINING_CREATE)) {
+      throw new ForbiddenException({ message: "auth.error.missingPermission" });
+    }
+  }
+
+  private async createOrLinkLiveTrainingForLesson(
+    data: LiveTrainingLessonAssignmentInput,
+    courseId: UUIDType,
+    language: SupportedLanguages,
+    currentUser: CurrentUserType,
+    dbInstance: DatabasePg,
+  ) {
+    if (data.liveTrainingId) {
+      return this.liveTrainingService.linkScheduledLiveTrainingToCourseInTransaction(
+        data.liveTrainingId,
+        courseId,
+        language,
+        currentUser,
+        dbInstance,
+      );
+    }
+
+    if (data.liveTraining) {
+      return this.liveTrainingService.createCourseLinkedLiveTrainingInTransaction(
+        data.liveTraining,
+        courseId,
+        language,
+        currentUser,
+        dbInstance,
+      );
+    }
+
+    throw new BadRequestException("liveTraining.errors.invalidLessonLinkMode");
+  }
+
+  async publishCreateLessonEvent(
+    lessonId: UUIDType,
+    language: SupportedLanguages,
+    currentUser: CurrentUserType,
+  ) {
+    const createdLessonSnapshot = await this.buildLessonActivitySnapshot(lessonId, language);
+
+    await this.outboxPublisher.publish(
+      new CreateLessonEvent({
+        lessonId,
+        actor: currentUser,
+        createdLesson: createdLessonSnapshot,
+      }),
+    );
+  }
+
+  async getResourcesByContextId(contextId: UUIDType) {
+    return (await this.cache.get(getContextKey(contextId))) as Promise<UUIDType[]>;
+  }
+
+  async getContentLessonsByIds(lessonIds: UUIDType[], language?: SupportedLanguages) {
+    return this.adminLessonRepository.getContentLessonsByIds(lessonIds, language);
+  }
+
+  async createAiMentorLesson(
+    data: CreateAiMentorLessonBody,
+    currentUser: CurrentUserType,
+    requestedLanguage?: SupportedLanguages,
+  ) {
+    await this.masterCourseService.assertCourseContentEditableByChapterId(data.chapterId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      data.chapterId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, data.chapterId);
+
+    const localization = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.CHAPTER,
+      data.chapterId,
+      requestedLanguage,
+    );
+    if (requestedLanguage && !localization.availableLocales.includes(requestedLanguage))
+      throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+    const { language } = localization;
+
+    const maxDisplayOrder = await this.adminLessonRepository.getMaxDisplayOrder(data.chapterId);
+
+    if (data.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    if (!data.name?.trim().length) data.name = "AI Mentor";
+    const voiceMode = data.voiceMode ?? AI_MENTOR_VOICE_MODE.PRESET;
+    const customTtsReference = data.customTtsReference?.trim() || null;
+
+    if (voiceMode === AI_MENTOR_VOICE_MODE.CUSTOM && !customTtsReference) {
+      throw new BadRequestException("adminCourseView.errors.lesson.customTtsReferenceRequired");
+    }
+
+    const lesson = await this.createAiMentorLessonWithTransaction(
+      {
+        ...data,
+        voiceMode,
+        customTtsReference,
+      },
+      maxDisplayOrder + 1,
+      language,
+    );
+
+    await this.adminLessonRepository.updateLessonCountForChapter(data.chapterId);
+
+    if (!lesson)
+      throw new BadRequestException("adminCourseView.errors.lesson.aiMentorCreateFailed");
+
+    const createdLessonSnapshot = await this.buildLessonActivitySnapshot(lesson.id, language);
+
+    await this.outboxPublisher.publish(
+      new CreateLessonEvent({
+        lessonId: lesson.id,
+        actor: currentUser,
+        createdLesson: createdLessonSnapshot,
+      }),
+    );
+
+    return lesson.id;
+  }
+
+  async createQuizLesson(data: CreateQuizLessonBody, currentUser: CurrentUserType) {
+    await this.masterCourseService.assertCourseContentEditableByChapterId(data.chapterId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      data.chapterId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, data.chapterId);
+
+    const maxDisplayOrder = await this.adminLessonRepository.getMaxDisplayOrder(data.chapterId);
+
+    if (data.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    if (!data.questions?.length)
+      throw new BadRequestException("adminCourseView.errors.lesson.questionsRequired");
+
+    const { language } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.CHAPTER,
+      data.chapterId,
+    );
+
+    const lesson = await this.quizAuthoringService.createQuizLesson({
+      ...data,
+      displayOrder: maxDisplayOrder + 1,
+    });
+
+    await this.adminLessonRepository.updateLessonCountForChapter(data.chapterId);
+
+    if (!lesson) throw new BadRequestException("adminCourseView.errors.lesson.quizCreateFailed");
+
+    const createdLessonSnapshot = await this.buildLessonActivitySnapshot(lesson.id, language);
+
+    await this.outboxPublisher.publish(
+      new CreateLessonEvent({
+        lessonId: lesson.id,
+        actor: currentUser,
+        createdLesson: createdLessonSnapshot,
+      }),
+    );
+
+    return lesson.id;
+  }
+
+  async saveQuizFromAuthoring(
+    input: QuizAuthoringInput,
+    currentUser: CurrentUserType,
+    lessonId?: UUIDType,
+  ) {
+    if (lessonId) {
+      await this.masterCourseService.assertCourseContentEditableByLessonId(lessonId);
+      await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+        lessonId,
+        COURSE_FEATURE.CURRICULUM_EDITING,
+      );
+      await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, lessonId);
+      const current = await this.lessonRepository.getLesson(lessonId, input.language);
+      if (!current || current.type !== LESSON_TYPES.QUIZ) {
+        throw new BadRequestException("adminCourseView.errors.lesson.quizCreateFailed");
+      }
+      const previousLessonData = await this.buildLessonActivitySnapshot(lessonId, input.language);
+      await this.quizAuthoringService.saveCanonicalLesson(input, lessonId);
+      const updatedLessonData = await this.buildLessonActivitySnapshot(lessonId, input.language);
+      await this.outboxPublisher.publish(
+        new UpdateLessonEvent({
+          lessonId,
+          actor: currentUser,
+          previousLessonData,
+          updatedLessonData,
+        }),
+      );
+      return lessonId;
+    }
+    if (!input.chapterId)
+      throw new BadRequestException("adminCourseView.errors.lesson.quizCreateFailed");
+    await this.masterCourseService.assertCourseContentEditableByChapterId(input.chapterId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      input.chapterId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+    await this.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, input.chapterId);
+    const { language } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.CHAPTER,
+      input.chapterId,
+      input.language,
+    );
+    if (input.language !== language)
+      throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+    const maxOrder = await this.adminLessonRepository.getMaxDisplayOrder(input.chapterId);
+    const lesson = await this.quizAuthoringService.saveCanonicalLesson({
+      ...input,
+      displayOrder: maxOrder + 1,
+    });
+    if (!lesson) throw new BadRequestException("adminCourseView.errors.lesson.quizCreateFailed");
+    await this.adminLessonRepository.updateLessonCountForChapter(input.chapterId);
+    const createdLesson = await this.buildLessonActivitySnapshot(lesson.id, input.language);
+    await this.outboxPublisher.publish(
+      new CreateLessonEvent({ lessonId: lesson.id, actor: currentUser, createdLesson }),
+    );
+    return lesson.id;
+  }
+  async updateAiMentorLesson(
+    id: UUIDType,
+    data: UpdateAiMentorLessonBody,
+    currentUser: CurrentUserType,
+  ) {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(id);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      id,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, id);
+
+    const { availableLocales } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.LESSON,
+      id,
+    );
+
+    if (!availableLocales.includes(data.language)) {
+      throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+    }
+
+    const lesson = await this.lessonRepository.getLesson(id, data.language);
+
+    if (data.title && data.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    if (!lesson) throw new NotFoundException("adminCourseView.errors.notFound.lesson");
+
+    const previousLessonSnapshot = await this.buildLessonActivitySnapshot(id, data.language);
+
+    const updatedLesson = await this.updateAiMentorLessonWithTransaction(
+      id,
+      data,
+      currentUser.userId,
+    );
+
+    const updatedLessonSnapshot = await this.buildLessonActivitySnapshot(id, data.language);
+
+    await this.outboxPublisher.publish(
+      new UpdateLessonEvent({
+        lessonId: id,
+        actor: currentUser,
+        previousLessonData: previousLessonSnapshot,
+        updatedLessonData: updatedLessonSnapshot,
+      }),
+    );
+
+    return updatedLesson?.id ?? id;
+  }
+
+  async updateQuizLesson(id: UUIDType, data: UpdateQuizLessonBody, currentUser: CurrentUserType) {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(id);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      id,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, id);
+
+    if (data.title && data.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    const { availableLocales } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.LESSON,
+      id,
+    );
+
+    if (!availableLocales.includes(data.language)) {
+      throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+    }
+
+    const lesson = await this.lessonRepository.getLesson(id, data.language);
+
+    if (!lesson) throw new NotFoundException("adminCourseView.errors.notFound.lesson");
+
+    if (!data.questions?.length)
+      throw new BadRequestException("adminCourseView.errors.lesson.questionsRequired");
+
+    const previousLessonSnapshot = await this.buildLessonActivitySnapshot(id, data.language);
+
+    await this.quizAuthoringService.updateQuizLesson(id, data);
+
+    const updatedLessonSnapshot = await this.buildLessonActivitySnapshot(id, data.language);
+
+    await this.outboxPublisher.publish(
+      new UpdateLessonEvent({
+        lessonId: id,
+        actor: currentUser,
+        previousLessonData: previousLessonSnapshot,
+        updatedLessonData: updatedLessonSnapshot,
+      }),
+    );
+
+    return id;
+  }
+
+  async getQuizLessonForAuthoring(lessonId: UUIDType, language: SupportedLanguages) {
+    return this.quizAuthoringService.getLegacyQuizLessonForAuthoring(lessonId, language);
+  }
+
+  async updateLesson(id: UUIDType, data: UpdateLessonBody, currentUser: CurrentUserType) {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(id);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      id,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, id);
+
+    const { availableLocales } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.LESSON,
+      id,
+    );
+    if (!availableLocales.includes(data.language)) {
+      throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+    }
+
+    const lesson = await this.lessonRepository.getLesson(id, data.language);
+
+    if (data.title && data.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    if (!lesson) throw new NotFoundException("adminCourseView.errors.notFound.lesson");
+
+    this.assertLiveTrainingLessonTitleOnlyUpdate(lesson.type, data);
+
+    const previousLessonSnapshot = await this.buildLessonActivitySnapshot(id, data.language);
+
+    if (data.description !== undefined) {
+      data.description = annotateVideoAutoplayAndBlockIndexesInContent(data.description);
+    }
+
+    const updatedLesson = await this.adminLessonRepository.updateLesson(id, data);
+
+    if (data.description !== undefined) {
+      await this.resourceLibraryService.syncLessonAssetRelations(id);
+    }
+
+    await this.searchIndexService.refreshLesson(id);
+
+    const updatedLessonSnapshot = await this.buildLessonActivitySnapshot(id, data.language);
+
+    await this.outboxPublisher.publish(
+      new UpdateLessonEvent({
+        lessonId: id,
+        actor: currentUser,
+        previousLessonData: previousLessonSnapshot,
+        updatedLessonData: updatedLessonSnapshot,
+      }),
+    );
+
+    return updatedLesson.id;
+  }
+
+  private assertLiveTrainingLessonTitleOnlyUpdate(lessonType: string, data: UpdateLessonBody) {
+    if (lessonType !== LESSON_TYPES.LIVE_TRAINING) {
+      return;
+    }
+
+    const blockedFields = Object.keys(data).filter(
+      (field) => !["language", "title"].includes(field),
+    );
+
+    if (blockedFields.length) {
+      throw new BadRequestException("liveTraining.errors.lessonOnlyTitleEditable");
+    }
+  }
+
+  async removeLesson(lessonId: UUIDType, currentUser: CurrentUserType) {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(lessonId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      lessonId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, lessonId);
+
+    const [lesson] = await this.adminLessonRepository.getLesson(lessonId);
+
+    if (!lesson) throw new NotFoundException("adminCourseView.errors.notFound.lesson");
+
+    await this.db.transaction(async (trx) => {
+      await this.documentService.deleteAllDocumentsIfLast(lessonId, trx);
+      await this.adminLessonRepository.removeLesson(lessonId, trx);
+      await this.adminLessonRepository.updateLessonDisplayOrderAfterRemove(lesson.chapterId, trx);
+      await this.adminLessonRepository.updateLessonCountForChapter(lesson.chapterId, trx);
+      await this.studentLessonProgressService.recalculateProgressAfterLessonDeletion(
+        lesson.courseId,
+        lesson.chapterId,
+        currentUser,
+        trx,
+      );
+      await this.searchIndexService.deleteEntityDocuments({
+        entityType: SEARCH_ENTITY_TYPES.LESSON,
+        entityId: lessonId,
+        db: trx,
+      });
+    });
+
+    await this.outboxPublisher.publish(
+      new DeleteLessonEvent({
+        lessonId: lesson.id,
+        courseId: lesson.courseId,
+        actor: currentUser,
+        lessonName: lesson.title,
+      }),
+    );
+  }
+
+  async updateLessonDisplayOrder(lessonObject: {
+    lessonId: UUIDType;
+    displayOrder: number;
+    currentUser: CurrentUserType;
+  }): Promise<void> {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(lessonObject.lessonId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      lessonObject.lessonId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.LESSON, lessonObject.currentUser, lessonObject.lessonId);
+
+    const [lessonToUpdate] = await this.adminLessonRepository.getLesson(lessonObject.lessonId);
+
+    const oldDisplayOrder = lessonToUpdate.displayOrder;
+    if (!lessonToUpdate || oldDisplayOrder === null) {
+      throw new NotFoundException("adminCourseView.errors.notFound.lesson");
+    }
+
+    const { language } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.LESSON,
+      lessonObject.lessonId,
+    );
+
+    const previousLessonSnapshot = await this.buildLessonActivitySnapshot(
+      lessonObject.lessonId,
+      language,
+    );
+
+    await this.adminLessonRepository.updateLessonDisplayOrder(
+      lessonToUpdate.chapterId,
+      lessonToUpdate.id,
+      lessonObject.displayOrder,
+      oldDisplayOrder,
+    );
+
+    const updatedLessonSnapshot = await this.buildLessonActivitySnapshot(
+      lessonObject.lessonId,
+      language,
+    );
+
+    await this.outboxPublisher.publish(
+      new UpdateLessonEvent({
+        lessonId: lessonObject.lessonId,
+        actor: lessonObject.currentUser,
+        previousLessonData: previousLessonSnapshot,
+        updatedLessonData: updatedLessonSnapshot,
+      }),
+    );
+  }
+
+  private async createAiMentorLessonWithTransaction(
+    data: CreateAiMentorLessonBody,
+    displayOrder: number,
+    language: SupportedLanguages,
+  ) {
+    return await this.db.transaction(async (trx) => {
+      const lesson = await this.adminLessonRepository.createAiMentorLesson(
+        data,
+        displayOrder,
+        language,
+        trx,
+      );
+
+      const [aiMentorLesson] = await this.adminLessonRepository.createAiMentorLessonData(
+        {
+          lessonId: lesson.id,
+          name: data?.name,
+          voiceMode: data.voiceMode ?? AI_MENTOR_VOICE_MODE.PRESET,
+          ttsPreset: data.ttsPreset ?? AI_MENTOR_TTS_PRESET.MALE,
+          customTtsReference: data.customTtsReference,
+          language,
+        },
+        trx,
+      );
+
+      await this.aiMentorConfigurationGraphService.createConfigurationInTransaction(
+        aiMentorLesson.id,
+        data.aiMentorConfiguration,
+        language,
+        trx,
+      );
+
+      await this.aiJudgeConfigurationGraphService.createConfigurationInTransaction(
+        aiMentorLesson.id,
+        data.aiJudgeConfiguration,
+        language,
+        trx,
+      );
+
+      await this.searchIndexService.refreshLesson(lesson.id, trx);
+
+      return lesson;
+    });
+  }
+
+  private async updateAiMentorLessonWithTransaction(
+    id: UUIDType,
+    data: UpdateAiMentorLessonBody,
+    userId: UUIDType,
+  ) {
+    return await this.db.transaction(async (trx) => {
+      const { name, ...lessonData } = data;
+
+      const { availableLocales } = await this.localizationService.getBaseLanguage(
+        ENTITY_TYPE.LESSON,
+        id,
+      );
+
+      if (!availableLocales.includes(data.language)) {
+        throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+      }
+
+      const [updatedLesson] = await this.adminLessonRepository.updateAiMentorLesson(
+        id,
+        {
+          title: lessonData.title,
+          description: lessonData.description !== undefined ? lessonData.description : undefined,
+          language: lessonData.language,
+        },
+        trx,
+      );
+
+      if (data.name?.trim().length === 0) {
+        data.name = "AI Mentor";
+      }
+
+      const voiceMode = data.voiceMode ?? AI_MENTOR_VOICE_MODE.PRESET;
+      const customTtsReference = data.customTtsReference?.trim() || null;
+
+      if (voiceMode === AI_MENTOR_VOICE_MODE.CUSTOM && !customTtsReference) {
+        throw new BadRequestException("adminCourseView.errors.lesson.customTtsReferenceRequired");
+      }
+
+      await this.adminLessonRepository.updateAiMentorLessonData(
+        id,
+        {
+          name,
+          voiceMode,
+          ttsPreset: data.ttsPreset ?? AI_MENTOR_TTS_PRESET.MALE,
+          customTtsReference,
+          language: data.language,
+        },
+        trx,
+      );
+
+      await this.aiRepository.setThreadsToArchived(id, userId, trx);
+      await this.searchIndexService.refreshLesson(id, trx);
+
+      return updatedLesson;
+    });
+  }
+
+  async createEmbedLesson(data: CreateEmbedLessonBody, currentUser: CurrentUserType) {
+    await this.masterCourseService.assertCourseContentEditableByChapterId(data.chapterId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByChapterId(
+      data.chapterId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.CHAPTER, currentUser, data.chapterId);
+
+    if (data.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    const { language } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.CHAPTER,
+      data.chapterId,
+    );
+
+    const lesson = await this.db.transaction(async (trx) => {
+      const maxDisplayOrder = await this.adminLessonRepository.getMaxDisplayOrder(
+        data.chapterId,
+        trx,
+      );
+
+      const createdLesson = await this.adminLessonRepository.createLessonForChapter(
+        {
+          ...data,
+          displayOrder: maxDisplayOrder + 1,
+        },
+        language,
+        trx,
+      );
+
+      if (!createdLesson)
+        throw new BadRequestException("adminCourseView.errors.lesson.embedCreateFailed");
+
+      await this.adminLessonRepository.updateLessonCountForChapter(createdLesson.chapterId, trx);
+
+      if (data.resources && data.resources.length > 0) {
+        await this.adminLessonRepository.createLessonResources(
+          createdLesson.id,
+          data.resources.map((resource) => ({
+            reference: resource.fileUrl,
+            contentType: "text/html",
+            metadata: {
+              allowFullscreen: resource.allowFullscreen ?? false,
+            },
+            uploadedById: currentUser.userId,
+          })),
+          trx,
+        );
+      }
+
+      await this.searchIndexService.refreshLesson(createdLesson.id, trx);
+
+      return createdLesson;
+    });
+
+    if (!lesson) throw new BadRequestException("adminCourseView.errors.lesson.embedCreateFailed");
+
+    const createdLessonSnapshot = await this.buildLessonActivitySnapshot(lesson.id, language);
+
+    await this.outboxPublisher.publish(
+      new CreateLessonEvent({
+        lessonId: lesson.id,
+        actor: currentUser,
+        createdLesson: createdLessonSnapshot,
+      }),
+    );
+
+    return lesson;
+  }
+
+  async updateEmbedLesson(
+    lessonId: UUIDType,
+    currentUser: CurrentUserType,
+    data: UpdateEmbedLessonBody,
+  ) {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(lessonId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      lessonId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, lessonId);
+
+    if (data.title && data.title.length > MAX_LESSON_TITLE_LENGTH) {
+      throw new BadRequestException({
+        message: `adminCourseView.toast.maxTitleLengthExceeded`,
+        count: MAX_LESSON_TITLE_LENGTH,
+      });
+    }
+
+    const { availableLocales } = await this.localizationService.getBaseLanguage(
+      ENTITY_TYPE.LESSON,
+      lessonId,
+    );
+
+    if (!availableLocales.includes(data.language)) {
+      throw new BadRequestException("adminCourseView.toast.languageNotSupported");
+    }
+
+    const lesson = await this.lessonRepository.getLesson(lessonId, data.language);
+
+    if (!lesson) throw new NotFoundException("adminCourseView.errors.notFound.lesson");
+
+    const previousLessonSnapshot = await this.buildLessonActivitySnapshot(lessonId, data.language);
+
+    const updatedLesson = await this.db.transaction(async (trx) => {
+      const lessonUpdate = await this.adminLessonRepository.updateLesson(lessonId, data, trx);
+
+      if (data.resources && data.resources.length === 0) {
+        await this.adminLessonRepository.deleteLessonResources(lessonId, trx);
+      } else if (data.resources) {
+        const existingResourcesIds = (
+          await this.adminLessonRepository.getLessonResourcesForLesson(lessonId, data.language, trx)
+        ).map((r) => r.id);
+
+        const resourceIdsToDelete = existingResourcesIds.filter(
+          (existingId) =>
+            !data.resources
+              .map((res) => res.id)
+              .filter((id): id is UUIDType => id !== undefined)
+              .includes(existingId),
+        );
+
+        if (resourceIdsToDelete.length > 0)
+          await this.adminLessonRepository.deleteLessonResourcesByIds(resourceIdsToDelete, trx);
+
+        const resourcesToUpdate = data.resources.reduce((acc, resource) => {
+          if (resource.id && existingResourcesIds.includes(resource.id)) {
+            acc.push({
+              id: resource.id,
+              reference: resource.fileUrl,
+              contentType: "text/html",
+              metadata: {
+                allowFullscreen: resource.allowFullscreen ?? false,
+              },
+            });
+          }
+
+          return acc;
+        }, [] as EmbedLessonResourceType[]);
+
+        if (resourcesToUpdate.length > 0)
+          await this.adminLessonRepository.updateLessonResources(resourcesToUpdate, trx);
+
+        const resourcesToCreate = data.resources.reduce(
+          (acc, resource) => {
+            if (!resource.id) {
+              acc.push({
+                reference: resource.fileUrl,
+                contentType: "text/html",
+                metadata: {
+                  allowFullscreen: resource.allowFullscreen ?? false,
+                },
+              });
+            }
+
+            return acc;
+          },
+          [] as Omit<EmbedLessonResourceType, "id">[],
+        );
+
+        if (resourcesToCreate.length > 0)
+          await this.adminLessonRepository.createLessonResources(lessonId, resourcesToCreate, trx);
+      }
+
+      await this.searchIndexService.refreshLesson(lessonId, trx);
+
+      return lessonUpdate;
+    });
+
+    const updatedLessonSnapshot = await this.buildLessonActivitySnapshot(lessonId, data.language);
+
+    await this.outboxPublisher.publish(
+      new UpdateLessonEvent({
+        lessonId,
+        actor: currentUser,
+        previousLessonData: previousLessonSnapshot,
+        updatedLessonData: updatedLessonSnapshot,
+      }),
+    );
+
+    return updatedLesson.id;
+  }
+
+  async uploadFileToLesson(
+    currentUser: CurrentUserType,
+    file: Express.Multer.File,
+    language: SupportedLanguages,
+    title: string,
+    description: string,
+    lessonId?: UUIDType,
+    contextId?: string,
+    visibility: EditableResourceVisibility = RESOURCE_VISIBILITY.PUBLIC,
+  ) {
+    if (lessonId) {
+      await this.masterCourseService.assertCourseContentEditableByLessonId(lessonId);
+      await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+        lessonId,
+        COURSE_FEATURE.CURRICULUM_EDITING,
+      );
+      await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, lessonId);
+    }
+    const fileTitle = {
+      [language]: title,
+    };
+
+    const fileDescription = {
+      [language]: description,
+    };
+
+    const fileData = await this.fileService.uploadResource({
+      file,
+      folder: "lesson-content",
+      resource: RESOURCE_CATEGORIES.LESSON,
+      title: fileTitle,
+      description: fileDescription,
+      currentUser,
+      options: { contextId, visibility },
+    });
+
+    return { resourceId: fileData.resourceId };
+  }
+
+  async uploadFileToLessonFromSignedUrl(
+    currentUser: CurrentUserType,
+    lessonId: UUIDType,
+    signedUrl: string,
+    options?: { originalFilename?: string },
+  ) {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(lessonId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      lessonId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    const file = await this.buildMulterFileFromSignedUrl(signedUrl, options?.originalFilename);
+    const { fileKey, fileUrl, contentType } = await this.fileService.uploadFile(
+      file,
+      `${RESOURCE_CATEGORIES.LESSON}/lesson-content`,
+      currentUser.tenantId,
+    );
+
+    const [resource] = await this.adminLessonRepository.createLessonResources(lessonId, [
+      {
+        reference: fileKey,
+        contentType,
+        metadata: {
+          originalFilename: file.originalname,
+          size: file.size,
+          sourceUrl: signedUrl,
+        },
+        uploadedById: currentUser.userId,
+      },
+    ]);
+
+    await this.searchIndexService.refreshLesson(lessonId);
+
+    return {
+      resourceId: resource.id,
+      fileKey,
+      fileUrl,
+    };
+  }
+
+  private async buildMulterFileFromSignedUrl(signedUrl: string, originalFilename?: string) {
+    const response = await fetch(signedUrl);
+
+    if (!response.ok) {
+      throw new BadRequestException("adminCourseView.errors.lesson.signedUrlDownloadFailed");
+    }
+
+    const contentTypeHeader = response.headers.get("content-type");
+    const contentType = contentTypeHeader?.split(";")[0] || "application/octet-stream";
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const fileName = originalFilename || this.extractFilenameFromUrl(signedUrl, contentType);
+
+    return {
+      fieldname: "file",
+      originalname: fileName,
+      mimetype: contentType,
+      size: buffer.length,
+      buffer,
+      destination: "",
+      filename: fileName,
+      path: "",
+      stream: Readable.from(buffer),
+    } as Express.Multer.File;
+  }
+
+  private extractFilenameFromUrl(signedUrl: string, contentType: string) {
+    const fallbackByMimeType: Record<string, string> = {
+      "image/jpeg": "jpg",
+      "image/png": "png",
+      "image/webp": "webp",
+      "image/gif": "gif",
+      "image/svg+xml": "svg",
+    };
+
+    const url = new URL(signedUrl);
+    const pathname = url.pathname;
+    const lastSegment = pathname.split("/").pop();
+
+    if (lastSegment && lastSegment.includes(".")) {
+      return lastSegment;
+    }
+
+    const extension = fallbackByMimeType[contentType] || "bin";
+    return `asset.${extension}`;
+  }
+
+  async uploadAvatarToAiMentorLesson(
+    currentUser: CurrentUserType,
+    lessonId: UUIDType,
+    file: Express.Multer.File | null,
+  ) {
+    await this.masterCourseService.assertCourseContentEditableByLessonId(lessonId);
+    await this.courseFeaturePolicyService.assertCourseFeatureEnabledByLessonId(
+      lessonId,
+      COURSE_FEATURE.CURRICULUM_EDITING,
+    );
+
+    await this.validateAccess(ENTITY_TYPES.LESSON, currentUser, lessonId);
+
+    if (!file) {
+      await this.adminLessonRepository.updateAiMentorAvatar(lessonId, null);
+      return;
+    }
+
+    const { fileKey } = await this.fileService.uploadFile(
+      file,
+      "lessons/ai-mentor-avatars",
+      currentUser.tenantId,
+    );
+
+    await this.adminLessonRepository.updateAiMentorAvatar(lessonId, fileKey);
+  }
+
+  private async buildLessonActivitySnapshot(
+    lessonId: UUIDType,
+    language: SupportedLanguages,
+  ): Promise<LessonActivityLogSnapshot> {
+    const [lesson] = await this.adminLessonRepository.getLesson(lessonId, language);
+
+    if (!lesson) throw new NotFoundException("adminCourseView.errors.notFound.lesson");
+
+    const lessonResources = await this.fileService.getResourcesForEntity(
+      lessonId,
+      ENTITY_TYPES.LESSON,
+      RESOURCE_RELATIONSHIP_TYPES.ATTACHMENT,
+      language,
+      { quality: IMAGE_QUALITY.MD },
+    );
+
+    const quizLesson =
+      lesson.type === LESSON_TYPES.QUIZ
+        ? await this.quizAuthoringService.getLegacyQuizLessonForAuthoring(lessonId, language)
+        : null;
+    const questions = quizLesson?.questions ?? [];
+
+    return {
+      id: lesson.id,
+      title: lesson.title,
+      description: lesson.description,
+      type: lesson.type as LessonTypes,
+      fileS3Key: lesson.fileS3Key,
+      fileType: lesson.fileType,
+      isExternal: lesson.isExternal ?? false,
+      chapterId: lesson.chapterId,
+      displayOrder: lesson.displayOrder,
+      thresholdScore: lesson.thresholdScore,
+      attemptsLimit: lesson.attemptsLimit,
+      quizCooldownInHours: lesson.quizCooldownInHours,
+      lessonResources: lessonResources.map((resource) => {
+        const metadata = resource.metadata as LessonResourceMetadata | undefined;
+        const fileName =
+          metadata && typeof metadata.originalFilename === "string"
+            ? metadata.originalFilename
+            : undefined;
+
+        return {
+          id: resource.id,
+          fileUrl: resource.fileUrl,
+          fileUrlError: Boolean((resource as ResourceWithUrlError).fileUrlError),
+          contentType: resource.contentType,
+          title: typeof resource.title === "string" ? resource.title : undefined,
+          description: typeof resource.description === "string" ? resource.description : undefined,
+          fileName,
+          allowFullscreen: metadata?.allowFullscreen,
+        };
+      }),
+      questions: questions.map((question) => ({
+        id: question.id,
+        title: question.title,
+        description: question.description,
+        solutionExplanation: question.solutionExplanation,
+        type: question.type,
+        photoS3Key: question.photoS3Key,
+        displayOrder: question.displayOrder,
+        options: question.options?.map((option) => ({
+          id: option.id,
+          optionText: option.optionText,
+          isCorrect: option.isCorrect,
+          displayOrder: option.displayOrder,
+          matchedWord: option.matchedWord,
+          scaleAnswer: option.scaleAnswer,
+        })),
+      })),
+      aiMentor:
+        lesson.type === LESSON_TYPES.AI_MENTOR
+          ? {
+              name: lesson.aiMentorName,
+              avatarReference: lesson.aiMentorAvatarReference,
+              voiceMode: lesson.aiMentorVoiceMode,
+              ttsPreset: lesson.aiMentorTTSPreset,
+              customTtsReference: lesson.aiMentorCustomTtsReference,
+            }
+          : undefined,
+    };
+  }
+
+  async validateAccess(
+    entity: CourseContentEntityType,
+    currentUser: CurrentUserType,
+    id: UUIDType,
+    throwOnNoAccess: boolean = true,
+  ) {
+    let course;
+
+    switch (entity) {
+      case ENTITY_TYPES.LESSON:
+        [course] = await this.adminLessonRepository.getCourseByLesson(id);
+        break;
+      case ENTITY_TYPES.CHAPTER:
+        [course] = await this.adminLessonRepository.getCourseByChapter(id);
+        break;
+
+      case ENTITY_TYPES.COURSE:
+        [course] = await this.adminLessonRepository.getCourse(id);
+    }
+
+    if (!course) throw new NotFoundException("adminCourseView.errors.notFound.course");
+
+    const canManageCourseContent = hasPermission(
+      currentUser.permissions,
+      PERMISSIONS.COURSE_UPDATE,
+    );
+
+    const canManageOwnCourseContent = hasPermission(
+      currentUser.permissions,
+      PERMISSIONS.COURSE_UPDATE_OWN,
+    );
+
+    const hasAccess =
+      canManageCourseContent ||
+      (canManageOwnCourseContent && course.authorId === currentUser.userId);
+
+    if (throwOnNoAccess && !hasAccess) {
+      throw new ForbiddenException({ message: "common.toast.noAccess" });
+    }
+
+    return hasAccess;
+  }
+
+  async initializeLessonContext() {
+    const contextId = randomUUID().toString();
+
+    await this.cache.set(getContextKey(contextId), [], CONTEXT_TTL);
+
+    return { contextId };
+  }
+
+  async courseHasChapters(courseId: UUIDType) {
+    const [course] = await this.adminLessonRepository.getCourse(courseId);
+
+    return course.chapterCount > 0;
+  }
+}

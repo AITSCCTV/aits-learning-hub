@@ -1,0 +1,695 @@
+import { Inject, Injectable } from "@nestjs/common";
+import { COURSE_ENROLLMENT, COURSE_STATUSES, LESSON_TYPES, PERMISSIONS } from "@repo/shared";
+import { and, eq, getTableColumns, isNotNull, isNull, ne, type SQL, sql } from "drizzle-orm";
+
+import {
+  buildAiJudgeBlockingErrorEvaluationsSql,
+  buildAiJudgeCriterionEvaluationsSql,
+} from "src/ai/utils/ai-judge-evaluation.sql";
+import { THREAD_STATUS } from "src/ai/utils/ai.type";
+import { DatabasePg, type UUIDType } from "src/common";
+import { getGroupManagerCourseScopeCondition } from "src/common/permissions/group-manager-scope.utils";
+import { hasPermission } from "src/common/permissions/permission.utils";
+import { activeLearningState } from "src/course-repetition/course-learning-state.sql";
+import { LocalizationService } from "src/localization/localization.service";
+import { ENTITY_TYPE } from "src/localization/localization.types";
+import {
+  aiJudgeConfigurations,
+  aiJudgeCriteria,
+  aiMentorLessons,
+  aiMentorJudgementCriteria,
+  aiMentorJudgements,
+  aiMentorStudentLessonProgress,
+  aiMentorThreads,
+  chapters,
+  courses,
+  courseStudentMode,
+  lessons,
+  studentCourses,
+  studentLessonProgress,
+  studentChapterProgress,
+  resourceEntity,
+  resources,
+  coursesSettingsHelpers,
+  liveLessons,
+  settings,
+} from "src/storage/schema";
+
+import type { SupportedLanguages } from "@repo/shared";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+import type { LessonsFilters } from "src/lesson/lesson.schema";
+import type { AiMentorEvaluationDetails, LessonTypes } from "src/lesson/lesson.type";
+import type * as schema from "src/storage/schema";
+
+export type AudioResourceLesson = Awaited<
+  ReturnType<LessonRepository["getAudioResourceLessons"]>
+>[number];
+
+export type EnrolledLessonWithSearch = {
+  id: UUIDType;
+  title: string;
+  type: LessonTypes;
+  description: string | null;
+  displayOrder: number;
+  lessonCompleted?: boolean;
+  courseId: UUIDType;
+  courseTitle: string;
+  chapterId: UUIDType;
+  chapterTitle: string;
+  chapterDisplayOrder: number;
+  searchRank?: number;
+  matchedAttachmentFileName?: string | null;
+};
+
+@Injectable()
+export class LessonRepository {
+  constructor(
+    @Inject("DB") private readonly db: DatabasePg,
+    private readonly localizationService: LocalizationService,
+  ) {}
+
+  async getLesson(id: UUIDType, language: SupportedLanguages) {
+    const [lesson] = await this.db
+      .select({
+        ...getTableColumns(lessons),
+        title: this.localizationService.getLocalizedSqlField(lessons.title, language),
+        description: this.localizationService.getLocalizedSqlField(lessons.description, language),
+      })
+      .from(lessons)
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .where(eq(lessons.id, id));
+    return lesson;
+  }
+
+  /** Read-only access for signed-in users; never confers enrollment or paid access. */
+  async getHasPublicCoursePreviewAccess(id: UUIDType, userId: UUIDType) {
+    const [preview] = await this.db
+      .select({ id: lessons.id })
+      .from(lessons)
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .innerJoin(settings, and(isNull(settings.userId), eq(settings.tenantId, courses.tenantId)))
+      .leftJoin(
+        studentCourses,
+        and(
+          eq(studentCourses.courseId, courses.id),
+          eq(studentCourses.studentId, userId),
+          eq(studentCourses.status, COURSE_ENROLLMENT.ENROLLED),
+        ),
+      )
+      .leftJoin(
+        courseStudentMode,
+        and(eq(courseStudentMode.courseId, courses.id), eq(courseStudentMode.userId, userId)),
+      )
+      .where(
+        and(
+          eq(lessons.id, id),
+          eq(courses.status, COURSE_STATUSES.PUBLISHED),
+          eq(courses.isArchived, false),
+          eq(courses.priceInCents, 0),
+          isNull(studentCourses.id),
+          isNull(courseStudentMode.id),
+          sql`COALESCE((${settings.settings}->>'publicCoursePreviewEnabled')::boolean, false)`,
+        ),
+      )
+      .limit(1);
+    return Boolean(preview);
+  }
+
+  async getHasLessonAccess(id: UUIDType, userId: UUIDType, isStudent: boolean) {
+    if (!isStudent) return true;
+
+    const [{ isSequenceEnabled, courseId }] = await this.db
+      .select({
+        isSequenceEnabled: coursesSettingsHelpers.select("lessonSequenceEnabled"),
+        courseId: sql<UUIDType>`${courses.id}`,
+      })
+      .from(lessons)
+      .leftJoin(chapters, eq(lessons.chapterId, chapters.id))
+      .leftJoin(courses, eq(chapters.courseId, courses.id))
+      .where(eq(lessons.id, id))
+      .limit(1);
+
+    if (!isSequenceEnabled) return true;
+
+    const [{ currentChapterDisplayOrder, hasCompletedAllChapterLessons, hasCompletedAllLessons }] =
+      await this.db
+        .select({
+          currentChapterDisplayOrder: sql<number>`${chapters.displayOrder}`,
+          hasCompletedAllChapterLessons: sql<boolean>`
+          ${lessons.displayOrder} <= (COALESCE(${studentChapterProgress.completedLessonCount}, 0) + 1)
+        `,
+          hasCompletedAllLessons: sql<boolean>`
+          (
+            SELECT bool_and(COALESCE(scp.completed_lesson_count, 0) = c.lesson_count)
+            FROM ${chapters} c
+            LEFT JOIN ${studentChapterProgress} scp
+              ON scp.chapter_id = c.id AND ${activeLearningState(sql.raw("scp.learning_state_id"))} AND scp.student_id = ${userId}
+            WHERE c.course_id = ${courseId} AND c.display_order < ${chapters.displayOrder}
+          )
+        `,
+        })
+        .from(lessons)
+        .leftJoin(chapters, eq(lessons.chapterId, chapters.id))
+        .leftJoin(
+          studentChapterProgress,
+          and(
+            eq(studentChapterProgress.chapterId, chapters.id),
+            and(
+              eq(studentChapterProgress.studentId, userId),
+              activeLearningState(studentChapterProgress.learningStateId),
+            ),
+          ),
+        )
+        .where(eq(lessons.id, id));
+
+    if (hasCompletedAllChapterLessons && currentChapterDisplayOrder === 1) return true;
+
+    return hasCompletedAllLessons && hasCompletedAllChapterLessons;
+  }
+
+  async getLessonDetails(id: UUIDType, userId: UUIDType, language?: SupportedLanguages) {
+    const localizedCriterionTitle = this.localizationService.getLocalizedSqlField(
+      aiJudgeCriteria.title,
+      language,
+    );
+
+    const [lesson] = await this.db
+      .select({
+        id: lessons.id,
+        type: sql<LessonTypes>`${lessons.type}`,
+        title: this.localizationService.getLocalizedSqlField(lessons.title, language),
+        description: this.localizationService.getLocalizedSqlField(lessons.description, language),
+        fileUrl: lessons.fileS3Key,
+        fileType: lessons.fileType,
+        thresholdScore: sql<number | null>`${lessons.thresholdScore}`,
+        attemptsLimit: sql<number | null>`${lessons.attemptsLimit}`,
+        quizCooldownInHours: sql<number | null>`${lessons.quizCooldownInHours}`,
+        displayOrder: sql<number>`${lessons.displayOrder}`,
+        lessonCompleted: sql<boolean>`${studentLessonProgress.completedAt} IS NOT NULL`,
+        quizScore: sql<number | null>`${studentLessonProgress.quizScore}`,
+        updatedAt: studentLessonProgress.updatedAt,
+        isQuizPassed: sql<boolean | null>`${studentLessonProgress.isQuizPassed}`,
+        attempts: sql<number | null>`${studentLessonProgress.attempts}`,
+        quizFeedbackEnabled: coursesSettingsHelpers.select("quizFeedbackEnabled"),
+        videoCompletionTrackingEnabled: coursesSettingsHelpers.select(
+          "videoCompletionTrackingEnabled",
+        ),
+        aiMentorDetails: sql<AiMentorEvaluationDetails | null>`
+          CASE
+            WHEN ${aiMentorJudgements.id} IS NULL
+              AND ${aiMentorStudentLessonProgress.id} IS NULL
+            THEN NULL
+            ELSE json_build_object(
+            'minScore', COALESCE(
+              ${aiMentorStudentLessonProgress.minScore},
+              CEIL(
+                ${aiMentorJudgements.maxScore}
+                * ${aiJudgeConfigurations.passingThresholdPercent}
+                / 100.0
+              )::integer
+            ),
+            'maxScore', COALESCE(
+              ${aiMentorStudentLessonProgress.maxScore},
+              ${aiMentorJudgements.maxScore}
+            ),
+            'score', COALESCE(
+              ${aiMentorStudentLessonProgress.score},
+              ${aiMentorJudgements.earnedPoints}
+            ),
+            'percentage', COALESCE(
+              ${aiMentorStudentLessonProgress.percentage},
+              ${aiMentorJudgements.percentage}
+            ),
+            'passed', COALESCE(
+              ${aiMentorStudentLessonProgress.passed},
+              ${aiMentorJudgements.passed}
+            ),
+            'criteria', ${buildAiJudgeCriterionEvaluationsSql(
+              aiMentorJudgements.id,
+              sql`COALESCE(
+                NULLIF(${aiMentorJudgementCriteria.criterionTitle}, ''),
+                ${localizedCriterionTitle}
+              )`,
+            )},
+            'blockingErrors', ${buildAiJudgeBlockingErrorEvaluationsSql(aiMentorJudgements.id)},
+            'requiredScore', COALESCE(
+              CASE
+                WHEN ${aiMentorStudentLessonProgress.maxScore} > 0
+                THEN CAST(${aiMentorStudentLessonProgress.minScore} AS FLOAT) / CAST(${aiMentorStudentLessonProgress.maxScore} AS FLOAT) * 100
+              END,
+              ${aiJudgeConfigurations.passingThresholdPercent}
+            )
+          )
+          END
+        `,
+        aiMentor: sql<{ name: string; avatarReferenceUrl: string } | null>`
+          CASE
+            WHEN ${aiMentorLessons.name} IS NOT NULL THEN
+              json_build_object(
+                'name', ${this.localizationService.getLocalizedSqlField(
+                  aiMentorLessons.name,
+                  language,
+                )},
+                'avatarReferenceUrl', ${aiMentorLessons.avatarReference}
+              )
+            ELSE NULL
+          END
+        `,
+        isExternal: sql<boolean>`${lessons.isExternal}`,
+        liveTrainingId: sql<UUIDType | null>`
+          (
+            SELECT ${liveLessons.liveTrainingId}
+            FROM ${liveLessons}
+            WHERE ${liveLessons.lessonId} = ${lessons.id}
+              AND ${liveLessons.language} IN (${language}, ${courses.baseLanguage})
+            ORDER BY CASE WHEN ${liveLessons.language} = ${language} THEN 0 ELSE 1 END
+            LIMIT 1
+          )
+        `,
+        isFreemium: sql<boolean>`${chapters.isFreemium}`,
+        isEnrolled: sql<boolean>`CASE WHEN ${studentCourses.status} = ${COURSE_ENROLLMENT.ENROLLED} THEN TRUE ELSE FALSE END`,
+        studentCourses: sql<string>`CASE WHEN ${studentCourses.status} = ${COURSE_ENROLLMENT.ENROLLED} THEN ${studentCourses.id} ELSE NULL END`,
+        nextLessonId: sql<string | null>`
+          COALESCE(
+            (
+              SELECT l2.id
+              FROM ${lessons} l2
+              JOIN ${chapters} c ON c.id = l2.chapter_id
+              LEFT JOIN ${studentLessonProgress} slp ON slp.lesson_id = l2.id AND ${activeLearningState(sql.raw("slp.learning_state_id"))} AND slp.student_id = ${userId}
+              WHERE c.course_id = ${chapters.courseId}
+                AND l2.id != ${lessons.id}
+                AND slp.completed_at IS NULL
+              ORDER BY c.display_order, l2.display_order
+              LIMIT 1
+            ),
+            NULL
+          )
+        `,
+      })
+      .from(lessons)
+      .leftJoin(aiMentorLessons, eq(aiMentorLessons.lessonId, id))
+      .leftJoin(
+        aiMentorThreads,
+        and(
+          eq(aiMentorThreads.aiMentorLessonId, aiMentorLessons.id),
+          eq(aiMentorThreads.userId, userId),
+          activeLearningState(aiMentorThreads.learningStateId),
+          ne(aiMentorThreads.status, THREAD_STATUS.ARCHIVED),
+        ),
+      )
+      .leftJoin(aiMentorJudgements, eq(aiMentorJudgements.threadId, aiMentorThreads.id))
+      .leftJoin(
+        aiJudgeConfigurations,
+        eq(aiJudgeConfigurations.id, aiMentorJudgements.configurationId),
+      )
+      .leftJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .leftJoin(
+        studentCourses,
+        and(eq(studentCourses.courseId, chapters.courseId), eq(studentCourses.studentId, userId)),
+      )
+      .leftJoin(
+        studentLessonProgress,
+        and(
+          eq(studentLessonProgress.lessonId, lessons.id),
+          and(
+            eq(studentLessonProgress.studentId, userId),
+            activeLearningState(studentLessonProgress.learningStateId),
+          ),
+          eq(studentCourses.status, COURSE_ENROLLMENT.ENROLLED),
+        ),
+      )
+      .leftJoin(
+        aiMentorStudentLessonProgress,
+        and(
+          eq(studentLessonProgress.lessonId, lessons.id),
+          eq(aiMentorStudentLessonProgress.studentLessonProgressId, studentLessonProgress.id),
+        ),
+      )
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .where(eq(lessons.id, id));
+
+    return lesson;
+  }
+
+  async getPublicContentLessonDetails(id: UUIDType, language?: SupportedLanguages) {
+    const [lesson] = await this.db
+      .select({
+        id: lessons.id,
+        type: sql<LessonTypes>`${lessons.type}`,
+        title: this.localizationService.getLocalizedSqlField(lessons.title, language),
+        description: this.localizationService.getLocalizedSqlField(lessons.description, language),
+        fileUrl: lessons.fileS3Key,
+        fileType: lessons.fileType,
+        thresholdScore: sql<number | null>`${lessons.thresholdScore}`,
+        attemptsLimit: sql<number | null>`${lessons.attemptsLimit}`,
+        quizCooldownInHours: sql<number | null>`${lessons.quizCooldownInHours}`,
+        displayOrder: sql<number>`${lessons.displayOrder}`,
+        lessonCompleted: sql<boolean>`FALSE`,
+        quizScore: sql<number | null>`NULL`,
+        updatedAt: sql<string | null>`NULL`,
+        isQuizPassed: sql<boolean | null>`NULL`,
+        attempts: sql<number | null>`NULL`,
+        quizFeedbackEnabled: coursesSettingsHelpers.select("quizFeedbackEnabled"),
+        videoCompletionTrackingEnabled: coursesSettingsHelpers.select(
+          "videoCompletionTrackingEnabled",
+        ),
+        aiMentorDetails: sql<null>`NULL`,
+        aiMentor: sql<null>`NULL`,
+        isExternal: sql<boolean>`${lessons.isExternal}`,
+        liveTrainingId: sql<UUIDType | null>`NULL`,
+        isFreemium: sql<boolean>`${chapters.isFreemium}`,
+        isEnrolled: sql<boolean>`FALSE`,
+        studentCourses: sql<string | null>`NULL`,
+        nextLessonId: sql<string | null>`NULL`,
+      })
+      .from(lessons)
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .leftJoin(settings, and(isNull(settings.userId), eq(settings.tenantId, chapters.tenantId)))
+      .where(
+        and(
+          eq(lessons.id, id),
+          eq(lessons.type, LESSON_TYPES.CONTENT),
+          eq(chapters.isFreemium, true),
+          sql`COALESCE((${settings.settings}->>'unregisteredUserCoursesAccessibility')::boolean, false)`,
+        ),
+      );
+
+    return lesson;
+  }
+
+  async getHasPublicContentLessonAccess(id: UUIDType) {
+    const [lessonAccess] = await this.db
+      .select({ id: lessons.id })
+      .from(lessons)
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .leftJoin(settings, and(isNull(settings.userId), eq(settings.tenantId, chapters.tenantId)))
+      .where(
+        and(
+          eq(lessons.id, id),
+          eq(lessons.type, LESSON_TYPES.CONTENT),
+          eq(chapters.isFreemium, true),
+          sql`COALESCE((${settings.settings}->>'unregisteredUserCoursesAccessibility')::boolean, false)`,
+        ),
+      )
+      .limit(1);
+
+    return Boolean(lessonAccess);
+  }
+
+  async getHasPublicContentResourceAccess(resourceId: UUIDType) {
+    const [resourceAccess] = await this.db
+      .select({ id: resources.id })
+      .from(resources)
+      .innerJoin(resourceEntity, eq(resourceEntity.resourceId, resources.id))
+      .innerJoin(lessons, eq(lessons.id, resourceEntity.entityId))
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .leftJoin(settings, and(isNull(settings.userId), eq(settings.tenantId, chapters.tenantId)))
+      .where(
+        and(
+          eq(resources.id, resourceId),
+          eq(resources.archived, false),
+          eq(resourceEntity.entityType, ENTITY_TYPE.LESSON),
+          eq(lessons.type, LESSON_TYPES.CONTENT),
+          eq(chapters.isFreemium, true),
+          sql`COALESCE((${settings.settings}->>'unregisteredUserCoursesAccessibility')::boolean, false)`,
+        ),
+      )
+      .limit(1);
+
+    return Boolean(resourceAccess);
+  }
+
+  async getLessonsByChapterId(chapterId: UUIDType, language: SupportedLanguages) {
+    return this.db
+      .select({
+        id: lessons.id,
+        title: this.localizationService.getLocalizedSqlField(lessons.title, language),
+        type: sql<LessonTypes>`${lessons.type}`,
+        description: this.localizationService.getLocalizedSqlField(lessons.description, language),
+        fileS3Key: sql<string | undefined>`${lessons.fileS3Key}`,
+        fileType: sql<string | undefined>`${lessons.fileType}`,
+        displayOrder: sql<number>`${lessons.displayOrder}`,
+      })
+      .from(lessons)
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .where(eq(lessons.chapterId, chapterId))
+      .orderBy(lessons.displayOrder);
+  }
+
+  async getLessonSettings(lessonId: UUIDType, language?: SupportedLanguages) {
+    const [lessonSettings] = await this.db
+      .select({
+        id: lessons.id,
+        title: this.localizationService.getLocalizedSqlField(lessons.title, language),
+        type: sql<LessonTypes>`${lessons.type}`,
+        thresholdScore: sql<number | null>`${lessons.thresholdScore}`,
+        attemptsLimit: sql<number | null>`${lessons.attemptsLimit}`,
+        quizCooldownInHours: sql<number | null>`${lessons.quizCooldownInHours}`,
+      })
+      .from(lessons)
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .where(eq(lessons.id, lessonId))
+      .limit(1);
+    return lessonSettings;
+  }
+
+  async getLessonsProgressByCourseId(
+    courseId: UUIDType,
+    userId: UUIDType,
+    trx?: PostgresJsDatabase<typeof schema>,
+  ) {
+    const dbInstance = trx ?? this.db;
+
+    return dbInstance
+      .select({
+        lessonId: studentLessonProgress.lessonId,
+        completedLessonCount: studentLessonProgress.completedQuestionCount,
+        quizCompleted: studentLessonProgress.completedAt,
+        quizScore: studentLessonProgress.quizScore,
+      })
+      .from(studentLessonProgress)
+      .leftJoin(lessons, eq(studentLessonProgress.lessonId, lessons.id))
+      .leftJoin(chapters, eq(lessons.chapterId, chapters.id))
+      .where(
+        and(
+          eq(chapters.courseId, courseId),
+          and(
+            eq(studentLessonProgress.studentId, userId),
+            activeLearningState(studentLessonProgress.learningStateId),
+          ),
+        ),
+      );
+  }
+
+  async checkLessonAssignment(id: UUIDType, userId: UUIDType) {
+    return this.db
+      .select({
+        isAssigned: sql<boolean>`CASE WHEN ${studentCourses.status} IS NOT NULL THEN TRUE ELSE FALSE END`,
+        isFreemium: sql<boolean>`CASE WHEN ${chapters.isFreemium} THEN TRUE ELSE FALSE END`,
+        updatedAt: studentLessonProgress.updatedAt,
+        attempts: sql<number | null>`${studentLessonProgress.attempts}`,
+        lessonIsCompleted: sql<boolean>`CASE WHEN ${studentLessonProgress.completedAt} IS NOT NULL THEN TRUE ELSE FALSE END`,
+        chapterId: sql<string>`${chapters.id}`,
+        courseId: sql<string>`${chapters.courseId}`,
+      })
+      .from(lessons)
+      .leftJoin(
+        studentLessonProgress,
+        and(
+          eq(studentLessonProgress.lessonId, lessons.id),
+          and(
+            eq(studentLessonProgress.studentId, userId),
+            activeLearningState(studentLessonProgress.learningStateId),
+          ),
+        ),
+      )
+      .leftJoin(chapters, eq(lessons.chapterId, chapters.id))
+      .leftJoin(
+        studentCourses,
+        and(eq(studentCourses.courseId, chapters.courseId), eq(studentCourses.studentId, userId)),
+      )
+      .where(eq(lessons.id, id));
+  }
+
+  async getAudioResourceLessons(resourceId: UUIDType, currentUser: CurrentUserType) {
+    const groupManagerCourseScope =
+      getGroupManagerCourseScopeCondition(currentUser, courses.id, []) ?? sql`false`;
+
+    return this.db
+      .select({
+        lessonId: lessons.id,
+        authorId: courses.authorId,
+        status: courses.status,
+        isArchived: courses.isArchived,
+        isFreemium: chapters.isFreemium,
+        isEnrolled: sql<boolean>`${isNotNull(studentCourses.id)}`,
+        isManagerPreview: sql<boolean>`${groupManagerCourseScope}`,
+      })
+      .from(resourceEntity)
+      .innerJoin(lessons, eq(lessons.id, resourceEntity.entityId))
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .leftJoin(
+        studentCourses,
+        and(
+          eq(studentCourses.courseId, courses.id),
+          eq(studentCourses.studentId, currentUser.userId),
+          eq(studentCourses.status, COURSE_ENROLLMENT.ENROLLED),
+        ),
+      )
+      .where(
+        and(
+          eq(resourceEntity.resourceId, resourceId),
+          eq(resourceEntity.entityType, ENTITY_TYPE.LESSON),
+          eq(courses.tenantId, currentUser.tenantId),
+          eq(lessons.type, LESSON_TYPES.CONTENT),
+        ),
+      );
+  }
+
+  async getResource(resourceId: UUIDType) {
+    const [resource] = await this.db
+      .select({
+        ...getTableColumns(resources),
+        entityId: resourceEntity.entityId,
+        entityType: resourceEntity.entityType,
+      })
+      .from(resources)
+      .leftJoin(
+        resourceEntity,
+        and(
+          eq(resourceEntity.resourceId, resources.id),
+          eq(resourceEntity.entityType, ENTITY_TYPE.LESSON),
+        ),
+      )
+      .where(and(eq(resources.id, resourceId), eq(resources.archived, false)));
+
+    return resource;
+  }
+
+  /**
+   * This method returns lessons available for each role
+   * - Student - Only lessons that the student is enrolled to
+   * - Content Creator - Only lessons that the content creator authors
+   * - Admin - All lessons
+   */
+  async getLessonsByRole(
+    currentUser: CurrentUserType,
+    filters: LessonsFilters,
+    language: SupportedLanguages,
+  ): Promise<EnrolledLessonWithSearch[]> {
+    const conditions: SQL[] = [];
+
+    const canManageCourseContent = hasPermission(
+      currentUser.permissions,
+      PERMISSIONS.COURSE_UPDATE,
+    );
+
+    const canManageOwnCourseContent = hasPermission(
+      currentUser.permissions,
+      PERMISSIONS.COURSE_UPDATE_OWN,
+    );
+
+    if (!canManageCourseContent && !canManageOwnCourseContent) {
+      conditions.push(
+        eq(studentCourses.studentId, currentUser.userId),
+        eq(studentCourses.status, COURSE_ENROLLMENT.ENROLLED),
+      );
+    } else if (canManageOwnCourseContent) {
+      conditions.push(eq(courses.authorId, currentUser.userId));
+    }
+
+    if (filters.title) {
+      conditions.push(
+        sql`EXISTS (SELECT 1 FROM jsonb_each_text(${lessons.title}) AS t(k, v)
+           WHERE v ILIKE ${`%${filters.title}%`})`,
+      );
+    }
+
+    if (filters.description) {
+      conditions.push(
+        sql`EXISTS (SELECT 1 FROM jsonb_each_text(${lessons.description}) AS t(k, v)
+             WHERE v ILIKE ${`%${filters.description}%`})`,
+      );
+    }
+
+    if (filters.lessonCompleted !== undefined) {
+      if (filters.lessonCompleted) {
+        conditions.push(sql`${studentLessonProgress.completedAt} IS NOT NULL`);
+      } else {
+        conditions.push(sql`${studentLessonProgress.completedAt} IS NULL`);
+      }
+    }
+
+    return this.db
+      .select({
+        id: lessons.id,
+        title: this.localizationService.getLocalizedSqlField(lessons.title, language),
+        type: sql<LessonTypes>`${lessons.type}`,
+        description: this.localizationService.getLocalizedSqlField(lessons.description, language),
+        displayOrder: sql<number>`${lessons.displayOrder}`,
+        lessonCompleted: sql<boolean>`${studentLessonProgress.completedAt} IS NOT NULL`,
+        courseId: courses.id,
+        courseTitle: this.localizationService.getLocalizedSqlField(courses.title, language),
+        chapterId: chapters.id,
+        chapterTitle: this.localizationService.getLocalizedSqlField(chapters.title, language),
+        chapterDisplayOrder: sql<number>`${chapters.displayOrder}`,
+      })
+      .from(lessons)
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .leftJoin(studentCourses, eq(studentCourses.courseId, courses.id))
+      .leftJoin(
+        studentLessonProgress,
+        and(
+          eq(studentLessonProgress.lessonId, lessons.id),
+          and(
+            eq(studentLessonProgress.studentId, currentUser.userId),
+            activeLearningState(studentLessonProgress.learningStateId),
+          ),
+        ),
+      )
+      .where(and(...conditions))
+      .groupBy(
+        lessons.id,
+        courses.id,
+        chapters.id,
+        lessons.type,
+        lessons.displayOrder,
+        studentLessonProgress.completedAt,
+        courses.title,
+        chapters.title,
+        chapters.displayOrder,
+        lessons.description,
+      )
+      .orderBy(lessons.id, chapters.displayOrder, lessons.displayOrder);
+  }
+
+  async getLessonProgress(lessonId: UUIDType, userId: UUIDType, conditions?: SQL[]) {
+    const [progress] = await this.db
+      .select({
+        ...getTableColumns(studentLessonProgress),
+        languageAnswered: sql<SupportedLanguages>`${studentLessonProgress.languageAnswered}`,
+      })
+      .from(studentLessonProgress)
+      .where(
+        and(
+          eq(studentLessonProgress.lessonId, lessonId),
+          and(
+            eq(studentLessonProgress.studentId, userId),
+            activeLearningState(studentLessonProgress.learningStateId),
+          ),
+          ...(conditions ?? []),
+        ),
+      );
+
+    return progress;
+  }
+}

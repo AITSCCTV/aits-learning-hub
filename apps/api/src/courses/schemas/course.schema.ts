@@ -1,0 +1,203 @@
+import { COURSE_ORIGIN_TYPES, COURSE_TYPE, SUPPORTED_LANGUAGES } from "@repo/shared";
+import { type Static, Type } from "@sinclair/typebox";
+
+import { UUIDSchema } from "src/common";
+import { PROGRESS_STATUSES } from "src/utils/types/progress.type";
+
+import { coursesStatusOptions } from "./courseQuery";
+
+export const courseSchema = Type.Object({
+  id: UUIDSchema,
+  title: Type.String(),
+  thumbnailUrl: Type.Union([Type.String(), Type.Null()]),
+  trailerUrl: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  description: Type.String(),
+  authorId: Type.Optional(UUIDSchema),
+  author: Type.String(),
+  authorEmail: Type.Optional(Type.String()),
+  authorAvatarUrl: Type.Union([Type.String(), Type.Null()]),
+  category: Type.String(),
+  courseChapterCount: Type.Number(),
+  lessonCount: Type.Optional(Type.Number()),
+  estimatedDurationMinutes: Type.Optional(Type.Number()),
+  estimatedDurationFormatted: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  // completedChapterCount: Type.Number(),
+  learningOutcomes: Type.Optional(Type.Array(Type.String())),
+  enrolledParticipantCount: Type.Number(),
+  priceInCents: Type.Number(),
+  currency: Type.String(),
+  status: Type.Optional(coursesStatusOptions),
+  isArchived: Type.Optional(Type.Boolean()),
+  courseType: Type.Optional(Type.Enum(COURSE_TYPE)),
+  createdAt: Type.Optional(Type.String()),
+  hasFreeChapters: Type.Optional(Type.Boolean()),
+  stripeProductId: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  stripePriceId: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  originType: Type.Optional(Type.Enum(COURSE_ORIGIN_TYPES)),
+  isContentReadonly: Type.Optional(Type.Boolean()),
+});
+
+export const studentCourseSchema = Type.Object({
+  repetitionCompletedChapterCount: Type.Optional(Type.Union([Type.Number(), Type.Null()])),
+  ...courseSchema.properties,
+  completedChapterCount: Type.Number(),
+  enrolled: Type.Optional(Type.Boolean()),
+  dueDate: Type.Union([Type.String(), Type.Null()]),
+  slug: Type.String(),
+});
+
+export const publishedCourseLookupSchema = Type.Object({
+  id: UUIDSchema,
+  title: Type.String(),
+});
+
+export const publishedCourseLookupResponseSchema = Type.Array(publishedCourseLookupSchema);
+
+export type PublishedCourseLookup = Static<typeof publishedCourseLookupSchema>;
+export type PublishedCourseLookupResponse = Static<typeof publishedCourseLookupResponseSchema>;
+
+export const coursesForContentCreatorSchema = Type.Object({
+  ...studentCourseSchema.properties,
+  authorId: UUIDSchema,
+  authorEmail: Type.String(),
+});
+
+export const courseStatusDistributionSchema = Type.Array(
+  Type.Object({
+    status: Type.Enum(PROGRESS_STATUSES),
+    count: Type.Number(),
+  }),
+);
+
+export const getCourseStatisticsSchema = Type.Object({
+  enrolledCount: Type.Number(),
+  completionPercentage: Type.Number(),
+  averageCompletionPercentage: Type.Number(),
+  courseStatusDistribution: courseStatusDistributionSchema,
+  averageSeconds: Type.Number(),
+});
+
+export const getLessonSequenceEnabledSchema = Type.Object({
+  lessonSequenceEnabled: Type.Boolean(),
+});
+
+export const courseAverageQuizScorePerQuizSchema = Type.Object({
+  quizId: UUIDSchema,
+  name: Type.String(),
+  averageScore: Type.Number(),
+  finishedCount: Type.Number(),
+  lessonOrder: Type.Number(),
+});
+
+export const courseAverageQuizScoresSchema = Type.Object({
+  averageScoresPerQuiz: Type.Array(courseAverageQuizScorePerQuizSchema),
+});
+
+export const studentCourseProgressionSchema = Type.Object({
+  completedAt: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  repetitionCompletedLessonsCount: Type.Optional(Type.Union([Type.Number(), Type.Null()])),
+  studentId: UUIDSchema,
+  studentName: Type.String(),
+  studentEmail: Type.Union([Type.String(), Type.Null()]),
+  studentAvatarUrl: Type.Union([Type.String(), Type.Null()]),
+  groups: Type.Union([
+    Type.Array(
+      Type.Object({
+        id: Type.String(),
+        name: Type.String(),
+      }),
+    ),
+    Type.Null(),
+  ]),
+  completedLessonsCount: Type.Number(),
+  lastActivity: Type.Union([Type.String(), Type.Null()]),
+  lastCompletedLessonName: Type.Union([Type.String(), Type.Null()]),
+});
+
+export const studentQuizResultSchema = Type.Object({
+  studentId: UUIDSchema,
+  studentName: Type.String(),
+  studentEmail: Type.Union([Type.String(), Type.Null()]),
+  studentAvatarUrl: Type.Union([Type.String(), Type.Null()]),
+  lessonId: UUIDSchema,
+  quizName: Type.String(),
+  quizScore: Type.Number(),
+  attempts: Type.Number(),
+  lastAttempt: Type.String(),
+});
+
+export const studentAiMentorResultSchema = Type.Object({
+  studentId: UUIDSchema,
+  studentName: Type.String(),
+  studentEmail: Type.Union([Type.String(), Type.Null()]),
+  studentAvatarUrl: Type.Union([Type.String(), Type.Null()]),
+  lessonId: UUIDSchema,
+  lessonName: Type.String(),
+  score: Type.Number(),
+  lastSession: Type.String(),
+});
+
+export const courseStatisticsQuerySchema = Type.Object({
+  groupId: Type.Optional(UUIDSchema),
+});
+
+export const supportedLanguagesSchema = Type.Enum(SUPPORTED_LANGUAGES, { default: "en" });
+export const enrolledCourseGroupsPayload = Type.Object({
+  groups: Type.Array(
+    Type.Object({
+      id: UUIDSchema,
+      isMandatory: Type.Boolean(),
+      dueDate: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+    }),
+  ),
+});
+
+export const courseOwnershipSchema = Type.Object({
+  id: UUIDSchema,
+  name: Type.String(),
+  email: Type.String(),
+});
+
+export const courseOwnershipCandidatesResponseSchema = Type.Object({
+  currentAuthor: courseOwnershipSchema,
+  possibleCandidates: Type.Array(courseOwnershipSchema),
+});
+
+export const transferCourseOwnershipRequestSchema = Type.Object({
+  courseId: UUIDSchema,
+  userId: UUIDSchema,
+});
+
+export const allStudentCourseProgressionSchema = Type.Array(studentCourseProgressionSchema);
+export const allStudentQuizResultsSchema = Type.Array(studentQuizResultSchema);
+export const allStudentAiMentorResultsSchema = Type.Array(studentAiMentorResultSchema);
+
+export const allCoursesSchema = Type.Array(courseSchema);
+export const allStudentCoursesSchema = Type.Array(studentCourseSchema);
+export const allCoursesForContentCreatorSchema = Type.Array(coursesForContentCreatorSchema);
+
+export type CourseOwnershipBody = Static<typeof courseOwnershipSchema>;
+export type TransferCourseOwnershipRequestBody = Static<
+  typeof transferCourseOwnershipRequestSchema
+>;
+
+export type CourseOwnershipCandidatesResponseBody = Static<
+  typeof courseOwnershipCandidatesResponseSchema
+>;
+
+export type CourseStatisticsQueryBody = Static<typeof courseStatisticsQuerySchema>;
+
+export type AllCoursesResponse = Static<typeof allCoursesSchema>;
+export type AllStudentCoursesResponse = Static<typeof allStudentCoursesSchema>;
+export type AllCoursesForContentCreatorResponse = Static<typeof allCoursesForContentCreatorSchema>;
+
+export type CourseStatisticsResponse = Static<typeof getCourseStatisticsSchema>;
+export type LessonSequenceEnabledResponse = Static<typeof getLessonSequenceEnabledSchema>;
+export type CourseStatusDistribution = Static<typeof courseStatusDistributionSchema>;
+export type CourseAverageQuizScorePerQuiz = Static<typeof courseAverageQuizScorePerQuizSchema>;
+export type CourseAverageQuizScoresResponse = Static<typeof courseAverageQuizScoresSchema>;
+export type AllStudentCourseProgressionResponse = Static<typeof allStudentCourseProgressionSchema>;
+export type AllStudentQuizResultsResponse = Static<typeof allStudentQuizResultsSchema>;
+export type AllStudentAiMentorResultsResponse = Static<typeof allStudentAiMentorResultsSchema>;
+export type SupportedLanguagesBody = Static<typeof supportedLanguagesSchema>;
+export type EnrolledCourseGroupsPayload = Static<typeof enrolledCourseGroupsPayload>;

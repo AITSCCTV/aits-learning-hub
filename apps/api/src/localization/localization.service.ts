@@ -1,0 +1,223 @@
+import { Inject, Injectable } from "@nestjs/common";
+import { eq, sql, type SQL } from "drizzle-orm";
+import { alias, type AnyPgColumn } from "drizzle-orm/pg-core";
+
+import { DatabasePg } from "src/common";
+import { setJsonbField } from "src/common/helpers/sqlHelpers";
+import { chapters, courses, learningPaths, lessons, questionsAndAnswers } from "src/storage/schema";
+
+import { ENTITY_TYPE } from "./localization.types";
+
+import type { BaseTable, EntityLocalization, EntityType } from "./localization.types";
+import type { SupportedLanguages } from "@repo/shared";
+import type { UUIDType } from "src/common";
+
+@Injectable()
+export class LocalizationService {
+  constructor(@Inject("DB") private readonly db: DatabasePg) {}
+
+  getLocalizedValue<T>(
+    translations: Partial<Record<SupportedLanguages, T>>,
+    language: SupportedLanguages,
+    baseLanguage: SupportedLanguages,
+  ): T | undefined {
+    return translations[language] ?? translations[baseLanguage];
+  }
+
+  async getBaseLanguage(
+    entityType: EntityType,
+    entityId: UUIDType,
+    language?: SupportedLanguages,
+  ): Promise<EntityLocalization> {
+    let query;
+
+    switch (entityType) {
+      case ENTITY_TYPE.COURSE:
+        query = this.db
+          .select({
+            baseLanguage: sql<SupportedLanguages>`${courses.baseLanguage}`,
+            availableLocales: sql<SupportedLanguages[]>`${courses.availableLocales}`,
+          })
+          .from(courses)
+          .where(eq(courses.id, entityId));
+        break;
+      case ENTITY_TYPE.CHAPTER:
+        query = this.db
+          .select({
+            baseLanguage: sql<SupportedLanguages>`${courses.baseLanguage}`,
+            availableLocales: sql<SupportedLanguages[]>`${courses.availableLocales}`,
+          })
+          .from(chapters)
+          .innerJoin(courses, eq(courses.id, chapters.courseId))
+          .where(eq(chapters.id, entityId));
+        break;
+      case ENTITY_TYPE.LESSON:
+        query = this.db
+          .select({
+            baseLanguage: sql<SupportedLanguages>`${courses.baseLanguage}`,
+            availableLocales: sql<SupportedLanguages[]>`${courses.availableLocales}`,
+          })
+          .from(lessons)
+          .innerJoin(chapters, eq(lessons.chapterId, chapters.id))
+          .innerJoin(courses, eq(courses.id, chapters.courseId))
+          .where(eq(lessons.id, entityId));
+        break;
+      case ENTITY_TYPE.QA:
+        query = this.db
+          .select({
+            baseLanguage: sql<SupportedLanguages>`${questionsAndAnswers.baseLanguage}`,
+            availableLocales: sql<SupportedLanguages[]>`${questionsAndAnswers.availableLocales}`,
+          })
+          .from(questionsAndAnswers)
+          .where(eq(questionsAndAnswers.id, entityId));
+        break;
+      case ENTITY_TYPE.LEARNING_PATH:
+        query = this.db
+          .select({
+            baseLanguage: sql<SupportedLanguages>`${learningPaths.baseLanguage}`,
+            availableLocales: sql<SupportedLanguages[]>`${learningPaths.availableLocales}`,
+          })
+          .from(learningPaths)
+          .where(eq(learningPaths.id, entityId));
+        break;
+      default:
+        throw new Error("Invalid entity type");
+    }
+
+    const [courseLocalization] = await query;
+
+    const newLanguage =
+      language && courseLocalization.availableLocales.includes(language)
+        ? language
+        : courseLocalization.baseLanguage;
+
+    return {
+      baseLanguage: courseLocalization.baseLanguage,
+      language: newLanguage,
+      availableLocales: courseLocalization.availableLocales,
+    };
+  }
+
+  /**
+   * Note: callers must join `baseTable` so `baseTable.baseLanguage` and `baseTable.availableLocales` are available.
+   */
+  getLocalizedSqlField(
+    fieldColumn: AnyPgColumn,
+    language?: SupportedLanguages | SQL<unknown>,
+    baseTable: BaseTable = courses,
+    joinedAliasName?: string,
+  ) {
+    const aliased = joinedAliasName ? alias(baseTable, joinedAliasName) : baseTable;
+
+    const langExpr = language ? sql`${language}` : sql`${aliased.baseLanguage}`;
+
+    const langKey = sql`(${langExpr})::text`;
+    const baseLanguageKey = sql`(${aliased.baseLanguage})::text`;
+
+    return sql<string>`
+      COALESCE(
+        CASE
+          WHEN ${aliased.availableLocales} @> ARRAY[${langKey}]::text[]
+          THEN COALESCE(
+            ${fieldColumn}::jsonb ->> ${langKey},
+            ${fieldColumn}::jsonb ->> ${baseLanguageKey}
+          )
+          ELSE ${fieldColumn}::jsonb ->> ${baseLanguageKey}
+        END,
+      ''
+      )
+    `;
+  }
+
+  getFieldByLanguage(fieldColumn: AnyPgColumn, language: SupportedLanguages) {
+    return sql<string>`
+        COALESCE(
+            ${fieldColumn}->>${language}::text,
+            ''
+        )
+    `;
+  }
+
+  getLocalizedFieldSearchCondition(
+    fieldColumn: AnyPgColumn,
+    pattern: string,
+    language?: SupportedLanguages,
+    options: {
+      baseTable?: BaseTable;
+      fallbackToBaseLanguage?: boolean;
+    } = {},
+  ) {
+    if (language && options.fallbackToBaseLanguage) {
+      if (!options.baseTable) {
+        throw new Error("baseTable is required when fallbackToBaseLanguage is enabled");
+      }
+
+      return sql`${this.getLocalizedSqlField(
+        fieldColumn,
+        language,
+        options.baseTable,
+      )} ilike ${pattern}`;
+    }
+
+    if (language) return sql`${this.getFieldByLanguage(fieldColumn, language)} ilike ${pattern}`;
+
+    return sql`
+      EXISTS (
+        SELECT 1
+        FROM jsonb_each_text(COALESCE(${fieldColumn}, '{}'::jsonb)) AS localized_field(key, value)
+        WHERE localized_field.value ilike ${pattern}
+      )
+    `;
+  }
+
+  getFirstValue(fieldColumn: AnyPgColumn) {
+    return sql<string>`(
+      SELECT value
+      FROM jsonb_each_text(
+        CASE
+          WHEN jsonb_typeof(${fieldColumn}) = 'object' THEN ${fieldColumn}
+          ELSE '{}'::jsonb
+        END
+      )
+      LIMIT 1
+    )`;
+  }
+
+  /**
+   * Updates localizable fields in an entity by setting JSONB field values for the specified language
+   * @param localizableFields Array of field names that should be localized
+   * @param existingEntity The current entity data containing existing field values
+   * @param updateData The data containing new values to update
+   * @param language The language to update the fields for
+   * @returns Object with updated localizable fields
+   */
+  updateLocalizableFields<
+    TEntity extends Record<string, any>,
+    TUpdateData extends Record<string, any>,
+    TField extends keyof TUpdateData & keyof TEntity,
+  >(
+    localizableFields: readonly TField[],
+    existingEntity: TEntity,
+    updateData: TUpdateData,
+    language: string,
+    allowEmpty: boolean = false,
+  ): Partial<Record<TField, unknown>> {
+    const result: Partial<Record<TField, unknown>> = {};
+
+    localizableFields.forEach((field) => {
+      if (!(field in updateData) || updateData[field] === undefined) return;
+
+      const updatedField = setJsonbField(
+        existingEntity[field],
+        language,
+        updateData[field],
+        true,
+        allowEmpty,
+      );
+
+      if (updatedField !== undefined) result[field] = updatedField;
+    });
+
+    return result;
+  }
+}

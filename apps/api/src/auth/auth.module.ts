@@ -1,0 +1,70 @@
+import { Module } from "@nestjs/common";
+import { PassportModule } from "@nestjs/passport";
+
+import { ResendVerificationMailCron } from "src/auth/resend-verification-mail-cron";
+import { BunnyStreamService } from "src/bunny/bunnyStream.service";
+import { EmailModule } from "src/common/emails/emails.module";
+import { EntraIdOAuthGuard } from "src/common/guards/entra-id-oauth.guard";
+import { GoogleOAuthGuard } from "src/common/guards/google-oauth.guard";
+import { MicrosoftOAuthGuard } from "src/common/guards/microsoft-oauth.guard";
+import { SlackOAuthGuard } from "src/common/guards/slack-oauth.guard";
+import { FileModule } from "src/file/files.module";
+import { GroupModule } from "src/group/group.module";
+import { LocalizationModule } from "src/localization/localization.module";
+import { PermissionsModule } from "src/permissions/permissions.module";
+import { S3Service } from "src/s3/s3.service";
+import { SettingsService } from "src/settings/settings.service";
+import { StatisticsModule } from "src/statistics/statistics.module";
+import { StatisticsService } from "src/statistics/statistics.service";
+import { TenantDbRunnerService } from "src/storage/db/tenant-db-runner.service";
+import { UserModule } from "src/user/user.module";
+
+import { AuthController } from "./auth.controller";
+import { AuthService } from "./auth.service";
+import { CreatePasswordService } from "./create-password.service";
+import { ResetPasswordService } from "./reset-password.service";
+import { EntraIdStrategy } from "./strategy/entra-id.strategy";
+import { GoogleStrategy } from "./strategy/google.strategy";
+import { JwtStrategy } from "./strategy/jwt.strategy";
+import { LocalStrategy } from "./strategy/local.strategy";
+import { MicrosoftStrategy } from "./strategy/microsoft.strategy";
+import { SlackStrategy } from "./strategy/slack.strategy";
+import { TokenService } from "./token.service";
+
+@Module({
+  imports: [
+    PassportModule,
+    EmailModule,
+    StatisticsModule,
+    UserModule,
+    FileModule,
+    GroupModule,
+    LocalizationModule,
+    PermissionsModule,
+  ],
+  controllers: [AuthController],
+  providers: [
+    AuthService,
+    StatisticsService,
+    TokenService,
+    JwtStrategy,
+    LocalStrategy,
+    CreatePasswordService,
+    ResetPasswordService,
+    TenantDbRunnerService,
+    ResendVerificationMailCron,
+    S3Service,
+    BunnyStreamService,
+    GoogleStrategy,
+    MicrosoftStrategy,
+    SlackStrategy,
+    EntraIdStrategy,
+    GoogleOAuthGuard,
+    MicrosoftOAuthGuard,
+    SlackOAuthGuard,
+    EntraIdOAuthGuard,
+    SettingsService,
+  ],
+  exports: [CreatePasswordService, AuthService, TokenService],
+})
+export class AuthModule {}

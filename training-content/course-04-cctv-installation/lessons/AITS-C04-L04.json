@@ -1,0 +1,55 @@
+{
+  "title": "Faults maintenance and handover",
+  "objectives": [
+    "Separate symptom diagnosis from authorized corrective work."
+  ],
+  "explanation": [
+    "For a missing image, establish whether one camera or many are affected, when it began and whether live view or playback is missing. Observe authorized power/link indications and compare with a known-good path where permitted. Possible causes include power, cabling, addressing, authentication, stream compatibility and recording settings; do not jump straight to a factory reset.",
+    "Maintenance starts with approved intervals and model instructions. Review authorized health indicators, time accuracy, storage condition and image obstruction without changing settings unnecessarily. Handover evidence should identify devices, configuration versions, tests performed, results, limitations and open issues. Transfer credentials through the approved secure method, never in the ordinary completion report."
+  ],
+  "example": "Only playback is missing for camera C2; live view works. Investigate recording schedule, storage and timestamps before replacing the camera.",
+  "exercise": "Write a handover entry that records a passed live-view test and an unresolved playback problem.",
+  "model_response": "C2 live view passed at 14:00 in the agreed scene. Playback unavailable for the requested period. Recording/storage review pending; acceptance not claimed.",
+  "key_points": [
+    "Scope the symptom before changing equipment",
+    "Avoid destructive resets",
+    "Record results and unresolved items"
+  ],
+  "references": [
+    "EX",
+    "QA",
+    "POE"
+  ],
+  "thai_summary": "เริ่มจากขอบเขตอาการ ตรวจสอบอย่างมีเหตุผล และบันทึกผลกับงานค้าง ห้ามรีเซ็ตหรือเปิดเผยรหัสผ่านโดยไม่มีการอนุญาต",
+  "id": "AITS-C04-L04",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C04-L03"
+  ],
+  "summary": "Scope the symptom before changing equipment Avoid destructive resets Record results and unresolved items",
+  "visual_resources": [
+    "course-04-cctv-installation/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C04-L04",
+    "course_id": "AITS-C04",
+    "title": "Faults maintenance and handover",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA",
+      "POE"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C04-L04-Q1",
+    "AITS-C04-L04-Q2",
+    "AITS-C04-L04-Q3"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "title": "Electrical and equipment awareness",
+  "objectives": [
+    "Recognize when equipment must be left to qualified personnel."
+  ],
+  "explanation": [
+    "Thailand has specific occupational electrical-safety regulations and training requirements; the DLPW reference index links the regulation and notices. A short online lesson is not that qualification. Do not open energized equipment, defeat guards or improvise repairs. Unexpected heat, burning smell, exposed conductors or liquid ingress require a safe stop and qualified assessment.",
+    "Network equipment can still be connected to mains supplies, backup power or other energy sources. Switching off one visible switch does not prove all energy is isolated. Isolation, verification and re-energization belong to trained authorized personnel using the approved method. Handle equipment using rated lifting and carrying methods; inspect packaging, connectors and manufacturer instructions without creating exposure."
+  ],
+  "example": "A recorder emits a burning smell. Keep people clear and seek the site emergency/qualified response; do not open the enclosure to inspect it.",
+  "exercise": "Sort actions into safe observation versus work requiring authorization.",
+  "model_response": "Safe from a protected location: record model and reported symptom. Requires qualified authorization: opening a mains supply or proving isolation.",
+  "key_points": [
+    "A network device can have hazardous energy",
+    "Do not improvise electrical repairs",
+    "Use qualified isolation and verification"
+  ],
+  "references": [
+    "ELEC",
+    "EX"
+  ],
+  "thai_summary": "อุปกรณ์เครือข่ายอาจมีแหล่งพลังงานหลายทาง ห้ามเปิดหรือซ่อมอุปกรณ์ที่มีไฟโดยไม่มีคุณสมบัติและการอนุญาต",
+  "id": "AITS-C03-L02",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C03-L01"
+  ],
+  "summary": "A network device can have hazardous energy Do not improvise electrical repairs Use qualified isolation and verification",
+  "visual_resources": [
+    "course-03-workplace-safety/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C03-L02",
+    "course_id": "AITS-C03",
+    "title": "Electrical and equipment awareness",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "ELEC",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C03-L02-Q1",
+    "AITS-C03-L02-Q2",
+    "AITS-C03-L02-Q3"
+  ]
+}

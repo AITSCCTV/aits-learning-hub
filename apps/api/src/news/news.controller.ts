@@ -1,0 +1,375 @@
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  HttpStatus,
+  Param,
+  Patch,
+  Post,
+  Query,
+  Req,
+  Res,
+  UploadedFile,
+  UploadedFiles,
+  UseInterceptors,
+} from "@nestjs/common";
+import { AnyFilesInterceptor, FileInterceptor } from "@nestjs/platform-express";
+import { ApiBody, ApiConsumes, ApiOperation } from "@nestjs/swagger";
+import {
+  ALLOWED_EXCEL_FILE_TYPES,
+  ALLOWED_LESSON_IMAGE_FILE_TYPES,
+  ALLOWED_PDF_FILE_TYPES,
+  ALLOWED_PRESENTATION_FILE_TYPES,
+  ALLOWED_VIDEO_FILE_TYPES,
+  ALLOWED_WORD_FILE_TYPES,
+  PERMISSIONS,
+  RESOURCE_VISIBILITY,
+  SUPPORTED_LANGUAGES,
+  SupportedLanguages,
+  type EditableResourceVisibility,
+  ENTITY_TYPES,
+  FEATURES,
+} from "@repo/shared";
+import { Type } from "@sinclair/typebox";
+import { Request, Response } from "express";
+import { Validate } from "nestjs-typebox";
+
+import { BaseResponse, PaginatedResponse, UUIDSchema, UUIDType, baseResponse } from "src/common";
+import { Public } from "src/common/decorators/public.decorator";
+import { RequireFeature } from "src/common/decorators/require-feature.decorator";
+import { RequirePermission } from "src/common/decorators/require-permission.decorator";
+import { CurrentUser } from "src/common/decorators/user.decorator";
+import { CurrentUserType } from "src/common/types/current-user.type";
+import { supportedLanguagesSchema } from "src/courses/schemas/course.schema";
+import { filePreviewQuerySchema, FilePreviewQuery } from "src/file/types/file-preview.type";
+import { getBaseFileTypePipe } from "src/file/utils/baseFileTypePipe";
+import { buildFileTypeRegex } from "src/file/utils/fileTypeRegex";
+import {
+  assertEditorialCoverUploadGrant,
+  assertEditorialUploadGrant,
+} from "src/mcp/mcp-upload-grant.assertions";
+import { McpRequest } from "src/mcp/mcp.types";
+import { ValidateMultipartPipe } from "src/utils/pipes/validateMultipartPipe";
+
+import { NewsService } from "./news.service";
+import { CreateNews, createNewsSchema } from "./schemas/createNews.schema";
+import {
+  deleteNewsLanguageResponseSchema,
+  deleteNewsResponseSchema,
+} from "./schemas/deleteNews.schema";
+import { previewNewsRequestSchema, previewNewsResponseSchema } from "./schemas/previewNews.schema";
+import {
+  createNewsResponseSchema,
+  getNewsWithPlainContentSchema,
+  paginatedNewsListResponseSchema,
+  uploadNewsFileResponseSchema,
+} from "./schemas/selectNews.schema";
+import {
+  UpdateNews,
+  updateNewsMultipartSchema,
+  updateNewsSchema,
+} from "./schemas/updateNews.schema";
+
+import type { GetNewsResponse, GetNewsResponseWithPlainContent } from "./schemas/selectNews.schema";
+@Controller("news")
+export class NewsController {
+  constructor(private readonly newsService: NewsService) {}
+
+  @Get("drafts")
+  @RequireFeature({ features: [FEATURES.NEWS] })
+  @Validate({
+    request: [
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+      { type: "query", name: "page", schema: Type.Optional(Type.Number({ minimum: 1 })) },
+    ],
+    response: paginatedNewsListResponseSchema,
+  })
+  @RequirePermission(PERMISSIONS.NEWS_MANAGE, PERMISSIONS.NEWS_MANAGE_OWN)
+  async getDraftNewsList(
+    @Query("language") language: SupportedLanguages,
+    @Query("page") page = 1,
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<PaginatedResponse<GetNewsResponse[]>> {
+    const newsList = await this.newsService.getDraftNewsList(language, page, currentUser);
+
+    return new PaginatedResponse(newsList);
+  }
+
+  @Post("preview")
+  @RequireFeature({ features: [FEATURES.NEWS] })
+  @Validate({
+    request: [{ type: "body", schema: previewNewsRequestSchema }],
+    response: baseResponse(previewNewsResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.NEWS_MANAGE, PERMISSIONS.NEWS_MANAGE_OWN)
+  async generateNewsPreview(
+    @Body() body: { newsId: UUIDType; language: SupportedLanguages; content: string },
+    @CurrentUser() currentUser: CurrentUserType,
+  ): Promise<BaseResponse<{ parsedContent: string }>> {
+    const { newsId, language, content } = body;
+    const previewContent = await this.newsService.generateNewsPreview(
+      newsId,
+      language,
+      content,
+      currentUser,
+    );
+
+    return new BaseResponse({ parsedContent: previewContent });
+  }
+
+  @Public()
+  @Get("news-resource/:resourceId")
+  @RequireFeature({ features: [FEATURES.NEWS], allowUnregisteredUser: true })
+  @Validate({
+    request: [
+      { type: "param", schema: UUIDSchema, name: "resourceId" },
+      { type: "query", name: "preview", schema: filePreviewQuerySchema },
+    ],
+  })
+  async getNewsResource(
+    @Param("resourceId") resourceId: UUIDType,
+    @Query("preview") preview: FilePreviewQuery,
+    @CurrentUser() currentUser: CurrentUserType | undefined,
+    @Req() req: Request,
+    @Res() res: Response,
+  ) {
+    return this.newsService.getNewsResource(req, res, resourceId, currentUser, preview);
+  }
+
+  @Public()
+  @Get(":id")
+  @RequireFeature({ features: [FEATURES.NEWS], allowUnregisteredUser: true })
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+    ],
+    response: baseResponse(getNewsWithPlainContentSchema),
+  })
+  async getNews(
+    @Param("id") id: string,
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ): Promise<BaseResponse<GetNewsResponseWithPlainContent>> {
+    const news = await this.newsService.getNews(id, language, currentUser);
+    return new BaseResponse(news);
+  }
+
+  @Public()
+  @Get()
+  @RequireFeature({ features: [FEATURES.NEWS], allowUnregisteredUser: true })
+  @Validate({
+    request: [
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+      { type: "query", name: "page", schema: Type.Optional(Type.Number({ minimum: 1 })) },
+    ],
+    response: paginatedNewsListResponseSchema,
+  })
+  async getNewsList(
+    @Query("language") language: SupportedLanguages,
+    @Query("page") page = 1,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ): Promise<PaginatedResponse<GetNewsResponse[]>> {
+    const newsList = await this.newsService.getNewsList(language, page, currentUser);
+
+    return new PaginatedResponse(newsList);
+  }
+
+  @Post()
+  @RequireFeature({ features: [FEATURES.NEWS] })
+  @Validate({
+    request: [{ type: "body", schema: createNewsSchema }],
+    response: baseResponse(createNewsResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.NEWS_MANAGE, PERMISSIONS.NEWS_MANAGE_OWN)
+  async createNews(
+    @Body() createNewsBody: CreateNews,
+    @CurrentUser() currentUser: CurrentUserType,
+  ) {
+    const createdNews = await this.newsService.createNews(createNewsBody, currentUser);
+
+    return new BaseResponse(createdNews);
+  }
+
+  @Patch(":id")
+  @UseInterceptors(AnyFilesInterceptor())
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({ schema: updateNewsMultipartSchema })
+  @RequireFeature({ features: [FEATURES.NEWS] })
+  @Validate({
+    request: [{ type: "param", name: "id", schema: UUIDSchema }],
+    response: baseResponse(createNewsResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.NEWS_MANAGE, PERMISSIONS.NEWS_MANAGE_OWN)
+  async updateNews(
+    @Param("id") id: string,
+    @Body(new ValidateMultipartPipe(updateNewsSchema)) updateNewsBody: UpdateNews,
+    @UploadedFiles(
+      getBaseFileTypePipe(buildFileTypeRegex(ALLOWED_LESSON_IMAGE_FILE_TYPES)).build({
+        fileIsRequired: false,
+        errorHttpStatusCode: HttpStatus.BAD_REQUEST,
+      }),
+    )
+    coverFiles: Express.Multer.File[] = [],
+    @CurrentUser() currentUser?: CurrentUserType,
+    @Req() request?: McpRequest,
+  ) {
+    if (request?.mcpUploadGrant)
+      assertEditorialCoverUploadGrant(
+        request.mcpUploadGrant,
+        ENTITY_TYPES.NEWS,
+        id,
+        coverFiles,
+        updateNewsBody,
+      );
+    const updatedNews = await this.newsService.updateNews(
+      id,
+      updateNewsBody,
+      currentUser,
+      coverFiles,
+    );
+
+    return new BaseResponse(updatedNews);
+  }
+
+  @ApiOperation({ summary: "Add a new language to a news item" })
+  @Post(":id")
+  @RequireFeature({ features: [FEATURES.NEWS] })
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "body", schema: createNewsSchema },
+    ],
+    response: baseResponse(createNewsResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.NEWS_MANAGE, PERMISSIONS.NEWS_MANAGE_OWN)
+  async addNewLanguage(
+    @Param("id") id: string,
+    @Body() createLanguageBody: CreateNews,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ) {
+    const createdLanguage = await this.newsService.createNewsLanguage(
+      id,
+      createLanguageBody,
+      currentUser,
+    );
+
+    return new BaseResponse(createdLanguage);
+  }
+
+  @Delete(":id/language")
+  @RequireFeature({ features: [FEATURES.NEWS] })
+  @Validate({
+    request: [
+      { type: "param", name: "id", schema: UUIDSchema },
+      { type: "query", name: "language", schema: supportedLanguagesSchema },
+    ],
+    response: baseResponse(deleteNewsLanguageResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.NEWS_MANAGE, PERMISSIONS.NEWS_MANAGE_OWN)
+  async deleteNewsLanguage(
+    @Param("id") id: UUIDType,
+    @Query("language") language: SupportedLanguages,
+    @CurrentUser() currentUser?: CurrentUserType,
+  ) {
+    const updatedNews = await this.newsService.deleteNewsLanguage(id, language, currentUser);
+
+    return new BaseResponse(updatedNews);
+  }
+
+  @Delete(":id")
+  @RequireFeature({ features: [FEATURES.NEWS] })
+  @Validate({
+    request: [{ type: "param", name: "id", schema: UUIDSchema }],
+    response: baseResponse(deleteNewsResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.NEWS_MANAGE, PERMISSIONS.NEWS_MANAGE_OWN)
+  async deleteNews(@Param("id") id: string, @CurrentUser() currentUser?: CurrentUserType) {
+    const deletedNews = await this.newsService.deleteNews(id, currentUser);
+
+    return new BaseResponse(deletedNews);
+  }
+
+  @Post(":id/upload")
+  @RequireFeature({ features: [FEATURES.NEWS] })
+  @UseInterceptors(FileInterceptor("file"))
+  @ApiConsumes("multipart/form-data")
+  @ApiBody({
+    schema: {
+      type: "object",
+      properties: {
+        file: {
+          type: "string",
+          format: "binary",
+        },
+        language: {
+          type: "string",
+          enum: Object.values(SUPPORTED_LANGUAGES),
+        },
+        title: {
+          type: "string",
+        },
+        description: {
+          type: "string",
+        },
+        visibility: {
+          type: "string",
+          enum: [RESOURCE_VISIBILITY.PUBLIC, RESOURCE_VISIBILITY.PRIVATE],
+        },
+      },
+      required: ["file", "language", "title", "description"],
+    },
+  })
+  @Validate({
+    request: [{ type: "param", name: "id", schema: UUIDSchema }],
+    response: baseResponse(uploadNewsFileResponseSchema),
+  })
+  @RequirePermission(PERMISSIONS.NEWS_MANAGE, PERMISSIONS.NEWS_MANAGE_OWN)
+  async uploadFileToNews(
+    @Param("id") id: string,
+    @UploadedFile(
+      getBaseFileTypePipe(
+        buildFileTypeRegex([
+          ...ALLOWED_PDF_FILE_TYPES,
+          ...ALLOWED_EXCEL_FILE_TYPES,
+          ...ALLOWED_WORD_FILE_TYPES,
+          ...ALLOWED_VIDEO_FILE_TYPES,
+          ...ALLOWED_LESSON_IMAGE_FILE_TYPES,
+          ...ALLOWED_PRESENTATION_FILE_TYPES,
+        ]),
+      ).build({ errorHttpStatusCode: HttpStatus.BAD_REQUEST }),
+    )
+    file: Express.Multer.File,
+    @Body("language") language: SupportedLanguages,
+    @Body("title") title: string,
+    @Body("description") description: string,
+    @Body("visibility") visibility: EditableResourceVisibility = RESOURCE_VISIBILITY.PUBLIC,
+    @CurrentUser() currentUser: CurrentUserType | undefined,
+    @Req() request: McpRequest,
+  ) {
+    if (request.mcpUploadGrant) {
+      assertEditorialUploadGrant(
+        request.mcpUploadGrant,
+        ENTITY_TYPES.NEWS,
+        id,
+        file,
+        language,
+        title,
+        description,
+        visibility,
+      );
+    }
+    const fileData = await this.newsService.uploadFileToNews(
+      id,
+      file,
+      language,
+      title,
+      description,
+      visibility,
+      currentUser,
+    );
+
+    return new BaseResponse(fileData);
+  }
+}

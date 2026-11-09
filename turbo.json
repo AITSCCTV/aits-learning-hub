@@ -1,0 +1,56 @@
+{
+  "$schema": "https://turbo.build/schema.json",
+  "globalDependencies": ["**/.env.*local"],
+  "globalPassThroughEnv": ["NODE_EXTRA_CA_CERTS"],
+  "ui": "tui",
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": [".next/**", "!.next/cache/**"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "format": {
+      "outputs": [],
+      "cache": false
+    },
+    "format:check": {
+      "outputs": [],
+      "cache": false
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["@repo/email-templates#build"]
+    },
+    "dev:sm": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["@repo/email-templates#build", "@repo/shared#build"]
+    },
+    "dev:test": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["@repo/email-templates#build"]
+    },
+    "@repo/email-templates#build": {
+      "dependsOn": ["@repo/shared#build"],
+      "cache": false,
+      "outputs": ["dist/**"]
+    },
+    "@repo/scorm-export-generator#build": {
+      "dependsOn": ["@repo/scorm-export-runtime#build", "@repo/shared#build"],
+      "cache": false,
+      "outputs": ["dist/**"]
+    },
+    "@repo/scorm-export-runtime#build": {
+      "cache": false,
+      "outputs": ["dist/**"]
+    },
+    "@repo/shared#build": {
+      "cache": false,
+      "outputs": ["dist/**"]
+    }
+  }
+}

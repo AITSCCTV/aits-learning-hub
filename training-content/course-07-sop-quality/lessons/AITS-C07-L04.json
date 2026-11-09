@@ -1,0 +1,53 @@
+{
+  "title": "AI checks and human authority",
+  "objectives": [
+    "Use AI feedback as practice support with source and approval controls."
+  ],
+  "explanation": [
+    "An AI can help compare a written report with a checklist, ask missing questions and explain a training example. It may still misunderstand images, omit context or produce an unsupported answer. It cannot verify hidden physical conditions from a photograph, grant approval or turn a draft SOP into company policy.",
+    "Before accepting AI feedback, inspect the cited source, version, approval and applicability. Keep company-authoritative retrieval restricted to approved company records. Draft and hypothetical items may support clearly labeled practice, but not a policy answer. Do not submit secrets or unnecessary personal data. An AI practice score is formative feedback; official competency assessment requires the company’s approved human-led process."
+  ],
+  "example": "An AI says a camera installation passes from one photograph. Ask which requirements and evidence were checked; unresolved physical tests remain unresolved.",
+  "exercise": "Write an AI response to “What is AITS’s travel allowance?” when no approved policy is available.",
+  "model_response": "I do not have verified AITS travel-allowance terms. Please ask HR or the responsible company department for the current approved policy.",
+  "key_points": [
+    "AI feedback needs source checks",
+    "Draft knowledge cannot establish policy",
+    "Practice scores are not certification"
+  ],
+  "references": [
+    "APP",
+    "EX"
+  ],
+  "thai_summary": "คำแนะนำจาก AI ต้องตรวจสอบแหล่งอ้างอิง AI ไม่สามารถอนุมัติ SOP หรือรับรองความสามารถพนักงานได้",
+  "id": "AITS-C07-L04",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C07-L03"
+  ],
+  "summary": "AI feedback needs source checks Draft knowledge cannot establish policy Practice scores are not certification",
+  "visual_resources": [
+    "course-07-sop-quality/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C07-L04",
+    "course_id": "AITS-C07",
+    "title": "AI checks and human authority",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "APP",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C07-L04-Q1",
+    "AITS-C07-L04-Q2",
+    "AITS-C07-L04-Q3"
+  ]
+}

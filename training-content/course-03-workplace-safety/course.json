@@ -1,0 +1,946 @@
+{
+  "slug": "workplace-safety",
+  "title": "Workplace Safety and Professional Standards",
+  "title_th": "ความปลอดภัยและมาตรฐานการทำงาน",
+  "roles": [
+    "All employees",
+    "Technician trainees"
+  ],
+  "lessons": [
+    {
+      "title": "Recognize hazards before work",
+      "objectives": [
+        "Identify hazards and select a safe next action."
+      ],
+      "explanation": [
+        "A hazard is a source of possible harm; risk considers how harm could occur and its consequences. Before work, look for damaged cables, wet areas, unstable access, falling objects, traffic, heavy loads and blocked exits. A neat-looking site can still contain hidden services or energized equipment.",
+        "Prefer eliminating a hazard or changing the method before relying only on personal protective equipment. A beginner should report an unsafe condition and stay outside the danger area. Do not start an unfamiliar task because a customer says it is urgent. This awareness course does not replace the employer’s risk assessment, task training, supervision or site-specific controls."
+      ],
+      "example": "A loose cable crosses a busy walkway. The exercise asks for a controlled routing solution and communication, not merely a warning shouted once.",
+      "exercise": "Identify three hazards in a fictional storeroom and propose one safer alternative for each.",
+      "model_response": "Blocked exit: clear through authorized action. Unstable stack: isolate and request safe restacking. Damaged lead: keep out of service and report.",
+      "key_points": [
+        "Look for the mechanism of harm",
+        "Remove or reduce exposure",
+        "Pause when safe controls are missing"
+      ],
+      "references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "thai_summary": "ระบุอันตรายก่อนเริ่มงาน ลดการสัมผัสความเสี่ยง และหยุดเพื่อขอผู้ควบคุมที่มีความสามารถเมื่อมาตรการไม่พร้อม",
+      "id": "AITS-C03-L01",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01"
+      ],
+      "summary": "Look for the mechanism of harm Remove or reduce exposure Pause when safe controls are missing",
+      "visual_resources": [
+        "course-03-workplace-safety/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L01",
+        "course_id": "AITS-C03",
+        "title": "Recognize hazards before work",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C03-L01-Q1",
+        "AITS-C03-L01-Q2",
+        "AITS-C03-L01-Q3"
+      ],
+      "html": "<h1>Recognize hazards before work</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C03-L01 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Identify hazards and select a safe next action.</p><h2>Explanation</h2><p>A hazard is a source of possible harm; risk considers how harm could occur and its consequences. Before work, look for damaged cables, wet areas, unstable access, falling objects, traffic, heavy loads and blocked exits. A neat-looking site can still contain hidden services or energized equipment.</p><p>Prefer eliminating a hazard or changing the method before relying only on personal protective equipment. A beginner should report an unsafe condition and stay outside the danger area. Do not start an unfamiliar task because a customer says it is urgent. This awareness course does not replace the employer’s risk assessment, task training, supervision or site-specific controls.</p><h2>Synthetic example</h2><p>A loose cable crosses a busy walkway. The exercise asks for a controlled routing solution and communication, not merely a warning shouted once.</p><h2>Practical exercise</h2><p>Identify three hazards in a fictional storeroom and propose one safer alternative for each.</p><h2>Model response</h2><p>Blocked exit: clear through authorized action. Unstable stack: isolate and request safe restacking. Damaged lead: keep out of service and report.</p><h2>Summary</h2><p>Look for the mechanism of harm Remove or reduce exposure Pause when safe controls are missing</p><h2>Thai summary — translation pending review</h2><p>ระบุอันตรายก่อนเริ่มงาน ลดการสัมผัสความเสี่ยง และหยุดเพื่อขอผู้ควบคุมที่มีความสามารถเมื่อมาตรการไม่พร้อม</p><h2>References</h2><p>HEIGHT: ILO working at height — https://www.ilo.org/topics-and-sectors/occupational-safety-and-health-guide-labour-inspectors-and-other/working-height</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Electrical and equipment awareness",
+      "objectives": [
+        "Recognize when equipment must be left to qualified personnel."
+      ],
+      "explanation": [
+        "Thailand has specific occupational electrical-safety regulations and training requirements; the DLPW reference index links the regulation and notices. A short online lesson is not that qualification. Do not open energized equipment, defeat guards or improvise repairs. Unexpected heat, burning smell, exposed conductors or liquid ingress require a safe stop and qualified assessment.",
+        "Network equipment can still be connected to mains supplies, backup power or other energy sources. Switching off one visible switch does not prove all energy is isolated. Isolation, verification and re-energization belong to trained authorized personnel using the approved method. Handle equipment using rated lifting and carrying methods; inspect packaging, connectors and manufacturer instructions without creating exposure."
+      ],
+      "example": "A recorder emits a burning smell. Keep people clear and seek the site emergency/qualified response; do not open the enclosure to inspect it.",
+      "exercise": "Sort actions into safe observation versus work requiring authorization.",
+      "model_response": "Safe from a protected location: record model and reported symptom. Requires qualified authorization: opening a mains supply or proving isolation.",
+      "key_points": [
+        "A network device can have hazardous energy",
+        "Do not improvise electrical repairs",
+        "Use qualified isolation and verification"
+      ],
+      "references": [
+        "ELEC",
+        "EX"
+      ],
+      "thai_summary": "อุปกรณ์เครือข่ายอาจมีแหล่งพลังงานหลายทาง ห้ามเปิดหรือซ่อมอุปกรณ์ที่มีไฟโดยไม่มีคุณสมบัติและการอนุญาต",
+      "id": "AITS-C03-L02",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C03-L01"
+      ],
+      "summary": "A network device can have hazardous energy Do not improvise electrical repairs Use qualified isolation and verification",
+      "visual_resources": [
+        "course-03-workplace-safety/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L02",
+        "course_id": "AITS-C03",
+        "title": "Electrical and equipment awareness",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "ELEC",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C03-L02-Q1",
+        "AITS-C03-L02-Q2",
+        "AITS-C03-L02-Q3"
+      ],
+      "html": "<h1>Electrical and equipment awareness</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C03-L02 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Recognize when equipment must be left to qualified personnel.</p><h2>Explanation</h2><p>Thailand has specific occupational electrical-safety regulations and training requirements; the DLPW reference index links the regulation and notices. A short online lesson is not that qualification. Do not open energized equipment, defeat guards or improvise repairs. Unexpected heat, burning smell, exposed conductors or liquid ingress require a safe stop and qualified assessment.</p><p>Network equipment can still be connected to mains supplies, backup power or other energy sources. Switching off one visible switch does not prove all energy is isolated. Isolation, verification and re-energization belong to trained authorized personnel using the approved method. Handle equipment using rated lifting and carrying methods; inspect packaging, connectors and manufacturer instructions without creating exposure.</p><h2>Synthetic example</h2><p>A recorder emits a burning smell. Keep people clear and seek the site emergency/qualified response; do not open the enclosure to inspect it.</p><h2>Practical exercise</h2><p>Sort actions into safe observation versus work requiring authorization.</p><h2>Model response</h2><p>Safe from a protected location: record model and reported symptom. Requires qualified authorization: opening a mains supply or proving isolation.</p><h2>Summary</h2><p>A network device can have hazardous energy Do not improvise electrical repairs Use qualified isolation and verification</p><h2>Thai summary — translation pending review</h2><p>อุปกรณ์เครือข่ายอาจมีแหล่งพลังงานหลายทาง ห้ามเปิดหรือซ่อมอุปกรณ์ที่มีไฟโดยไม่มีคุณสมบัติและการอนุญาต</p><h2>References</h2><p>ELEC: DLPW electrical safety regulation and training notices — https://osh.labour.go.th/กฎกระทรวงฯ-ไฟฟ้า-2558/</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Height PPE and handling",
+      "objectives": [
+        "Explain why access and rescue planning precede height work."
+      ],
+      "explanation": [
+        "Consider whether work can be done from the ground. Where height work remains necessary, competent people must plan suitable access, fall prevention, equipment inspection and emergency arrangements. A harness alone does not make an unsafe setup acceptable. Ladders are not a universal solution, and a chair is not access equipment.",
+        "Select PPE for the assessed hazard, correct fit and compatibility. Inspect it and follow its instructions; damaged equipment should not be used. Do not attach fall protection to an unverified anchor. Keep people clear of falling-object areas and use approved handling arrangements. The learner’s exercise is a paper planning review; it includes no climbing, lifting experiment or live installation."
+      ],
+      "example": "A camera is above a stairwell. The safe planning response considers another mounting arrangement or properly assessed access, not balancing a ladder on a step.",
+      "exercise": "List the missing planning information before a fictional high-level camera installation.",
+      "model_response": "Access method, competent personnel, site assessment, fall prevention, exclusion area, equipment suitability and rescue arrangements.",
+      "key_points": [
+        "Avoid height exposure where possible",
+        "PPE does not replace planning",
+        "No climbing in this exercise"
+      ],
+      "references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "thai_summary": "พิจารณาทำงานจากพื้นก่อน อุปกรณ์ป้องกันส่วนบุคคลไม่ทดแทนการวางแผนทางขึ้น การป้องกันการตก และการช่วยเหลือ",
+      "id": "AITS-C03-L03",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C03-L02"
+      ],
+      "summary": "Avoid height exposure where possible PPE does not replace planning No climbing in this exercise",
+      "visual_resources": [
+        "course-03-workplace-safety/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L03",
+        "course_id": "AITS-C03",
+        "title": "Height PPE and handling",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C03-L03-Q1",
+        "AITS-C03-L03-Q2",
+        "AITS-C03-L03-Q3"
+      ],
+      "html": "<h1>Height PPE and handling</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C03-L03 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Explain why access and rescue planning precede height work.</p><h2>Explanation</h2><p>Consider whether work can be done from the ground. Where height work remains necessary, competent people must plan suitable access, fall prevention, equipment inspection and emergency arrangements. A harness alone does not make an unsafe setup acceptable. Ladders are not a universal solution, and a chair is not access equipment.</p><p>Select PPE for the assessed hazard, correct fit and compatibility. Inspect it and follow its instructions; damaged equipment should not be used. Do not attach fall protection to an unverified anchor. Keep people clear of falling-object areas and use approved handling arrangements. The learner’s exercise is a paper planning review; it includes no climbing, lifting experiment or live installation.</p><h2>Synthetic example</h2><p>A camera is above a stairwell. The safe planning response considers another mounting arrangement or properly assessed access, not balancing a ladder on a step.</p><h2>Practical exercise</h2><p>List the missing planning information before a fictional high-level camera installation.</p><h2>Model response</h2><p>Access method, competent personnel, site assessment, fall prevention, exclusion area, equipment suitability and rescue arrangements.</p><h2>Summary</h2><p>Avoid height exposure where possible PPE does not replace planning No climbing in this exercise</p><h2>Thai summary — translation pending review</h2><p>พิจารณาทำงานจากพื้นก่อน อุปกรณ์ป้องกันส่วนบุคคลไม่ทดแทนการวางแผนทางขึ้น การป้องกันการตก และการช่วยเหลือ</p><h2>References</h2><p>HEIGHT: ILO working at height — https://www.ilo.org/topics-and-sectors/occupational-safety-and-health-guide-labour-inspectors-and-other/working-height</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Incidents site conduct and quality",
+      "objectives": [
+        "Record observations and maintain professional site boundaries."
+      ],
+      "explanation": [
+        "If an incident or near miss occurs, protect yourself, seek the designated emergency response and avoid disturbing the scene except where necessary for immediate safety. Do not attempt a rescue beyond your training. Record time, location, observed conditions and witnesses through the verified reporting route. Do not speculate about blame or publish images of people.",
+        "At a customer site, confirm access permission, work boundaries and the approved scope. Protect property, keep routes clear and obtain permission before taking evidence photographs. Quality assurance means building reliable checks into the process; final inspection alone cannot repair every planning failure. Record incomplete work and unresolved risks truthfully so that the next person can act."
+      ],
+      "example": "A box falls near a colleague without injury. Treat the near miss as useful safety information rather than hiding it because nobody was hurt.",
+      "exercise": "Write a four-line near-miss report using fictional facts.",
+      "model_response": "At 10:20 a loosely stacked box fell in aisle B. No injury observed. Area access was restricted safely. Supervisor review of stacking controls requested.",
+      "key_points": [
+        "Report near misses as well as harm",
+        "Respect site permissions",
+        "Record unfinished work honestly"
+      ],
+      "references": [
+        "HEIGHT",
+        "QA",
+        "EX"
+      ],
+      "thai_summary": "รายงานเหตุเกือบเกิดอุบัติเหตุและข้อบกพร่องตามช่องทางที่ยืนยันแล้ว เคารพพื้นที่ลูกค้าและบันทึกข้อจำกัดตามจริง",
+      "id": "AITS-C03-L04",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C03-L03"
+      ],
+      "summary": "Report near misses as well as harm Respect site permissions Record unfinished work honestly",
+      "visual_resources": [
+        "course-03-workplace-safety/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L04",
+        "course_id": "AITS-C03",
+        "title": "Incidents site conduct and quality",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "QA",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C03-L04-Q1",
+        "AITS-C03-L04-Q2",
+        "AITS-C03-L04-Q3"
+      ],
+      "html": "<h1>Incidents site conduct and quality</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C03-L04 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Record observations and maintain professional site boundaries.</p><h2>Explanation</h2><p>If an incident or near miss occurs, protect yourself, seek the designated emergency response and avoid disturbing the scene except where necessary for immediate safety. Do not attempt a rescue beyond your training. Record time, location, observed conditions and witnesses through the verified reporting route. Do not speculate about blame or publish images of people.</p><p>At a customer site, confirm access permission, work boundaries and the approved scope. Protect property, keep routes clear and obtain permission before taking evidence photographs. Quality assurance means building reliable checks into the process; final inspection alone cannot repair every planning failure. Record incomplete work and unresolved risks truthfully so that the next person can act.</p><h2>Synthetic example</h2><p>A box falls near a colleague without injury. Treat the near miss as useful safety information rather than hiding it because nobody was hurt.</p><h2>Practical exercise</h2><p>Write a four-line near-miss report using fictional facts.</p><h2>Model response</h2><p>At 10:20 a loosely stacked box fell in aisle B. No injury observed. Area access was restricted safely. Supervisor review of stacking controls requested.</p><h2>Summary</h2><p>Report near misses as well as harm Respect site permissions Record unfinished work honestly</p><h2>Thai summary — translation pending review</h2><p>รายงานเหตุเกือบเกิดอุบัติเหตุและข้อบกพร่องตามช่องทางที่ยืนยันแล้ว เคารพพื้นที่ลูกค้าและบันทึกข้อจำกัดตามจริง</p><h2>References</h2><p>HEIGHT: ILO working at height — https://www.ilo.org/topics-and-sectors/occupational-safety-and-health-guide-labour-inspectors-and-other/working-height</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    }
+  ],
+  "flow": [
+    "Observe hazards",
+    "Pause unsafe work",
+    "Get qualified review",
+    "Confirm controls",
+    "Record evidence"
+  ],
+  "id": "AITS-C03",
+  "folder": "course-03-workplace-safety",
+  "metadata": {
+    "document_id": "AITS-C03",
+    "course_id": "AITS-C03",
+    "title": "Workplace Safety and Professional Standards",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "ELEC",
+      "EX",
+      "HEIGHT",
+      "QA"
+    ]
+  },
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "estimated_minutes": 100,
+  "language": "en",
+  "translation_status": "Thai summaries only; AI translation pending native-speaker review",
+  "objectives": [
+    "Identify hazards and select a safe next action.",
+    "Recognize when equipment must be left to qualified personnel.",
+    "Explain why access and rescue planning precede height work.",
+    "Record observations and maintain professional site boundaries."
+  ],
+  "assessments": [
+    {
+      "question": "What is a hazard?",
+      "choices": [
+        "Any customer complaint",
+        "A source of possible harm",
+        "Only a completed injury"
+      ],
+      "correct_answer": "A source of possible harm",
+      "explanation": "A hazard can exist before an incident occurs.",
+      "id": "AITS-C03-L01-Q1",
+      "related_lesson": "AITS-C03-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L01-Q1",
+        "course_id": "AITS-C03",
+        "title": "What is a hazard?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is stronger than relying only on a warning?",
+      "choices": [
+        "Removing the trip hazard through a safe approved method",
+        "Ignoring it",
+        "Walking faster"
+      ],
+      "correct_answer": "Removing the trip hazard through a safe approved method",
+      "explanation": "Reducing exposure is more reliable than a warning alone.",
+      "id": "AITS-C03-L01-Q2",
+      "related_lesson": "AITS-C03-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L01-Q2",
+        "course_id": "AITS-C03",
+        "title": "Which is stronger than relying only on a warning?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should an untrained beginner do with an unsafe task?",
+      "choices": [
+        "Try it quickly",
+        "Ask the customer to hold the ladder",
+        "Pause and seek qualified supervision"
+      ],
+      "correct_answer": "Pause and seek qualified supervision",
+      "explanation": "Awareness is not task competence.",
+      "id": "AITS-C03-L01-Q3",
+      "related_lesson": "AITS-C03-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L01-Q3",
+        "course_id": "AITS-C03",
+        "title": "What should an untrained beginner do with an unsafe task?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does unplugging one cable prove all energy is isolated?",
+      "choices": [
+        "No",
+        "Always",
+        "Only for a recorder"
+      ],
+      "correct_answer": "No",
+      "explanation": "Backup or other supplies may remain; qualified verification is required.",
+      "id": "AITS-C03-L02-Q1",
+      "related_lesson": "AITS-C03-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "ELEC",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L02-Q1",
+        "course_id": "AITS-C03",
+        "title": "Does unplugging one cable prove all energy is isolated?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "ELEC",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What is appropriate when a power supply smells burnt?",
+      "choices": [
+        "Open it while powered",
+        "Spray cleaner inside",
+        "Keep clear and request qualified response"
+      ],
+      "correct_answer": "Keep clear and request qualified response",
+      "explanation": "Avoid exposure to a possible electrical fault.",
+      "id": "AITS-C03-L02-Q2",
+      "related_lesson": "AITS-C03-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "ELEC",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L02-Q2",
+        "course_id": "AITS-C03",
+        "title": "What is appropriate when a power supply smells burnt?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "ELEC",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What does this awareness lesson provide?",
+      "choices": [
+        "Site work authorization",
+        "Hazard awareness",
+        "An electrical-work license"
+      ],
+      "correct_answer": "Hazard awareness",
+      "explanation": "Required task training and authorization remain separate.",
+      "id": "AITS-C03-L02-Q3",
+      "related_lesson": "AITS-C03-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "ELEC",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L02-Q3",
+        "course_id": "AITS-C03",
+        "title": "What does this awareness lesson provide?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "ELEC",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does wearing a harness make every anchor suitable?",
+      "choices": [
+        "Yes",
+        "Only indoors",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Anchors and the complete system need competent assessment.",
+      "id": "AITS-C03-L03-Q1",
+      "related_lesson": "AITS-C03-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L03-Q1",
+        "course_id": "AITS-C03",
+        "title": "Does wearing a harness make every anchor suitable?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is an appropriate training exercise here?",
+      "choices": [
+        "Testing an unknown ladder",
+        "A paper review of missing controls",
+        "Climbing a chair"
+      ],
+      "correct_answer": "A paper review of missing controls",
+      "explanation": "This is awareness training, not supervised practical height training.",
+      "id": "AITS-C03-L03-Q2",
+      "related_lesson": "AITS-C03-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L03-Q2",
+        "course_id": "AITS-C03",
+        "title": "Which is an appropriate training exercise here?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should be considered first?",
+      "choices": [
+        "Whether the task can be done without height exposure",
+        "The fastest climb",
+        "The smallest harness"
+      ],
+      "correct_answer": "Whether the task can be done without height exposure",
+      "explanation": "Avoiding the hazard is preferable when practicable.",
+      "id": "AITS-C03-L03-Q3",
+      "related_lesson": "AITS-C03-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L03-Q3",
+        "course_id": "AITS-C03",
+        "title": "What should be considered first?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Should a near miss be ignored because no one was hurt?",
+      "choices": [
+        "Only if it happened outdoors",
+        "No",
+        "Yes"
+      ],
+      "correct_answer": "No",
+      "explanation": "It can reveal a control failure before an injury.",
+      "id": "AITS-C03-L04-Q1",
+      "related_lesson": "AITS-C03-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L04-Q1",
+        "course_id": "AITS-C03",
+        "title": "Should a near miss be ignored because no one was hurt?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which photograph is appropriate?",
+      "choices": [
+        "Authorized evidence with unnecessary personal details excluded",
+        "Any customer CCTV image",
+        "A selfie in a restricted room"
+      ],
+      "correct_answer": "Authorized evidence with unnecessary personal details excluded",
+      "explanation": "Evidence collection must respect access and privacy boundaries.",
+      "id": "AITS-C03-L04-Q2",
+      "related_lesson": "AITS-C03-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "HEIGHT",
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L04-Q2",
+        "course_id": "AITS-C03",
+        "title": "Which photograph is appropriate?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "QA",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "A completion report should disclose unresolved defects.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "True",
+      "explanation": "Truthful limitations support safe follow-up.",
+      "id": "AITS-C03-L04-Q3",
+      "related_lesson": "AITS-C03-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "HEIGHT",
+        "QA",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-L04-Q3",
+        "course_id": "AITS-C03",
+        "title": "A completion report should disclose unresolved defects.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "HEIGHT",
+          "QA",
+          "EX"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "AITS-C03-S01",
+      "title": "Burning recorder",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Technician trainee",
+      "problem_description": "A fictional recorder smells burnt.",
+      "available_information": [
+        "Its power sources and internal condition are unknown."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Keep clear and request qualified site response.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Keep clear and request qualified site response."
+      ],
+      "inappropriate_decisions": [
+        "Open the powered enclosure."
+      ],
+      "consequences": "Avoiding exposure prevents an observation from becoming an injury.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Open the powered enclosure.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Keep clear and request qualified site response."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-S01",
+        "course_id": "AITS-C03",
+        "title": "Burning recorder",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C03-S02",
+      "title": "Camera above stairs",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Installation trainee",
+      "problem_description": "A customer suggests a chair on a stair to reach a camera.",
+      "available_information": [
+        "No assessed access method or trained supervisor is present."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Pause and request competent access planning.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Pause and request competent access planning."
+      ],
+      "inappropriate_decisions": [
+        "Climb because it is a short job."
+      ],
+      "consequences": "An unsuitable access method can lead to a serious fall.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Climb because it is a short job.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Pause and request competent access planning."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-S02",
+        "course_id": "AITS-C03",
+        "title": "Camera above stairs",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C03-S03",
+      "title": "Falling box near miss",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Stores trainee",
+      "problem_description": "A box falls without striking anyone.",
+      "available_information": [
+        "The stack is unstable and the aisle remains in use."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Keep clear, arrange safe control and report factual observations.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Keep clear, arrange safe control and report factual observations."
+      ],
+      "inappropriate_decisions": [
+        "Hide the event to avoid delay."
+      ],
+      "consequences": "Reporting allows the stacking hazard to be addressed.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Hide the event to avoid delay.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Keep clear, arrange safe control and report factual observations."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-S03",
+        "course_id": "AITS-C03",
+        "title": "Falling box near miss",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    }
+  ]
+}

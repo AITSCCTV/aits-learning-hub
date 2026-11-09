@@ -1,0 +1,144 @@
+import type { DefineRouteFunction, RouteManifest } from "@remix-run/dev/dist/config/routes";
+
+export const routes: (
+  defineRoutes: (callback: (defineRoute: DefineRouteFunction) => void) => RouteManifest,
+) => RouteManifest | Promise<RouteManifest> = (defineRoutes) => {
+  return defineRoutes((route) => {
+    route("", "modules/layout.tsx", () => {
+      route("auth", "modules/Auth/Auth.layout.tsx", () => {
+        route("login", "modules/Auth/Login.page.tsx", { index: true });
+        route("register", "modules/Auth/Register.page.tsx");
+        route("create-new-password", "modules/Auth/CreateNewPassword.page.tsx");
+        route("password-recovery", "modules/Auth/PasswordRecovery.page.tsx");
+        route("magic-link", "modules/Auth/MagicLink.page.tsx");
+        route("mfa", "modules/Auth/MFA.page.tsx");
+        route("change-password", "modules/Auth/ForcedPasswordChange.page.tsx");
+      });
+      route("tenant-inactive", "modules/Errors/TenantInactive.page.tsx");
+      route("oauth/connect", "modules/Auth/McpConsent.page.tsx");
+      route("", "modules/Navigation/NavigationWrapper.tsx", () => {
+        route("", "modules/Dashboard/PublicDashboard.layout.tsx", () => {
+          route("courses", "modules/Courses/Courses.page.tsx");
+          route("course/:id", "modules/Courses/CourseView/CourseView.page.tsx");
+          route("development-paths", "modules/LearningPaths/LearningPaths.page.tsx");
+          route("calendar", "modules/Calendar/Calendar.page.tsx");
+          route("reports", "modules/Reports/Reports.page.tsx");
+          route("live-training/:id/room", "modules/LiveTraining/LiveTraining.page.tsx", {
+            id: "live-training-room",
+          });
+          route("live-training/:id", "modules/LiveTraining/LiveTraining.page.tsx", {
+            id: "live-training-details",
+          });
+          route("qa", "modules/QA/QA.page.tsx");
+          route("qa/new", "modules/QA/CreateQA.page.tsx");
+          route("qa/:id", "modules/QA/EditQA.page.tsx");
+          route("articles", "modules/Articles/Articles.page.tsx");
+          route("articles/:articleId", "modules/Articles/ArticleDetails.page.tsx", {
+            id: "article-details",
+          });
+          route("news/:newsId/edit", "modules/News/NewsForm.page.tsx", {
+            id: "edit-news",
+          });
+          route("news/add", "modules/News/NewsForm.page.tsx", {
+            id: "add-news",
+          });
+          route("news", "modules/News/News.page.tsx");
+          route("news/:newsId", "modules/News/NewsDetails.page.tsx", {
+            id: "news-details",
+          });
+        });
+        route("", "modules/Dashboard/UserDashboard.layout.tsx", () => {
+          route("", "modules/Dashboard/IndexRedirect.page.tsx", { index: true });
+          route("dashboard", "modules/Dashboard/Home/HomeDashboard.page.tsx");
+          route("aits-mentor", "modules/Aits/Mentor.page.tsx");
+          route("knowledge", "modules/Aits/Knowledge.page.tsx");
+          route("assistant/:threadId?", "modules/Assistant/Assistant.page.tsx");
+          route(
+            "helpdesk/tutorials/:key",
+            "modules/SelfOnboarding/SelfOnboardingTutorial.page.tsx",
+          );
+          route("ai-mentor/practice/:id", "modules/AiMentorPractice/AiMentorPractice.page.tsx");
+          route("competencies", "modules/Competencies/Competencies.page.tsx");
+          route("phishing", "modules/Phishing/Phishing.page.tsx");
+          route("phishing/new", "modules/Phishing/CreatePhishing.page.tsx");
+          route("phishing/:id", "modules/Phishing/PhishingReport.page.tsx");
+          route("content-marketplace", "modules/ContentMarketplace/ContentMarketplace.page.tsx");
+          route("notifications", "modules/Notifications/Notifications.page.tsx");
+          route("settings", "modules/Dashboard/Settings/Settings.page.tsx");
+          route("provider-information", "modules/ProviderInformation/ProviderInformation.page.tsx");
+          route("articles/:articleId/edit", "modules/Articles/ArticleForm.page.tsx", {
+            id: "edit-article",
+          });
+          route("profile/:id", "modules/Profile/Profile.page.tsx");
+        });
+        route("course/:courseId/lesson", "modules/Courses/Lesson/Lesson.layout.tsx", () => {
+          route(":lessonId", "modules/Courses/Lesson/Lesson.page.tsx");
+        });
+        route("admin", "modules/Admin/Admin.layout.tsx", () => {
+          route("courses", "modules/Admin/Courses/Courses.page.tsx", {
+            index: true,
+          });
+          route("envs", "modules/Admin/Envs/Envs.page.tsx");
+          route("beta-courses/new", "modules/Admin/AddCourse/CourseTypeSelector.page.tsx");
+          route("beta-courses/new/standard", "modules/Admin/AddCourse/AddCourse.tsx");
+          route("courses/new-scorm", "modules/Admin/Scorm/CreateNewScormCourse.page.tsx");
+          route("courses/import-package", "modules/Admin/AddCourse/NativeArchiveImport.page.tsx");
+          route("beta-courses/:id", "modules/Admin/EditCourse/EditCourse.tsx");
+          route("beta-courses/:id/authoring", "modules/CourseAuthoring/CourseAuthoring.page.tsx");
+          route("users", "modules/Admin/Users/Users.page.tsx");
+          route("automations", "modules/Admin/Automations/AutomationsWorkspace.page.tsx");
+          route("automations/new", "modules/Admin/Automations/AutomationEditor.page.tsx", {
+            id: "automation-new",
+          });
+          route("automations/:id", "modules/Admin/Automations/AutomationEditor.page.tsx", {
+            id: "automation-editor",
+          });
+          route(
+            "automation-logs",
+            "modules/Admin/Automations/Workspace/LegacyAutomationLogs.page.tsx",
+          );
+          route(
+            "email-templates",
+            "modules/Admin/Automations/Workspace/LegacyEmailTemplates.page.tsx",
+          );
+          route(
+            "email-templates/defaults/:event",
+            "modules/Admin/EmailTemplates/EmailTemplateEditor.page.tsx",
+            { id: "email-template-default" },
+          );
+          route(
+            "email-templates/:id",
+            "modules/Admin/EmailTemplates/EmailTemplateEditor.page.tsx",
+            { id: "email-template-editor" },
+          );
+          route("users/:id", "modules/Admin/Users/User.page.tsx");
+          route("users/new", "modules/Admin/Users/CreateNewUser.page.tsx");
+          route("categories", "modules/Admin/Categories/Categories.page.tsx");
+          route("categories/:id", "modules/Admin/Categories/Category.page.tsx");
+          route("categories/new", "modules/Admin/Categories/CreateNewCategory.page.tsx");
+          route("groups", "modules/Admin/Groups/Groups.page.tsx");
+          route("groups/new", "modules/Admin/Groups/CreateGroup.page.tsx");
+          route("groups/:id", "modules/Admin/Groups/EditGroup.page.tsx");
+          route("promotion-codes", "modules/Admin/PromotionCodes/PromotionCodes.page.tsx");
+          route("promotion-codes/new", "modules/Admin/PromotionCodes/CreatePromotionCode.page.tsx");
+          route(
+            "promotion-codes/:id",
+            "modules/Admin/PromotionCodes/PromotionCodeDetails.page.tsx",
+          );
+          route("activity-logs", "modules/ActivityLogs/ActivityLogs.page.tsx");
+          route("ai-conversations", "modules/Admin/AiConversations/AiConversations.page.tsx");
+          route(
+            "ai-conversations/:threadId",
+            "modules/Admin/AiConversations/AiConversations.page.tsx",
+            { id: "admin-ai-conversation" },
+          );
+        });
+        route("super-admin", "modules/SuperAdmin/SuperAdmin.layout.tsx", () => {
+          route("tenants", "modules/SuperAdmin/Tenants.page.tsx", { index: true });
+          route("tenants/new", "modules/SuperAdmin/CreateTenant.page.tsx");
+          route("tenants/:id", "modules/SuperAdmin/EditTenant.page.tsx");
+        });
+      });
+    });
+  });
+};

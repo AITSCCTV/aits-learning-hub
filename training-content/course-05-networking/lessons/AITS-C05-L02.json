@@ -1,0 +1,57 @@
+{
+  "title": "IP addressing DHCP and DNS",
+  "objectives": [
+    "Distinguish an address, a gateway and name resolution."
+  ],
+  "explanation": [
+    "An IP address identifies an interface on a network; the subnet prefix helps determine which destinations are local. A default gateway provides a path to other networks. Private IPv4 ranges include 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16; they are not globally routed public addresses. Avoid duplicate assignments and do not change addressing without an approved plan.",
+    "DHCP supplies configuration such as an address lease and network options. DNS resolves names to records used to locate services. These functions are different: a valid lease does not prove DNS or upstream access works. In the synthetic 192.168.10.0/24 exercise, a client at .20 and gateway at .1 share the subnet; .0 and .255 are not ordinary host choices for that subnet."
+  ],
+  "example": "A lab client has 192.168.10.20/24, gateway 192.168.10.1 and an approved resolver. Record all three before drawing a conclusion about a failed website.",
+  "exercise": "Explain the difference between DHCP and DNS to a nontechnical colleague.",
+  "model_response": "DHCP helps a device obtain network configuration; DNS helps translate a service name into the records needed to find it.",
+  "key_points": [
+    "Address, prefix and gateway work together",
+    "DHCP supplies configuration",
+    "DNS handles names"
+  ],
+  "references": [
+    "IP",
+    "DHCP",
+    "NET",
+    "EX"
+  ],
+  "thai_summary": "IP ระบุอินเทอร์เฟซ DHCP แจกค่าตั้งเครือข่าย และ DNS ช่วยค้นหาปลายทางจากชื่อ ทั้งสามหน้าที่แตกต่างกัน",
+  "id": "AITS-C05-L02",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C05-L01"
+  ],
+  "summary": "Address, prefix and gateway work together DHCP supplies configuration DNS handles names",
+  "visual_resources": [
+    "course-05-networking/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C05-L02",
+    "course_id": "AITS-C05",
+    "title": "IP addressing DHCP and DNS",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "IP",
+      "DHCP",
+      "NET",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C05-L02-Q1",
+    "AITS-C05-L02-Q2",
+    "AITS-C05-L02-Q3"
+  ]
+}

@@ -1,0 +1,288 @@
+import { Inject, Injectable } from "@nestjs/common";
+import { LESSON_TYPES, SCORM_PACKAGE_ENTITY_TYPE, SCORM_PACKAGE_STATUS } from "@repo/shared";
+import { and, eq, getTableColumns, gte, isNull, lte, sql } from "drizzle-orm";
+
+import { DatabasePg, type UUIDType } from "src/common";
+import { buildJsonbField, setJsonbField } from "src/common/helpers/sqlHelpers";
+import { LocalizationService } from "src/localization/localization.service";
+import { ENTITY_TYPE } from "src/localization/localization.types";
+import {
+  aiMentorLessons,
+  chapters,
+  courses,
+  liveLessons,
+  lessons,
+  scormPackages,
+  settings,
+} from "src/storage/schema";
+
+import type { UpdateChapterBody } from "../schemas/chapter.schema";
+import type { SupportedLanguages } from "@repo/shared";
+import type { SQL } from "drizzle-orm";
+import type { PostgresJsDatabase } from "drizzle-orm/postgres-js";
+import type { CreateChapterForCourseData } from "src/courses/types/course.types";
+import type {
+  AdminLessonWithContentSchema,
+  AiMentorBody,
+  LessonResource,
+} from "src/lesson/lesson.schema";
+import type { LessonTypes } from "src/lesson/lesson.type";
+import type * as schema from "src/storage/schema";
+
+@Injectable()
+export class AdminChapterRepository {
+  constructor(
+    @Inject("DB") private readonly db: DatabasePg,
+    private readonly localizationService: LocalizationService,
+  ) {}
+
+  async getChapterById(chapterId: UUIDType, language?: SupportedLanguages) {
+    return this.db
+      .select({
+        ...getTableColumns(chapters),
+        title: this.localizationService.getLocalizedSqlField(chapters.title, language),
+      })
+      .from(chapters)
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .where(eq(chapters.id, chapterId));
+  }
+
+  async createChapterForCourse(data: CreateChapterForCourseData, dbInstance: DatabasePg = this.db) {
+    const [chapter] = await dbInstance
+      .insert(chapters)
+      .values({
+        courseId: data.courseId,
+        authorId: data.authorId,
+        title: buildJsonbField(data.language, data.title),
+        displayOrder: data.displayOrder,
+        isFreemium: data.isFreemium ?? false,
+      })
+      .returning({
+        ...getTableColumns(chapters),
+        title: sql<string>`${chapters.title}->>${data.language}::text`,
+      });
+
+    return chapter;
+  }
+
+  async changeChapterDisplayOrder(
+    courseId: UUIDType,
+    chapterId: UUIDType,
+    newDisplayOrder: number,
+    language: SupportedLanguages,
+  ) {
+    return await this.db.transaction(async (trx) => {
+      // Older imports can leave gaps. Re-rank before moving so both the source
+      // position and the requested position refer to the current chapter list.
+      await this.updateChapterDisplayOrder(courseId, trx);
+      const [current] = await trx
+        .select({ displayOrder: chapters.displayOrder })
+        .from(chapters)
+        .where(and(eq(chapters.courseId, courseId), eq(chapters.id, chapterId)));
+      const [count] = await trx
+        .select({ value: sql<number>`count(*)::int` })
+        .from(chapters)
+        .where(eq(chapters.courseId, courseId));
+      if (!current || current.displayOrder === null || !count) return [];
+      const oldDisplayOrder = current.displayOrder;
+      const boundedDisplayOrder = Math.max(1, Math.min(newDisplayOrder, count.value));
+      return await trx
+        .update(chapters)
+        .set({
+          displayOrder: sql`CASE
+            WHEN ${eq(chapters.id, chapterId)}
+              THEN ${boundedDisplayOrder}
+            WHEN ${boundedDisplayOrder < oldDisplayOrder}
+              AND ${gte(chapters.displayOrder, boundedDisplayOrder)}
+              AND ${lte(chapters.displayOrder, oldDisplayOrder)}
+              THEN ${chapters.displayOrder} + 1
+            WHEN ${boundedDisplayOrder > oldDisplayOrder}
+              AND ${lte(chapters.displayOrder, boundedDisplayOrder)}
+              AND ${gte(chapters.displayOrder, oldDisplayOrder)}
+              THEN ${chapters.displayOrder} - 1
+            ELSE ${chapters.displayOrder}
+          END
+          `,
+        })
+        .where(eq(chapters.courseId, courseId))
+        .returning({
+          ...getTableColumns(chapters),
+          title: sql<string>`${chapters.title}->>${language}::text`,
+        });
+    });
+  }
+
+  async updateChapterDisplayOrder(courseId: UUIDType, trx?: PostgresJsDatabase<typeof schema>) {
+    const dbInstance = trx ?? this.db;
+
+    return dbInstance.execute(sql`
+        WITH ranked_chapters AS (
+          SELECT id, row_number() OVER (ORDER BY display_order, id) AS new_display_order
+          FROM ${chapters}
+          WHERE course_id = ${courseId}
+        )
+        UPDATE ${chapters} cc
+        SET display_order = rc.new_display_order
+        FROM ranked_chapters rc
+        WHERE cc.id = rc.id
+          AND cc.course_id = ${courseId}
+      `);
+  }
+
+  async removeChapter(chapterId: UUIDType, trx?: PostgresJsDatabase<typeof schema>) {
+    const dbInstance = trx ?? this.db;
+
+    return dbInstance.delete(chapters).where(eq(chapters.id, chapterId)).returning();
+  }
+
+  async getBetaChapterLessons(
+    chapterId: UUIDType,
+    language: SupportedLanguages,
+    conditions: SQL<unknown>[] = [],
+  ): Promise<AdminLessonWithContentSchema[]> {
+    return this.db
+      .select({
+        updatedAt: sql<string>`${lessons.updatedAt}`,
+        id: lessons.id,
+        title: this.localizationService.getFieldByLanguage(lessons.title, language),
+        type: sql<LessonTypes>`${lessons.type}`,
+        description: this.localizationService.getFieldByLanguage(lessons.description, language),
+        fileS3Key: sql<string>`${lessons.fileS3Key}`,
+        fileType: sql<string>`${lessons.fileType}`,
+        displayOrder: sql<number>`${lessons.displayOrder}`,
+        isExternal: sql<boolean>`${lessons.isExternal}`,
+        thresholdScore: sql<number>`${lessons.thresholdScore}`,
+        attemptsLimit: sql<number | null>`${lessons.attemptsLimit}`,
+        quizCooldownInHours: sql<number | null>`${lessons.quizCooldownInHours}`,
+        aiMentor: sql<AiMentorBody>`
+        (
+          SELECT json_build_object(
+            'id', ${aiMentorLessons.id},
+            'lessonId', ${aiMentorLessons.lessonId},
+            'name', ${this.localizationService.getFieldByLanguage(aiMentorLessons.name, language)},
+            'avatarReference', ${aiMentorLessons.avatarReference},
+            'voiceMode', ${aiMentorLessons.voiceMode},
+            'ttsPreset', ${aiMentorLessons.ttsPreset},
+            'customTtsReference', ${this.localizationService.getFieldByLanguage(
+              aiMentorLessons.customTtsReference,
+              language,
+            )}
+          )
+          FROM ${aiMentorLessons}
+          WHERE lessons.id = ${aiMentorLessons.lessonId}
+          LIMIT 1
+        )
+      `,
+        lessonResources: sql<LessonResource[]>`
+            ARRAY(
+              SELECT json_build_object(
+                'id', r.id,
+                'fileUrl', r.reference,
+                'contentType', r.content_type,
+                'title', COALESCE(r.title->>${language}::text, ''),
+                'description', COALESCE(r.description->>${language}::text, ''),
+                'fileName', r.metadata->>'originalFilename',
+                'allowFullscreen', (r.metadata->>'allowFullscreen')::boolean
+              )
+              FROM resources r
+              INNER JOIN resource_entity re ON re.resource_id = r.id
+              WHERE re.entity_id = lessons.id
+                AND re.entity_type = ${ENTITY_TYPE.LESSON}
+                AND r.archived = false
+              ORDER BY r.created_at
+            )
+      `,
+        scormPackageLanguages: sql<SupportedLanguages[]>`
+          ARRAY(
+            SELECT ${scormPackages.language}
+            FROM ${scormPackages}
+            WHERE (
+                (${scormPackages.entityType} = ${SCORM_PACKAGE_ENTITY_TYPE.LESSON} AND ${scormPackages.entityId} = ${lessons.id})
+                OR (${scormPackages.entityType} = ${SCORM_PACKAGE_ENTITY_TYPE.COURSE} AND ${scormPackages.entityId} = ${courses.id})
+              )
+              AND ${scormPackages.status} = ${SCORM_PACKAGE_STATUS.READY}
+            ORDER BY ${scormPackages.language}
+          )
+        `,
+        liveTrainingId: sql<UUIDType | null>`
+          (
+            SELECT ${liveLessons.liveTrainingId}
+            FROM ${liveLessons}
+            WHERE ${liveLessons.lessonId} = ${lessons.id}
+              AND ${liveLessons.language} IN (${language}, ${courses.baseLanguage})
+            ORDER BY CASE WHEN ${liveLessons.language} = ${language} THEN 0 ELSE 1 END
+            LIMIT 1
+          )
+        `,
+        liveTrainingLanguages: sql<SupportedLanguages[]>`
+          ARRAY(
+            SELECT ${liveLessons.language}
+            FROM ${liveLessons}
+            WHERE ${liveLessons.lessonId} = ${lessons.id}
+            ORDER BY ${liveLessons.language}
+          )
+        `,
+      })
+      .from(lessons)
+      .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .where(and(eq(lessons.chapterId, chapterId), ...conditions))
+      .orderBy(lessons.displayOrder);
+  }
+
+  async updateFreemiumStatus(chapterId: UUIDType, isFreemium: boolean) {
+    return this.db.update(chapters).set({ isFreemium }).where(eq(chapters.id, chapterId));
+  }
+
+  async getFreemiumStatusEligibility(chapterId: UUIDType) {
+    const [eligibility] = await this.db
+      .select({
+        chapterId: chapters.id,
+        priceInCents: courses.priceInCents,
+        lessonCount: sql<number>`COUNT(${lessons.id})::INTEGER`,
+        nonContentLessonCount: sql<number>`
+          COUNT(${lessons.id}) FILTER (WHERE ${lessons.type} <> ${LESSON_TYPES.CONTENT})::INTEGER
+        `,
+        unregisteredUserCoursesAccessibility: sql<boolean>`
+          COALESCE((${settings.settings}->>'unregisteredUserCoursesAccessibility')::BOOLEAN, FALSE)
+        `,
+      })
+      .from(chapters)
+      .innerJoin(courses, eq(courses.id, chapters.courseId))
+      .leftJoin(lessons, eq(lessons.chapterId, chapters.id))
+      .leftJoin(settings, and(eq(settings.tenantId, chapters.tenantId), isNull(settings.userId)))
+      .where(eq(chapters.id, chapterId))
+      .groupBy(chapters.id, courses.id, settings.settings);
+
+    return eligibility;
+  }
+
+  async updateChapter(id: UUIDType, body: UpdateChapterBody) {
+    return this.db
+      .update(chapters)
+      .set({
+        ...body,
+        title: setJsonbField(chapters.title, body.language, body.title),
+      })
+      .where(eq(chapters.id, id))
+      .returning({
+        ...getTableColumns(chapters),
+        title: sql<string>`${chapters.title}->>${body.language}::text`,
+      });
+  }
+
+  async updateChapterCountForCourse(courseId: UUIDType, trx?: PostgresJsDatabase<typeof schema>) {
+    const dbInstance = trx ?? this.db;
+
+    return dbInstance
+      .update(courses)
+      .set({
+        chapterCount: sql<number>`(
+          SELECT COUNT(*)
+          FROM ${chapters}
+          WHERE ${chapters.courseId} = ${courseId}
+      )`,
+      })
+      .where(eq(courses.id, courseId));
+  }
+}

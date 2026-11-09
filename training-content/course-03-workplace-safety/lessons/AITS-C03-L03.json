@@ -1,0 +1,53 @@
+{
+  "title": "Height PPE and handling",
+  "objectives": [
+    "Explain why access and rescue planning precede height work."
+  ],
+  "explanation": [
+    "Consider whether work can be done from the ground. Where height work remains necessary, competent people must plan suitable access, fall prevention, equipment inspection and emergency arrangements. A harness alone does not make an unsafe setup acceptable. Ladders are not a universal solution, and a chair is not access equipment.",
+    "Select PPE for the assessed hazard, correct fit and compatibility. Inspect it and follow its instructions; damaged equipment should not be used. Do not attach fall protection to an unverified anchor. Keep people clear of falling-object areas and use approved handling arrangements. The learner’s exercise is a paper planning review; it includes no climbing, lifting experiment or live installation."
+  ],
+  "example": "A camera is above a stairwell. The safe planning response considers another mounting arrangement or properly assessed access, not balancing a ladder on a step.",
+  "exercise": "List the missing planning information before a fictional high-level camera installation.",
+  "model_response": "Access method, competent personnel, site assessment, fall prevention, exclusion area, equipment suitability and rescue arrangements.",
+  "key_points": [
+    "Avoid height exposure where possible",
+    "PPE does not replace planning",
+    "No climbing in this exercise"
+  ],
+  "references": [
+    "HEIGHT",
+    "EX"
+  ],
+  "thai_summary": "พิจารณาทำงานจากพื้นก่อน อุปกรณ์ป้องกันส่วนบุคคลไม่ทดแทนการวางแผนทางขึ้น การป้องกันการตก และการช่วยเหลือ",
+  "id": "AITS-C03-L03",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C03-L02"
+  ],
+  "summary": "Avoid height exposure where possible PPE does not replace planning No climbing in this exercise",
+  "visual_resources": [
+    "course-03-workplace-safety/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C03-L03",
+    "course_id": "AITS-C03",
+    "title": "Height PPE and handling",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "HEIGHT",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C03-L03-Q1",
+    "AITS-C03-L03-Q2",
+    "AITS-C03-L03-Q3"
+  ]
+}

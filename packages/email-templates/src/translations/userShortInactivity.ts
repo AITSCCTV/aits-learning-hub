@@ -1,0 +1,89 @@
+import { SupportedLanguages } from "@repo/shared";
+import { EmailContent } from "types";
+
+export const getUserShortInactivityEmailTranslations = (
+  language: SupportedLanguages,
+  courseName?: string,
+) => {
+  const activityContext: Record<SupportedLanguages, string> = {
+    // English fallback until this optional feature is translated into Thai.
+    th: courseName ? `in ${courseName}` : "on platform",
+    en: courseName ? `in ${courseName}` : "on platform",
+    pl: courseName ? `w kursie ${courseName}` : "na platformie",
+    de: courseName ? `im Kurs ${courseName}` : "auf der Plattform",
+    lt: courseName ? `kurse ${courseName}` : "platformoje",
+    cs: courseName ? `v kurzu ${courseName}` : "na platformě",
+    es: courseName ? `en ${courseName}` : "en la plataforma",
+    fr: courseName ? `dans le cours ${courseName}` : "sur la plateforme",
+  };
+
+  const emailContent: Record<SupportedLanguages, EmailContent> = {
+    // English fallback until this optional feature is translated into Thai.
+    th: {
+      heading: "Reminder",
+      paragraphs: [
+        "Resume learning 🔔",
+        `14 days since last activity ${activityContext.en}. Continue to keep your progress on track.`,
+      ],
+      buttonText: courseName ? "CONTINUE COURSE" : "OPEN PLATFORM",
+    },
+    en: {
+      heading: "Reminder",
+      paragraphs: [
+        "Resume learning 🔔",
+        `14 days since last activity ${activityContext.en}. Continue to keep your progress on track.`,
+      ],
+      buttonText: courseName ? "CONTINUE COURSE" : "OPEN PLATFORM",
+    },
+    pl: {
+      heading: "Przypomnienie",
+      paragraphs: [
+        "Wróć do nauki 🔔",
+        `Minęło 14 dni od ostatniej aktywności ${activityContext.pl}. Kontynuuj, aby utrzymać postępy.`,
+      ],
+      buttonText: courseName ? "KONTYNUUJ KURS" : "OTWÓRZ PLATFORMĘ",
+    },
+    de: {
+      heading: "Erinnerung",
+      paragraphs: [
+        "Lerne weiter 🔔",
+        `14 Tage seit der letzten Aktivität ${activityContext.de}. Setze fort, um deinen Fortschritt beizubehalten.`,
+      ],
+      buttonText: courseName ? "KURS FORTSETZEN" : "PLATTFORM ÖFFNEN",
+    },
+    lt: {
+      heading: "Priminimas",
+      paragraphs: [
+        "Pradėk mokytis iš naujo 🔔",
+        `14 dienų nuo paskutinio aktyvumo ${activityContext.lt}. Tęsk, kad išlaikytum savo pažangą.`,
+      ],
+      buttonText: courseName ? "TĘSTI KURSĄ" : "ATIDARYTI PLATFORMĄ",
+    },
+    cs: {
+      heading: "Připomenutí",
+      paragraphs: [
+        "Pokračuj v učení 🔔",
+        `14 dní od poslední aktivity ${activityContext.cs}. Pokračuj, abys udržel svůj pokrok.`,
+      ],
+      buttonText: courseName ? "POKRAČOVAT V KURZU" : "OTEVŘÍT PLATFORMU",
+    },
+    es: {
+      heading: "Recordatorio",
+      paragraphs: [
+        "Retoma tu aprendizaje 🔔",
+        `Han pasado 14 días desde tu última actividad ${activityContext.es}. Continúa para mantener tu progreso.`,
+      ],
+      buttonText: courseName ? "CONTINUAR CURSO" : "ABRIR PLATAFORMA",
+    },
+    fr: {
+      heading: "Rappel",
+      paragraphs: [
+        "Reprenez votre apprentissage 🔔",
+        `Cela fait 14 jours depuis votre dernière activité ${activityContext.fr}. Continuez pour maintenir votre progression.`,
+      ],
+      buttonText: courseName ? "CONTINUER LE COURS" : "OUVRIR LA PLATEFORME",
+    },
+  };
+
+  return emailContent[language];
+};

@@ -1,0 +1,225 @@
+import { randomUUID } from "node:crypto";
+
+import { TEST_DATA } from "../data/test-data/entity-name.data";
+import { getSelfOnboardingLanguage } from "../utils/self-onboarding-context";
+
+import type { FixtureApiClient } from "../utils/api-client";
+import type { SupportedLanguages } from "@repo/shared";
+import type {
+  CreateArticleBody,
+  GetArticleResponse,
+  GetArticleSectionResponse,
+  GetArticleTocResponse,
+  UpdateArticleSectionBody,
+} from "~/api/generated-api";
+
+export type ArticleFactoryRecord = GetArticleResponse["data"];
+export type ArticleSectionFactoryRecord = GetArticleSectionResponse["data"];
+export type ArticleTocSectionRecord = GetArticleTocResponse["data"]["sections"][number];
+
+export type ArticleFactoryCreateInput = {
+  language?: SupportedLanguages;
+  sectionId?: string;
+  sectionTitle?: string;
+  title?: string;
+  summary?: string;
+  content?: string;
+  isPublic?: boolean;
+};
+
+export type ArticleFactoryUpdateInput = Omit<
+  ArticleFactoryCreateInput,
+  "sectionId" | "sectionTitle"
+>;
+export type ArticleSectionFactoryCreateInput = {
+  language?: SupportedLanguages;
+  title?: string;
+};
+
+const createArticleDefaults = () => {
+  const suffix = randomUUID().slice(0, 8);
+
+  return {
+    title: `${TEST_DATA.article.titlePrefix} ${suffix}`,
+    summary: `${TEST_DATA.article.summaryPrefix} ${suffix}`,
+    content: `<p>${TEST_DATA.article.summaryPrefix} ${suffix}</p>`,
+    isPublic: true,
+  };
+};
+
+const createSectionTitle = () =>
+  `${TEST_DATA.article.sectionTitlePrefix} ${randomUUID().slice(0, 8)}`;
+
+const toUpdateArticleFormData = (
+  language: SupportedLanguages,
+  data: ArticleFactoryUpdateInput,
+): FormData => {
+  const formData = new FormData();
+
+  formData.append(
+    "translations",
+    JSON.stringify([
+      {
+        language,
+        title: data.title,
+        summary: data.summary,
+        content: data.content,
+      },
+    ]),
+  );
+  if (data.isPublic !== undefined) formData.append("isPublic", String(data.isPublic));
+
+  return formData;
+};
+
+export class ArticleFactory {
+  constructor(private readonly apiClient: FixtureApiClient) {}
+
+  async createSection(
+    input: ArticleSectionFactoryCreateInput = {},
+  ): Promise<ArticleSectionFactoryRecord> {
+    const language = input.language ?? getSelfOnboardingLanguage();
+    const response = await this.apiClient.api.articlesControllerCreateArticleSection({ language });
+    const sectionId = response.data.data.id;
+
+    if (input.title) {
+      await this.updateSection(sectionId, { language, title: input.title });
+      return this.getSectionById(sectionId, language);
+    }
+
+    return this.getSectionById(sectionId, language);
+  }
+
+  async create(input: ArticleFactoryCreateInput = {}): Promise<ArticleFactoryRecord> {
+    const language = input.language ?? getSelfOnboardingLanguage();
+    let sectionId = input.sectionId;
+
+    if (!sectionId) {
+      const section = await this.createSection({
+        language,
+        title: input.sectionTitle ?? createSectionTitle(),
+      });
+      sectionId = section.id;
+    }
+
+    const response = await this.apiClient.api.articlesControllerCreateArticle({
+      language,
+      sectionId,
+    } satisfies CreateArticleBody);
+
+    const articleId = response.data.data.id;
+    const defaults = createArticleDefaults();
+
+    await this.update(articleId, {
+      language,
+      title: input.title ?? defaults.title,
+      summary: input.summary ?? defaults.summary,
+      content: input.content ?? defaults.content,
+      isPublic: input.isPublic ?? defaults.isPublic,
+    });
+
+    return this.getById(articleId, language);
+  }
+
+  async createWithSection(input: ArticleFactoryCreateInput = {}): Promise<{
+    article: ArticleFactoryRecord;
+    section: ArticleSectionFactoryRecord;
+  }> {
+    const language = input.language ?? getSelfOnboardingLanguage();
+    const section = input.sectionId
+      ? await this.getSectionById(input.sectionId, language)
+      : await this.createSection({
+          language,
+          title: input.sectionTitle ?? createSectionTitle(),
+        });
+
+    const article = await this.create({
+      ...input,
+      language,
+      sectionId: section.id,
+    });
+
+    return { article, section };
+  }
+
+  async getById(
+    id: string,
+    language: SupportedLanguages = getSelfOnboardingLanguage(),
+  ): Promise<ArticleFactoryRecord> {
+    const response = await this.apiClient.api.articlesControllerGetArticle(id, { language });
+    return response.data.data;
+  }
+
+  async safeGetById(
+    id: string,
+    language: SupportedLanguages = getSelfOnboardingLanguage(),
+  ): Promise<ArticleFactoryRecord | null> {
+    try {
+      return await this.getById(id, language);
+    } catch {
+      return null;
+    }
+  }
+
+  async update(id: string, data: ArticleFactoryUpdateInput): Promise<ArticleFactoryRecord> {
+    const language = data.language ?? getSelfOnboardingLanguage();
+
+    await this.apiClient.api.articlesControllerUpdateArticle(
+      id,
+      toUpdateArticleFormData(language, data) as never,
+    );
+
+    return this.getById(id, language);
+  }
+
+  async delete(id: string): Promise<void> {
+    await this.apiClient.api.articlesControllerDeleteArticle(id);
+  }
+
+  async getSectionById(
+    id: string,
+    language: SupportedLanguages = getSelfOnboardingLanguage(),
+  ): Promise<ArticleSectionFactoryRecord> {
+    const response = await this.apiClient.api.articlesControllerGetArticleSection(id, { language });
+    return response.data.data;
+  }
+
+  async safeGetSectionById(
+    id: string,
+    language: SupportedLanguages = getSelfOnboardingLanguage(),
+  ): Promise<ArticleSectionFactoryRecord | null> {
+    try {
+      return await this.getSectionById(id, language);
+    } catch {
+      return null;
+    }
+  }
+
+  async updateSection(
+    id: string,
+    data: ArticleSectionFactoryCreateInput,
+  ): Promise<ArticleSectionFactoryRecord> {
+    const language = data.language ?? getSelfOnboardingLanguage();
+
+    await this.apiClient.api.articlesControllerUpdateArticleSection(id, {
+      translations: [{ language, title: data.title }],
+    } satisfies UpdateArticleSectionBody);
+
+    return this.getSectionById(id, language);
+  }
+
+  async deleteSection(id: string): Promise<void> {
+    await this.apiClient.api.articlesControllerDeleteArticleSection(id);
+  }
+
+  async getToc(
+    language: SupportedLanguages = getSelfOnboardingLanguage(),
+    isDraftMode?: boolean,
+  ): Promise<ArticleTocSectionRecord[]> {
+    const response = await this.apiClient.api.articlesControllerGetArticleToc({
+      language,
+      ...(isDraftMode === undefined ? {} : { isDraftMode }),
+    });
+    return response.data.data.sections;
+  }
+}

@@ -1,0 +1,431 @@
+{
+  "metadata": {
+    "document_id": "AITS-C02-QUIZ",
+    "course_id": "AITS-C02",
+    "title": "Course practice assessment",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "LEAVE",
+      "MOL",
+      "QA"
+    ]
+  },
+  "passing_threshold_percent": 80,
+  "threshold_status": "Proposed practice threshold; not company competency policy",
+  "questions": [
+    {
+      "question": "What establishes an additional AITS benefit?",
+      "choices": [
+        "A colleague’s guess",
+        "A generic training example",
+        "Applicable approved company terms"
+      ],
+      "correct_answer": "Applicable approved company terms",
+      "explanation": "Company-specific benefits need company evidence.",
+      "id": "AITS-C02-L01-Q1",
+      "related_lesson": "AITS-C02-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L01-Q1",
+        "course_id": "AITS-C02",
+        "title": "What establishes an additional AITS benefit?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which record helps resolve a pay concern?",
+      "choices": [
+        "A public accusation without facts",
+        "Accurate dates and relevant pay records",
+        "An altered screenshot"
+      ],
+      "correct_answer": "Accurate dates and relevant pay records",
+      "explanation": "Accurate records allow the issue to be checked.",
+      "id": "AITS-C02-L01-Q2",
+      "related_lesson": "AITS-C02-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L01-Q2",
+        "course_id": "AITS-C02",
+        "title": "Which record helps resolve a pay concern?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Can this course determine an individual legal dispute?",
+      "choices": [
+        "No; facts and current law need qualified review",
+        "Yes for every worker",
+        "Yes if the quiz is passed"
+      ],
+      "correct_answer": "No; facts and current law need qualified review",
+      "explanation": "Applicability and exceptions require case-specific review.",
+      "id": "AITS-C02-L01-Q3",
+      "related_lesson": "AITS-C02-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L01-Q3",
+        "course_id": "AITS-C02",
+        "title": "Can this course determine an individual legal dispute?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What is the ordinary weekly normal-hours baseline described here?",
+      "choices": [
+        "72 hours",
+        "48 hours",
+        "60 hours"
+      ],
+      "correct_answer": "48 hours",
+      "explanation": "Special categories and arrangements still require applicability review.",
+      "id": "AITS-C02-L02-Q1",
+      "related_lesson": "AITS-C02-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L02-Q1",
+        "course_id": "AITS-C02",
+        "title": "What is the ordinary weekly normal-hours baseline described here?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does the course establish AITS office opening hours?",
+      "choices": [
+        "No",
+        "Yes, 09:00–18:00",
+        "Yes, seven days a week"
+      ],
+      "correct_answer": "No",
+      "explanation": "The schedule is an exercise only.",
+      "id": "AITS-C02-L02-Q2",
+      "related_lesson": "AITS-C02-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L02-Q2",
+        "course_id": "AITS-C02",
+        "title": "Does the course establish AITS office opening hours?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should a missing-break concern trigger?",
+      "choices": [
+        "Automatic acceptance because the site is busy",
+        "Deletion of the time record",
+        "A factual review of the arrangement and applicable law"
+      ],
+      "correct_answer": "A factual review of the arrangement and applicable law",
+      "explanation": "Record facts and obtain competent clarification.",
+      "id": "AITS-C02-L02-Q3",
+      "related_lesson": "AITS-C02-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L02-Q3",
+        "course_id": "AITS-C02",
+        "title": "What should a missing-break concern trigger?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which source should resolve an outdated maternity figure?",
+      "choices": [
+        "The applicable newer official amendment",
+        "The oldest cached page",
+        "A generic company example"
+      ],
+      "correct_answer": "The applicable newer official amendment",
+      "explanation": "Effective legislation must be checked instead of copying obsolete summaries.",
+      "id": "AITS-C02-L03-Q1",
+      "related_lesson": "AITS-C02-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "LEAVE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L03-Q1",
+        "course_id": "AITS-C02",
+        "title": "Which source should resolve an outdated maternity figure?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "LEAVE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does 120 days mean all 120 are employer-paid under this summary?",
+      "choices": [
+        "Yes",
+        "Only if the AI says so",
+        "No; the summary distinguishes up to 60 paid days"
+      ],
+      "correct_answer": "No; the summary distinguishes up to 60 paid days",
+      "explanation": "Duration and employer payment are distinct.",
+      "id": "AITS-C02-L03-Q2",
+      "related_lesson": "AITS-C02-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "LEAVE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L03-Q2",
+        "course_id": "AITS-C02",
+        "title": "Does 120 days mean all 120 are employer-paid under this summary?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "LEAVE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Where should sensitive medical evidence be sent?",
+      "choices": [
+        "An unknown personal account",
+        "The verified private authorized channel",
+        "A public team chat"
+      ],
+      "correct_answer": "The verified private authorized channel",
+      "explanation": "Limit disclosure and verify the recipient.",
+      "id": "AITS-C02-L03-Q3",
+      "related_lesson": "AITS-C02-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "LEAVE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L03-Q3",
+        "course_id": "AITS-C02",
+        "title": "Where should sensitive medical evidence be sent?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "LEAVE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which detail should be excluded from a troubleshooting ticket?",
+      "choices": [
+        "The device model",
+        "The symptom start time",
+        "The customer password"
+      ],
+      "correct_answer": "The customer password",
+      "explanation": "Passwords should not be copied into routine records.",
+      "id": "AITS-C02-L04-Q1",
+      "related_lesson": "AITS-C02-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L04-Q1",
+        "course_id": "AITS-C02",
+        "title": "Which detail should be excluded from a troubleshooting ticket?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "What is the best opening to a concern report?",
+      "choices": [
+        "A demand to delete evidence",
+        "Specific observed facts",
+        "An unsupported accusation"
+      ],
+      "correct_answer": "Specific observed facts",
+      "explanation": "Facts help a responsible reviewer investigate.",
+      "id": "AITS-C02-L04-Q2",
+      "related_lesson": "AITS-C02-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L04-Q2",
+        "course_id": "AITS-C02",
+        "title": "What is the best opening to a concern report?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "This training establishes the approved AITS grievance procedure.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "The company procedure has not been supplied.",
+      "id": "AITS-C02-L04-Q3",
+      "related_lesson": "AITS-C02-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L04-Q3",
+        "course_id": "AITS-C02",
+        "title": "This training establishes the approved AITS grievance procedure.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    }
+  ]
+}

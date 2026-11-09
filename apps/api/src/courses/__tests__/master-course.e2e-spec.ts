@@ -1,0 +1,2308 @@
+import { randomUUID } from "node:crypto";
+import { Readable } from "stream";
+
+import { faker } from "@faker-js/faker";
+import {
+  AI_MENTOR_ROLEPLAY_DIFFICULTY,
+  AI_MENTOR_TYPE,
+  AI_MENTOR_TTS_PRESET,
+  AI_MENTOR_VOICE_MODE,
+  ASSESSMENT_GRADING_MODES,
+  ASSESSMENT_QUESTION_TYPES,
+  LESSON_TYPES,
+  MASTER_COURSE_EXPORT_SYNC_STATUSES,
+  SYSTEM_ROLE_SLUGS,
+  TENANT_STATUSES,
+} from "@repo/shared";
+import { and, asc, desc, eq, inArray, sql } from "drizzle-orm";
+import request from "supertest";
+
+import { AiRepository } from "src/ai/repositories/ai.repository";
+import { BunnyStreamService } from "src/bunny/bunnyStream.service";
+import { buildJsonbField, buildJsonbFieldWithMultipleEntries } from "src/common/helpers/sqlHelpers";
+import { COURSE_TRANSFER_MAX_ATTEMPTS } from "src/course-transfer/course-transfer.constants";
+import { CourseTransferCoordinator } from "src/course-transfer/course-transfer.coordinator";
+import { CourseTransferDispatcher } from "src/course-transfer/course-transfer.dispatcher";
+import {
+  CourseTransferFailedError,
+  CourseTransferLeaseLostError,
+} from "src/course-transfer/course-transfer.errors";
+import { CourseTransferRequestedEvent } from "src/course-transfer/events/course-transfer-requested.event";
+import { MasterCourseService } from "src/courses/master-course/master-course.service";
+import { RESOURCE_RELATIONSHIP_TYPES } from "src/file/file.constants";
+import { FileService } from "src/file/file.service";
+import * as outboxConstants from "src/outbox/outbox.constants";
+import { OUTBOX_STATUSES } from "src/outbox/outbox.types";
+import { S3Service } from "src/s3/s3.service";
+import { DB, DB_ADMIN } from "src/storage/db/db.providers";
+import { TenantDbRunnerService } from "src/storage/db/tenant-db-runner.service";
+import {
+  aiJudgeBlockingErrors,
+  aiJudgeConfigurations,
+  aiJudgeCriteria,
+  aiJudgeScoreGuidance,
+  aiMentorConfigurations,
+  aiMentorLessons,
+  aiMentorRoleplayConfigurations,
+  aiMentorThreads,
+  categories,
+  chapters,
+  courseTransferOperations,
+  courseTransferStreams,
+  courses,
+  lessons,
+  masterCourseExports,
+  outboxEvents,
+  assessments,
+  assessmentQuestions,
+  assessmentQuestionChoiceOptions,
+  resourceEntity,
+  resources,
+  tenants,
+} from "src/storage/schema";
+
+import { createE2ETest } from "../../../test/create-e2e-test";
+import { createCategoryFactory } from "../../../test/factory/category.factory";
+import { createChapterFactory } from "../../../test/factory/chapter.factory";
+import { createCourseFactory } from "../../../test/factory/course.factory";
+import { createSettingsFactory } from "../../../test/factory/settings.factory";
+import { createUserFactory } from "../../../test/factory/user.factory";
+import { DEFAULT_TEST_TENANT_HOST } from "../../../test/helpers/tenant-helpers";
+import { cookieFor, truncateTables } from "../../../test/helpers/test-helpers";
+import { waitForOutbox } from "../../../test/helpers/wait-for-outbox";
+
+import type { INestApplication } from "@nestjs/common";
+import type { DatabasePg } from "src/common";
+import type { UserWithCredentials } from "test/factory/user.factory";
+
+const SOURCE_HOST = DEFAULT_TEST_TENANT_HOST;
+const TARGET_HOST = "https://tenant-2.local";
+const PASSWORD = "Password123@";
+
+type ExportSetup = {
+  sourceAdmin: UserWithCredentials;
+  targetAdmin: UserWithCredentials;
+  sourceCourseId: string;
+  sourceChapterId: string;
+  sourceLessonId: string;
+};
+
+const withTenantHost = (req: request.Test, host: string) =>
+  req.set("Referer", host.endsWith("/") ? host : `${host}/`);
+const ensureCookieArray = (cookies: string | string[]) => {
+  const normalizedCookies = (Array.isArray(cookies) ? cookies : [cookies]).map(
+    (cookie) => cookie.split(";")[0],
+  );
+  const accessTokenCookie = normalizedCookies.find((cookie) => cookie.startsWith("access_token="));
+  return accessTokenCookie ? [accessTokenCookie] : normalizedCookies;
+};
+
+describe("Master course export and sync (e2e)", () => {
+  let app: INestApplication;
+  let db: DatabasePg;
+  let baseDb: DatabasePg;
+  let runAsTenant: <T>(tenantId: string, fn: () => Promise<T>) => Promise<T>;
+  let sourceTenantId: string;
+  let targetTenantId: string;
+  let masterCourseService: MasterCourseService;
+  let aiRepository: AiRepository;
+  let mockS3Service: {
+    copyFile: jest.Mock;
+    getFileExists: jest.Mock;
+    getFileStream: jest.Mock;
+    isConfigured: jest.Mock;
+    listFileKeysByPrefix: jest.Mock;
+    uploadStreamMultipart: jest.Mock;
+  };
+  let mockBunnyStreamService: {
+    downloadMp4Fallback: jest.Mock;
+    getMediaConfigurationSignature: jest.Mock;
+    isConfigured: jest.Mock;
+  };
+
+  let userFactory: ReturnType<typeof createUserFactory>;
+  let settingsFactory: ReturnType<typeof createSettingsFactory>;
+  let categoryFactory: ReturnType<typeof createCategoryFactory>;
+  let courseFactory: ReturnType<typeof createCourseFactory>;
+  let chapterFactory: ReturnType<typeof createChapterFactory>;
+
+  beforeAll(async () => {
+    jest.spyOn(outboxConstants, "isOutboxProcessingEnabled").mockReturnValue(true);
+
+    const mockFileService = {
+      getFileUrl: jest.fn().mockResolvedValue("http://example.com/file"),
+      isBunnyConfigured: jest.fn().mockResolvedValue(false),
+      uploadFile: jest.fn(),
+      deleteFileByPath: jest.fn(),
+    };
+    mockS3Service = {
+      copyFile: jest.fn().mockResolvedValue(undefined),
+      getFileExists: jest.fn().mockImplementation(async (key: string) => {
+        if (key.includes("/master-course/")) return false;
+        return true;
+      }),
+      getFileStream: jest.fn().mockResolvedValue({
+        stream: Readable.from(Buffer.from("source-video")),
+        contentType: "video/mp4",
+      }),
+      isConfigured: jest.fn().mockReturnValue(true),
+      listFileKeysByPrefix: jest.fn().mockResolvedValue([]),
+      uploadStreamMultipart: jest.fn().mockResolvedValue(undefined),
+    };
+    mockBunnyStreamService = {
+      downloadMp4Fallback: jest.fn().mockResolvedValue({
+        stream: Readable.from(Buffer.from("bunny-video")),
+        contentType: "video/mp4",
+        filename: "play_720p.mp4",
+        resolution: 720,
+      }),
+      getMediaConfigurationSignature: jest.fn().mockResolvedValue("source-target-same"),
+      isConfigured: jest.fn().mockResolvedValue(false),
+    };
+
+    const mockCacheManager = {
+      get: jest.fn().mockResolvedValue(""),
+      set: jest.fn().mockResolvedValue(""),
+    };
+
+    const e2e = await createE2ETest({
+      useDbProxy: true,
+      customProviders: [
+        {
+          provide: FileService,
+          useValue: mockFileService,
+        },
+        {
+          provide: S3Service,
+          useValue: mockS3Service,
+        },
+        {
+          provide: BunnyStreamService,
+          useValue: mockBunnyStreamService,
+        },
+        {
+          provide: "CACHE_MANAGER",
+          useValue: mockCacheManager,
+        },
+      ],
+    });
+
+    app = e2e.app;
+    db = app.get(DB);
+    baseDb = app.get(DB_ADMIN);
+    masterCourseService = app.get(MasterCourseService);
+    aiRepository = app.get(AiRepository);
+    runAsTenant = e2e.runAsTenant;
+    sourceTenantId = e2e.defaultTenantId;
+
+    userFactory = createUserFactory(db);
+    settingsFactory = createSettingsFactory(db);
+    categoryFactory = createCategoryFactory(db);
+    courseFactory = createCourseFactory(db);
+    chapterFactory = createChapterFactory(db);
+
+    await baseDb
+      .update(tenants)
+      .set({
+        name: "Source Managing Tenant",
+        host: SOURCE_HOST,
+        isManaging: true,
+      })
+      .where(eq(tenants.id, sourceTenantId));
+
+    const [existingTargetTenant] = await baseDb
+      .select({ id: tenants.id })
+      .from(tenants)
+      .where(eq(tenants.host, TARGET_HOST))
+      .limit(1);
+
+    if (existingTargetTenant) {
+      targetTenantId = existingTargetTenant.id;
+      await baseDb
+        .update(tenants)
+        .set({
+          isManaging: false,
+          name: "Target Tenant",
+          status: TENANT_STATUSES.ACTIVE,
+        })
+        .where(eq(tenants.id, targetTenantId));
+    } else {
+      const [createdTargetTenant] = await baseDb
+        .insert(tenants)
+        .values({
+          name: "Target Tenant",
+          host: TARGET_HOST,
+          isManaging: false,
+        })
+        .returning({ id: tenants.id });
+
+      targetTenantId = createdTargetTenant.id;
+    }
+  });
+
+  afterAll(async () => {
+    await app.close();
+  });
+
+  const truncateMasterCourseTables = async () => {
+    await truncateTables(baseDb, [
+      "outbox_events",
+      "course_transfer_operations",
+      "course_transfer_streams",
+      "master_course_entity_map",
+      "master_course_exports",
+      "resource_entity",
+      "resources",
+      "assessment_question_choice_options",
+      "assessment_questions",
+      "assessments",
+      "ai_mentor_threads",
+      "ai_judge_score_guidance",
+      "ai_judge_blocking_errors",
+      "ai_judge_criteria",
+      "ai_judge_configurations",
+      "ai_mentor_lessons",
+      "lessons",
+      "chapters",
+      "courses_summary_stats",
+      "courses",
+      "categories",
+      "credentials",
+      "user_onboarding",
+      "users",
+      "settings",
+    ]);
+  };
+
+  beforeEach(async () => {
+    await truncateMasterCourseTables();
+    jest.clearAllMocks();
+    mockS3Service.getFileExists.mockImplementation(async (key: string) => {
+      if (key.includes("/master-course/")) return false;
+      return true;
+    });
+    mockS3Service.listFileKeysByPrefix.mockResolvedValue([]);
+    mockS3Service.isConfigured.mockReturnValue(true);
+    mockBunnyStreamService.isConfigured.mockResolvedValue(false);
+    mockBunnyStreamService.getMediaConfigurationSignature.mockResolvedValue("source-target-same");
+
+    await runAsTenant(sourceTenantId, async () => {
+      await settingsFactory.create({ userId: null });
+    });
+
+    await runAsTenant(targetTenantId, async () => {
+      await settingsFactory.create({ userId: null });
+    });
+  });
+
+  afterEach(async () => {
+    await truncateMasterCourseTables();
+  });
+
+  const setupAndExport = async (options?: {
+    createMatchingTargetCategory?: boolean;
+    beforeExport?: (setup: ExportSetup) => Promise<void>;
+    afterExportAccepted?: (setup: ExportSetup & { operationId: string }) => Promise<void>;
+  }): Promise<
+    ExportSetup & {
+      sourceCookie: string[];
+      targetCookie: string[];
+      targetCourseId: string;
+      targetCategoryId?: string;
+    }
+  > => {
+    const sourceAdmin = await runAsTenant(sourceTenantId, async () =>
+      userFactory
+        .withCredentials({ password: PASSWORD })
+        .withAdminSettings(db)
+        .create({
+          email: `admin+source-${faker.string.alphanumeric(8)}@example.com`,
+          role: SYSTEM_ROLE_SLUGS.ADMIN,
+          tenantId: sourceTenantId,
+        }),
+    );
+
+    const targetAdmin = await runAsTenant(targetTenantId, async () =>
+      userFactory
+        .withCredentials({ password: PASSWORD })
+        .withAdminSettings(db)
+        .create({
+          email: `admin+target-${faker.string.alphanumeric(8)}@example.com`,
+          role: SYSTEM_ROLE_SLUGS.ADMIN,
+          tenantId: targetTenantId,
+        }),
+    );
+
+    const categoryTitle = `Export category ${faker.string.nanoid(8)}`;
+
+    const sourceData = await runAsTenant(sourceTenantId, async () => {
+      const category = await categoryFactory.create({ title: categoryTitle });
+      await db
+        .update(categories)
+        .set({
+          title: buildJsonbFieldWithMultipleEntries({
+            en: categoryTitle,
+            pl: "Kategoria eksportu",
+          }),
+          baseLanguage: "en",
+          availableLocales: ["en", "pl"],
+        })
+        .where(eq(categories.id, category.id));
+
+      const sourceCourse = await courseFactory.create({
+        title: "Master Source Course",
+        description: "Master Source Description",
+        status: "published",
+        authorId: sourceAdmin.id,
+        categoryId: category.id,
+        chapterCount: 1,
+        priceInCents: 4999,
+        currency: "eur",
+        stripeProductId: "prod_master_source",
+        stripePriceId: "price_master_source",
+      });
+
+      await db
+        .update(courses)
+        .set({
+          title: buildJsonbFieldWithMultipleEntries({
+            en: "Master Source Course",
+            pl: "Kurs zrodlowy master",
+          }),
+          description: buildJsonbFieldWithMultipleEntries({
+            en: "Master Source Description",
+            pl: "Opis kursu zrodlowego master",
+          }),
+          learningOutcomes: {
+            en: ["Understand the source course"],
+            pl: ["Zrozumiec kurs zrodlowy"],
+          },
+          authorMetadata: {
+            authorId: sourceAdmin.id,
+            firstName: sourceAdmin.firstName,
+            lastName: sourceAdmin.lastName,
+            jobTitle: null,
+            description: null,
+            profilePictureReference: sourceAdmin.avatarReference,
+          },
+          showAuthorSection: false,
+          thumbnailPositionY: 72,
+          availableLocales: ["en", "pl"],
+        })
+        .where(eq(courses.id, sourceCourse.id));
+
+      const sourceChapter = await chapterFactory.create({
+        title: "Master Source Chapter",
+        courseId: sourceCourse.id,
+        authorId: sourceAdmin.id,
+        displayOrder: 7,
+        isFreemium: true,
+        lessonCount: 1,
+      });
+
+      await db
+        .update(chapters)
+        .set({
+          title: buildJsonbFieldWithMultipleEntries({
+            en: "Master Source Chapter",
+            pl: "Rozdzial zrodlowy master",
+          }),
+        })
+        .where(eq(chapters.id, sourceChapter.id));
+
+      const [sourceLesson] = await db
+        .insert(lessons)
+        .values({
+          id: faker.string.uuid(),
+          chapterId: sourceChapter.id,
+          type: "content",
+          title: buildJsonbField("en", "Master Source Lesson"),
+          description: buildJsonbField("en", "Master Source Lesson Description"),
+          displayOrder: 1,
+        })
+        .returning({ id: lessons.id });
+
+      return {
+        sourceCourseId: sourceCourse.id,
+        sourceChapterId: sourceChapter.id,
+        sourceLessonId: sourceLesson.id,
+      };
+    });
+
+    const sourceCookie = ensureCookieArray(await cookieFor(sourceAdmin, app, SOURCE_HOST));
+    const targetCookie = ensureCookieArray(await cookieFor(targetAdmin, app, TARGET_HOST));
+
+    await options?.beforeExport?.({
+      ...sourceData,
+      sourceAdmin,
+      targetAdmin,
+    });
+
+    const targetCategoryId = options?.createMatchingTargetCategory
+      ? await runAsTenant(targetTenantId, async () => {
+          const category = await categoryFactory.create({ title: categoryTitle });
+          return category.id;
+        })
+      : undefined;
+
+    const exportResponse = await withTenantHost(
+      request(app.getHttpServer())
+        .post(`/api/course/master/${sourceData.sourceCourseId}/export`)
+        .set("Cookie", sourceCookie)
+        .send({ targetTenantIds: [targetTenantId] }),
+      SOURCE_HOST,
+    ).expect(201);
+
+    expect(exportResponse.body.data.jobs).toHaveLength(1);
+    expect(exportResponse.body.data.jobs[0].queued).toBe(true);
+
+    const exportJobId = exportResponse.body.data.jobs[0].reason;
+    expect(typeof exportJobId).toBe("string");
+
+    await options?.afterExportAccepted?.({
+      ...sourceData,
+      sourceAdmin,
+      targetAdmin,
+      operationId: exportJobId,
+    });
+
+    await waitForOutbox(
+      app,
+      async () => {
+        const response = await withTenantHost(
+          request(app.getHttpServer())
+            .get(`/api/course/master/export-jobs/${exportJobId}`)
+            .set("Cookie", sourceCookie),
+          SOURCE_HOST,
+        ).expect(200);
+
+        return response.body.data as {
+          state: string;
+          failedReason: string | null;
+        };
+      },
+      (job) => {
+        if (job.state === "failed") {
+          throw new Error(`Export job failed: ${job.failedReason ?? "unknown reason"}`);
+        }
+
+        return job.state === "completed";
+      },
+    );
+
+    const exportsData = await waitForOutbox(
+      app,
+      async () => {
+        const response = await withTenantHost(
+          request(app.getHttpServer())
+            .get(`/api/course/master/${sourceData.sourceCourseId}/exports`)
+            .set("Cookie", sourceCookie),
+          SOURCE_HOST,
+        ).expect(200);
+
+        return response.body.data as Array<{
+          targetCourseId: string;
+          lastSyncedAt: string | null;
+          targetTenantId: string;
+        }>;
+      },
+      (exportsList) =>
+        exportsList.length === 1 &&
+        exportsList[0].targetTenantId === targetTenantId &&
+        exportsList[0].targetCourseId !== sourceData.sourceCourseId &&
+        Boolean(exportsList[0].lastSyncedAt),
+    );
+
+    return {
+      ...sourceData,
+      sourceAdmin,
+      targetAdmin,
+      sourceCookie,
+      targetCookie,
+      targetCourseId: exportsData[0].targetCourseId,
+      targetCategoryId,
+    };
+  };
+
+  it("forbids export when caller is not a managing-tenant admin", async () => {
+    const targetAdmin = await runAsTenant(targetTenantId, async () =>
+      userFactory
+        .withCredentials({ password: PASSWORD })
+        .withAdminSettings(db)
+        .create({
+          email: `admin+non-managing-${faker.string.alphanumeric(8)}@example.com`,
+          role: SYSTEM_ROLE_SLUGS.ADMIN,
+          tenantId: targetTenantId,
+        }),
+    );
+
+    const { courseId } = await runAsTenant(targetTenantId, async () => {
+      const category = await categoryFactory.create({ title: "Non-managing category" });
+      const createdCourse = await courseFactory.create({
+        title: "Non-managing source",
+        description: "Should not be exportable by this tenant",
+        authorId: targetAdmin.id,
+        categoryId: category.id,
+      });
+
+      return { courseId: createdCourse.id };
+    });
+
+    const targetCookie = ensureCookieArray(await cookieFor(targetAdmin, app, TARGET_HOST));
+
+    await withTenantHost(
+      request(app.getHttpServer())
+        .post(`/api/course/master/${courseId}/export`)
+        .set("Cookie", targetCookie)
+        .send({ targetTenantIds: [sourceTenantId] }),
+      TARGET_HOST,
+    ).expect(403);
+  });
+
+  it("returns export candidates excluding source tenant with export summary", async () => {
+    const { sourceCourseId, sourceCookie } = await setupAndExport();
+
+    const response = await withTenantHost(
+      request(app.getHttpServer())
+        .get(`/api/course/master/${sourceCourseId}/export-candidates`)
+        .set("Cookie", sourceCookie),
+      SOURCE_HOST,
+    ).expect(200);
+
+    const candidateTenants = response.body.data.tenants as Array<{
+      id: string;
+      isExported: boolean;
+    }>;
+
+    const targetTenantCandidate = candidateTenants.find((tenant) => tenant.id === targetTenantId);
+
+    expect(targetTenantCandidate).toBeDefined();
+    expect(targetTenantCandidate?.isExported).toBe(true);
+    expect(candidateTenants.some((tenant) => tenant.id === sourceTenantId)).toBe(false);
+    expect(response.body.data.summary.totalTenants).toBe(candidateTenants.length);
+    expect(response.body.data.summary.exportedCount).toBe(1);
+    expect(response.body.data.summary.remainingCount).toBe(candidateTenants.length - 1);
+  });
+
+  it("excludes inactive tenants from course sharing candidates and export", async () => {
+    const { sourceCourseId, sourceCookie } = await setupAndExport();
+
+    await baseDb
+      .update(tenants)
+      .set({ status: TENANT_STATUSES.INACTIVE })
+      .where(eq(tenants.id, targetTenantId));
+
+    try {
+      const response = await withTenantHost(
+        request(app.getHttpServer())
+          .get(`/api/course/master/${sourceCourseId}/export-candidates`)
+          .set("Cookie", sourceCookie),
+        SOURCE_HOST,
+      ).expect(200);
+
+      expect(
+        response.body.data.tenants.some((tenant: { id: string }) => tenant.id === targetTenantId),
+      ).toBe(false);
+
+      await withTenantHost(
+        request(app.getHttpServer())
+          .post(`/api/course/master/${sourceCourseId}/export`)
+          .set("Cookie", sourceCookie)
+          .send({ targetTenantIds: [targetTenantId] }),
+        SOURCE_HOST,
+      ).expect(400);
+    } finally {
+      await baseDb
+        .update(tenants)
+        .set({ status: TENANT_STATUSES.ACTIVE })
+        .where(eq(tenants.id, targetTenantId));
+    }
+  });
+
+  it("exports source course to target tenant and keeps exported copy readonly", async () => {
+    const {
+      sourceAdmin,
+      sourceCourseId,
+      sourceChapterId,
+      sourceLessonId,
+      targetCourseId,
+      targetCookie,
+    } = await setupAndExport();
+
+    const targetCourseResponse = await withTenantHost(
+      request(app.getHttpServer())
+        .get("/api/course/beta-course-by-id")
+        .query({ id: targetCourseId, language: "en" })
+        .set("Cookie", targetCookie),
+      TARGET_HOST,
+    ).expect(200);
+
+    expect(targetCourseResponse.body.data.id).toBe(targetCourseId);
+    expect(targetCourseResponse.body.data.originType).toBe("exported");
+    expect(targetCourseResponse.body.data.isContentReadonly).toBe(true);
+    expect(targetCourseResponse.body.data.title).toBe("Master Source Course");
+    expect(targetCourseResponse.body.data.description).toBe("Master Source Description");
+    expect(targetCourseResponse.body.data.chapters[0].title).toBe("Master Source Chapter");
+    expect(targetCourseResponse.body.data.chapters[0].lessons[0].title).toBe(
+      "Master Source Lesson",
+    );
+
+    const targetCoursesResponse = await withTenantHost(
+      request(app.getHttpServer())
+        .get("/api/course/all")
+        .query({ page: 1, perPage: 100, language: "en" })
+        .set("Cookie", targetCookie),
+      TARGET_HOST,
+    ).expect(200);
+
+    expect(
+      targetCoursesResponse.body.data.find((course: { id: string }) => course.id === targetCourseId)
+        .author,
+    ).toBe(`${sourceAdmin.firstName} ${sourceAdmin.lastName}`);
+
+    await runAsTenant(targetTenantId, async () => {
+      const [targetCourse] = await db
+        .select({
+          title: courses.title,
+          description: courses.description,
+          learningOutcomes: courses.learningOutcomes,
+          showAuthorSection: courses.showAuthorSection,
+          thumbnailPositionY: courses.thumbnailPositionY,
+          status: courses.status,
+          priceInCents: courses.priceInCents,
+          currency: courses.currency,
+          stripeProductId: courses.stripeProductId,
+          stripePriceId: courses.stripePriceId,
+          baseLanguage: courses.baseLanguage,
+          availableLocales: courses.availableLocales,
+          categoryId: courses.categoryId,
+          authorMetadata: courses.authorMetadata,
+          authorMetadataType: sql<string>`jsonb_typeof(${courses.authorMetadata})`,
+        })
+        .from(courses)
+        .where(eq(courses.id, targetCourseId))
+        .limit(1);
+
+      expect(targetCourse).toBeDefined();
+      expect(targetCourse.authorMetadataType).toBe("object");
+      expect(targetCourse.authorMetadata).toMatchObject({
+        authorId: sourceAdmin.id,
+        firstName: sourceAdmin.firstName,
+        lastName: sourceAdmin.lastName,
+      });
+      expect(targetCourse.title).toEqual({
+        en: "Master Source Course",
+        pl: "Kurs zrodlowy master",
+      });
+      expect(targetCourse.description).toEqual({
+        en: "Master Source Description",
+        pl: "Opis kursu zrodlowego master",
+      });
+      expect(targetCourse.learningOutcomes).toEqual({
+        en: ["Understand the source course"],
+        pl: ["Zrozumiec kurs zrodlowy"],
+      });
+      expect(targetCourse.showAuthorSection).toBe(false);
+      expect(targetCourse.thumbnailPositionY).toBe(72);
+      expect(targetCourse.status).toBe("draft");
+      expect(targetCourse.priceInCents).toBe(0);
+      expect(targetCourse.currency).toBe("eur");
+      expect(targetCourse.stripeProductId).toBeNull();
+      expect(targetCourse.stripePriceId).toBeNull();
+      expect(targetCourse.baseLanguage).toBe("en");
+      expect(targetCourse.availableLocales).toEqual(["en", "pl"]);
+      const [targetCategory] = await db
+        .select({
+          title: categories.title,
+          baseLanguage: categories.baseLanguage,
+          availableLocales: categories.availableLocales,
+        })
+        .from(categories)
+        .where(eq(categories.id, targetCourse.categoryId))
+        .limit(1);
+
+      expect(targetCategory).toBeDefined();
+      expect(targetCategory.title).toEqual({
+        en: expect.stringMatching(/^Export category /),
+        pl: "Kategoria eksportu",
+      });
+      expect(targetCategory.baseLanguage).toBe("en");
+      expect(targetCategory.availableLocales).toEqual(["en", "pl"]);
+
+      const [targetChapter] = await db
+        .select({
+          title: chapters.title,
+          courseId: chapters.courseId,
+          authorId: chapters.authorId,
+          isFreemium: chapters.isFreemium,
+          displayOrder: chapters.displayOrder,
+          lessonCount: chapters.lessonCount,
+        })
+        .from(chapters)
+        .where(eq(chapters.courseId, targetCourseId))
+        .limit(1);
+
+      expect(targetChapter).toBeDefined();
+      expect(targetChapter.title).toEqual({
+        en: "Master Source Chapter",
+        pl: "Rozdzial zrodlowy master",
+      });
+      expect(targetChapter.courseId).toBe(targetCourseId);
+      expect(targetChapter.authorId).toEqual(expect.any(String));
+      expect(targetChapter.isFreemium).toBe(true);
+      expect(targetChapter.displayOrder).toBe(7);
+      expect(targetChapter.lessonCount).toBe(1);
+    });
+
+    await withTenantHost(
+      request(app.getHttpServer())
+        .patch(`/api/course/${targetCourseId}`)
+        .set("Cookie", targetCookie)
+        .send({ title: "Should be blocked", language: "en" }),
+      TARGET_HOST,
+    ).expect(403);
+
+    const targetLessonId = targetCourseResponse.body.data.chapters[0].lessons[0].id as string;
+
+    await withTenantHost(
+      request(app.getHttpServer())
+        .patch("/api/lesson/beta-update-lesson")
+        .query({ id: targetLessonId })
+        .set("Cookie", targetCookie)
+        .send({ title: "Blocked lesson update", language: "en" }),
+      TARGET_HOST,
+    ).expect(403);
+
+    await runAsTenant(sourceTenantId, async () => {
+      const [sourceCourse] = await db
+        .select({ id: courses.id })
+        .from(courses)
+        .where(eq(courses.id, sourceCourseId))
+        .limit(1);
+
+      const [sourceChapter] = await db
+        .select({ id: chapters.id })
+        .from(chapters)
+        .where(eq(chapters.id, sourceChapterId))
+        .limit(1);
+
+      const [sourceLesson] = await db
+        .select({ id: lessons.id })
+        .from(lessons)
+        .where(eq(lessons.id, sourceLessonId))
+        .limit(1);
+
+      expect(sourceCourse).toBeDefined();
+      expect(sourceChapter).toBeDefined();
+      expect(sourceLesson).toBeDefined();
+    });
+  });
+
+  it("syncs course overview fields while preserving the target course status", async () => {
+    const { sourceAdmin, sourceCourseId, targetCourseId } = await setupAndExport();
+    const updatedTitle = "Updated Master Source Course";
+
+    await runAsTenant(targetTenantId, () =>
+      db.update(courses).set({ status: "published" }).where(eq(courses.id, targetCourseId)),
+    );
+    await runAsTenant(sourceTenantId, () =>
+      db
+        .update(courses)
+        .set({
+          title: buildJsonbFieldWithMultipleEntries({
+            en: updatedTitle,
+            pl: "Kurs zrodlowy master",
+          }),
+          learningOutcomes: {
+            en: ["Apply the updated course"],
+            pl: ["Zastosowac zaktualizowany kurs"],
+          },
+          showAuthorSection: true,
+          thumbnailPositionY: 28,
+          authorMetadata: {
+            authorId: sourceAdmin.id,
+            firstName: "Updated",
+            lastName: "Source Author",
+            jobTitle: null,
+            description: null,
+            profilePictureReference: null,
+          },
+        })
+        .where(eq(courses.id, sourceCourseId)),
+    );
+
+    const [exportLink] = await baseDb
+      .select({ id: masterCourseExports.id })
+      .from(masterCourseExports)
+      .where(eq(masterCourseExports.sourceCourseId, sourceCourseId))
+      .limit(1);
+
+    expect(exportLink).toBeDefined();
+    await masterCourseService.transferFromSyncJob({
+      exportId: exportLink.id,
+      sourceCourseId,
+      sourceTenantId,
+      targetTenantId,
+      triggerEventType: "UpdateCourseEvent",
+    });
+
+    const syncedTargetCourse = await runAsTenant(targetTenantId, async () => {
+      const [targetCourse] = await db
+        .select({
+          title: courses.title,
+          learningOutcomes: courses.learningOutcomes,
+          showAuthorSection: courses.showAuthorSection,
+          thumbnailPositionY: courses.thumbnailPositionY,
+          status: courses.status,
+          authorMetadata: courses.authorMetadata,
+          authorMetadataType: sql<string>`jsonb_typeof(${courses.authorMetadata})`,
+        })
+        .from(courses)
+        .where(eq(courses.id, targetCourseId))
+        .limit(1);
+
+      return targetCourse;
+    });
+
+    expect(syncedTargetCourse?.title.en).toBe(updatedTitle);
+    expect(syncedTargetCourse?.learningOutcomes).toEqual({
+      en: ["Apply the updated course"],
+      pl: ["Zastosowac zaktualizowany kurs"],
+    });
+    expect(syncedTargetCourse?.showAuthorSection).toBe(true);
+    expect(syncedTargetCourse?.thumbnailPositionY).toBe(28);
+    expect(syncedTargetCourse?.status).toBe("published");
+    expect(syncedTargetCourse?.authorMetadataType).toBe("object");
+    expect(syncedTargetCourse?.authorMetadata).toMatchObject({
+      authorId: sourceAdmin.id,
+      firstName: "Updated",
+      lastName: "Source Author",
+    });
+  });
+
+  it("syncs bulk source category changes to exported courses and creates missing target category", async () => {
+    const { sourceCourseId, sourceCookie, targetCourseId } = await setupAndExport();
+    const categoryTitle = `Bulk synced category ${faker.string.nanoid(8)}`;
+
+    const sourceCategoryId = await runAsTenant(sourceTenantId, async () => {
+      const category = await categoryFactory.create({ title: categoryTitle });
+
+      await db
+        .update(categories)
+        .set({
+          title: buildJsonbFieldWithMultipleEntries({
+            en: categoryTitle,
+            pl: "Zbiorczo synchronizowana kategoria",
+          }),
+          baseLanguage: "en",
+          availableLocales: ["en", "pl"],
+        })
+        .where(eq(categories.id, category.id));
+
+      return category.id;
+    });
+
+    await withTenantHost(
+      request(app.getHttpServer())
+        .patch("/api/course/bulk/category")
+        .set("Cookie", sourceCookie)
+        .send({
+          ids: [sourceCourseId],
+          categoryId: sourceCategoryId,
+        }),
+      SOURCE_HOST,
+    ).expect(200);
+
+    await waitForOutbox(
+      app,
+      async () =>
+        runAsTenant(targetTenantId, async () => {
+          const [targetCourse] = await db
+            .select({
+              categoryTitle: categories.title,
+              categoryBaseLanguage: categories.baseLanguage,
+              categoryAvailableLocales: categories.availableLocales,
+            })
+            .from(courses)
+            .innerJoin(categories, eq(categories.id, courses.categoryId))
+            .where(eq(courses.id, targetCourseId))
+            .limit(1);
+
+          return targetCourse;
+        }),
+      (targetCourse) =>
+        targetCourse?.categoryTitle?.en === categoryTitle &&
+        targetCourse.categoryTitle.pl === "Zbiorczo synchronizowana kategoria" &&
+        targetCourse.categoryBaseLanguage === "en" &&
+        targetCourse.categoryAvailableLocales.includes("pl"),
+      20000,
+    );
+  });
+
+  it("returns already-linked and keeps single export link when exporting same course twice", async () => {
+    const { sourceCourseId, sourceCookie } = await setupAndExport();
+
+    const secondExportResponse = await withTenantHost(
+      request(app.getHttpServer())
+        .post(`/api/course/master/${sourceCourseId}/export`)
+        .set("Cookie", sourceCookie)
+        .send({ targetTenantIds: [targetTenantId] }),
+      SOURCE_HOST,
+    ).expect(201);
+
+    expect(secondExportResponse.body.data.jobs).toHaveLength(1);
+    expect(secondExportResponse.body.data.jobs[0].queued).toBe(false);
+    expect(secondExportResponse.body.data.jobs[0].reason).toBe("already-linked");
+
+    const links = await baseDb
+      .select({ id: masterCourseExports.id })
+      .from(masterCourseExports)
+      .where(
+        and(
+          eq(masterCourseExports.sourceTenantId, sourceTenantId),
+          eq(masterCourseExports.sourceCourseId, sourceCourseId),
+          eq(masterCourseExports.targetTenantId, targetTenantId),
+        ),
+      );
+
+    expect(links).toHaveLength(1);
+  });
+
+  it("copies every missing course cover image variant when the target has a partial copy", async () => {
+    const sourceThumbnailReference = `${sourceTenantId}/course/variants/${faker.string.uuid()}.webp`;
+    const sourceStem = sourceThumbnailReference.replace(/\.webp$/, "");
+    const sourceVariantKeys = ["160w", "512w", "2560w"].map(
+      (quality) => `${sourceStem}-${quality}.webp`,
+    );
+
+    mockS3Service.listFileKeysByPrefix.mockImplementation(async (prefix: string) =>
+      prefix === `${sourceStem}-` ? sourceVariantKeys : [],
+    );
+
+    mockS3Service.getFileExists.mockImplementation(async (key: string) => {
+      if (!key.includes("/master-course/")) return false;
+      return key.endsWith("-512w.webp");
+    });
+
+    const { sourceCourseId, targetCourseId } = await setupAndExport({
+      beforeExport: async ({ sourceCourseId }) => {
+        await runAsTenant(sourceTenantId, async () => {
+          await db
+            .update(courses)
+            .set({ thumbnailS3Key: sourceThumbnailReference })
+            .where(eq(courses.id, sourceCourseId));
+        });
+      },
+    });
+
+    const [targetCourse] = await runAsTenant(targetTenantId, () =>
+      db
+        .select({ thumbnailS3Key: courses.thumbnailS3Key })
+        .from(courses)
+        .where(eq(courses.id, targetCourseId))
+        .limit(1),
+    );
+
+    expect(targetCourse.thumbnailS3Key).toContain(`${targetTenantId}/master-course/`);
+    expect(targetCourse.thumbnailS3Key).toContain(`/${targetCourseId}/variants/`);
+
+    const [exportLink] = await baseDb
+      .select({ id: masterCourseExports.id })
+      .from(masterCourseExports)
+      .where(
+        and(
+          eq(masterCourseExports.sourceTenantId, sourceTenantId),
+          eq(masterCourseExports.sourceCourseId, sourceCourseId),
+          eq(masterCourseExports.targetTenantId, targetTenantId),
+        ),
+      )
+      .limit(1);
+
+    expect(targetCourse.thumbnailS3Key).not.toContain(`/${exportLink.id}/`);
+    expect(mockS3Service.listFileKeysByPrefix).toHaveBeenCalledWith(`${sourceStem}-`);
+
+    const targetStem = targetCourse.thumbnailS3Key!.replace(/\.webp$/, "");
+    const targetVariantKeys = sourceVariantKeys.map(
+      (sourceVariantKey) => `${targetStem}${sourceVariantKey.slice(sourceStem.length)}`,
+    );
+
+    expect(new Set(targetVariantKeys).size).toBe(sourceVariantKeys.length);
+
+    for (const [index, sourceVariantKey] of sourceVariantKeys.entries()) {
+      const targetVariantKey = targetVariantKeys[index];
+
+      if (targetVariantKey.endsWith("-512w.webp")) {
+        expect(mockS3Service.copyFile).not.toHaveBeenCalledWith(
+          sourceVariantKey,
+          targetVariantKey,
+          "image/webp",
+        );
+        continue;
+      }
+
+      expect(mockS3Service.copyFile).toHaveBeenCalledWith(
+        sourceVariantKey,
+        targetVariantKey,
+        "image/webp",
+      );
+    }
+  });
+
+  it("copies and resynchronizes the complete localized AI Judge configuration", async () => {
+    let sourceConfigurationId = "";
+    let sourceAiMentorId = "";
+    const sourceVoiceReferences = {
+      en: "cartesia-source-english",
+      pl: "cartesia-source-polish",
+    };
+
+    const { sourceCourseId, targetCourseId } = await setupAndExport({
+      beforeExport: async ({ sourceLessonId }) => {
+        await runAsTenant(sourceTenantId, async () => {
+          await db
+            .update(lessons)
+            .set({ type: LESSON_TYPES.AI_MENTOR })
+            .where(eq(lessons.id, sourceLessonId));
+
+          const [sourceAiMentor] = await db
+            .insert(aiMentorLessons)
+            .values({
+              lessonId: sourceLessonId,
+            })
+            .returning({ id: aiMentorLessons.id });
+
+          const [sourceMentorConfiguration] = await db
+            .insert(aiMentorConfigurations)
+            .values({
+              aiMentorLessonId: sourceAiMentor.id,
+              type: AI_MENTOR_TYPE.ROLEPLAY,
+              additionalInstructions: buildJsonbFieldWithMultipleEntries({
+                en: "Run a discovery conversation",
+                pl: "Przeprowadz rozmowe discovery",
+              }),
+            })
+            .returning({ id: aiMentorConfigurations.id });
+
+          await db.insert(aiMentorRoleplayConfigurations).values({
+            configurationId: sourceMentorConfiguration.id,
+            difficulty: AI_MENTOR_ROLEPLAY_DIFFICULTY.REALISTIC,
+          });
+          sourceAiMentorId = sourceAiMentor.id;
+
+          await db
+            .update(aiMentorLessons)
+            .set({
+              name: {
+                en: "Discovery Mentor",
+                pl: "Mentor discovery",
+              },
+              voiceMode: AI_MENTOR_VOICE_MODE.CUSTOM,
+              ttsPreset: AI_MENTOR_TTS_PRESET.FEMALE,
+              customTtsReference: sourceVoiceReferences,
+            })
+            .where(eq(aiMentorLessons.id, sourceAiMentor.id));
+
+          const [sourceConfiguration] = await db
+            .insert(aiJudgeConfigurations)
+            .values({
+              aiMentorLessonId: sourceAiMentor.id,
+              taskGoal: buildJsonbFieldWithMultipleEntries({
+                en: "Discover the client's needs",
+                pl: "Odkryj potrzeby klienta",
+              }),
+              passingThresholdPercent: 70,
+            })
+            .returning({ id: aiJudgeConfigurations.id });
+          sourceConfigurationId = sourceConfiguration.id;
+
+          const [sourceCriterion] = await db
+            .insert(aiJudgeCriteria)
+            .values({
+              configurationId: sourceConfiguration.id,
+              title: buildJsonbFieldWithMultipleEntries({
+                en: "Needs discovery",
+                pl: "Badanie potrzeb",
+              }),
+              expectedBehavior: buildJsonbFieldWithMultipleEntries({
+                en: "Asks relevant open questions",
+                pl: "Zadaje trafne pytania otwarte",
+              }),
+              maxScore: 2,
+            })
+            .returning({ id: aiJudgeCriteria.id });
+
+          await db.insert(aiJudgeScoreGuidance).values([
+            {
+              criterionId: sourceCriterion.id,
+              score: 0,
+              description: buildJsonbFieldWithMultipleEntries({
+                en: "Does not explore needs",
+                pl: "Nie bada potrzeb",
+              }),
+              example: buildJsonbFieldWithMultipleEntries({
+                en: "Immediately presents a solution",
+                pl: "Od razu przedstawia rozwiazanie",
+              }),
+            },
+            {
+              criterionId: sourceCriterion.id,
+              score: 1,
+              description: buildJsonbFieldWithMultipleEntries({
+                en: "Explores one relevant need",
+                pl: "Bada jedna istotna potrzebe",
+              }),
+              example: null,
+            },
+            {
+              criterionId: sourceCriterion.id,
+              score: 2,
+              description: buildJsonbFieldWithMultipleEntries({
+                en: "Explores the important needs",
+                pl: "Bada najwazniejsze potrzeby",
+              }),
+              example: buildJsonbFieldWithMultipleEntries({
+                en: "What outcome matters most?",
+                pl: "Jaki rezultat jest najwazniejszy?",
+              }),
+            },
+          ]);
+
+          await db.insert(aiJudgeBlockingErrors).values({
+            configurationId: sourceConfiguration.id,
+            description: buildJsonbFieldWithMultipleEntries({
+              en: "Invents unsupported product claims",
+              pl: "Wymysla niepotwierdzone informacje o produkcie",
+            }),
+          });
+        });
+      },
+    });
+
+    const getTargetGraph = () =>
+      runAsTenant(targetTenantId, async () => {
+        const [configuration] = await db
+          .select({
+            id: aiJudgeConfigurations.id,
+            taskGoal: aiJudgeConfigurations.taskGoal,
+            passingThresholdPercent: aiJudgeConfigurations.passingThresholdPercent,
+          })
+          .from(aiJudgeConfigurations)
+          .innerJoin(
+            aiMentorLessons,
+            eq(aiMentorLessons.id, aiJudgeConfigurations.aiMentorLessonId),
+          )
+          .innerJoin(lessons, eq(lessons.id, aiMentorLessons.lessonId))
+          .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+          .where(eq(chapters.courseId, targetCourseId))
+          .limit(1);
+
+        const criteria = await db
+          .select()
+          .from(aiJudgeCriteria)
+          .where(eq(aiJudgeCriteria.configurationId, configuration.id))
+          .orderBy(asc(aiJudgeCriteria.createdAt));
+        const scoreGuidance = await db
+          .select()
+          .from(aiJudgeScoreGuidance)
+          .where(
+            inArray(
+              aiJudgeScoreGuidance.criterionId,
+              criteria.map(({ id }) => id),
+            ),
+          )
+          .orderBy(asc(aiJudgeScoreGuidance.score));
+        const blockingErrors = await db
+          .select()
+          .from(aiJudgeBlockingErrors)
+          .where(eq(aiJudgeBlockingErrors.configurationId, configuration.id));
+
+        return { configuration, criteria, scoreGuidance, blockingErrors };
+      });
+
+    const getTargetVoiceConfig = () =>
+      runAsTenant(targetTenantId, async () => {
+        const [voiceConfig] = await db
+          .select({
+            voiceMode: aiMentorLessons.voiceMode,
+            ttsPreset: aiMentorLessons.ttsPreset,
+            customTtsReference: aiMentorLessons.customTtsReference,
+            name: aiMentorLessons.name,
+          })
+          .from(aiMentorLessons)
+          .innerJoin(lessons, eq(lessons.id, aiMentorLessons.lessonId))
+          .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+          .where(eq(chapters.courseId, targetCourseId))
+          .limit(1);
+
+        return voiceConfig;
+      });
+
+    const initialTargetGraph = await getTargetGraph();
+    expect(await getTargetVoiceConfig()).toMatchObject({
+      voiceMode: AI_MENTOR_VOICE_MODE.CUSTOM,
+      ttsPreset: AI_MENTOR_TTS_PRESET.FEMALE,
+      customTtsReference: sourceVoiceReferences,
+      name: {
+        en: "Discovery Mentor",
+        pl: "Mentor discovery",
+      },
+    });
+    expect(
+      mockS3Service.copyFile.mock.calls.some(
+        ([reference]) => reference === sourceVoiceReferences.en,
+      ),
+    ).toBe(false);
+    expect(
+      mockS3Service.copyFile.mock.calls.some(
+        ([reference]) => reference === sourceVoiceReferences.pl,
+      ),
+    ).toBe(false);
+    expect(initialTargetGraph.configuration).toMatchObject({
+      taskGoal: {
+        en: "Discover the client's needs",
+        pl: "Odkryj potrzeby klienta",
+      },
+      passingThresholdPercent: 70,
+    });
+    expect(initialTargetGraph.configuration.id).not.toBe(sourceConfigurationId);
+    expect(initialTargetGraph.criteria).toEqual([
+      expect.objectContaining({
+        title: { en: "Needs discovery", pl: "Badanie potrzeb" },
+        expectedBehavior: {
+          en: "Asks relevant open questions",
+          pl: "Zadaje trafne pytania otwarte",
+        },
+        maxScore: 2,
+      }),
+    ]);
+    expect(initialTargetGraph.scoreGuidance).toEqual([
+      expect.objectContaining({
+        score: 0,
+        example: expect.objectContaining({ en: expect.any(String) }),
+      }),
+      expect.objectContaining({ score: 1, example: null }),
+      expect.objectContaining({
+        score: 2,
+        example: expect.objectContaining({ pl: expect.any(String) }),
+      }),
+    ]);
+    expect(initialTargetGraph.blockingErrors).toEqual([
+      expect.objectContaining({
+        description: {
+          en: "Invents unsupported product claims",
+          pl: "Wymysla niepotwierdzone informacje o produkcie",
+        },
+      }),
+    ]);
+
+    await runAsTenant(sourceTenantId, async () => {
+      await db
+        .update(aiJudgeConfigurations)
+        .set({
+          taskGoal: buildJsonbFieldWithMultipleEntries({
+            en: "Agree a concrete next step",
+            pl: "Uzgodnij konkretny kolejny krok",
+          }),
+          passingThresholdPercent: 80,
+        })
+        .where(eq(aiJudgeConfigurations.id, sourceConfigurationId));
+      await db
+        .update(aiMentorLessons)
+        .set({
+          voiceMode: AI_MENTOR_VOICE_MODE.CUSTOM,
+          ttsPreset: AI_MENTOR_TTS_PRESET.MALE,
+          customTtsReference: {
+            en: "cartesia-updated-english",
+            pl: "cartesia-updated-polish",
+          },
+        })
+        .where(eq(aiMentorLessons.id, sourceAiMentorId));
+      await db
+        .delete(aiJudgeCriteria)
+        .where(eq(aiJudgeCriteria.configurationId, sourceConfigurationId));
+      await db
+        .delete(aiJudgeBlockingErrors)
+        .where(eq(aiJudgeBlockingErrors.configurationId, sourceConfigurationId));
+
+      const [replacementCriterion] = await db
+        .insert(aiJudgeCriteria)
+        .values({
+          configurationId: sourceConfigurationId,
+          title: buildJsonbFieldWithMultipleEntries({
+            en: "Next step",
+            pl: "Kolejny krok",
+          }),
+          expectedBehavior: buildJsonbFieldWithMultipleEntries({
+            en: "Confirms an owner and date",
+            pl: "Potwierdza osobe odpowiedzialna i termin",
+          }),
+          maxScore: 1,
+        })
+        .returning({ id: aiJudgeCriteria.id });
+
+      await db.insert(aiJudgeScoreGuidance).values([
+        {
+          criterionId: replacementCriterion.id,
+          score: 0,
+          description: buildJsonbField("en", "Does not agree a next step"),
+        },
+        {
+          criterionId: replacementCriterion.id,
+          score: 1,
+          description: buildJsonbField("en", "Agrees a concrete next step"),
+        },
+      ]);
+    });
+
+    const [exportLink] = await baseDb
+      .select({ id: masterCourseExports.id })
+      .from(masterCourseExports)
+      .where(
+        and(
+          eq(masterCourseExports.sourceTenantId, sourceTenantId),
+          eq(masterCourseExports.sourceCourseId, sourceCourseId),
+          eq(masterCourseExports.targetTenantId, targetTenantId),
+        ),
+      )
+      .limit(1);
+
+    await masterCourseService.transferFromSyncJob({
+      exportId: exportLink.id,
+      sourceCourseId,
+      sourceTenantId,
+      targetTenantId,
+      triggerEventType: "test",
+    });
+
+    const synchronizedTargetGraph = await getTargetGraph();
+    expect(synchronizedTargetGraph.configuration.id).toBe(initialTargetGraph.configuration.id);
+    expect(synchronizedTargetGraph.configuration).toMatchObject({
+      taskGoal: {
+        en: "Agree a concrete next step",
+        pl: "Uzgodnij konkretny kolejny krok",
+      },
+      passingThresholdPercent: 80,
+    });
+    expect(synchronizedTargetGraph.criteria).toEqual([
+      expect.objectContaining({
+        title: { en: "Next step", pl: "Kolejny krok" },
+        maxScore: 1,
+      }),
+    ]);
+    expect(synchronizedTargetGraph.scoreGuidance).toHaveLength(2);
+    expect(synchronizedTargetGraph.blockingErrors).toEqual([]);
+    expect(await getTargetVoiceConfig()).toMatchObject({
+      voiceMode: AI_MENTOR_VOICE_MODE.CUSTOM,
+      ttsPreset: AI_MENTOR_TTS_PRESET.MALE,
+      customTtsReference: {
+        en: "cartesia-updated-english",
+        pl: "cartesia-updated-polish",
+      },
+    });
+  });
+
+  it("injects the duplicated AI Mentor name and AI Judge rubric into the runtime prompt after same-tenant course duplication (#1998)", async () => {
+    const sourceAdmin = await runAsTenant(sourceTenantId, async () =>
+      userFactory
+        .withCredentials({ password: PASSWORD })
+        .withAdminSettings(db)
+        .create({
+          email: `admin+dup-${faker.string.alphanumeric(8)}@example.com`,
+          role: SYSTEM_ROLE_SLUGS.ADMIN,
+          tenantId: sourceTenantId,
+        }),
+    );
+    const learner = await runAsTenant(sourceTenantId, async () =>
+      userFactory.create({ tenantId: sourceTenantId }),
+    );
+
+    const { sourceCourseId } = await runAsTenant(sourceTenantId, async () => {
+      const category = await categoryFactory.create({
+        title: `Dup category ${faker.string.nanoid(8)}`,
+      });
+      const sourceCourse = await courseFactory.create({
+        title: "Duplication Source Course",
+        status: "published",
+        authorId: sourceAdmin.id,
+        categoryId: category.id,
+        chapterCount: 1,
+      });
+      const sourceChapter = await chapterFactory.create({
+        title: "Duplication Source Chapter",
+        courseId: sourceCourse.id,
+        authorId: sourceAdmin.id,
+        displayOrder: 1,
+        lessonCount: 1,
+      });
+
+      const [sourceLesson] = await db
+        .insert(lessons)
+        .values({
+          id: faker.string.uuid(),
+          chapterId: sourceChapter.id,
+          type: LESSON_TYPES.AI_MENTOR,
+          title: buildJsonbField("en", "Discovery Conversation"),
+          displayOrder: 1,
+        })
+        .returning({ id: lessons.id });
+
+      const [sourceAiMentor] = await db
+        .insert(aiMentorLessons)
+        .values({
+          lessonId: sourceLesson.id,
+          name: buildJsonbFieldWithMultipleEntries({
+            en: "Professional Conversation Practice",
+            pl: "Praktyka rozmowy zawodowej",
+          }),
+        })
+        .returning({ id: aiMentorLessons.id });
+
+      const [sourceMentorConfiguration] = await db
+        .insert(aiMentorConfigurations)
+        .values({
+          aiMentorLessonId: sourceAiMentor.id,
+          type: AI_MENTOR_TYPE.ROLEPLAY,
+          additionalInstructions: buildJsonbField("en", "Run a discovery conversation"),
+        })
+        .returning({ id: aiMentorConfigurations.id });
+
+      await db.insert(aiMentorRoleplayConfigurations).values({
+        configurationId: sourceMentorConfiguration.id,
+        difficulty: AI_MENTOR_ROLEPLAY_DIFFICULTY.REALISTIC,
+      });
+
+      const [sourceJudgeConfiguration] = await db
+        .insert(aiJudgeConfigurations)
+        .values({
+          aiMentorLessonId: sourceAiMentor.id,
+          taskGoal: buildJsonbField("en", "Discover the client's needs"),
+          passingThresholdPercent: 70,
+        })
+        .returning({ id: aiJudgeConfigurations.id });
+
+      const [sourceCriterion] = await db
+        .insert(aiJudgeCriteria)
+        .values({
+          configurationId: sourceJudgeConfiguration.id,
+          title: buildJsonbField("en", "Needs discovery"),
+          expectedBehavior: buildJsonbField("en", "Asks relevant open questions"),
+          maxScore: 2,
+        })
+        .returning({ id: aiJudgeCriteria.id });
+
+      await db.insert(aiJudgeScoreGuidance).values({
+        criterionId: sourceCriterion.id,
+        score: 2,
+        description: buildJsonbField("en", "Explores the important needs"),
+      });
+
+      // A second criterion, authored later, guards against duplication collapsing
+      // criteria order: CURRENT_TIMESTAMP is transaction-frozen in Postgres, so if the
+      // duplication code ever stops copying the source rows' createdAt explicitly,
+      // every criterion created in the same duplication transaction would get an
+      // identical timestamp and the runtime rubric's `ORDER BY createdAt` would become
+      // non-deterministic.
+      const [secondSourceCriterion] = await db
+        .insert(aiJudgeCriteria)
+        .values({
+          configurationId: sourceJudgeConfiguration.id,
+          title: buildJsonbField("en", "Next step"),
+          expectedBehavior: buildJsonbField("en", "Proposes a concrete next step"),
+          maxScore: 1,
+          createdAt: sql`CURRENT_TIMESTAMP + interval '1 second'`,
+          updatedAt: sql`CURRENT_TIMESTAMP + interval '1 second'`,
+        })
+        .returning({ id: aiJudgeCriteria.id });
+
+      await db.insert(aiJudgeScoreGuidance).values({
+        criterionId: secondSourceCriterion.id,
+        score: 1,
+        description: buildJsonbField("en", "Proposes a clear next step"),
+      });
+
+      await db.insert(aiJudgeBlockingErrors).values({
+        configurationId: sourceJudgeConfiguration.id,
+        description: buildJsonbField("en", "Invents unsupported product claims"),
+      });
+
+      return { sourceCourseId: sourceCourse.id };
+    });
+
+    const sourceCookie = ensureCookieArray(await cookieFor(sourceAdmin, app, SOURCE_HOST));
+
+    const duplicateResponse = await withTenantHost(
+      request(app.getHttpServer())
+        .post(`/api/course/${sourceCourseId}/duplicate`)
+        .set("Cookie", sourceCookie),
+      SOURCE_HOST,
+    ).expect(201);
+
+    const { courseId: targetCourseId, jobId } = duplicateResponse.body.data as {
+      courseId: string;
+      jobId: string;
+    };
+    expect(targetCourseId).not.toBe(sourceCourseId);
+
+    await waitForOutbox(
+      app,
+      async () => {
+        const response = await withTenantHost(
+          request(app.getHttpServer())
+            .get(`/api/course/duplication-jobs/${jobId}`)
+            .set("Cookie", sourceCookie),
+          SOURCE_HOST,
+        ).expect(200);
+
+        return response.body.data as { state: string; failedReason: string | null };
+      },
+      (job) => {
+        if (job.state === "failed") {
+          throw new Error(`Duplication job failed: ${job.failedReason ?? "unknown reason"}`);
+        }
+
+        return job.state === "completed";
+      },
+    );
+
+    const targetAiMentor = await runAsTenant(sourceTenantId, async () => {
+      const [row] = await db
+        .select({
+          aiMentorLessonId: aiMentorLessons.id,
+          name: aiMentorLessons.name,
+        })
+        .from(aiMentorLessons)
+        .innerJoin(lessons, eq(lessons.id, aiMentorLessons.lessonId))
+        .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+        .where(eq(chapters.courseId, targetCourseId))
+        .limit(1);
+
+      return row;
+    });
+
+    // Regression check for the reported "AI mentor name disappears after duplication" symptom.
+    expect(targetAiMentor.name).toEqual({
+      en: "Professional Conversation Practice",
+      pl: "Praktyka rozmowy zawodowej",
+    });
+
+    const threadId = await runAsTenant(sourceTenantId, async () => {
+      const [thread] = await db
+        .insert(aiMentorThreads)
+        .values({
+          userId: learner.id,
+          aiMentorLessonId: targetAiMentor.aiMentorLessonId,
+        })
+        .returning({ id: aiMentorThreads.id });
+
+      return thread.id;
+    });
+
+    const mentorPromptContext = await runAsTenant(sourceTenantId, async () =>
+      aiRepository.findMentorLessonByThreadId(threadId, "en"),
+    );
+
+    // Regression check for "ai mentor didn't get loaded prompt instructions after
+    // duplication" (#1998) - the actual additionalInstructions/subtype fields that feed
+    // buildSystemPrompt(), as opposed to the AI Judge rubric checked below.
+    expect(mentorPromptContext?.name).toBe("Professional Conversation Practice");
+    expect(mentorPromptContext?.additionalInstructions).toBe("Run a discovery conversation");
+    expect(mentorPromptContext?.type).toBe(AI_MENTOR_TYPE.ROLEPLAY);
+
+    const rubricContext = await runAsTenant(sourceTenantId, async () =>
+      aiRepository.findJudgeRubricByThreadId(threadId, "en"),
+    );
+
+    // Regression check for the reported "AI Judge config visible in UI, but not injected into
+    // the runtime system prompt until manually re-saved" symptom (#1998).
+    expect(rubricContext?.rubric).not.toBeNull();
+    expect(rubricContext?.rubric?.taskGoal).toBe("Discover the client's needs");
+    expect(rubricContext?.rubric?.passingThresholdPercent).toBe(70);
+    expect(rubricContext?.rubric?.criteria).toEqual([
+      expect.objectContaining({
+        title: "Needs discovery",
+        expectedBehavior: "Asks relevant open questions",
+        maxScore: 2,
+      }),
+      expect.objectContaining({
+        title: "Next step",
+        expectedBehavior: "Proposes a concrete next step",
+        maxScore: 1,
+      }),
+    ]);
+    expect(rubricContext?.rubric?.blockingErrors).toEqual([
+      expect.objectContaining({ description: "Invents unsupported product claims" }),
+    ]);
+  });
+
+  it("copies rich-text S3 resources, rewrites localized content, and reuses target resource rows on sync", async () => {
+    const sourceResourceId = faker.string.uuid();
+    const sourceReference = `course/${faker.string.uuid()}.png`;
+    const sourceHtml = `<p><img src="/api/lesson/lesson-resource/${sourceResourceId}" data-resource-id="${sourceResourceId}" /></p>`;
+    const sourceHtmlPl = `<p><a href="${SOURCE_HOST}/api/lesson/lesson-resource/${sourceResourceId}" data-resource-id="${sourceResourceId}">plik</a></p>`;
+
+    const { sourceCourseId, sourceLessonId, targetCourseId } = await setupAndExport({
+      beforeExport: async ({ sourceLessonId }) => {
+        await runAsTenant(sourceTenantId, async () => {
+          await db.insert(resources).values({
+            id: sourceResourceId,
+            title: buildJsonbFieldWithMultipleEntries({
+              en: "Source image",
+              pl: "Obraz zrodlowy",
+            }),
+            description: buildJsonbFieldWithMultipleEntries({
+              en: "Source image description",
+              pl: "Opis obrazu zrodlowego",
+            }),
+            reference: sourceReference,
+            contentType: "image/png",
+            metadata: { originalFilename: "source-image.png", checksum: "abc123" },
+            uploadedBy: null,
+            archived: false,
+          });
+
+          await db
+            .update(lessons)
+            .set({
+              description: buildJsonbFieldWithMultipleEntries({
+                en: sourceHtml,
+                pl: sourceHtmlPl,
+              }),
+            })
+            .where(eq(lessons.id, sourceLessonId));
+        });
+      },
+    });
+
+    const targetRows = await runAsTenant(targetTenantId, async () => {
+      const [targetLesson] = await db
+        .select({
+          id: lessons.id,
+          description: lessons.description,
+        })
+        .from(lessons)
+        .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+        .where(eq(chapters.courseId, targetCourseId))
+        .limit(1);
+
+      const targetResources = (await db.select().from(resources)).filter((resource) =>
+        resource.reference.includes("/master-course/"),
+      );
+      const targetRelations = await db.select().from(resourceEntity);
+
+      return { targetLesson, targetResources, targetRelations };
+    });
+
+    expect(targetRows.targetResources).toHaveLength(1);
+    const [targetResource] = targetRows.targetResources;
+    expect(targetResource.title).toEqual({ en: "Source image", pl: "Obraz zrodlowy" });
+    expect(targetResource.description).toEqual({
+      en: "Source image description",
+      pl: "Opis obrazu zrodlowego",
+    });
+    expect(targetResource.reference).not.toBe(sourceReference);
+    expect(targetResource.reference).toContain(`${targetTenantId}/master-course/`);
+    expect(targetResource.contentType).toBe("image/png");
+    expect(targetResource.metadata).toEqual({
+      originalFilename: "source-image.png",
+      checksum: "abc123",
+    });
+    expect(targetRows.targetRelations).toEqual([
+      expect.objectContaining({
+        resourceId: targetResource.id,
+        entityId: targetRows.targetLesson.id,
+        entityType: "lesson",
+        relationshipType: RESOURCE_RELATIONSHIP_TYPES.ATTACHMENT,
+      }),
+    ]);
+    const targetLessonDescription = targetRows.targetLesson.description as Record<string, string>;
+
+    expect(targetLessonDescription.en).toContain(
+      `${TARGET_HOST}/api/lesson/lesson-resource/${targetResource.id}`,
+    );
+    expect(targetLessonDescription.en).toContain(`data-resource-id="${targetResource.id}"`);
+    expect(targetLessonDescription.pl).toContain(
+      `${TARGET_HOST}/api/lesson/lesson-resource/${targetResource.id}`,
+    );
+    expect(targetLessonDescription.pl).not.toContain(sourceResourceId);
+    expect(mockS3Service.copyFile).toHaveBeenCalledWith(
+      sourceReference,
+      expect.stringContaining(`${targetTenantId}/master-course/`),
+      "image/png",
+    );
+
+    await runAsTenant(sourceTenantId, async () => {
+      await db
+        .update(lessons)
+        .set({ title: buildJsonbField("en", "Synced resource lesson") })
+        .where(eq(lessons.id, sourceLessonId));
+    });
+
+    const [exportLink] = await baseDb
+      .select()
+      .from(masterCourseExports)
+      .where(
+        and(
+          eq(masterCourseExports.sourceTenantId, sourceTenantId),
+          eq(masterCourseExports.sourceCourseId, sourceCourseId),
+          eq(masterCourseExports.targetTenantId, targetTenantId),
+        ),
+      )
+      .limit(1);
+
+    await masterCourseService.transferFromSyncJob({
+      exportId: exportLink.id,
+      sourceCourseId,
+      sourceTenantId,
+      targetTenantId,
+      triggerEventType: "test",
+    });
+
+    await waitForOutbox(
+      app,
+      async () =>
+        runAsTenant(targetTenantId, async () => {
+          const [targetLesson] = await db
+            .select({ title: lessons.title })
+            .from(lessons)
+            .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+            .where(eq(chapters.courseId, targetCourseId))
+            .limit(1);
+
+          return targetLesson?.title as Record<string, string>;
+        }),
+      (title) => title?.en === "Synced resource lesson",
+      20000,
+      300,
+    );
+
+    const targetResourcesAfterSync = await runAsTenant(targetTenantId, async () => {
+      const rows = await db
+        .select({ id: resources.id, reference: resources.reference })
+        .from(resources);
+      return rows.filter((resource) => resource.reference.includes("/master-course/"));
+    });
+    expect(targetResourcesAfterSync).toEqual([expect.objectContaining({ id: targetResource.id })]);
+  });
+
+  it("syncs reordered and replaced choice options without changing surviving IDs", async () => {
+    const questionId = faker.string.uuid();
+    const firstId = faker.string.uuid();
+    const secondId = faker.string.uuid();
+    const { sourceCourseId, targetCourseId } = await setupAndExport({
+      beforeExport: async ({ sourceLessonId }) => {
+        await runAsTenant(sourceTenantId, async () => {
+          const [assessment] = await db
+            .insert(assessments)
+            .values({ lessonId: sourceLessonId, passingScorePercentage: "50" })
+            .returning();
+          await db.insert(assessmentQuestions).values({
+            id: questionId,
+            assessmentId: assessment.id,
+            questionType: ASSESSMENT_QUESTION_TYPES.SINGLE_CHOICE,
+            gradingMode: ASSESSMENT_GRADING_MODES.AUTOMATIC,
+            prompt: { en: "Choose" },
+            title: { en: "Choose" },
+            displayOrder: 1,
+          });
+          await db.insert(assessmentQuestionChoiceOptions).values([
+            {
+              id: firstId,
+              questionId,
+              language: "en",
+              label: "First",
+              isCorrect: true,
+              displayOrder: 1,
+            },
+            {
+              id: secondId,
+              questionId,
+              language: "en",
+              label: "Second",
+              isCorrect: false,
+              displayOrder: 2,
+            },
+          ]);
+        });
+      },
+    });
+    const readOptions = () =>
+      runAsTenant(targetTenantId, () =>
+        db
+          .select({
+            id: assessmentQuestionChoiceOptions.id,
+            label: assessmentQuestionChoiceOptions.label,
+            displayOrder: assessmentQuestionChoiceOptions.displayOrder,
+          })
+          .from(assessmentQuestionChoiceOptions)
+          .innerJoin(
+            assessmentQuestions,
+            eq(assessmentQuestions.id, assessmentQuestionChoiceOptions.questionId),
+          )
+          .innerJoin(assessments, eq(assessments.id, assessmentQuestions.assessmentId))
+          .innerJoin(lessons, eq(lessons.id, assessments.lessonId))
+          .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+          .where(eq(chapters.courseId, targetCourseId))
+          .orderBy(asc(assessmentQuestionChoiceOptions.displayOrder)),
+      );
+    const original = await readOptions();
+    const [exportLink] = await baseDb
+      .select()
+      .from(masterCourseExports)
+      .where(eq(masterCourseExports.sourceCourseId, sourceCourseId));
+    const sync = () =>
+      masterCourseService.transferFromSyncJob({
+        exportId: exportLink.id,
+        sourceCourseId,
+        sourceTenantId,
+        targetTenantId,
+        triggerEventType: "UpdateCourseEvent",
+      });
+    await runAsTenant(sourceTenantId, async () => {
+      await db
+        .update(assessmentQuestionChoiceOptions)
+        .set({ displayOrder: -1 })
+        .where(eq(assessmentQuestionChoiceOptions.id, firstId));
+      await db
+        .update(assessmentQuestionChoiceOptions)
+        .set({ displayOrder: 1 })
+        .where(eq(assessmentQuestionChoiceOptions.id, secondId));
+      await db
+        .update(assessmentQuestionChoiceOptions)
+        .set({ displayOrder: 2 })
+        .where(eq(assessmentQuestionChoiceOptions.id, firstId));
+    });
+    await sync();
+    expect(await readOptions()).toEqual([
+      { ...original[1], displayOrder: 1 },
+      { ...original[0], displayOrder: 2 },
+    ]);
+    await runAsTenant(sourceTenantId, async () => {
+      await db
+        .delete(assessmentQuestionChoiceOptions)
+        .where(eq(assessmentQuestionChoiceOptions.id, secondId));
+      await db.insert(assessmentQuestionChoiceOptions).values({
+        questionId,
+        language: "en",
+        label: "Replacement",
+        isCorrect: false,
+        displayOrder: 1,
+      });
+    });
+    await sync();
+    const replaced = await readOptions();
+    expect(replaced).toEqual([
+      { id: expect.any(String), label: "Replacement", displayOrder: 1 },
+      { ...original[0], displayOrder: 2 },
+    ]);
+    await sync();
+    expect(await readOptions()).toEqual(replaced);
+  });
+
+  it("rewrites fill-in-the-blanks option markers for every localized question description", async () => {
+    const sourceOptionId = faker.string.uuid();
+    const untouchedOptionId = faker.string.uuid();
+
+    const { targetCourseId } = await setupAndExport({
+      beforeExport: async ({ sourceLessonId }) => {
+        await runAsTenant(sourceTenantId, async () => {
+          const [assessment] = await db
+            .insert(assessments)
+            .values({
+              lessonId: sourceLessonId,
+              passingScorePercentage: "0",
+              baseLanguage: "en",
+              availableLocales: ["en", "pl"],
+            })
+            .returning({ id: assessments.id });
+
+          const [question] = await db
+            .insert(assessmentQuestions)
+            .values({
+              id: faker.string.uuid(),
+              assessmentId: assessment.id,
+              questionType: ASSESSMENT_QUESTION_TYPES.FILL_IN_THE_BLANKS_TEXT,
+              gradingMode: ASSESSMENT_GRADING_MODES.AUTOMATIC,
+              prompt: buildJsonbFieldWithMultipleEntries({
+                en: `Answer <blank-answer-${sourceOptionId}> now`,
+                pl: `Odpowiedz <blank-answer-${sourceOptionId}> teraz`,
+              }),
+              title: buildJsonbFieldWithMultipleEntries({ en: "Fill blank", pl: "Uzupelnij luke" }),
+              description: buildJsonbFieldWithMultipleEntries({
+                en: `Answer <blank-answer-${sourceOptionId}> now`,
+                pl: `Odpowiedz <blank-answer-${sourceOptionId}> teraz`,
+              }),
+              displayOrder: 1,
+            })
+            .returning({ id: assessmentQuestions.id });
+
+          await db.insert(assessmentQuestionChoiceOptions).values([
+            {
+              id: sourceOptionId,
+              questionId: question.id,
+              language: "en",
+              label: "Correct",
+              isCorrect: true,
+              displayOrder: 1,
+            },
+            {
+              id: untouchedOptionId,
+              questionId: question.id,
+              language: "en",
+              label: "Distractor",
+              isCorrect: false,
+              displayOrder: 2,
+            },
+          ]);
+        });
+      },
+    });
+
+    const targetQuestionData = await runAsTenant(targetTenantId, async () => {
+      const [targetQuestion] = await db
+        .select({
+          id: assessmentQuestions.id,
+          description: assessmentQuestions.description,
+        })
+        .from(assessmentQuestions)
+        .innerJoin(assessments, eq(assessments.id, assessmentQuestions.assessmentId))
+        .innerJoin(lessons, eq(lessons.id, assessments.lessonId))
+        .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+        .where(eq(chapters.courseId, targetCourseId))
+        .limit(1);
+
+      const targetOptions = await db
+        .select({
+          id: assessmentQuestionChoiceOptions.id,
+          optionText: assessmentQuestionChoiceOptions.label,
+        })
+        .from(assessmentQuestionChoiceOptions)
+        .where(eq(assessmentQuestionChoiceOptions.questionId, targetQuestion.id));
+
+      return { targetQuestion, targetOptions };
+    });
+
+    const targetCorrectOption = targetQuestionData.targetOptions.find((option) => {
+      return option.optionText === "Correct";
+    });
+    const targetQuestionDescription = targetQuestionData.targetQuestion.description as Record<
+      string,
+      string
+    >;
+
+    expect(targetCorrectOption).toBeDefined();
+    expect(targetCorrectOption?.id).not.toBe(sourceOptionId);
+    expect(targetQuestionDescription.en).toContain(`<blank-answer-${targetCorrectOption?.id}>`);
+    expect(targetQuestionDescription.pl).toContain(`<blank-answer-${targetCorrectOption?.id}>`);
+    expect(targetQuestionDescription.en).not.toContain(sourceOptionId);
+    expect(targetQuestionDescription.pl).not.toContain(sourceOptionId);
+  });
+
+  it("reuses Bunny video references when source and target share the same Bunny media configuration", async () => {
+    mockBunnyStreamService.isConfigured.mockResolvedValue(true);
+    mockBunnyStreamService.getMediaConfigurationSignature.mockResolvedValue("same-config");
+
+    const sourceBunnyReference = "bunny-source-video";
+    const { targetCourseId } = await setupAndExport({
+      beforeExport: async ({ sourceLessonId }) => {
+        await runAsTenant(sourceTenantId, async () => {
+          await db
+            .update(lessons)
+            .set({ fileS3Key: sourceBunnyReference, fileType: "mp4" })
+            .where(eq(lessons.id, sourceLessonId));
+        });
+      },
+    });
+
+    const [targetLesson] = await runAsTenant(targetTenantId, async () =>
+      db
+        .select({ fileS3Key: lessons.fileS3Key })
+        .from(lessons)
+        .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+        .where(eq(chapters.courseId, targetCourseId))
+        .limit(1),
+    );
+
+    expect(targetLesson.fileS3Key).toBe(sourceBunnyReference);
+    expect(mockBunnyStreamService.downloadMp4Fallback).not.toHaveBeenCalled();
+  });
+
+  it("streams Bunny source videos into target S3 when target tenant does not use Bunny", async () => {
+    mockBunnyStreamService.isConfigured.mockResolvedValue(false);
+    const sourceBunnyReference = "bunny-source-video";
+
+    const { targetCourseId } = await setupAndExport({
+      beforeExport: async ({ sourceLessonId }) => {
+        await runAsTenant(sourceTenantId, async () => {
+          await db
+            .update(lessons)
+            .set({ fileS3Key: sourceBunnyReference, fileType: "mp4" })
+            .where(eq(lessons.id, sourceLessonId));
+        });
+      },
+    });
+
+    const [targetLesson] = await runAsTenant(targetTenantId, async () =>
+      db
+        .select({ fileS3Key: lessons.fileS3Key })
+        .from(lessons)
+        .innerJoin(chapters, eq(chapters.id, lessons.chapterId))
+        .where(eq(chapters.courseId, targetCourseId))
+        .limit(1),
+    );
+
+    expect(mockBunnyStreamService.downloadMp4Fallback).toHaveBeenCalledWith(
+      "source-video",
+      720,
+      SOURCE_HOST,
+    );
+    expect(mockS3Service.uploadStreamMultipart).toHaveBeenCalledWith(
+      expect.any(Readable),
+      expect.stringContaining(`${targetTenantId}/master-course/`),
+      "video/mp4",
+    );
+    expect(targetLesson.fileS3Key).toContain(`${targetTenantId}/master-course/`);
+    expect(targetLesson.fileS3Key).toMatch(/\.mp4$/);
+  });
+
+  it("propagates lesson deletion from source tenant to exported target course", async () => {
+    const { sourceLessonId, sourceCookie, targetCookie, targetCourseId } = await setupAndExport();
+
+    await withTenantHost(
+      request(app.getHttpServer())
+        .delete("/api/lesson")
+        .query({ lessonId: sourceLessonId })
+        .set("Cookie", sourceCookie),
+      SOURCE_HOST,
+    ).expect(200);
+
+    const syncedTargetCourse = await waitForOutbox(
+      app,
+      async () => {
+        const response = await withTenantHost(
+          request(app.getHttpServer())
+            .get("/api/course/beta-course-by-id")
+            .query({ id: targetCourseId, language: "en" })
+            .set("Cookie", targetCookie),
+          TARGET_HOST,
+        ).expect(200);
+
+        return response.body.data as {
+          chapters: Array<{ lessons: Array<{ title: string }> }>;
+        };
+      },
+      (data) =>
+        data.chapters.every((chapter) =>
+          chapter.lessons.every((lesson) => lesson.title !== "Master Source Lesson"),
+        ),
+      20000,
+      300,
+    );
+
+    expect(
+      syncedTargetCourse.chapters.some((chapter) =>
+        chapter.lessons.some((lesson) => lesson.title === "Master Source Lesson"),
+      ),
+    ).toBe(false);
+  });
+  describe("transfer reliability", () => {
+    const getCoordinator = () => app.get(CourseTransferCoordinator, { strict: false });
+    const getTenantDbRunner = () => app.get(TenantDbRunnerService, { strict: false });
+
+    const findExportLink = async (sourceCourseId: string) => {
+      const [exportLink] = await baseDb
+        .select()
+        .from(masterCourseExports)
+        .where(
+          and(
+            eq(masterCourseExports.sourceCourseId, sourceCourseId),
+            eq(masterCourseExports.targetTenantId, targetTenantId),
+          ),
+        );
+      return exportLink;
+    };
+
+    const countTargetCopies = async (sourceCourseId: string) => {
+      const copies = await baseDb
+        .select({ id: courses.id })
+        .from(courses)
+        .where(
+          and(eq(courses.sourceCourseId, sourceCourseId), eq(courses.tenantId, targetTenantId)),
+        );
+      return copies.length;
+    };
+
+    const requestNewRevision = async (sourceCourseId: string) => {
+      await runAsTenant(sourceTenantId, () =>
+        app
+          .get(MasterCourseService, { strict: false })
+          .queueSyncForSourceCourse(sourceCourseId, "test"),
+      );
+      const [latestOperation] = await baseDb
+        .select()
+        .from(courseTransferOperations)
+        .orderBy(desc(courseTransferOperations.revision))
+        .limit(1);
+      return latestOperation;
+    };
+
+    it("recovers an accepted export whose dispatch was lost after commit", async () => {
+      const { sourceCourseId } = await setupAndExport({
+        afterExportAccepted: async () => {
+          await baseDb
+            .update(outboxEvents)
+            .set({ status: OUTBOX_STATUSES.PUBLISHED })
+            .where(eq(outboxEvents.eventType, CourseTransferRequestedEvent.name));
+          await baseDb
+            .update(courseTransferStreams)
+            .set({ nextRecoveryAt: new Date(Date.now() - 60_000).toISOString() });
+
+          await expect(getCoordinator().redispatchStalledTransfers()).resolves.toBe(1);
+        },
+      });
+
+      expect(await countTargetCopies(sourceCourseId)).toBe(1);
+      const requestedEvents = await baseDb
+        .select({ id: outboxEvents.id })
+        .from(outboxEvents)
+        .where(eq(outboxEvents.eventType, CourseTransferRequestedEvent.name));
+      expect(requestedEvents).toHaveLength(2);
+    });
+
+    it("treats a repeated delivery of an applied operation as already done", async () => {
+      const { sourceCourseId, targetCourseId } = await setupAndExport();
+      const exportLink = await findExportLink(sourceCourseId);
+      const [operation] = await baseDb.select().from(courseTransferOperations);
+
+      await expect(
+        app
+          .get(CourseTransferDispatcher, { strict: false })
+          .enqueueRequestedTransfer({ operationId: operation.id, sourceTenantId }, randomUUID()),
+      ).resolves.toBeUndefined();
+
+      await expect(
+        app.get(MasterCourseService, { strict: false }).transferFromSyncJob({
+          operationId: operation.id,
+          exportId: exportLink.id,
+          sourceCourseId,
+          sourceTenantId,
+          targetTenantId,
+          triggerEventType: "test",
+        }),
+      ).resolves.toBe(targetCourseId);
+      expect(await countTargetCopies(sourceCourseId)).toBe(1);
+    });
+
+    it("rejects a destination write after its lease was taken over", async () => {
+      const { sourceCourseId } = await setupAndExport();
+      const operation = await requestNewRevision(sourceCourseId);
+      const writeDestination = jest.fn();
+
+      await expect(
+        getCoordinator().transferUnderLease(operation.id, async (leasedTransfer) => {
+          await baseDb
+            .update(courseTransferStreams)
+            .set({ claimToken: randomUUID() })
+            .where(eq(courseTransferStreams.id, operation.streamId));
+
+          return getTenantDbRunner().runWithTenant(targetTenantId, () =>
+            getTenantDbRunner().transactionWithHandle((transaction) =>
+              leasedTransfer.commitDestinationWrite(transaction, writeDestination),
+            ),
+          );
+        }),
+      ).rejects.toBeInstanceOf(CourseTransferLeaseLostError);
+      expect(writeDestination).not.toHaveBeenCalled();
+
+      const [stream] = await baseDb
+        .select()
+        .from(courseTransferStreams)
+        .where(eq(courseTransferStreams.id, operation.streamId));
+      expect(stream.appliedRevision).toBe(operation.revision - 1);
+    });
+
+    it("fails a transfer after its attempts run out and lets a new export retry it", async () => {
+      const { sourceCourseId, sourceCookie } = await setupAndExport();
+      const operation = await requestNewRevision(sourceCourseId);
+      await baseDb
+        .update(courseTransferOperations)
+        .set({ attemptCount: COURSE_TRANSFER_MAX_ATTEMPTS })
+        .where(eq(courseTransferOperations.id, operation.id));
+      const exportLink = await findExportLink(sourceCourseId);
+
+      await expect(
+        app.get(MasterCourseService, { strict: false }).transferFromSyncJob({
+          operationId: operation.id,
+          exportId: exportLink.id,
+          sourceCourseId,
+          sourceTenantId,
+          targetTenantId,
+          triggerEventType: "test",
+        }),
+      ).rejects.toBeInstanceOf(CourseTransferFailedError);
+      expect((await findExportLink(sourceCourseId)).syncStatus).toBe(
+        MASTER_COURSE_EXPORT_SYNC_STATUSES.FAILED,
+      );
+
+      const retryResponse = await withTenantHost(
+        request(app.getHttpServer())
+          .post(`/api/course/master/${sourceCourseId}/export`)
+          .set("Cookie", sourceCookie)
+          .send({ targetTenantIds: [targetTenantId] }),
+        SOURCE_HOST,
+      ).expect(201);
+      expect(retryResponse.body.data.jobs[0].queued).toBe(true);
+
+      await waitForOutbox(
+        app,
+        () => findExportLink(sourceCourseId),
+        (link) => link.syncStatus === MASTER_COURSE_EXPORT_SYNC_STATUSES.ACTIVE,
+      );
+      expect(await countTargetCopies(sourceCourseId)).toBe(1);
+    });
+
+    it("searches and paginates sharing candidates", async () => {
+      const { sourceCourseId, sourceCookie } = await setupAndExport();
+      const searchToken = faker.string.alphanumeric(10).toLowerCase();
+      const extraTenants = await baseDb
+        .insert(tenants)
+        .values(
+          ["alpha", "beta"].map((suffix) => ({
+            name: `Search ${searchToken} ${suffix}`,
+            host: `http://${searchToken}-${suffix}.lms.localhost`,
+            isManaging: false,
+          })),
+        )
+        .returning({ id: tenants.id });
+
+      try {
+        const fetchCandidates = (query: Record<string, string | number>) =>
+          withTenantHost(
+            request(app.getHttpServer())
+              .get(`/api/course/master/${sourceCourseId}/export-candidates`)
+              .query(query)
+              .set("Cookie", sourceCookie),
+            SOURCE_HOST,
+          ).expect(200);
+
+        const searched = await fetchCandidates({ search: `${searchToken} alpha` });
+        expect(searched.body.data.tenants.map(({ name }: { name: string }) => name)).toEqual([
+          `Search ${searchToken} alpha`,
+        ]);
+        expect(searched.body.pagination.totalItems).toBe(1);
+
+        const secondPage = await fetchCandidates({ search: searchToken, page: 2, perPage: 1 });
+        expect(secondPage.body.data.tenants).toHaveLength(1);
+        expect(secondPage.body.data.tenants[0].name).toBe(`Search ${searchToken} beta`);
+        expect(secondPage.body.pagination).toEqual({ totalItems: 2, page: 2, perPage: 1 });
+        expect(secondPage.body.data.summary.exportedCount).toBe(1);
+      } finally {
+        await baseDb.delete(tenants).where(
+          inArray(
+            tenants.id,
+            extraTenants.map(({ id }) => id),
+          ),
+        );
+      }
+    });
+  });
+});

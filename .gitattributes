@@ -1,0 +1,9 @@
+
+# Shell scripts are mounted into Linux containers from Windows.
+*.sh text eol=lf
+
+# Migration checksums must be identical across platforms.
+*.sql text eol=lf
+
+# Keep the generated API client deterministic on Windows and Linux.
+apps/web/app/api/generated-api.ts text eol=lf

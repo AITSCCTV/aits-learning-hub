@@ -1,0 +1,58 @@
+import type { SupportedLanguages } from "@repo/shared";
+import type {
+  courses,
+  automations,
+  questionsAndAnswers,
+  news,
+  articles,
+  articleSections,
+  categories,
+  formFields,
+  groups,
+  learningPaths,
+  calendarEvents,
+  announcements,
+  emailTemplates,
+} from "src/storage/schema";
+
+export const ENTITY_TYPE = {
+  COURSE: "course",
+  CHAPTER: "chapter",
+  LESSON: "lesson",
+  QUESTION: "question",
+  QA: "qa",
+  NEWS: "news",
+  ARTICLES: "articles",
+  LEARNING_PATH: "learning_path",
+} as const;
+
+export type EntityType = (typeof ENTITY_TYPE)[keyof typeof ENTITY_TYPE];
+
+export type EntityLocalization = {
+  baseLanguage: SupportedLanguages;
+  language: SupportedLanguages;
+  availableLocales: SupportedLanguages[];
+};
+
+export type EntityField = "title" | "description";
+
+export const ENTITY_FIELD = {
+  TITLE: "title",
+  DESCRIPTION: "description",
+} as const;
+
+export type BaseTable =
+  | typeof automations
+  | typeof courses
+  | typeof questionsAndAnswers
+  | typeof articles
+  | typeof categories
+  | typeof news
+  | typeof articleSections
+  | typeof formFields
+  | typeof groups
+  | typeof learningPaths
+  | typeof announcements
+  | typeof emailTemplates
+  | typeof learningPaths
+  | typeof calendarEvents;

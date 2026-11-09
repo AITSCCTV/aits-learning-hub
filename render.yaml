@@ -1,0 +1,8 @@
+# Free static review library only. This does not deploy the full LMS backend.
+services:
+  - type: web
+    name: aits-learning-hub-review
+    runtime: static
+    buildCommand: node scripts/build-review-site.mjs
+    staticPublishPath: ./site
+    autoDeployTrigger: commit

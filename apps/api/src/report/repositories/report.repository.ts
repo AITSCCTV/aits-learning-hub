@@ -1,0 +1,146 @@
+import { Inject, Injectable } from "@nestjs/common";
+import { COURSE_ENROLLMENT, PERMISSIONS } from "@repo/shared";
+import { and, eq, isNull, sql } from "drizzle-orm";
+
+import { DatabasePg } from "src/common";
+import {
+  getGroupManagerLearnerScopeCondition,
+  shouldApplyGroupManagerScope,
+} from "src/common/permissions/group-manager-scope.utils";
+import { hasPermission } from "src/common/permissions/permission.utils";
+import { currentLearningState } from "src/course-repetition/course-learning-state.sql";
+import { LocalizationService } from "src/localization/localization.service";
+import {
+  chapters,
+  courses,
+  groups,
+  groupUsers,
+  lessons,
+  studentCourses,
+  studentLessonProgress,
+  users,
+} from "src/storage/schema";
+
+import type { SupportedLanguages } from "@repo/shared";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+
+export interface StudentCourseReportRow {
+  studentName: string;
+  groupName: string | null;
+  courseName: string;
+  lessonCount: number;
+  completedLessons: number;
+  progressPercentage: number;
+  quizResults: string;
+}
+
+@Injectable()
+export class ReportRepository {
+  constructor(
+    @Inject("DB") private readonly db: DatabasePg,
+    private readonly localizationService: LocalizationService,
+  ) {}
+
+  async getAllStudentCourseData(
+    language: SupportedLanguages,
+    currentUser: CurrentUserType,
+    courseId?: string,
+  ): Promise<StudentCourseReportRow[]> {
+    const conditions = [
+      eq(studentCourses.status, COURSE_ENROLLMENT.ENROLLED),
+      isNull(users.deletedAt),
+      courseId ? eq(studentCourses.courseId, courseId) : undefined,
+    ];
+
+    const canViewOnlyCreatedCourses = hasPermission(
+      currentUser.permissions,
+      PERMISSIONS.COURSE_UPDATE_OWN,
+    );
+
+    if (canViewOnlyCreatedCourses) {
+      conditions.push(eq(courses.authorId, currentUser.userId));
+    }
+
+    const managerScopeCondition = getGroupManagerLearnerScopeCondition(
+      currentUser,
+      studentCourses.studentId,
+      [PERMISSIONS.REPORT_READ],
+    );
+
+    if (managerScopeCondition) conditions.push(managerScopeCondition);
+
+    const isManagerScoped = shouldApplyGroupManagerScope(currentUser, [PERMISSIONS.REPORT_READ]);
+
+    const lessonCountQuery = sql<number>`(
+      SELECT COALESCE(SUM(ch.lesson_count), 0)::int
+      FROM ${chapters} ch
+      WHERE ch.course_id = ${courses.id}
+    )`;
+
+    const completedLessonsQuery = sql<number>`(
+      SELECT COUNT(*)::int
+      FROM ${studentLessonProgress} slp
+      JOIN ${lessons} l ON slp.lesson_id = l.id
+      JOIN ${chapters} ch ON l.chapter_id = ch.id
+      WHERE ${currentLearningState(sql.raw("slp.learning_state_id"))} AND slp.student_id = ${users.id}
+        AND ch.course_id = ${courses.id}
+        AND slp.completed_at IS NOT NULL
+    )`;
+
+    const localizedGroupNameQuery = this.localizationService.getLocalizedSqlField(
+      groups.name,
+      language,
+      groups,
+    );
+
+    const reportData = await this.db
+      .select({
+        studentName: sql<string>`CONCAT(${users.firstName}, ' ', ${users.lastName})`,
+        groupName: sql<string | null>`(
+          SELECT STRING_AGG(DISTINCT NULLIF(${localizedGroupNameQuery}, ''), ', ')
+          FROM ${groups}
+          JOIN ${groupUsers} ON ${groupUsers.groupId} = ${groups.id}
+          WHERE ${groupUsers.userId} = ${users.id}
+            ${
+              isManagerScoped
+                ? sql`AND EXISTS (
+                    SELECT 1 FROM group_manager_groups gmg_report
+                    WHERE gmg_report.manager_user_id = ${currentUser.userId}
+                      AND gmg_report.group_id = ${groups.id}
+                  )`
+                : sql``
+            }
+        )`,
+        courseName: this.localizationService.getLocalizedSqlField(courses.title, language),
+        lessonCount: lessonCountQuery.as("lesson_count"),
+        completedLessons: completedLessonsQuery.as("completed_lessons"),
+        quizResults: sql<string>`COALESCE((
+          SELECT STRING_AGG(
+            'Quiz ' || quiz_lesson.quiz_index || ': ' || quiz_lesson.quiz_score || '%',
+            ', '
+            ORDER BY quiz_lesson.chapter_order, quiz_lesson.lesson_order
+          )
+          FROM (
+            SELECT
+              ROW_NUMBER() OVER (ORDER BY COALESCE(ch.display_order, 0), COALESCE(l.display_order, 0)) AS quiz_index,
+              slp.quiz_score AS quiz_score,
+              COALESCE(ch.display_order, 0) AS chapter_order,
+              COALESCE(l.display_order, 0) AS lesson_order
+            FROM ${studentLessonProgress} slp
+            JOIN ${lessons} l ON slp.lesson_id = l.id
+            JOIN ${chapters} ch ON l.chapter_id = ch.id
+            WHERE ${currentLearningState(sql.raw("slp.learning_state_id"))} AND slp.student_id = ${users.id}
+              AND ch.course_id = ${courses.id}
+              AND slp.quiz_score IS NOT NULL
+          ) quiz_lesson
+        ), '-')`,
+        progressPercentage: sql<number>`COALESCE((${completedLessonsQuery}) * 100 / NULLIF((${lessonCountQuery}), 0), 0)`,
+      })
+      .from(studentCourses)
+      .innerJoin(users, eq(studentCourses.studentId, users.id))
+      .innerJoin(courses, eq(studentCourses.courseId, courses.id))
+      .where(and(...conditions));
+
+    return reportData;
+  }
+}

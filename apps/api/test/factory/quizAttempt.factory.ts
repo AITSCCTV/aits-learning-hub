@@ -1,0 +1,289 @@
+import { faker } from "@faker-js/faker";
+import {
+  ASSESSMENT_ATTEMPT_GRADING_STATUSES,
+  ASSESSMENT_ATTEMPT_RESULTS,
+  ASSESSMENT_ATTEMPT_SUBMISSION_STATUSES,
+  COURSE_TYPE,
+  SUPPORTED_LANGUAGES,
+  SYSTEM_ROLE_SLUGS,
+} from "@repo/shared";
+import { eq } from "drizzle-orm";
+import { Factory } from "fishery";
+
+import { buildJsonbField } from "src/common/helpers/sqlHelpers";
+
+import {
+  assessments,
+  assessmentAttempts,
+  users,
+  courses,
+  chapters,
+  lessons,
+  categories,
+} from "../../src/storage/schema";
+import { assignSystemRoleToUserInTests } from "../helpers/permission-role-helpers";
+import { ensureTenant } from "../helpers/tenant-helpers";
+
+import type { InferInsertModel } from "drizzle-orm";
+import type { DatabasePg, UUIDType } from "src/common";
+
+type QuizAttemptTest = InferInsertModel<typeof assessmentAttempts> & {
+  courseId?: UUIDType;
+  lessonId?: UUIDType;
+  userId?: UUIDType;
+  correctAnswers: number;
+  wrongAnswers: number;
+  score?: number;
+};
+
+const ensureUser = async (
+  db: DatabasePg,
+  tenantId: UUIDType,
+  isContentCreator: boolean = false,
+  userId?: UUIDType,
+): Promise<UUIDType> => {
+  if (userId) return userId;
+
+  const [user] = await db
+    .insert(users)
+    .values({
+      id: faker.string.uuid(),
+      email: faker.internet.email(),
+      firstName: faker.person.firstName(),
+      lastName: faker.person.lastName(),
+      avatarReference: faker.image.avatar(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      tenantId,
+    })
+    .returning();
+
+  await assignSystemRoleToUserInTests(
+    db,
+    user.id,
+    tenantId,
+    isContentCreator ? SYSTEM_ROLE_SLUGS.CONTENT_CREATOR : SYSTEM_ROLE_SLUGS.STUDENT,
+  );
+
+  return user.id;
+};
+
+const ensureCategory = async (db: DatabasePg, tenantId: UUIDType): Promise<UUIDType> => {
+  const [category] = await db
+    .insert(categories)
+    .values({
+      id: faker.string.uuid(),
+      title: buildJsonbField(SUPPORTED_LANGUAGES.EN, faker.commerce.department()),
+      baseLanguage: SUPPORTED_LANGUAGES.EN,
+      availableLocales: [SUPPORTED_LANGUAGES.EN],
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      tenantId,
+    })
+    .returning();
+
+  return category.id;
+};
+
+const ensureCourse = async (
+  db: DatabasePg,
+  tenantId: UUIDType,
+  courseId?: UUIDType,
+): Promise<UUIDType> => {
+  if (courseId) return courseId;
+
+  const authorId = await ensureUser(db, tenantId, true);
+  const categoryId = await ensureCategory(db, tenantId);
+
+  const [course] = await db
+    .insert(courses)
+    .values({
+      id: faker.string.uuid(),
+      title: buildJsonbField(SUPPORTED_LANGUAGES.EN, faker.commerce.productName()),
+      description: buildJsonbField(SUPPORTED_LANGUAGES.EN, faker.commerce.productDescription()),
+      thumbnailS3Key: faker.system.directoryPath(),
+      status: "published",
+      priceInCents: faker.number.int({ min: 1000, max: 100000 }),
+      currency: "usd",
+      chapterCount: faker.number.int({ min: 1, max: 20 }),
+      courseType: COURSE_TYPE.DEFAULT,
+      authorId,
+      categoryId,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      tenantId,
+    })
+    .returning();
+
+  return course.id;
+};
+
+const ensureChapter = async (
+  db: DatabasePg,
+  tenantId: UUIDType,
+  chapterId?: UUIDType,
+  courseId?: UUIDType,
+): Promise<{ chapterId: UUIDType; courseId: UUIDType }> => {
+  let actualCourseId = courseId;
+
+  if (!actualCourseId) {
+    actualCourseId = await ensureCourse(db, tenantId);
+  }
+
+  if (chapterId) {
+    return { chapterId, courseId: actualCourseId };
+  }
+
+  const authorId = await ensureUser(db, tenantId, true);
+
+  const [chapter] = await db
+    .insert(chapters)
+    .values({
+      id: faker.string.uuid(),
+      title: buildJsonbField(SUPPORTED_LANGUAGES.EN, faker.lorem.sentence()),
+      courseId: actualCourseId,
+      authorId,
+      isFreemium: faker.datatype.boolean(),
+      displayOrder: faker.number.int({ min: 1, max: 10 }),
+      lessonCount: faker.number.int({ min: 1, max: 10 }),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      tenantId,
+    })
+    .returning();
+
+  return { chapterId: chapter.id, courseId: actualCourseId };
+};
+
+const ensureLesson = async (
+  db: DatabasePg,
+  tenantId: UUIDType,
+  lessonId?: UUIDType,
+  chapterId?: UUIDType,
+  courseId?: UUIDType,
+): Promise<{ lessonId: UUIDType; courseId: UUIDType }> => {
+  const { chapterId: actualChapterId, courseId: actualCourseId } = await ensureChapter(
+    db,
+    tenantId,
+    chapterId,
+    courseId,
+  );
+
+  if (lessonId) {
+    return { lessonId, courseId: actualCourseId };
+  }
+
+  const lessonType = faker.helpers.arrayElement(["video", "text", "quiz", "assignment"]);
+
+  const [lesson] = await db
+    .insert(lessons)
+    .values({
+      id: faker.string.uuid(),
+      chapterId: actualChapterId,
+      type: lessonType,
+      title: buildJsonbField(SUPPORTED_LANGUAGES.EN, faker.lorem.sentence()),
+      description: buildJsonbField(SUPPORTED_LANGUAGES.EN, faker.lorem.paragraph()),
+      thresholdScore: lessonType === "quiz" ? faker.number.int({ min: 0, max: 100 }) : null,
+      displayOrder: faker.number.int({ min: 1, max: 10 }),
+      fileS3Key: faker.system.directoryPath(),
+      fileType: faker.helpers.arrayElement(["mp4", "pdf", "html", "docx"]),
+      isExternal: faker.datatype.boolean(),
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+      tenantId,
+    })
+    .returning();
+
+  return { lessonId: lesson.id, courseId: actualCourseId };
+};
+
+export const createQuizAttemptFactory = (db: DatabasePg) => {
+  return Factory.define<QuizAttemptTest>(({ onCreate }) => {
+    onCreate(async (attempt) => {
+      const tenantId = await ensureTenant(db, attempt.tenantId as UUIDType | undefined);
+      const userId = await ensureUser(db, tenantId, false, attempt.userId);
+      const { lessonId, courseId } = await ensureLesson(
+        db,
+        tenantId,
+        attempt.lessonId,
+        undefined,
+        attempt.courseId,
+      );
+
+      let [assessment] = await db
+        .select()
+        .from(assessments)
+        .where(eq(assessments.lessonId, lessonId))
+        .limit(1);
+
+      if (!assessment) {
+        [assessment] = await db
+          .insert(assessments)
+          .values({
+            lessonId,
+            passingScorePercentage: "0",
+            baseLanguage: SUPPORTED_LANGUAGES.EN,
+            availableLocales: [SUPPORTED_LANGUAGES.EN],
+            tenantId,
+          })
+          .returning();
+      }
+
+      const [inserted] = await db
+        .insert(assessmentAttempts)
+        .values({
+          assessmentId: assessment.id,
+          language: SUPPORTED_LANGUAGES.EN,
+          learnerId: userId,
+          attemptNumber: attempt.attemptNumber ?? 1,
+          submissionStatus: ASSESSMENT_ATTEMPT_SUBMISSION_STATUSES.SUBMITTED,
+          gradingStatus: ASSESSMENT_ATTEMPT_GRADING_STATUSES.GRADED,
+          result: ASSESSMENT_ATTEMPT_RESULTS.PASSED,
+          availablePoints: String(attempt.correctAnswers + attempt.wrongAnswers),
+          awardedPoints: String(attempt.correctAnswers),
+          scorePercentage: String(attempt.scorePercentage ?? attempt.score ?? 0),
+          hasQuestionLevelAnswers: false,
+          submittedAt: attempt.submittedAt ?? new Date().toISOString(),
+          tenantId,
+        })
+        .returning();
+
+      return {
+        ...inserted,
+        userId,
+        courseId,
+        lessonId,
+        correctAnswers: attempt.correctAnswers,
+        wrongAnswers: attempt.wrongAnswers,
+        score: attempt.score,
+      };
+    });
+
+    const correctAnswers = faker.number.int({ min: 0, max: 10 });
+    const wrongAnswers = faker.number.int({ min: 0, max: 10 });
+    const totalQuestions = correctAnswers + wrongAnswers;
+    const score = totalQuestions > 0 ? Math.round((correctAnswers / totalQuestions) * 100) : 0;
+
+    return {
+      id: faker.string.uuid(),
+      attemptNumber: 1,
+      language: SUPPORTED_LANGUAGES.EN,
+      learnerId: "" as UUIDType,
+      courseId: "", // Will be auto-created if empty
+      lessonId: "", // Will be auto-created if empty
+      assessmentId: "" as UUIDType,
+      submissionStatus: ASSESSMENT_ATTEMPT_SUBMISSION_STATUSES.SUBMITTED,
+      gradingStatus: ASSESSMENT_ATTEMPT_GRADING_STATUSES.GRADED,
+      result: ASSESSMENT_ATTEMPT_RESULTS.PASSED,
+      availablePoints: String(totalQuestions),
+      awardedPoints: String(correctAnswers),
+      scorePercentage: String(score),
+      hasQuestionLevelAnswers: false,
+      submittedAt: new Date().toISOString(),
+      correctAnswers,
+      wrongAnswers,
+      score,
+      tenantId: undefined as unknown as UUIDType,
+    };
+  });
+};

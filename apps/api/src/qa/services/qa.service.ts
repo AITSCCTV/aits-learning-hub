@@ -1,0 +1,177 @@
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { PERMISSIONS } from "@repo/shared";
+
+import { hasPermission } from "src/common/permissions/permission.utils";
+import { CreateQAEvent } from "src/events/qa/create-qa.event";
+import { DeleteQAEvent } from "src/events/qa/delete-qa.event";
+import { UpdateQAEvent } from "src/events/qa/update-qa.event";
+import { SEARCH_ENTITY_TYPES } from "src/global-search/global-search.constants";
+import { SearchIndexService } from "src/global-search/search-index.service";
+import { LocalizationService } from "src/localization/localization.service";
+import { ENTITY_TYPE } from "src/localization/localization.types";
+import { OutboxPublisher } from "src/outbox/outbox.publisher";
+import { QARepository } from "src/qa/repositories/qa.repository";
+import { SettingsService } from "src/settings/settings.service";
+
+import type { SupportedLanguages } from "@repo/shared";
+import type { UUIDType } from "src/common";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+import type { CreateQABody, QAUpdateBody } from "src/qa/schemas/qa.schema";
+
+@Injectable()
+export class QAService {
+  constructor(
+    private readonly qaRepository: QARepository,
+    private readonly settingsService: SettingsService,
+    private readonly localizationService: LocalizationService,
+    private readonly outboxPublisher: OutboxPublisher,
+    private readonly searchIndexService: SearchIndexService,
+  ) {}
+
+  async createQA(data: CreateQABody, currentUser: CurrentUserType) {
+    const [qa] = await this.qaRepository.createQA(data, { createdBy: currentUser.userId });
+
+    await this.outboxPublisher.publish(
+      new CreateQAEvent({
+        qaId: qa.id,
+        actor: currentUser,
+        createdQA: qa,
+      }),
+    );
+
+    await this.searchIndexService.refreshQA(qa.id);
+
+    return { id: qa.id };
+  }
+
+  async getQA(qaId: UUIDType, language: SupportedLanguages, currentUser: CurrentUserType) {
+    await this.checkAccess(currentUser);
+
+    return this.qaRepository.getQA(qaId, language);
+  }
+
+  async getAllQA(language: SupportedLanguages, currentUser?: CurrentUserType) {
+    await this.checkAccess(currentUser);
+
+    return this.qaRepository.getAllQA(language);
+  }
+
+  async createLanguage(qaId: UUIDType, language: SupportedLanguages, currentUser: CurrentUserType) {
+    const qa = await this.qaRepository.getQA(qaId, language);
+
+    if (!qa) throw new NotFoundException({ message: "qaView.toast.notFound" });
+
+    if (qa.availableLocales.includes(language)) {
+      throw new BadRequestException({ message: "qaView.toast.languageAlreadyExists" });
+    }
+
+    const newLanguages = [...qa.availableLocales, language];
+
+    const [updatedQA] = await this.qaRepository.createLanguage(qaId, newLanguages, language);
+
+    await this.outboxPublisher.publish(
+      new UpdateQAEvent({
+        actor: currentUser,
+        previousQAData: qa,
+        updatedQAData: updatedQA,
+        qaId,
+      }),
+    );
+
+    await this.searchIndexService.refreshQA(qaId);
+
+    return updatedQA;
+  }
+
+  async updateQA(
+    data: QAUpdateBody,
+    qaId: UUIDType,
+    language: SupportedLanguages,
+    currentUser: CurrentUserType,
+  ) {
+    const qa = await this.qaRepository.getQA(qaId, language);
+
+    if (!(data.title || data.description))
+      throw new BadRequestException({ message: "qaView.toast.noDataToUpdate" });
+
+    if (!qa.availableLocales.includes(language)) {
+      throw new BadRequestException({ message: "qaView.toast.languageNotSupported" });
+    }
+
+    const [updatedQA] = await this.qaRepository.updateQA(data, language, qaId);
+
+    await this.outboxPublisher.publish(
+      new UpdateQAEvent({
+        actor: currentUser,
+        previousQAData: qa,
+        updatedQAData: updatedQA,
+        qaId,
+      }),
+    );
+
+    await this.searchIndexService.refreshQA(qaId);
+
+    return updatedQA;
+  }
+
+  async deleteQA(qaId: UUIDType, currentUser: CurrentUserType) {
+    const { baseLanguage } = await this.localizationService.getBaseLanguage(ENTITY_TYPE.QA, qaId);
+
+    const qa = await this.qaRepository.getQA(qaId, baseLanguage);
+
+    if (!qa) throw new BadRequestException({ message: "qaView.toast.notFound" });
+
+    await this.outboxPublisher.publish(
+      new DeleteQAEvent({
+        qaId,
+        qaName: qa.title,
+        actor: currentUser,
+      }),
+    );
+
+    await this.searchIndexService.deleteEntityDocuments({
+      entityType: SEARCH_ENTITY_TYPES.QA,
+      entityId: qaId,
+    });
+
+    return this.qaRepository.deleteQA(qaId);
+  }
+
+  async deleteLanguage(qaId: UUIDType, language: SupportedLanguages, currentUser: CurrentUserType) {
+    const qa = await this.qaRepository.getQA(qaId, language);
+
+    if (!qa) throw new BadRequestException({ message: "qaView.toast.notFound" });
+
+    if (!qa.availableLocales.includes(language) || language === qa.baseLanguage) {
+      throw new BadRequestException({ message: "qaView.toast.cannotDeleteLanguage" });
+    }
+
+    const [updatedQA] = await this.qaRepository.deleteLanguage(qaId, language);
+
+    await this.outboxPublisher.publish(
+      new UpdateQAEvent({
+        previousQAData: qa,
+        updatedQAData: updatedQA,
+        actor: currentUser,
+        qaId,
+      }),
+    );
+
+    await this.searchIndexService.refreshQA(qaId);
+
+    return updatedQA;
+  }
+
+  private async checkAccess(currentUser?: CurrentUserType) {
+    const { unregisteredUserQAAccessibility } = await this.settingsService.getGlobalSettings();
+    const canManageAll = hasPermission(currentUser?.permissions, PERMISSIONS.QA_MANAGE);
+    const canReadPublic = hasPermission(currentUser?.permissions, PERMISSIONS.QA_READ_PUBLIC);
+
+    const hasAccess =
+      canManageAll || canReadPublic || (!currentUser && unregisteredUserQAAccessibility);
+
+    if (!hasAccess) {
+      throw new BadRequestException({ message: "common.toast.noAccess" });
+    }
+  }
+}

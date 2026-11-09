@@ -1,0 +1,195 @@
+import { BadRequestException, Inject, Injectable } from "@nestjs/common";
+
+import { AiRepository } from "src/ai/repositories/ai.repository";
+import { AiRuntimeService } from "src/ai/services/ai-runtime.service";
+import { ChatService } from "src/ai/services/chat.service";
+import { MessageService } from "src/ai/services/message.service";
+import { PromptService } from "src/ai/services/prompt.service";
+import { ThreadService } from "src/ai/services/thread.service";
+import { MESSAGE_ROLE, THREAD_STATUS } from "src/ai/utils/ai.type";
+import { evaluateAiJudgeResult } from "src/ai/utils/judgeEvaluation";
+import { DatabasePg } from "src/common";
+import { DB } from "src/storage/db/db.providers";
+
+import type { PermissionKey, SupportedLanguages } from "@repo/shared";
+import type {
+  AiJudgeModelRubric,
+  AiJudgeRubric,
+  AiJudgeRubricContext,
+  AiJudgePublicResult,
+} from "src/ai/judge-configuration/judge-configuration.types";
+import type { ThreadOwnershipBody } from "src/ai/utils/ai.schema";
+import type { UUIDType } from "src/common";
+
+type JudgeViewer = {
+  userId: string;
+  permissions: PermissionKey[];
+};
+
+@Injectable()
+export class JudgeService {
+  constructor(
+    @Inject(DB) private readonly db: DatabasePg,
+    private readonly aiRepository: AiRepository,
+    private readonly aiRuntimeService: AiRuntimeService,
+    private readonly chatService: ChatService,
+    private readonly threadService: ThreadService,
+    private readonly messageService: MessageService,
+    private readonly promptService: PromptService,
+  ) {}
+
+  async evaluate(data: ThreadOwnershipBody, viewer: JudgeViewer) {
+    const thread = await this.threadService.findThread(data.threadId, {
+      userId: viewer.userId,
+      permissions: viewer.permissions,
+    });
+
+    if (thread.data.status !== THREAD_STATUS.ACTIVE)
+      throw new BadRequestException("common.error.threadMustBeActive");
+
+    const { lessonTitle, rubric } = await this.getRubric(data.threadId, thread.data.userLanguage);
+
+    const messages = await this.messageService.findMessageHistory(
+      data.threadId,
+      undefined,
+      MESSAGE_ROLE.USER,
+    );
+
+    const content = [
+      "<student_submission>",
+      messages.history.map(({ content }) => content).join("\n"),
+      "</student_submission>",
+    ].join("\n");
+    const assessmentConfiguration = {
+      taskGoal: rubric.taskGoal,
+      passingThresholdPercent: rubric.passingThresholdPercent,
+      criteria: rubric.criteria.map(({ id: _id, ...criterion }, index) => ({
+        ...criterion,
+        criterionRef: `C${index + 1}`,
+      })),
+      blockingErrors: rubric.blockingErrors.map(({ id: _id, ...blockingError }, index) => ({
+        ...blockingError,
+        blockingErrorRef: `B${index + 1}`,
+      })),
+    } satisfies AiJudgeModelRubric;
+    const system = await this.promptService.loadPrompt("judgePrompt", {
+      lessonTitle,
+      language: messages.userLanguage,
+      assessmentConfiguration: JSON.stringify(assessmentConfiguration, null, 2),
+    });
+    const judged = await this.aiRuntimeService.judgeMentor(
+      {
+        messages: [
+          { role: "system", content: system },
+          { role: "user", content },
+        ],
+      },
+      () => this.chatService.judge(system, content),
+    );
+    evaluateAiJudgeResult(judged, rubric);
+    const verified = await Promise.all(
+      judged.triggeredBlockingErrors.map(async (candidate) => {
+        const index = Number(candidate.blockingErrorRef.slice(1)) - 1;
+        const blockingError = rubric.blockingErrors[index];
+        const verificationSystem = await this.promptService.loadPrompt(
+          "judgeBlockingErrorVerificationPrompt",
+          { language: messages.userLanguage, blockingError: blockingError.description },
+        );
+        const verification = await this.aiRuntimeService.judgeMentor(
+          {
+            messages: [
+              { role: "system", content: verificationSystem },
+              { role: "user", content },
+            ],
+          },
+          () => this.chatService.judge(verificationSystem, content),
+        );
+        const checked = evaluateAiJudgeResult(verification, {
+          ...rubric,
+          criteria: [],
+          blockingErrors: [blockingError],
+        });
+        if (!checked.blockingErrors.length) return null;
+        return {
+          blockingErrorRef: candidate.blockingErrorRef,
+          learnerSafeFeedback: checked.blockingErrors[0].learnerSafeFeedback,
+        };
+      }),
+    );
+    const confirmedBlockingErrors = verified.filter(
+      (error): error is NonNullable<typeof error> => error !== null,
+    );
+    const response = evaluateAiJudgeResult(
+      { ...judged, triggeredBlockingErrors: confirmedBlockingErrors },
+      rubric,
+    );
+
+    return { data: response, rubric };
+  }
+
+  private async getRubric(
+    threadId: UUIDType,
+    language: SupportedLanguages,
+  ): Promise<AiJudgeRubricContext & { rubric: AiJudgeRubric }> {
+    const context = await this.aiRepository.findJudgeRubricByThreadId(threadId, language);
+
+    if (!context?.rubric) throw new BadRequestException("common.error.aiJudgeConfigurationMissing");
+
+    return { ...context, rubric: context.rubric };
+  }
+
+  async persistJudgement(
+    threadId: UUIDType,
+    language: SupportedLanguages,
+    rubric: AiJudgeRubric,
+    result: AiJudgePublicResult,
+  ) {
+    await this.db.transaction(async (transaction) => {
+      const completed = await this.aiRepository.completeActiveThread(threadId, transaction);
+      if (!completed) throw new BadRequestException("common.error.threadMustBeActive");
+
+      const judgement = await this.aiRepository.upsertJudgeJudgement(
+        {
+          threadId,
+          configurationId: rubric.configurationId,
+          language,
+          earnedPoints: result.score,
+          maxScore: result.maxScore,
+          percentage: result.percentage,
+          passed: result.passed,
+        },
+        transaction,
+      );
+
+      await Promise.all([
+        this.aiRepository.deleteJudgeCriterionJudgements(judgement.id, transaction),
+        this.aiRepository.deleteJudgeBlockingErrorJudgements(judgement.id, transaction),
+      ]);
+
+      if (result.criteria.length)
+        await this.aiRepository.insertJudgeCriterionJudgements(
+          result.criteria.map((criterion) => ({
+            judgementId: judgement.id,
+            criterionId: criterion.criterionId,
+            criterionTitle: criterion.title,
+            awardedPoints: criterion.awardedScore,
+            maxScoreAtJudgement: criterion.maxScore,
+            status: criterion.status,
+            learnerSafeFeedback: criterion.learnerSafeFeedback,
+          })),
+          transaction,
+        );
+
+      if (result.blockingErrors.length)
+        await this.aiRepository.insertJudgeBlockingErrorJudgements(
+          result.blockingErrors.map((blockingError) => ({
+            judgementId: judgement.id,
+            blockingErrorId: blockingError.blockingErrorId,
+            blockingErrorDescription: blockingError.description,
+            learnerSafeFeedback: blockingError.learnerSafeFeedback,
+          })),
+          transaction,
+        );
+    });
+  }
+}

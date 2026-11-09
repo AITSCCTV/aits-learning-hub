@@ -1,0 +1,40 @@
+import { SUPPORTED_LANGUAGES } from "@repo/shared";
+import { type Static, Type } from "@sinclair/typebox";
+
+import { UUIDSchema } from "src/common";
+
+export const createUserSchema = Type.Object({
+  email: Type.String({ format: "email" }),
+  firstName: Type.String({ minLength: 1, maxLength: 64 }),
+  lastName: Type.String({ minLength: 1, maxLength: 64 }),
+  roleSlugs: Type.Array(Type.String()),
+  managedGroupIds: Type.Optional(Type.Array(UUIDSchema)),
+  language: Type.Optional(Type.Enum(SUPPORTED_LANGUAGES)),
+});
+
+export type CreateUserBody = Static<typeof createUserSchema>;
+
+export const importUserSchema = Type.Object({
+  email: Type.String({ format: "email" }),
+  firstName: Type.String(),
+  lastName: Type.String(),
+  roleSlugs: Type.Array(Type.String()),
+  groups: Type.Optional(Type.Array(Type.String())),
+  language: Type.Optional(Type.Enum(SUPPORTED_LANGUAGES)),
+});
+
+export const skippedUserImportSchema = Type.Object({
+  email: Type.String({ format: "email" }),
+  reason: Type.String(),
+});
+
+export const importUserResponseSchema = Type.Object({
+  importedUsersAmount: Type.Number(),
+  skippedUsersAmount: Type.Number(),
+  importedUsersList: Type.Array(Type.String({ format: "email" })),
+  skippedUsersList: Type.Array(skippedUserImportSchema),
+});
+
+export type ImportUser = Static<typeof importUserSchema>;
+export type SkippedUserImport = Static<typeof skippedUserImportSchema>;
+export type ImportUserResponse = Static<typeof importUserResponseSchema>;

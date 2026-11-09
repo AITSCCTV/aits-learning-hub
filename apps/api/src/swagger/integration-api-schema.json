@@ -1,0 +1,4672 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/api/integration/plugins/connection": {
+      "get": {
+        "operationId": "IntegrationController_discoverPluginConnection",
+        "summary": "Discover tenants for plugin setup",
+        "description": "Lists accessible tenants and whether the key can configure plugins. Configuration requires a managing tenant key with tenant management permission.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DiscoverPluginConnectionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/tenants/{tenantId}/plugins/phishing": {
+      "put": {
+        "operationId": "IntegrationController_configurePhishingConnection",
+        "summary": "Connect a tenant to the phishing platform",
+        "description": "Atomically saves the plugin origin, API key and webhook secret, encrypted for the path tenant. Retrying with the same values is safe. Requires a managing tenant key with tenant management permission.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigurePhishingConnectionBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigurePhishingConnectionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "get": {
+        "operationId": "IntegrationController_phishingConnectionStatus",
+        "summary": "Verify tenant phishing connectivity",
+        "description": "Checks that Mentingo can authenticate to the configured plugin and reports its enabled state. Requires a managing tenant key with tenant management permission. No credentials are returned.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PhishingConnectionStatusResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/tenants/{tenantId}/plugins/competencies": {
+      "put": {
+        "operationId": "IntegrationController_configureCompetenciesConnection",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ConfigureCompetenciesConnectionBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigureCompetenciesConnectionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "get": {
+        "operationId": "IntegrationController_competenciesConnectionStatus",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CompetenciesConnectionStatusResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/learning-facts": {
+      "get": {
+        "operationId": "IntegrationController_getIntegrationLearningFacts",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "subjectId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetIntegrationLearningFactsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/tenants": {
+      "get": {
+        "operationId": "IntegrationController_getTenants",
+        "summary": "List all tenants for integration selection",
+        "description": "Returns all tenants accessible to the current integration API key.\n\nUse this endpoint first to discover which tenant IDs you can operate on. For the rest of integration endpoints, pass one of those IDs in the X-Tenant-Id header.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Tenant ID is optional for this endpoint.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTenantsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "post": {
+        "operationId": "IntegrationController_createTenant",
+        "summary": "Create tenant via integration API",
+        "description": "Creates a new tenant and invites its initial admin user.\n\nOnly integration API keys owned by a managing tenant with tenant management permission can use this endpoint.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Tenant ID is not required because the integration API key owner is used.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateTenantBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateTenantResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/tenants/{tenantId}": {
+      "patch": {
+        "operationId": "IntegrationController_updateTenant",
+        "summary": "Update tenant via integration API",
+        "description": "Updates the target tenant's name, host, or status.\n\nOnly integration API keys owned by a managing tenant with tenant management permission can use this endpoint.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Tenant ID is not required because the target tenant is in the path.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTenantBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTenantResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "delete": {
+        "operationId": "IntegrationController_deleteTenant",
+        "summary": "Delete tenant via integration API",
+        "description": "Permanently deletes the target tenant and its tenant-owned data.\n\nOnly integration API keys owned by a managing tenant with tenant management permission can use this endpoint. The managing tenant cannot delete itself.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Tenant ID is not required because the target tenant is in the path.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": ""
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/tenants/{tenantId}/api-keys": {
+      "patch": {
+        "operationId": "IntegrationController_updateTenantApiKeys",
+        "summary": "Update a tenant environment value",
+        "description": "Sets or replaces a supported tenant environment value by name. Uses the same supported names as the environment settings API. Only integration API keys owned by a managing tenant with tenant management permission can use this endpoint. Values are encrypted and never returned. The tenant in the path is authoritative, regardless of X-Tenant-Id.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Not required; the target tenant is in the path.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateTenantApiKeysBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateTenantApiKeysResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/tenants/{tenantId}/deactivate": {
+      "post": {
+        "operationId": "IntegrationController_deactivateTenant",
+        "summary": "Deactivate tenant via integration API",
+        "description": "Marks the target tenant as inactive.\n\nOnly integration API keys owned by a managing tenant with tenant management permission can use this endpoint.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Tenant ID is not required because the target tenant is in the path.",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeactivateTenantResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/users": {
+      "get": {
+        "operationId": "IntegrationController_getUsers",
+        "summary": "List users for integration",
+        "description": "Returns users from the tenant selected by X-Tenant-Id.\n\nSupports keyword search, role filtering, archived filtering ('true' or 'false'), group filtering, sorting, and pagination so integrations can sync user directories in batches.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "roleSlug",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "archived",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "perPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "firstName",
+                  "type": "string"
+                },
+                {
+                  "const": "lastName",
+                  "type": "string"
+                },
+                {
+                  "const": "email",
+                  "type": "string"
+                },
+                {
+                  "const": "createdAt",
+                  "type": "string"
+                },
+                {
+                  "const": "groupName",
+                  "type": "string"
+                },
+                {
+                  "const": "-firstName",
+                  "type": "string"
+                },
+                {
+                  "const": "-lastName",
+                  "type": "string"
+                },
+                {
+                  "const": "-email",
+                  "type": "string"
+                },
+                {
+                  "const": "-createdAt",
+                  "type": "string"
+                },
+                {
+                  "const": "-groupName",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "groups",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUsersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "post": {
+        "operationId": "IntegrationController_createUser",
+        "summary": "Create user via integration API",
+        "description": "Creates a new user inside the tenant selected by X-Tenant-Id.\n\nProvide the user payload in the request body. The response returns the created user ID so your external system can persist the Mentingo mapping.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateUserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/training-results": {
+      "get": {
+        "operationId": "IntegrationController_getTrainingResults",
+        "summary": "Get training results for integration reporting",
+        "description": "Returns training results in JSON for the tenant selected by X-Tenant-Id.\n\nEach response row represents one student-course pair.\n\nUse scope=tenant to list all rows for the tenant, scope=student to list rows for a specific student (studentId required), and scope=course to list rows for a specific course (courseId required). Optional extra filter can further narrow results.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "scope",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "tenant",
+                  "type": "string"
+                },
+                {
+                  "const": "student",
+                  "type": "string"
+                },
+                {
+                  "const": "course",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "studentId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "perPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTrainingResultsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/users/{userId}": {
+      "get": {
+        "operationId": "IntegrationController_getUserById",
+        "summary": "Get user by ID for integration",
+        "description": "Returns the full current state of a single tenant user by userId.\n\nUse this endpoint when your integration needs an authoritative read before applying updates or enrollment changes.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetUserByIdResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "patch": {
+        "operationId": "IntegrationController_updateUser",
+        "summary": "Update user via integration API",
+        "description": "Updates an existing tenant user identified by userId.\n\nOnly fields included in the body are modified. Use this endpoint for profile, role, or status synchronization from an external identity source.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateUserBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UpdateUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "delete": {
+        "operationId": "IntegrationController_deleteUser",
+        "summary": "Delete user via integration API",
+        "description": "Deletes the tenant user identified by userId.\n\nUse this when your source-of-truth system has deprovisioned a user and Mentingo access should be removed as part of lifecycle automation.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeleteUserResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/groups": {
+      "get": {
+        "operationId": "IntegrationController_getGroups",
+        "summary": "List groups for integration",
+        "description": "Returns groups from the tenant selected by X-Tenant-Id.\n\nSupports keyword filtering, sorting, and pagination so your integration can resolve external groups to Mentingo group IDs before assignment or enrollment operations.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "perPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sort",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "name",
+                  "type": "string"
+                },
+                {
+                  "const": "createdAt",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "language",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "anyOf": [
+                {
+                  "const": "th",
+                  "type": "string"
+                },
+                {
+                  "const": "en",
+                  "type": "string"
+                },
+                {
+                  "const": "pl",
+                  "type": "string"
+                },
+                {
+                  "const": "de",
+                  "type": "string"
+                },
+                {
+                  "const": "lt",
+                  "type": "string"
+                },
+                {
+                  "const": "cs",
+                  "type": "string"
+                },
+                {
+                  "const": "es",
+                  "type": "string"
+                },
+                {
+                  "const": "fr",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetGroupsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/users/{userId}/groups": {
+      "put": {
+        "operationId": "IntegrationController_setUserGroups",
+        "summary": "Set user groups via integration API",
+        "description": "Sets the complete group membership for a user in the selected tenant.\n\nThis operation treats the provided groupIds list as the source of truth and updates membership to match it.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "userId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SetUserGroupsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SetUserGroupsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/courses/{courseId}/enroll-users": {
+      "post": {
+        "operationId": "IntegrationController_enrollUsers",
+        "summary": "Enroll users to course via integration API",
+        "description": "Enrolls the provided user IDs into the specified course within the selected tenant.\n\nUse this endpoint to synchronize direct, user-level course access from your external system.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrollUsersBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrollUsersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "delete": {
+        "operationId": "IntegrationController_unenrollUsers",
+        "summary": "Unenroll users from course via integration API",
+        "description": "Removes the provided user IDs from the specified course within the selected tenant.\n\nUse this endpoint to revoke direct course access when enrollment should no longer apply.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnenrollUsersBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnenrollUsersResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/courses/{courseId}/enroll-groups": {
+      "post": {
+        "operationId": "IntegrationController_enrollGroups",
+        "summary": "Enroll groups to course via integration API",
+        "description": "Enrolls members of the provided group IDs into the specified course within the selected tenant.\n\nUse this for group-driven provisioning where course access is managed at group level instead of per user.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EnrollGroupsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/EnrollGroupsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "delete": {
+        "operationId": "IntegrationController_unenrollGroups",
+        "summary": "Unenroll groups from course via integration API",
+        "description": "Removes members of the provided group IDs from the specified course within the selected tenant.\n\nUse this for group-driven deprovisioning when course access is no longer required.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UnenrollGroupsBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnenrollGroupsResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/courses": {
+      "get": {
+        "operationId": "IntegrationCoursesController_getTenantCourses",
+        "summary": "List courses for an external catalog",
+        "description": "Returns the non-archived courses of the tenant selected by X-Tenant-Id, with localized title and description, languages, a signed thumbnail URL and chapter and lesson counts.\n\nRequires a managing tenant key whose owner has the course export permission. Titles and descriptions use the given language and fall back to each course's base language.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "keyword",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "maxLength": 200,
+              "type": "string"
+            }
+          },
+          {
+            "name": "language",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "default": "en",
+              "anyOf": [
+                {
+                  "const": "th",
+                  "type": "string"
+                },
+                {
+                  "const": "en",
+                  "type": "string"
+                },
+                {
+                  "const": "pl",
+                  "type": "string"
+                },
+                {
+                  "const": "de",
+                  "type": "string"
+                },
+                {
+                  "const": "lt",
+                  "type": "string"
+                },
+                {
+                  "const": "cs",
+                  "type": "string"
+                },
+                {
+                  "const": "es",
+                  "type": "string"
+                },
+                {
+                  "const": "fr",
+                  "type": "string"
+                }
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "type": "number"
+            }
+          },
+          {
+            "name": "perPage",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "minimum": 1,
+              "maximum": 100,
+              "type": "number"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetTenantCoursesResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/courses/{courseId}/native-archive": {
+      "post": {
+        "operationId": "IntegrationNativeArchiveController_startCourseArchiveExport",
+        "summary": "Start a native archive export of a course",
+        "description": "Queues a native archive (mentingo-package zip) export of a course in the tenant selected by X-Tenant-Id and returns the job id. Poll GET /integration/native-archive/jobs/:jobId until the job completes, then download the archive.\n\nRequires a managing tenant key whose owner has the course export permission.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "courseId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StartCourseArchiveExportResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/native-archive/jobs/{jobId}": {
+      "get": {
+        "operationId": "IntegrationNativeArchiveController_getCourseArchiveExportStatus",
+        "summary": "Get a native archive export job",
+        "description": "Returns the state of a native archive export started with this integration key in the tenant selected by X-Tenant-Id. Finished archives can be downloaded for 24 hours.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "jobId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCourseArchiveExportStatusResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/native-archive/jobs/{jobId}/download": {
+      "get": {
+        "operationId": "IntegrationNativeArchiveController_downloadCourseArchive",
+        "summary": "Download a native archive",
+        "description": "Streams the zip of a completed native archive export started with this integration key in the tenant selected by X-Tenant-Id. The body is the archive itself, not a JSON envelope.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "jobId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/native-archive/jobs/{jobId}/download-url": {
+      "get": {
+        "operationId": "IntegrationNativeArchiveController_getCourseArchiveDownloadUrl",
+        "summary": "Get a download URL for a native archive",
+        "description": "Returns a short-lived storage URL for the zip of a completed native archive export started with this integration key in the tenant selected by X-Tenant-Id. Fetch the URL without API headers; the download itself does not pass through the API. The URL must be used before it expires; ask for a new one if it does.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "jobId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Tenant-Id",
+            "in": "header",
+            "description": "Target tenant context for this request. Must be one of the tenant IDs returned by GET /integration/tenants.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCourseArchiveDownloadUrlResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/tenants/{tenantId}/plugins/content-marketplace": {
+      "put": {
+        "operationId": "IntegrationContentMarketplaceController_saveContentMarketplaceConnection",
+        "summary": "Connect a tenant to the content marketplace",
+        "description": "Atomically saves the content marketplace plugin origin and API key, encrypted for the path tenant. Retrying with the same values is safe. Requires a managing tenant key with tenant management permission.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SaveContentMarketplaceConnectionBody"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SaveContentMarketplaceConnectionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      },
+      "get": {
+        "operationId": "IntegrationContentMarketplaceController_checkContentMarketplaceConnection",
+        "summary": "Verify tenant content marketplace connectivity",
+        "description": "Checks that Mentingo can authenticate to the configured content marketplace plugin and reports whether the marketplace is enabled for the tenant. Requires a managing tenant key with tenant management permission. No credentials are returned.",
+        "parameters": [
+          {
+            "name": "X-API-Key",
+            "in": "header",
+            "description": "Integration API key used to authenticate every integration request.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "tenantId",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CheckContentMarketplaceConnectionResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Missing or invalid integration API key."
+          },
+          "403": {
+            "description": "Authenticated integration key owner is not authorized."
+          }
+        },
+        "tags": [
+          "Integration"
+        ]
+      }
+    },
+    "/api/integration/key": {
+      "get": {
+        "operationId": "IntegrationAdminController_getCurrentKey",
+        "summary": "Get current integration API key metadata for admin",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetCurrentKeyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required."
+          },
+          "403": {
+            "description": "Admin role required."
+          }
+        },
+        "tags": [
+          "Integration Admin"
+        ]
+      },
+      "post": {
+        "operationId": "IntegrationAdminController_rotateKey",
+        "summary": "Rotate integration API key for admin",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RotateKeyResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required."
+          },
+          "403": {
+            "description": "Admin role required."
+          }
+        },
+        "tags": [
+          "Integration Admin"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "Mentingo API",
+    "description": "This is the API documentation for Mentingo",
+    "version": "v0.0.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "DiscoverPluginConnectionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tenants": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "host": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "host"
+                  ]
+                }
+              },
+              "canConfigurePlugins": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "tenants",
+              "canConfigurePlugins"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ConfigurePhishingConnectionBody": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "baseUrl": {
+            "minLength": 1,
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "apiKey": {
+            "minLength": 32,
+            "maxLength": 256,
+            "writeOnly": true,
+            "type": "string"
+          },
+          "webhookSecret": {
+            "minLength": 32,
+            "maxLength": 256,
+            "writeOnly": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "baseUrl",
+          "apiKey",
+          "webhookSecret"
+        ]
+      },
+      "ConfigurePhishingConnectionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tenantId": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "required": [
+              "tenantId"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "PhishingConnectionStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tenantId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "reachable": {
+                "type": "boolean"
+              },
+              "enabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "tenantId",
+              "reachable",
+              "enabled"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ConfigureCompetenciesConnectionBody": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "baseUrl": {
+            "minLength": 1,
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "apiKey": {
+            "minLength": 32,
+            "maxLength": 256,
+            "writeOnly": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "baseUrl",
+          "apiKey"
+        ]
+      },
+      "ConfigureCompetenciesConnectionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tenantId": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "required": [
+              "tenantId"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CompetenciesConnectionStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tenantId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "reachable": {
+                "type": "boolean"
+              },
+              "enabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "tenantId",
+              "reachable",
+              "enabled"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetIntegrationLearningFactsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "subjectId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "courseId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "revision": {
+                "type": "integer"
+              },
+              "facts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "courseId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "id": {
+                      "type": "string"
+                    },
+                    "revision": {
+                      "type": "integer"
+                    },
+                    "subjectId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "kind": {
+                      "const": "course",
+                      "type": "string"
+                    },
+                    "resourceId": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "learningStateId": {
+                      "anyOf": [
+                        {
+                          "format": "uuid",
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "occurredAt": {
+                      "type": "string"
+                    },
+                    "validUntil": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "outcome": {
+                      "anyOf": [
+                        {
+                          "const": "passed",
+                          "type": "string"
+                        },
+                        {
+                          "const": "failed",
+                          "type": "string"
+                        },
+                        {
+                          "const": "revoked",
+                          "type": "string"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "courseId",
+                    "id",
+                    "revision",
+                    "subjectId",
+                    "kind",
+                    "resourceId",
+                    "learningStateId",
+                    "occurredAt",
+                    "validUntil",
+                    "outcome"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "subjectId",
+              "courseId",
+              "revision",
+              "facts"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTenantsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "host": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "host"
+              ]
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateTenantBody": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "host": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "const": "active",
+                "type": "string"
+              },
+              {
+                "const": "inactive",
+                "type": "string"
+              }
+            ]
+          },
+          "adminEmail": {
+            "format": "email",
+            "type": "string"
+          },
+          "adminFirstName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "adminLastName": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "adminLanguage": {
+            "anyOf": [
+              {
+                "const": "th",
+                "type": "string"
+              },
+              {
+                "const": "en",
+                "type": "string"
+              },
+              {
+                "const": "pl",
+                "type": "string"
+              },
+              {
+                "const": "de",
+                "type": "string"
+              },
+              {
+                "const": "lt",
+                "type": "string"
+              },
+              {
+                "const": "cs",
+                "type": "string"
+              },
+              {
+                "const": "es",
+                "type": "string"
+              },
+              {
+                "const": "fr",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "name",
+          "host",
+          "adminEmail",
+          "adminFirstName",
+          "adminLastName"
+        ]
+      },
+      "CreateTenantResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "host": {
+                "type": "string"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "const": "active",
+                    "type": "string"
+                  },
+                  {
+                    "const": "inactive",
+                    "type": "string"
+                  }
+                ]
+              },
+              "isManaging": {
+                "type": "boolean"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "host",
+              "status",
+              "isManaging",
+              "createdAt",
+              "updatedAt"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateTenantBody": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "name": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "host": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "status": {
+            "anyOf": [
+              {
+                "const": "active",
+                "type": "string"
+              },
+              {
+                "const": "inactive",
+                "type": "string"
+              }
+            ]
+          }
+        }
+      },
+      "UpdateTenantResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "host": {
+                "type": "string"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "const": "active",
+                    "type": "string"
+                  },
+                  {
+                    "const": "inactive",
+                    "type": "string"
+                  }
+                ]
+              },
+              "isManaging": {
+                "type": "boolean"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "host",
+              "status",
+              "isManaging",
+              "createdAt",
+              "updatedAt"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateTenantApiKeysBody": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "name": {
+            "anyOf": [
+              {
+                "const": "COMPETENCIES_API_KEY",
+                "type": "string"
+              },
+              {
+                "const": "COMPETENCIES_BASE_URL",
+                "type": "string"
+              },
+              {
+                "const": "PHISHING_API_KEY",
+                "type": "string"
+              },
+              {
+                "const": "PHISHING_BASE_URL",
+                "type": "string"
+              },
+              {
+                "const": "PHISHING_WEBHOOK_SECRET",
+                "type": "string"
+              },
+              {
+                "const": "MICROSOFT_CLIENT_ID",
+                "type": "string"
+              },
+              {
+                "const": "MICROSOFT_CLIENT_SECRET",
+                "type": "string"
+              },
+              {
+                "const": "MICROSOFT_CALENDAR_CLIENT_ID",
+                "type": "string"
+              },
+              {
+                "const": "MICROSOFT_CALENDAR_CLIENT_SECRET",
+                "type": "string"
+              },
+              {
+                "const": "OPENAI_API_KEY",
+                "type": "string"
+              },
+              {
+                "const": "BUNNY_STREAM_API_KEY",
+                "type": "string"
+              },
+              {
+                "const": "BUNNY_STREAM_READ_ONLY_API_KEY",
+                "type": "string"
+              },
+              {
+                "const": "BUNNY_STREAM_LIBRARY_ID",
+                "type": "string"
+              },
+              {
+                "const": "BUNNY_STREAM_CDN_URL",
+                "type": "string"
+              },
+              {
+                "const": "BUNNY_STREAM_TOKEN_SIGNING_KEY",
+                "type": "string"
+              },
+              {
+                "const": "GOOGLE_CLIENT_ID",
+                "type": "string"
+              },
+              {
+                "const": "GOOGLE_CLIENT_SECRET",
+                "type": "string"
+              },
+              {
+                "const": "STRIPE_WEBHOOK_SECRET",
+                "type": "string"
+              },
+              {
+                "const": "STRIPE_SECRET_KEY",
+                "type": "string"
+              },
+              {
+                "const": "VITE_STRIPE_PUBLISHABLE_KEY",
+                "type": "string"
+              },
+              {
+                "const": "SLACK_CLIENT_ID",
+                "type": "string"
+              },
+              {
+                "const": "SLACK_CLIENT_SECRET",
+                "type": "string"
+              },
+              {
+                "const": "ENTRA_ID_CLIENT_ID",
+                "type": "string"
+              },
+              {
+                "const": "ENTRA_ID_CLIENT_SECRET",
+                "type": "string"
+              },
+              {
+                "const": "ENTRA_ID_DIRECTORY_ID",
+                "type": "string"
+              },
+              {
+                "const": "LUMA_API_KEY",
+                "type": "string"
+              },
+              {
+                "const": "LIVEKIT_URL",
+                "type": "string"
+              },
+              {
+                "const": "LIVEKIT_API_KEY",
+                "type": "string"
+              },
+              {
+                "const": "LIVEKIT_API_SECRET",
+                "type": "string"
+              }
+            ]
+          },
+          "value": {
+            "maxLength": 4096,
+            "writeOnly": true,
+            "description": "Tenant environment value. Stored encrypted; never returned in responses.",
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "value"
+        ]
+      },
+      "UpdateTenantApiKeysResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tenantId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "updatedKeys": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "const": "COMPETENCIES_API_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "COMPETENCIES_BASE_URL",
+                      "type": "string"
+                    },
+                    {
+                      "const": "PHISHING_API_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "PHISHING_BASE_URL",
+                      "type": "string"
+                    },
+                    {
+                      "const": "PHISHING_WEBHOOK_SECRET",
+                      "type": "string"
+                    },
+                    {
+                      "const": "MICROSOFT_CLIENT_ID",
+                      "type": "string"
+                    },
+                    {
+                      "const": "MICROSOFT_CLIENT_SECRET",
+                      "type": "string"
+                    },
+                    {
+                      "const": "MICROSOFT_CALENDAR_CLIENT_ID",
+                      "type": "string"
+                    },
+                    {
+                      "const": "MICROSOFT_CALENDAR_CLIENT_SECRET",
+                      "type": "string"
+                    },
+                    {
+                      "const": "OPENAI_API_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "BUNNY_STREAM_API_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "BUNNY_STREAM_READ_ONLY_API_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "BUNNY_STREAM_LIBRARY_ID",
+                      "type": "string"
+                    },
+                    {
+                      "const": "BUNNY_STREAM_CDN_URL",
+                      "type": "string"
+                    },
+                    {
+                      "const": "BUNNY_STREAM_TOKEN_SIGNING_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "GOOGLE_CLIENT_ID",
+                      "type": "string"
+                    },
+                    {
+                      "const": "GOOGLE_CLIENT_SECRET",
+                      "type": "string"
+                    },
+                    {
+                      "const": "STRIPE_WEBHOOK_SECRET",
+                      "type": "string"
+                    },
+                    {
+                      "const": "STRIPE_SECRET_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "VITE_STRIPE_PUBLISHABLE_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "SLACK_CLIENT_ID",
+                      "type": "string"
+                    },
+                    {
+                      "const": "SLACK_CLIENT_SECRET",
+                      "type": "string"
+                    },
+                    {
+                      "const": "ENTRA_ID_CLIENT_ID",
+                      "type": "string"
+                    },
+                    {
+                      "const": "ENTRA_ID_CLIENT_SECRET",
+                      "type": "string"
+                    },
+                    {
+                      "const": "ENTRA_ID_DIRECTORY_ID",
+                      "type": "string"
+                    },
+                    {
+                      "const": "LUMA_API_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "LIVEKIT_URL",
+                      "type": "string"
+                    },
+                    {
+                      "const": "LIVEKIT_API_KEY",
+                      "type": "string"
+                    },
+                    {
+                      "const": "LIVEKIT_API_SECRET",
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            },
+            "required": [
+              "tenantId",
+              "updatedKeys"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "DeactivateTenantResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "host": {
+                "type": "string"
+              },
+              "status": {
+                "anyOf": [
+                  {
+                    "const": "active",
+                    "type": "string"
+                  },
+                  {
+                    "const": "inactive",
+                    "type": "string"
+                  }
+                ]
+              },
+              "isManaging": {
+                "type": "boolean"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "host",
+              "status",
+              "isManaging",
+              "createdAt",
+              "updatedAt"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetUsersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "allOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "createdAt": {
+                      "type": "string"
+                    },
+                    "updatedAt": {
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "archived": {
+                      "type": "boolean"
+                    },
+                    "deletedAt": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "profilePictureUrl": {
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "createdAt",
+                    "updatedAt",
+                    "email",
+                    "firstName",
+                    "lastName",
+                    "archived",
+                    "deletedAt",
+                    "profilePictureUrl"
+                  ]
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "roleSlugs": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "groups": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "format": "uuid",
+                            "type": "string"
+                          },
+                          "name": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name"
+                        ]
+                      }
+                    }
+                  },
+                  "required": [
+                    "roleSlugs",
+                    "groups"
+                  ]
+                }
+              ]
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "totalItems": {
+                "type": "number"
+              },
+              "page": {
+                "type": "number"
+              },
+              "perPage": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "totalItems",
+              "page",
+              "perPage"
+            ]
+          },
+          "appliedFilters": {
+            "type": "object",
+            "patternProperties": {
+              "^(.*)$": {}
+            }
+          }
+        },
+        "required": [
+          "data",
+          "pagination"
+        ]
+      },
+      "GetTrainingResultsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "scope": {
+                  "anyOf": [
+                    {
+                      "const": "tenant",
+                      "type": "string"
+                    },
+                    {
+                      "const": "student",
+                      "type": "string"
+                    },
+                    {
+                      "const": "course",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "tenantId": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "student": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "email": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string"
+                    },
+                    "lastName": {
+                      "type": "string"
+                    },
+                    "fullName": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "email",
+                    "firstName",
+                    "lastName",
+                    "fullName"
+                  ]
+                },
+                "courses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "lessons": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "lessonId": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "chapterId": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "type": {
+                              "type": "string"
+                            },
+                            "completed": {
+                              "type": "boolean"
+                            },
+                            "completedAt": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "lessonId",
+                            "chapterId",
+                            "title",
+                            "type",
+                            "completed",
+                            "completedAt"
+                          ]
+                        }
+                      },
+                      "quizzes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "lessonId": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "chapterId": {
+                              "format": "uuid",
+                              "type": "string"
+                            },
+                            "title": {
+                              "type": "string"
+                            },
+                            "score": {
+                              "anyOf": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "passed": {
+                              "anyOf": [
+                                {
+                                  "type": "boolean"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "attempts": {
+                              "anyOf": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            },
+                            "completedAt": {
+                              "anyOf": [
+                                {
+                                  "type": "string"
+                                },
+                                {
+                                  "type": "null"
+                                }
+                              ]
+                            }
+                          },
+                          "required": [
+                            "lessonId",
+                            "chapterId",
+                            "title",
+                            "score",
+                            "passed",
+                            "attempts",
+                            "completedAt"
+                          ]
+                        }
+                      },
+                      "certificate": {
+                        "type": "object",
+                        "properties": {
+                          "enabled": {
+                            "type": "boolean"
+                          },
+                          "status": {
+                            "anyOf": [
+                              {
+                                "const": "issued",
+                                "type": "string"
+                              },
+                              {
+                                "const": "not_issued",
+                                "type": "string"
+                              },
+                              {
+                                "const": "not_applicable",
+                                "type": "string"
+                              }
+                            ]
+                          },
+                          "issuedAt": {
+                            "anyOf": [
+                              {
+                                "type": "string"
+                              },
+                              {
+                                "type": "null"
+                              }
+                            ]
+                          }
+                        },
+                        "required": [
+                          "enabled",
+                          "status",
+                          "issuedAt"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "title",
+                      "lessons",
+                      "quizzes",
+                      "certificate"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "scope",
+                "tenantId",
+                "student",
+                "courses"
+              ]
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "totalItems": {
+                "type": "number"
+              },
+              "page": {
+                "type": "number"
+              },
+              "perPage": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "totalItems",
+              "page",
+              "perPage"
+            ]
+          },
+          "appliedFilters": {
+            "type": "object",
+            "patternProperties": {
+              "^(.*)$": {}
+            }
+          }
+        },
+        "required": [
+          "data",
+          "pagination"
+        ]
+      },
+      "GetUserByIdResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "archived": {
+                "type": "boolean"
+              },
+              "deletedAt": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "profilePictureUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "roleSlugs": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "groups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ]
+                }
+              },
+              "managedGroups": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "format": "uuid",
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "id",
+              "createdAt",
+              "updatedAt",
+              "email",
+              "firstName",
+              "lastName",
+              "archived",
+              "deletedAt",
+              "profilePictureUrl",
+              "roleSlugs",
+              "groups"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CreateUserBody": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "firstName": {
+            "minLength": 1,
+            "maxLength": 64,
+            "type": "string"
+          },
+          "lastName": {
+            "minLength": 1,
+            "maxLength": 64,
+            "type": "string"
+          },
+          "roleSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "managedGroupIds": {
+            "type": "array",
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          "language": {
+            "anyOf": [
+              {
+                "const": "th",
+                "type": "string"
+              },
+              {
+                "const": "en",
+                "type": "string"
+              },
+              {
+                "const": "pl",
+                "type": "string"
+              },
+              {
+                "const": "de",
+                "type": "string"
+              },
+              {
+                "const": "lt",
+                "type": "string"
+              },
+              {
+                "const": "cs",
+                "type": "string"
+              },
+              {
+                "const": "es",
+                "type": "string"
+              },
+              {
+                "const": "fr",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "required": [
+          "email",
+          "firstName",
+          "lastName",
+          "roleSlugs"
+        ]
+      },
+      "CreateUserResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "id",
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UpdateUserBody": {
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "groups": {
+            "anyOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "managedGroupIds": {
+            "type": "array",
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            }
+          },
+          "email": {
+            "format": "email",
+            "type": "string"
+          },
+          "roleSlugs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "archived": {
+            "type": "boolean"
+          }
+        }
+      },
+      "UpdateUserResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "createdAt": {
+                "type": "string"
+              },
+              "updatedAt": {
+                "type": "string"
+              },
+              "email": {
+                "type": "string"
+              },
+              "firstName": {
+                "type": "string"
+              },
+              "lastName": {
+                "type": "string"
+              },
+              "archived": {
+                "type": "boolean"
+              },
+              "deletedAt": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "profilePictureUrl": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "createdAt",
+              "updatedAt",
+              "email",
+              "firstName",
+              "lastName",
+              "archived",
+              "deletedAt",
+              "profilePictureUrl"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "DeleteUserResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetGroupsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "characteristic": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "availableLocales": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "const": "th",
+                        "type": "string"
+                      },
+                      {
+                        "const": "en",
+                        "type": "string"
+                      },
+                      {
+                        "const": "pl",
+                        "type": "string"
+                      },
+                      {
+                        "const": "de",
+                        "type": "string"
+                      },
+                      {
+                        "const": "lt",
+                        "type": "string"
+                      },
+                      {
+                        "const": "cs",
+                        "type": "string"
+                      },
+                      {
+                        "const": "es",
+                        "type": "string"
+                      },
+                      {
+                        "const": "fr",
+                        "type": "string"
+                      }
+                    ]
+                  }
+                },
+                "baseLanguage": {
+                  "anyOf": [
+                    {
+                      "const": "th",
+                      "type": "string"
+                    },
+                    {
+                      "const": "en",
+                      "type": "string"
+                    },
+                    {
+                      "const": "pl",
+                      "type": "string"
+                    },
+                    {
+                      "const": "de",
+                      "type": "string"
+                    },
+                    {
+                      "const": "lt",
+                      "type": "string"
+                    },
+                    {
+                      "const": "cs",
+                      "type": "string"
+                    },
+                    {
+                      "const": "es",
+                      "type": "string"
+                    },
+                    {
+                      "const": "fr",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "users": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      },
+                      "email": {
+                        "type": "string"
+                      },
+                      "firstName": {
+                        "type": "string"
+                      },
+                      "lastName": {
+                        "type": "string"
+                      },
+                      "archived": {
+                        "type": "boolean"
+                      },
+                      "deletedAt": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      },
+                      "profilePictureUrl": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "createdAt",
+                      "updatedAt",
+                      "email",
+                      "firstName",
+                      "lastName",
+                      "archived",
+                      "deletedAt",
+                      "profilePictureUrl"
+                    ]
+                  }
+                },
+                "createdAt": {
+                  "type": "string"
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "name",
+                "characteristic",
+                "availableLocales",
+                "baseLanguage"
+              ]
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "totalItems": {
+                "type": "number"
+              },
+              "page": {
+                "type": "number"
+              },
+              "perPage": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "totalItems",
+              "page",
+              "perPage"
+            ]
+          },
+          "appliedFilters": {
+            "type": "object",
+            "patternProperties": {
+              "^(.*)$": {}
+            }
+          }
+        },
+        "required": [
+          "data",
+          "pagination"
+        ]
+      },
+      "SetUserGroupsBody": {
+        "type": "object",
+        "properties": {
+          "groupIds": {
+            "type": "array",
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "groupIds"
+        ]
+      },
+      "SetUserGroupsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "EnrollUsersBody": {
+        "type": "object",
+        "properties": {
+          "studentIds": {
+            "type": "array",
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "studentIds"
+        ]
+      },
+      "EnrollUsersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UnenrollUsersBody": {
+        "type": "object",
+        "properties": {
+          "studentIds": {
+            "type": "array",
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "studentIds"
+        ]
+      },
+      "UnenrollUsersResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "EnrollGroupsBody": {
+        "type": "object",
+        "properties": {
+          "groups": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "isMandatory": {
+                  "type": "boolean"
+                },
+                "dueDate": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "isMandatory"
+              ]
+            }
+          }
+        },
+        "required": [
+          "groups"
+        ]
+      },
+      "EnrollGroupsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "UnenrollGroupsBody": {
+        "type": "object",
+        "properties": {
+          "groupIds": {
+            "type": "array",
+            "items": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "groupIds"
+        ]
+      },
+      "UnenrollGroupsResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "message": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "message"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetTenantCoursesResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "format": "uuid",
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string"
+                },
+                "baseLanguage": {
+                  "anyOf": [
+                    {
+                      "const": "th",
+                      "type": "string"
+                    },
+                    {
+                      "const": "en",
+                      "type": "string"
+                    },
+                    {
+                      "const": "pl",
+                      "type": "string"
+                    },
+                    {
+                      "const": "de",
+                      "type": "string"
+                    },
+                    {
+                      "const": "lt",
+                      "type": "string"
+                    },
+                    {
+                      "const": "cs",
+                      "type": "string"
+                    },
+                    {
+                      "const": "es",
+                      "type": "string"
+                    },
+                    {
+                      "const": "fr",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "availableLocales": {
+                  "type": "array",
+                  "items": {
+                    "anyOf": [
+                      {
+                        "const": "th",
+                        "type": "string"
+                      },
+                      {
+                        "const": "en",
+                        "type": "string"
+                      },
+                      {
+                        "const": "pl",
+                        "type": "string"
+                      },
+                      {
+                        "const": "de",
+                        "type": "string"
+                      },
+                      {
+                        "const": "lt",
+                        "type": "string"
+                      },
+                      {
+                        "const": "cs",
+                        "type": "string"
+                      },
+                      {
+                        "const": "es",
+                        "type": "string"
+                      },
+                      {
+                        "const": "fr",
+                        "type": "string"
+                      }
+                    ]
+                  }
+                },
+                "thumbnailUrl": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "status": {
+                  "anyOf": [
+                    {
+                      "const": "draft",
+                      "type": "string"
+                    },
+                    {
+                      "const": "published",
+                      "type": "string"
+                    },
+                    {
+                      "const": "private",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "originType": {
+                  "anyOf": [
+                    {
+                      "const": "regular",
+                      "type": "string"
+                    },
+                    {
+                      "const": "master",
+                      "type": "string"
+                    },
+                    {
+                      "const": "exported",
+                      "type": "string"
+                    }
+                  ]
+                },
+                "chapterCount": {
+                  "type": "number"
+                },
+                "lessonCount": {
+                  "type": "number"
+                },
+                "metadata": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "anyOf": [
+                        {
+                          "minLength": 1,
+                          "type": "string"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "durationMinutes": {
+                      "anyOf": [
+                        {
+                          "minimum": 1,
+                          "type": "integer"
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "category",
+                    "durationMinutes"
+                  ]
+                },
+                "updatedAt": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "title",
+                "description",
+                "baseLanguage",
+                "availableLocales",
+                "thumbnailUrl",
+                "status",
+                "originType",
+                "chapterCount",
+                "lessonCount",
+                "metadata",
+                "updatedAt"
+              ]
+            }
+          },
+          "pagination": {
+            "type": "object",
+            "properties": {
+              "totalItems": {
+                "type": "number"
+              },
+              "page": {
+                "type": "number"
+              },
+              "perPage": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "totalItems",
+              "page",
+              "perPage"
+            ]
+          },
+          "appliedFilters": {
+            "type": "object",
+            "patternProperties": {
+              "^(.*)$": {}
+            }
+          }
+        },
+        "required": [
+          "data",
+          "pagination"
+        ]
+      },
+      "StartCourseArchiveExportResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "jobId": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "jobId"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCourseArchiveExportStatusResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "jobId": {
+                "type": "string"
+              },
+              "state": {
+                "type": "string"
+              },
+              "result": {
+                "anyOf": [
+                  {
+                    "type": "null"
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "anyOf": [
+                          {
+                            "const": "course",
+                            "type": "string"
+                          },
+                          {
+                            "const": "learning-path",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "rootId": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "alreadyExists": {
+                        "type": "boolean"
+                      },
+                      "createdCourseIds": {
+                        "type": "array",
+                        "items": {
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      },
+                      "reusedCourseIds": {
+                        "type": "array",
+                        "items": {
+                          "format": "uuid",
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "rootId"
+                    ]
+                  }
+                ]
+              },
+              "failedReason": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "progress": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "stage": {
+                        "anyOf": [
+                          {
+                            "const": "collecting-content",
+                            "type": "string"
+                          },
+                          {
+                            "const": "copying-files",
+                            "type": "string"
+                          },
+                          {
+                            "const": "packaging",
+                            "type": "string"
+                          },
+                          {
+                            "const": "downloading",
+                            "type": "string"
+                          },
+                          {
+                            "const": "verifying",
+                            "type": "string"
+                          },
+                          {
+                            "const": "uploading-files",
+                            "type": "string"
+                          },
+                          {
+                            "const": "indexing",
+                            "type": "string"
+                          },
+                          {
+                            "const": "saving",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "percent": {
+                        "minimum": 0,
+                        "maximum": 100,
+                        "type": "integer"
+                      }
+                    },
+                    "required": [
+                      "stage",
+                      "percent"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "jobId",
+              "state",
+              "result",
+              "failedReason",
+              "progress"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCourseArchiveDownloadUrlResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "url": {
+                "type": "string"
+              },
+              "expiresInSeconds": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "url",
+              "expiresInSeconds"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "SaveContentMarketplaceConnectionBody": {
+        "additionalProperties": false,
+        "type": "object",
+        "properties": {
+          "baseUrl": {
+            "minLength": 1,
+            "maxLength": 2000,
+            "type": "string"
+          },
+          "apiKey": {
+            "minLength": 32,
+            "maxLength": 256,
+            "writeOnly": true,
+            "type": "string"
+          }
+        },
+        "required": [
+          "baseUrl",
+          "apiKey"
+        ]
+      },
+      "SaveContentMarketplaceConnectionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tenantId": {
+                "format": "uuid",
+                "type": "string"
+              }
+            },
+            "required": [
+              "tenantId"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "CheckContentMarketplaceConnectionResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "tenantId": {
+                "format": "uuid",
+                "type": "string"
+              },
+              "reachable": {
+                "type": "boolean"
+              },
+              "enabled": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "tenantId",
+              "reachable",
+              "enabled"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "GetCurrentKeyResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "format": "uuid",
+                        "type": "string"
+                      },
+                      "keyPrefix": {
+                        "type": "string"
+                      },
+                      "createdAt": {
+                        "type": "string"
+                      },
+                      "updatedAt": {
+                        "type": "string"
+                      },
+                      "lastUsedAt": {
+                        "anyOf": [
+                          {
+                            "type": "string"
+                          },
+                          {
+                            "type": "null"
+                          }
+                        ]
+                      }
+                    },
+                    "required": [
+                      "id",
+                      "keyPrefix",
+                      "createdAt",
+                      "updatedAt",
+                      "lastUsedAt"
+                    ]
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "key"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "RotateKeyResponse": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "key": {
+                "type": "string"
+              },
+              "metadata": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "format": "uuid",
+                    "type": "string"
+                  },
+                  "keyPrefix": {
+                    "type": "string"
+                  },
+                  "createdAt": {
+                    "type": "string"
+                  },
+                  "updatedAt": {
+                    "type": "string"
+                  },
+                  "lastUsedAt": {
+                    "anyOf": [
+                      {
+                        "type": "string"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "keyPrefix",
+                  "createdAt",
+                  "updatedAt",
+                  "lastUsedAt"
+                ]
+              }
+            },
+            "required": [
+              "key",
+              "metadata"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      }
+    }
+  }
+}

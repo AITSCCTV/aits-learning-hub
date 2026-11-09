@@ -1,0 +1,429 @@
+{
+  "metadata": {
+    "document_id": "AITS-C06-QUIZ",
+    "course_id": "AITS-C06",
+    "title": "Course practice assessment",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA"
+    ]
+  },
+  "passing_threshold_percent": 80,
+  "threshold_status": "Proposed practice threshold; not company competency policy",
+  "questions": [
+    {
+      "question": "What is the best first response to “better cameras”?",
+      "choices": [
+        "Request all passwords",
+        "Ask what outcome the customer needs",
+        "Quote the most expensive model"
+      ],
+      "correct_answer": "Ask what outcome the customer needs",
+      "explanation": "Discovery should establish the actual requirement.",
+      "id": "AITS-C06-L01-Q1",
+      "related_lesson": "AITS-C06-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L01-Q1",
+        "course_id": "AITS-C06",
+        "title": "What is the best first response to “better cameras”?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "How should unverified customer information be recorded?",
+      "choices": [
+        "As a customer statement pending verification",
+        "As a tested fact",
+        "As an approved design"
+      ],
+      "correct_answer": "As a customer statement pending verification",
+      "explanation": "The source and confidence of a statement matter.",
+      "id": "AITS-C06-L01-Q2",
+      "related_lesson": "AITS-C06-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L01-Q2",
+        "course_id": "AITS-C06",
+        "title": "How should unverified customer information be recorded?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Which data collection principle fits this exercise?",
+      "choices": [
+        "Collect every personal detail",
+        "Copy passwords for convenience",
+        "Collect what is needed for the task"
+      ],
+      "correct_answer": "Collect what is needed for the task",
+      "explanation": "Unnecessary collection increases exposure without improving the request.",
+      "id": "AITS-C06-L01-Q3",
+      "related_lesson": "AITS-C06-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L01-Q3",
+        "course_id": "AITS-C06",
+        "title": "Which data collection principle fits this exercise?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Which response avoids an unsupported promise?",
+      "choices": [
+        "I will request review and agree an update",
+        "You will receive a full refund today",
+        "We guarantee repair in ten minutes"
+      ],
+      "correct_answer": "I will request review and agree an update",
+      "explanation": "The first response commits to an action within the stated role.",
+      "id": "AITS-C06-L02-Q1",
+      "related_lesson": "AITS-C06-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L02-Q1",
+        "course_id": "AITS-C06",
+        "title": "Which response avoids an unsupported promise?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "What should complaint notes distinguish?",
+      "choices": [
+        "Only the staff opinion",
+        "Only the customer’s tone",
+        "Reported impact and confirmed facts"
+      ],
+      "correct_answer": "Reported impact and confirmed facts",
+      "explanation": "Both impact and evidence matter.",
+      "id": "AITS-C06-L02-Q2",
+      "related_lesson": "AITS-C06-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L02-Q2",
+        "course_id": "AITS-C06",
+        "title": "What should complaint notes distinguish?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "A request exceeds your authority. What next?",
+      "choices": [
+        "Hide the request",
+        "Escalate through the verified route",
+        "Approve it anyway"
+      ],
+      "correct_answer": "Escalate through the verified route",
+      "explanation": "Authority limits should be respected.",
+      "id": "AITS-C06-L02-Q3",
+      "related_lesson": "AITS-C06-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L02-Q3",
+        "course_id": "AITS-C06",
+        "title": "A request exceeds your authority. What next?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Survey says six cameras; draft quote says four. What next?",
+      "choices": [
+        "Send it unchanged",
+        "Guess that two are free",
+        "Resolve the mismatch before issue"
+      ],
+      "correct_answer": "Resolve the mismatch before issue",
+      "explanation": "A mismatch can create an avoidable delivery dispute.",
+      "id": "AITS-C06-L03-Q1",
+      "related_lesson": "AITS-C06-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L03-Q1",
+        "course_id": "AITS-C06",
+        "title": "Survey says six cameras; draft quote says four. What next?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Who can set an AITS discount in this lesson?",
+      "choices": [
+        "The AI mentor",
+        "No authority is established here",
+        "Every new employee"
+      ],
+      "correct_answer": "No authority is established here",
+      "explanation": "Company approval rules have not been supplied.",
+      "id": "AITS-C06-L03-Q2",
+      "related_lesson": "AITS-C06-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L03-Q2",
+        "course_id": "AITS-C06",
+        "title": "Who can set an AITS discount in this lesson?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "How should a changed customer requirement be handled?",
+      "choices": [
+        "Record it and obtain revised review",
+        "Silently alter the approved file",
+        "Delete the original record"
+      ],
+      "correct_answer": "Record it and obtain revised review",
+      "explanation": "Revision history preserves the decision context.",
+      "id": "AITS-C06-L03-Q3",
+      "related_lesson": "AITS-C06-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L03-Q3",
+        "course_id": "AITS-C06",
+        "title": "How should a changed customer requirement be handled?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Which file name gives better traceability?",
+      "choices": [
+        "misc",
+        "CO-101-quotation-v0.2-Draft",
+        "final-final-new"
+      ],
+      "correct_answer": "CO-101-quotation-v0.2-Draft",
+      "explanation": "A reference, version and status reduce ambiguity.",
+      "id": "AITS-C06-L04-Q1",
+      "related_lesson": "AITS-C06-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L04-Q1",
+        "course_id": "AITS-C06",
+        "title": "Which file name gives better traceability?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Can this course set the company retention period?",
+      "choices": [
+        "No",
+        "Yes, seven years for everything",
+        "Yes, delete after a week"
+      ],
+      "correct_answer": "No",
+      "explanation": "Retention depends on approved policy and applicable obligations.",
+      "id": "AITS-C06-L04-Q2",
+      "related_lesson": "AITS-C06-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L04-Q2",
+        "course_id": "AITS-C06",
+        "title": "Can this course set the company retention period?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Sending an email always proves a task is complete.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "The required outcome and acceptance must be checked.",
+      "id": "AITS-C06-L04-Q3",
+      "related_lesson": "AITS-C06-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L04-Q3",
+        "course_id": "AITS-C06",
+        "title": "Sending an email always proves a task is complete.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    }
+  ]
+}

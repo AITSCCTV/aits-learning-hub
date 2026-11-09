@@ -1,0 +1,46 @@
+import { SUPPORTED_LANGUAGES } from "@repo/shared";
+import { sql } from "drizzle-orm";
+import { boolean, index, text, uuid } from "drizzle-orm/pg-core";
+
+import { tenants } from "./tenant.schema";
+
+import type { SupportedLanguages } from "@repo/shared";
+
+export { id, timestamps, timestampWithTimezone } from "./columns";
+
+export const archived = boolean("archived").default(false).notNull();
+
+export const STATUS = {
+  draft: { key: "draft", value: "Draft" },
+  published: { key: "published", value: "Published" },
+  archived: { key: "archived", value: "Archived" },
+} as const;
+
+export const STATUS_KEYS = Object.fromEntries(
+  Object.entries(STATUS).map(([key, { value }]) => [key, value]),
+);
+
+export const baseLanguage = text("base_language")
+  .$type<SupportedLanguages>()
+  .notNull()
+  .default(SUPPORTED_LANGUAGES.EN);
+export const availableLocales = text("available_locales")
+  .array()
+  .$type<SupportedLanguages[]>()
+  .notNull()
+  .default(sql`ARRAY['en']::text[]`);
+
+export const tenantId = uuid("tenant_id")
+  .references(() => tenants.id, { onDelete: "cascade" })
+  .notNull()
+  .default(sql`current_setting('app.tenant_id', true)::uuid`);
+
+export const withTenantIdIndex = (
+  tableName: string,
+  config?: (table: any) => Record<string, unknown>,
+) => {
+  return (table: any) => ({
+    tenantIdIdx: index(`${tableName}_tenant_id_idx`).on(table.tenantId),
+    ...(config ? config(table) : {}),
+  });
+};

@@ -1,0 +1,292 @@
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+} from "@nestjs/common";
+import { eq } from "drizzle-orm";
+import Stripe from "stripe";
+
+import { DatabasePg } from "src/common";
+import { EnvService } from "src/env/services/env.service";
+import { DB } from "src/storage/db/db.providers";
+import { courses } from "src/storage/schema";
+
+import type { CreateCheckoutSessionBody } from "./schemas/checkoutSession.schema";
+import type { CreatePromotionCode } from "./schemas/createPromotionCode";
+import type { PromotionCode } from "./schemas/promotionCode.schema";
+import type { UpdatePromotionCode } from "./schemas/updatePromotionCode.schema";
+import type { UUIDType } from "src/common";
+
+@Injectable()
+export class StripeService {
+  constructor(
+    private readonly envService: EnvService,
+    @Inject(DB) private readonly db: DatabasePg,
+  ) {}
+
+  private async assertCourseAcceptsCheckout(courseId: UUIDType) {
+    const [course] = await this.db
+      .select({ isArchived: courses.isArchived })
+      .from(courses)
+      .where(eq(courses.id, courseId));
+
+    if (!course || course.isArchived) {
+      throw new BadRequestException("adminCourseView.errors.forbidden.archivedCourseEnrollment");
+    }
+  }
+
+  private async getStripeClient() {
+    const [STRIPE_SECRET_KEY, STRIPE_WEBHOOK_SECRET] = await Promise.all([
+      this.envService
+        .getEnv("STRIPE_SECRET_KEY")
+        .then((r) => r.value)
+        .catch(() => process.env.STRIPE_SECRET_KEY ?? null),
+      this.envService
+        .getEnv("STRIPE_WEBHOOK_SECRET")
+        .then((r) => r.value)
+        .catch(() => process.env.STRIPE_WEBHOOK_SECRET ?? null),
+    ]);
+
+    if (!STRIPE_SECRET_KEY || !STRIPE_WEBHOOK_SECRET) return null;
+
+    return new Stripe(STRIPE_SECRET_KEY);
+  }
+
+  async getClient(): Promise<Stripe> {
+    const stripeClient = await this.getStripeClient();
+    if (!stripeClient) {
+      throw new InternalServerErrorException("Stripe is not configured");
+    }
+    return stripeClient;
+  }
+
+  async payment(amount: number, currency: string, customerId: UUIDType, courseId: UUIDType) {
+    await this.assertCourseAcceptsCheckout(courseId);
+    const client = await this.getClient();
+
+    const { client_secret } = await client.paymentIntents.create({
+      amount,
+      currency,
+      metadata: {
+        courseId,
+        customerId,
+      },
+    });
+
+    return client_secret;
+  }
+
+  async createCheckoutSession(body: CreateCheckoutSessionBody) {
+    const {
+      allowPromotionCode = false,
+      quantity = 1,
+      courseId,
+      customerId,
+      locale,
+      priceId,
+    } = body;
+
+    await this.assertCourseAcceptsCheckout(courseId);
+
+    const client = await this.getClient();
+
+    const session = await client.checkout.sessions.create({
+      line_items: [
+        {
+          price: priceId,
+          quantity,
+        },
+      ],
+      mode: "payment",
+      ui_mode: "embedded",
+      allow_promotion_codes: allowPromotionCode,
+      redirect_on_completion: "never",
+      locale,
+      payment_intent_data: {
+        metadata: {
+          courseId,
+          customerId,
+        },
+      },
+    });
+
+    return { clientSecret: session.client_secret };
+  }
+
+  async createProduct(
+    data: Stripe.ProductCreateParams & { amountInCents: number; currency: string },
+  ) {
+    const client = await this.getClient();
+    const product = await client.products.create({
+      name: data?.name,
+      description: data?.description,
+    });
+
+    const price = await this.createPrice({
+      product: product.id,
+      unit_amount: data.amountInCents,
+      currency: data.currency,
+    });
+
+    return {
+      productId: product.id,
+      priceId: price.id,
+    };
+  }
+
+  async searchProducts(params: Stripe.ProductSearchParams) {
+    const client = await this.getClient();
+    const products = await client.products.search(params);
+    return products;
+  }
+
+  async searchPrices(params: Stripe.PriceSearchParams) {
+    const client = await this.getClient();
+    const prices = await client.prices.search(params);
+    return prices;
+  }
+
+  async createPrice(data: Stripe.PriceCreateParams) {
+    const client = await this.getClient();
+    const price = await client.prices.create(data);
+    return price;
+  }
+
+  async updateProduct(id: string, data: Stripe.ProductUpdateParams) {
+    const client = await this.getClient();
+    const product = await client.products.update(id, data);
+    return product;
+  }
+
+  async updatePrice(id: string, data: Stripe.PriceUpdateParams) {
+    const client = await this.getClient();
+    const price = await client.prices.update(id, data);
+    return price;
+  }
+
+  async getCoupon(id: string) {
+    const client = await this.getClient();
+    const coupon = await client.coupons.retrieve(id);
+    return coupon;
+  }
+
+  async getPromotionCodes() {
+    const client = await this.getClient();
+    const promotionCodes = await client.promotionCodes.list();
+    return promotionCodes?.data?.map(this.promotionCodeToCamelCase) ?? [];
+  }
+
+  async getPromotionCode(id: string) {
+    const client = await this.getClient();
+    const promotionCode = await client.promotionCodes.retrieve(id, {
+      expand: ["coupon.applies_to"],
+    });
+
+    return this.promotionCodeToCamelCase(promotionCode);
+  }
+
+  async createPromotionCode(body: CreatePromotionCode) {
+    const {
+      amountOff,
+      percentOff,
+      maxRedemptions,
+      code,
+      assignedStripeCourseIds,
+      currency,
+      expiresAt,
+    } = body;
+
+    if (amountOff && percentOff) {
+      throw new BadRequestException("You can't use both amount_off and percent_off");
+    }
+
+    try {
+      const client = await this.getClient();
+      const coupon = await client.coupons.create({
+        amount_off: amountOff,
+        percent_off: percentOff,
+        applies_to: { products: assignedStripeCourseIds },
+        currency: currency ?? "usd",
+      });
+      const stripeExpiresAt = Math.floor(new Date(expiresAt as string).getTime() / 1000);
+
+      await client.promotionCodes.create({
+        coupon: coupon.id,
+        code,
+        expires_at: expiresAt ? stripeExpiresAt : undefined,
+        max_redemptions: maxRedemptions,
+      });
+
+      return "Promotion code created successfully";
+    } catch (error) {
+      if (error.raw.message) {
+        throw new InternalServerErrorException(error.raw.message);
+      }
+      throw new InternalServerErrorException("Failed to create coupon");
+    }
+  }
+
+  async updatePromotionCode(id: string, body: UpdatePromotionCode) {
+    const { active } = body;
+
+    const updatePromotionCodeData = {
+      ...(active !== undefined && { active }),
+    };
+
+    const client = await this.getClient();
+    const promotionCode = await client.promotionCodes.retrieve(id);
+
+    if (!promotionCode) {
+      throw new BadRequestException("Invalid promotion code");
+    }
+
+    try {
+      const promoCode = await client.promotionCodes.update(
+        promotionCode.id,
+        updatePromotionCodeData,
+      );
+      return this.promotionCodeToCamelCase(promoCode);
+    } catch (error) {
+      if (error.raw.message) {
+        throw new InternalServerErrorException(error.raw.message);
+      }
+      throw new InternalServerErrorException("Failed to update coupon");
+    }
+  }
+
+  promotionCodeToCamelCase(promotionCode: any): PromotionCode {
+    return {
+      id: promotionCode.id,
+      active: promotionCode.active,
+      code: promotionCode.code,
+      coupon: {
+        id: promotionCode.coupon.id,
+        amountOff: promotionCode.coupon.amount_off,
+        percentOff: promotionCode.coupon.percent_off,
+        created: promotionCode.coupon.created,
+        currency: promotionCode.coupon.currency,
+        duration: promotionCode.coupon.duration,
+        durationInMonths: promotionCode.coupon.duration_in_months,
+        maxRedemptions: promotionCode.coupon.max_redemptions,
+        metadata: promotionCode.coupon.metadata,
+        name: promotionCode.coupon.name,
+        redeemBy: promotionCode.coupon.redeem_by,
+        timesRedeemed: promotionCode.coupon.times_redeemed,
+        valid: promotionCode.coupon.valid,
+        appliesTo: promotionCode?.coupon?.applies_to?.products ?? [],
+      },
+      created: promotionCode.created,
+      customer: promotionCode.customer,
+      expiresAt: promotionCode.expires_at,
+      maxRedemptions: promotionCode.max_redemptions,
+      metadata: promotionCode.metadata,
+      restrictions: {
+        firstTimeTransaction: promotionCode.restrictions.first_time_transaction,
+        minimumAmount: promotionCode.restrictions.minimum_amount,
+        minimumAmountCurrency: promotionCode.restrictions.minimum_amount_currency,
+      },
+      timesRedeemed: promotionCode.times_redeemed,
+    };
+  }
+}

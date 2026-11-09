@@ -1,0 +1,19 @@
+import { execSync } from "child_process";
+import path from "path";
+
+import { test as setup } from "@playwright/test";
+
+setup("database reset", async () => {
+  const apiDir = path.resolve(process.cwd(), "../api");
+  const isCI = process.env.CI === "true";
+
+  if (isCI) return;
+  const command = "docker compose up -d && pnpm db:migrate && pnpm db:seed-e2e";
+
+  execSync(command, {
+    cwd: apiDir,
+    stdio: "inherit",
+    shell: true as unknown as string,
+    env: { ...process.env, E2E: "true" },
+  });
+});

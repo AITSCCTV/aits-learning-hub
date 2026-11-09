@@ -1,0 +1,229 @@
+import { Module } from "@nestjs/common";
+import { ConditionalModule, ConfigModule } from "@nestjs/config";
+import { APP_GUARD, APP_INTERCEPTOR } from "@nestjs/core";
+import { JwtModule } from "@nestjs/jwt";
+import { MulterModule } from "@nestjs/platform-express";
+import { ScheduleModule } from "@nestjs/schedule";
+import { ThrottlerModule } from "@nestjs/throttler";
+
+import { ActivityLogsModule } from "src/activity-logs/activity-logs.module";
+import { AppStartupService } from "src/app-startup.service";
+import { AutomationExecutionModule } from "src/automation-execution/automation-execution.module";
+import { AutomationModule } from "src/automations/automation.module";
+import { CourseRepetitionModule } from "src/course-repetition/course-repetition.module";
+import { EnvModule } from "src/env/env.module";
+import { LangfuseShutdownService } from "src/langfuse/instrumentation";
+import { LearningPathModule } from "src/learning-path/learning-path.module";
+import { LearningTimeModule } from "src/learning-time";
+import { NotificationsModule } from "src/notifications/notifications.module";
+import { QAModule } from "src/qa/qa.module";
+import { QueueModule } from "src/queue";
+import { REDIS_CLIENT, RedisClientsModule } from "src/redis";
+import { WebSocketModule } from "src/websocket";
+
+import { AiModule } from "./ai/ai.module";
+import { AnalyticsModule } from "./analytics/analytics.module";
+import { AnnouncementsModule } from "./announcements/announcements.module";
+import { ArticlesModule } from "./articles/articles.module";
+import { AssistantModule } from "./assistant/assistant.module";
+import { AudioModule } from "./audio/audio.module";
+import { AuthModule } from "./auth/auth.module";
+import { GoogleStrategy } from "./auth/strategy/google.strategy";
+import { MicrosoftStrategy } from "./auth/strategy/microsoft.strategy";
+import { BunnyStreamModule } from "./bunny/bunnyStream.module";
+import { CacheModule } from "./cache/cache.module";
+import { CalendarModule } from "./calendar/calendar.module";
+import { CategoryModule } from "./category/category.module";
+import { CertificatesModule } from "./certificates/certificates.module";
+import { getAppConfigLoaders } from "./common/configuration/app-config-loaders";
+import { jwtModuleOptions } from "./common/configuration/jwt-module-options";
+import { EmailModule } from "./common/emails/emails.module";
+import { FeaturesGuard } from "./common/guards/features.guard";
+import { JwtAuthGuard } from "./common/guards/jwt-auth.guard";
+import { PasswordChangeRequiredGuard } from "./common/guards/password-change-required.guard";
+import { PermissionsGuard } from "./common/guards/permissions.guard";
+import { StagingGuard } from "./common/guards/staging.guard";
+import { CompetenciesModule } from "./competencies/competencies.module";
+import { ContentMarketplaceModule } from "./content-marketplace/content-marketplace.module";
+import { CourseChatModule } from "./course-chat/course-chat.module";
+import { CourseModule } from "./courses/course.module";
+import { DevToolsModule, isDevToolsEnabled } from "./dev-tools/dev-tools.module";
+import { EmailTemplateModule } from "./email-templates/email-template.module";
+import { EventsModule } from "./events/events.module";
+import { FileModule } from "./file/files.module";
+import { GlobalSearchModule } from "./global-search/global-search.module";
+import { GroupModule } from "./group/group.module";
+import { HealthModule } from "./health/health.module";
+import { IngestionModule } from "./ingestion/ingestion.module";
+import { IntegrationModule } from "./integration/integration.module";
+import { LessonModule } from "./lesson/lesson.module";
+import { LessonVideoProgressModule } from "./lesson-video-progress/lesson-video-progress.module";
+import { LiveTrainingModule } from "./live-training/live-training.module";
+import { LocalizationModule } from "./localization/localization.module";
+import { LumaModule } from "./luma/luma.module";
+import { McpModule } from "./mcp/mcp.module";
+import { NativeArchiveModule } from "./native-archive/native-archive.module";
+import { NewsModule } from "./news/news.module";
+import { OutboxModule } from "./outbox/outbox.module";
+import { PermissionsModule } from "./permissions/permissions.module";
+import { PhishingModule } from "./phishing/phishing.module";
+import { QuizModule } from "./quiz/quiz.module";
+import { AppThrottlerGuard } from "./rate-limit/app-throttler.guard";
+import { RedisThrottlerStorage } from "./rate-limit/redis-throttler.storage";
+import { ReportModule } from "./report/report.module";
+import { ResourceLibraryModule } from "./resource-library/resource-library.module";
+import { S3Module } from "./s3/s3.module";
+import { ScormModule } from "./scorm/scorm.module";
+import { HelpdeskModule } from "./self-onboarding/self-onboarding.module";
+import { SentryInterceptor } from "./sentry/sentry.interceptor";
+import { SettingsModule } from "./settings/settings.module";
+import { StatisticsModule } from "./statistics/statistics.module";
+import { DbModule } from "./storage/db/db.module";
+import { TenantRlsInterceptor } from "./storage/db/tenant-rls.interceptor";
+import { StripeModule } from "./stripe/stripe.module";
+import { StudentLessonProgressModule } from "./studentLessonProgress/studentLessonProgress.module";
+import { SuperAdminModule } from "./super-admin/super-admin.module";
+import { SupportModeModule } from "./support-mode/support-mode.module";
+import { TestConfigModule } from "./test-config/test-config.module";
+import { TodoTasksModule } from "./todo-tasks/todo-tasks.module";
+import { AitsModule } from "./aits/aits.module";
+import { UserModule } from "./user/user.module";
+
+import type { RedisClient } from "src/redis";
+
+@Module({
+  imports: [
+    ConfigModule.forRoot({
+      load: getAppConfigLoaders(),
+      isGlobal: true,
+    }),
+    DbModule,
+    SupportModeModule,
+    JwtModule.registerAsync(jwtModuleOptions),
+    MulterModule.register({
+      limits: {
+        fileSize: 5 * 1024 * 1024 * 1024, // 5GB for videos
+      },
+    }),
+    ThrottlerModule.forRootAsync({
+      inject: [REDIS_CLIENT],
+      useFactory: (redisClient: RedisClient) => ({
+        throttlers: [
+          {
+            name: "global",
+            ttl: 60_000,
+            limit: 300,
+            setHeaders: true,
+          },
+        ],
+        storage: new RedisThrottlerStorage(redisClient),
+        setHeaders: true,
+      }),
+    }),
+    AuthModule,
+    HealthModule,
+    HelpdeskModule,
+    UserModule,
+    EmailModule,
+    EmailTemplateModule,
+    AutomationModule,
+    AutomationExecutionModule,
+    NotificationsModule,
+    TestConfigModule,
+    ConditionalModule.registerWhen(DevToolsModule, isDevToolsEnabled),
+    CategoryModule,
+    ConditionalModule.registerWhen(ScheduleModule.forRoot(), (env) => !env.JEST_WORKER_ID),
+    CourseModule,
+    CourseRepetitionModule,
+    NativeArchiveModule,
+    CourseChatModule,
+    LearningPathModule,
+    GroupModule,
+    GlobalSearchModule,
+    LessonModule,
+    LessonVideoProgressModule,
+    QuizModule,
+    StudentLessonProgressModule,
+    FileModule,
+    S3Module,
+    BunnyStreamModule,
+    StripeModule,
+    EventsModule,
+    StatisticsModule,
+    ReportModule,
+    ResourceLibraryModule,
+    CacheModule,
+    RedisClientsModule,
+    QueueModule,
+    WebSocketModule,
+    AiModule,
+    AssistantModule,
+    SettingsModule,
+    ScormModule,
+    CertificatesModule,
+    AnnouncementsModule,
+    IngestionModule,
+    IntegrationModule,
+    LearningTimeModule,
+    EnvModule,
+    LocalizationModule,
+    PermissionsModule,
+    ActivityLogsModule,
+    QAModule,
+    NewsModule,
+    ArticlesModule,
+    AnalyticsModule,
+    SuperAdminModule,
+    OutboxModule,
+    AudioModule,
+    LumaModule,
+    PhishingModule,
+    ContentMarketplaceModule,
+    CompetenciesModule,
+    McpModule,
+    LiveTrainingModule,
+    CalendarModule,
+    TodoTasksModule,
+    AitsModule,
+  ],
+  controllers: [],
+  providers: [
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: TenantRlsInterceptor,
+    },
+    {
+      provide: APP_INTERCEPTOR,
+      useClass: SentryInterceptor,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PasswordChangeRequiredGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AppThrottlerGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: StagingGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: FeaturesGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: PermissionsGuard,
+    },
+    GoogleStrategy,
+    MicrosoftStrategy,
+    AppStartupService,
+    LangfuseShutdownService,
+  ],
+})
+export class AppModule {}

@@ -1,0 +1,459 @@
+import { AI_MENTOR_TTS_PRESET, AI_MENTOR_VOICE_MODE, SUPPORTED_LANGUAGES } from "@repo/shared";
+import { Type } from "@sinclair/typebox";
+
+import { AI_JUDGE_CRITERION_STATUS } from "src/ai/judge-configuration/judge-configuration.types";
+import { THREAD_STATUS } from "src/ai/utils/ai.type";
+import { UUIDSchema, type UUIDType } from "src/common";
+import { supportedLanguagesSchema } from "src/courses/schemas/course.schema";
+import { MAX_LESSON_TITLE_LENGTH } from "src/lesson/repositories/lesson.constants";
+import { createLiveTrainingSchema } from "src/live-training/schemas/create-live-training.schema";
+import { liveTrainingDetailsSchema } from "src/live-training/schemas/live-training-details.schema";
+import { QUESTION_TYPE } from "src/questions/schema/question.types";
+import { PROGRESS_STATUSES } from "src/utils/types/progress.type";
+
+import { aiJudgeConfigurationInputSchema } from "./ai-judge-configuration/ai-judge-configuration.schema";
+import { aiMentorConfigurationContentSchema } from "./ai-mentor-configuration/schemas/ai-mentor-configuration.schema";
+import { LESSON_TYPES } from "./lesson.type";
+
+import type { Static } from "@sinclair/typebox";
+
+export const adminOptionSchema = Type.Object({
+  id: Type.Optional(UUIDSchema),
+  optionText: Type.String({ maxLength: 250 }),
+  displayOrder: Type.Union([Type.Number(), Type.Null()]),
+  isStudentAnswer: Type.Optional(Type.Union([Type.Boolean(), Type.Null()])),
+  isCorrect: Type.Boolean(),
+  questionId: Type.Optional(UUIDSchema),
+  matchedWord: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  scaleAnswer: Type.Optional(Type.Union([Type.Number(), Type.Null()])),
+  language: Type.Optional(supportedLanguagesSchema),
+});
+
+export const adminQuestionSchema = Type.Object({
+  id: Type.Optional(UUIDSchema),
+  type: Type.Enum(QUESTION_TYPE),
+  description: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  title: Type.String(),
+  displayOrder: Type.Optional(Type.Number()),
+  solutionExplanation: Type.Optional(Type.String()),
+  photoS3Key: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  options: Type.Optional(Type.Array(adminOptionSchema)),
+  language: Type.Optional(supportedLanguagesSchema),
+});
+
+// Canonical quizzes store unrestricted answer text. The legacy editor's input
+// limit must not prevent reading a course created through canonical authoring.
+export const adminOptionResponseSchema = Type.Object({
+  ...adminOptionSchema.properties,
+  optionText: Type.String(),
+});
+
+export const adminQuestionResponseSchema = Type.Object({
+  ...adminQuestionSchema.properties,
+  options: Type.Optional(Type.Array(adminOptionResponseSchema)),
+});
+
+export const optionSchema = Type.Object({
+  id: UUIDSchema,
+  optionText: Type.Union([Type.String(), Type.Null()]),
+  displayOrder: Type.Union([Type.Number(), Type.Null()]),
+  isStudentAnswer: Type.Union([Type.Boolean(), Type.Null()]),
+  studentAnswer: Type.Union([Type.String(), Type.Null()]),
+  isCorrect: Type.Union([Type.Boolean(), Type.Null()]),
+  questionId: Type.Optional(UUIDSchema),
+});
+
+export const questionSchema = Type.Object({
+  ...adminQuestionResponseSchema.properties,
+  id: UUIDSchema,
+  solutionExplanation: Type.Union([Type.String(), Type.Null()]),
+  options: Type.Optional(Type.Array(optionSchema)),
+  passQuestion: Type.Union([Type.Boolean(), Type.Null()]),
+});
+
+const lessonQuizSchema = Type.Object({
+  id: UUIDSchema,
+  title: Type.String(),
+  type: Type.String(),
+  displayOrder: Type.Number(),
+  description: Type.Optional(Type.String()),
+  solutionExplanation: Type.Optional(Type.String()),
+  fileS3Key: Type.Optional(Type.String()),
+  fileType: Type.Optional(Type.String()),
+  thresholdScore: Type.Number(),
+  attemptsLimit: Type.Union([Type.Number(), Type.Null()]),
+  quizCooldownInHours: Type.Union([Type.Number(), Type.Null()]),
+  questions: Type.Optional(Type.Array(adminQuestionSchema)),
+});
+
+export const aiMentorLessonSchema = Type.Object({
+  id: UUIDSchema,
+  lessonId: UUIDSchema,
+  name: Type.String(),
+  avatarReference: Type.Union([Type.String(), Type.Null()]),
+  voiceMode: Type.Enum(AI_MENTOR_VOICE_MODE),
+  ttsPreset: Type.Enum(AI_MENTOR_TTS_PRESET),
+  customTtsReference: Type.Union([Type.String(), Type.Null()]),
+});
+
+export const lessonResourceSchema = Type.Object({
+  id: UUIDSchema,
+  fileUrl: Type.String(),
+  contentType: Type.String(),
+  title: Type.Optional(Type.String()),
+  description: Type.Optional(Type.String()),
+  fileName: Type.Optional(Type.String()),
+  allowFullscreen: Type.Optional(Type.Boolean()),
+});
+
+export const adminLessonSchema = Type.Object({
+  id: UUIDSchema,
+  chapterId: Type.Optional(UUIDSchema),
+  type: Type.Enum(LESSON_TYPES),
+  displayOrder: Type.Number(),
+  title: Type.String(),
+  description: Type.String(),
+  thresholdScore: Type.Number(),
+  attemptsLimit: Type.Union([Type.Number(), Type.Null()]),
+  quizCooldownInHours: Type.Union([Type.Number(), Type.Null()]),
+  fileS3Key: Type.Optional(Type.String()),
+  fileType: Type.Optional(Type.String()),
+  questions: Type.Optional(Type.Array(adminQuestionResponseSchema)),
+  lessonResources: Type.Optional(Type.Array(lessonResourceSchema)),
+  aiMentor: Type.Union([aiMentorLessonSchema, Type.Null()]),
+  scormPackageLanguages: Type.Optional(Type.Array(supportedLanguagesSchema)),
+  liveTrainingId: Type.Optional(Type.Union([UUIDSchema, Type.Null()])),
+  liveTrainingLanguages: Type.Optional(Type.Array(supportedLanguagesSchema)),
+});
+
+export const lessonSchema = Type.Object({
+  id: UUIDSchema,
+  title: Type.String(),
+  type: Type.Enum(LESSON_TYPES),
+  description: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  displayOrder: Type.Number(),
+  fileS3Key: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  avatarReferenceUrl: Type.Optional(Type.String()),
+  fileType: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  questions: Type.Optional(Type.Array(adminQuestionResponseSchema)),
+  aiMentor: Type.Optional(Type.Union([aiMentorLessonSchema, Type.Null()])),
+  liveTrainingId: Type.Optional(Type.Union([UUIDSchema, Type.Null()])),
+  updatedAt: Type.Optional(Type.String()),
+});
+
+export const lessonInputSchema = Type.Object({
+  ...lessonSchema.properties,
+  questions: Type.Optional(Type.Array(adminQuestionSchema)),
+});
+
+export const createAiMentorLessonSchema = Type.Intersect([
+  Type.Omit(lessonInputSchema, ["id", "displayOrder", "type", "aiMentor"]),
+  Type.Object({
+    chapterId: UUIDSchema,
+    displayOrder: Type.Optional(Type.Number()),
+    aiMentorConfiguration: aiMentorConfigurationContentSchema,
+    aiJudgeConfiguration: aiJudgeConfigurationInputSchema,
+    name: Type.Optional(Type.String()),
+    voiceMode: Type.Optional(Type.Enum(AI_MENTOR_VOICE_MODE)),
+    ttsPreset: Type.Optional(Type.Enum(AI_MENTOR_TTS_PRESET)),
+    customTtsReference: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  }),
+]);
+export const updateAiMentorLessonSchema = Type.Intersect([
+  Type.Omit(createAiMentorLessonSchema, [
+    "chapterId",
+    "displayOrder",
+    "aiMentorConfiguration",
+    "aiJudgeConfiguration",
+  ]),
+  Type.Object({
+    language: supportedLanguagesSchema,
+  }),
+]);
+
+export const createLessonSchema = Type.Intersect([
+  Type.Omit(lessonInputSchema, ["id", "displayOrder"]),
+  Type.Object({
+    chapterId: UUIDSchema,
+    displayOrder: Type.Optional(Type.Number()),
+    contextId: Type.Optional(Type.String()),
+  }),
+]);
+
+const createLiveTrainingLessonLiveTrainingSchema = Type.Omit(createLiveTrainingSchema, [
+  "language",
+  "linkedCourseIds",
+]);
+
+export const createLiveTrainingLessonSchema = Type.Object({
+  title: Type.String({ minLength: 1, maxLength: MAX_LESSON_TITLE_LENGTH }),
+  description: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+  chapterId: UUIDSchema,
+  language: supportedLanguagesSchema,
+  displayOrder: Type.Optional(Type.Number()),
+  contextId: Type.Optional(Type.String()),
+  liveTraining: Type.Optional(createLiveTrainingLessonLiveTrainingSchema),
+  liveTrainingId: Type.Optional(UUIDSchema),
+});
+
+export const attachLiveTrainingLessonSchema = Type.Object({
+  title: Type.String({ minLength: 1, maxLength: MAX_LESSON_TITLE_LENGTH }),
+  language: supportedLanguagesSchema,
+  liveTraining: Type.Optional(createLiveTrainingLessonLiveTrainingSchema),
+  liveTrainingId: Type.Optional(UUIDSchema),
+});
+
+export const createLiveTrainingLessonResponseDataSchema = Type.Object({
+  id: UUIDSchema,
+  liveTrainingId: UUIDSchema,
+  message: Type.String(),
+});
+
+export const createQuizLessonSchema = Type.Intersect([
+  Type.Omit(lessonQuizSchema, ["id", "displayOrder"]),
+  Type.Object({
+    chapterId: UUIDSchema,
+    displayOrder: Type.Optional(Type.Number()),
+  }),
+]);
+
+export const questionDetails = Type.Object({
+  questions: Type.Array(questionSchema),
+  questionCount: Type.Number(),
+  correctAnswerCount: Type.Union([Type.Number(), Type.Null()]),
+  wrongAnswerCount: Type.Union([Type.Number(), Type.Null()]),
+  score: Type.Union([Type.Number(), Type.Null()]),
+});
+
+export const lessonShowSchema = Type.Object({
+  learningStateId: Type.Optional(Type.Union([UUIDSchema, Type.Null()])),
+  id: UUIDSchema,
+  title: Type.String(),
+  type: Type.Enum(LESSON_TYPES),
+  description: Type.Union([Type.String(), Type.Null()]),
+  fileType: Type.Union([Type.String(), Type.Null()]),
+  fileUrl: Type.Union([Type.String(), Type.Null()]),
+  quizDetails: Type.Optional(questionDetails),
+  lessonCompleted: Type.Optional(Type.Boolean()),
+  thresholdScore: Type.Union([Type.Number(), Type.Null()]),
+  attemptsLimit: Type.Union([Type.Number(), Type.Null()]),
+  quizCooldownInHours: Type.Union([Type.Number(), Type.Null()]),
+  isQuizPassed: Type.Union([Type.Boolean(), Type.Null()]),
+  attempts: Type.Union([Type.Number(), Type.Null()]),
+  updatedAt: Type.Union([Type.String(), Type.Null()]),
+  displayOrder: Type.Number(),
+  isExternal: Type.Optional(Type.Boolean()),
+  nextLessonId: Type.Union([UUIDSchema, Type.Null()]),
+  userLanguage: Type.Optional(Type.Enum(SUPPORTED_LANGUAGES)),
+  status: Type.Optional(Type.Enum(THREAD_STATUS)),
+  threadId: Type.Optional(UUIDSchema),
+  lessonResources: Type.Optional(Type.Array(lessonResourceSchema)),
+  hasOnlyVideo: Type.Optional(Type.Boolean()),
+  hasVideo: Type.Optional(Type.Boolean()),
+  hasTrackedVideo: Type.Optional(Type.Boolean()),
+  videoCompletionTrackingEnabled: Type.Optional(Type.Boolean()),
+  hasAutoplayTrigger: Type.Optional(Type.Boolean()),
+  videos: Type.Optional(Type.Array(Type.String())),
+  isQuizFeedbackRedacted: Type.Optional(Type.Boolean()),
+  aiMentorDetails: Type.Optional(
+    Type.Union([
+      Type.Object({
+        minScore: Type.Union([Type.Number(), Type.Null()]),
+        maxScore: Type.Union([Type.Number(), Type.Null()]),
+        score: Type.Union([Type.Number(), Type.Null()]),
+        percentage: Type.Union([Type.Number(), Type.Null()]),
+        requiredScore: Type.Union([Type.Number(), Type.Null()]),
+        passed: Type.Union([Type.Boolean(), Type.Null()]),
+        criteria: Type.Array(
+          Type.Object({
+            criterionId: Type.Union([UUIDSchema, Type.Null()]),
+            title: Type.String(),
+            awardedScore: Type.Integer(),
+            maxScore: Type.Integer(),
+            status: Type.Enum(AI_JUDGE_CRITERION_STATUS),
+            learnerSafeFeedback: Type.String(),
+          }),
+        ),
+        blockingErrors: Type.Array(
+          Type.Object({
+            blockingErrorId: Type.Union([UUIDSchema, Type.Null()]),
+            description: Type.String(),
+            learnerSafeFeedback: Type.String(),
+          }),
+        ),
+      }),
+      Type.Null(),
+    ]),
+  ),
+  aiMentor: Type.Optional(
+    Type.Union([
+      Type.Object({
+        name: Type.Union([Type.String()]),
+        avatarReferenceUrl: Type.Optional(Type.String()),
+      }),
+      Type.Null(),
+    ]),
+  ),
+  liveTraining: Type.Optional(Type.Union([liveTrainingDetailsSchema, Type.Null()])),
+});
+
+export const updateLessonSchema = Type.Intersect([
+  Type.Partial(createLessonSchema),
+  Type.Object({
+    language: supportedLanguagesSchema,
+  }),
+]);
+
+export const updateQuizLessonSchema = Type.Intersect([
+  Type.Partial(createQuizLessonSchema),
+  Type.Object({
+    language: supportedLanguagesSchema,
+  }),
+]);
+
+export const lessonForChapterSchema = Type.Array(
+  Type.Object({
+    id: UUIDSchema,
+    title: Type.String(),
+    type: Type.Enum(LESSON_TYPES),
+    displayOrder: Type.Number(),
+    status: Type.Enum(PROGRESS_STATUSES),
+    quizQuestionCount: Type.Union([Type.Number(), Type.Null()]),
+    isExternal: Type.Optional(Type.Boolean()),
+    lessonResources: Type.Optional(Type.Array(lessonResourceSchema)),
+    estimatedDurationSeconds: Type.Optional(
+      Type.Number({
+        minimum: 0,
+      }),
+    ),
+  }),
+);
+
+export const createLessonResourcesBody = Type.Object({});
+
+export const onlyAnswerIdSAnswerSchema = Type.Object({
+  answerId: UUIDSchema,
+});
+
+export const onlyValueAnswerSchema = Type.Object({
+  value: Type.String(),
+});
+
+export const fullAnswerSchema = Type.Object({
+  answerId: UUIDSchema,
+  value: Type.String(),
+});
+
+export const studentQuestionAnswersSchema = Type.Object({
+  questionId: UUIDSchema,
+  answers: Type.Array(
+    Type.Union([onlyAnswerIdSAnswerSchema, onlyValueAnswerSchema, fullAnswerSchema]),
+  ),
+});
+
+export const answerQuestionsForLessonBody = Type.Object({
+  lessonId: UUIDSchema,
+  questionsAnswers: Type.Array(studentQuestionAnswersSchema),
+  language: Type.Enum(SUPPORTED_LANGUAGES),
+});
+
+export const nextLessonSchema = Type.Union([
+  Type.Object({
+    courseId: UUIDSchema,
+    courseTitle: Type.String(),
+    courseDescription: Type.String(),
+    courseThumbnail: Type.String(),
+    lessonId: UUIDSchema,
+    chapterTitle: Type.String(),
+    chapterProgress: Type.Enum(PROGRESS_STATUSES),
+    completedLessonCount: Type.Number(),
+    lessonCount: Type.Number(),
+    chapterDisplayOrder: Type.Number(),
+  }),
+  Type.Null(),
+]);
+
+const lessonResourceInputSchema = Type.Object({
+  id: Type.Optional(UUIDSchema),
+  fileUrl: Type.String(),
+  allowFullscreen: Type.Optional(Type.Boolean()),
+});
+
+export const createEmbedLessonSchema = Type.Object({
+  title: Type.String(),
+  type: Type.Enum(LESSON_TYPES),
+  chapterId: UUIDSchema,
+  resources: Type.Array(lessonResourceInputSchema),
+});
+
+export const updateEmbedLessonSchema = Type.Object({
+  title: Type.String(),
+  type: Type.Enum(LESSON_TYPES),
+  resources: Type.Array(lessonResourceInputSchema),
+  lessonId: UUIDSchema,
+  language: supportedLanguagesSchema,
+});
+
+export const lessonsFilterSchema = Type.Object({
+  title: Type.Optional(Type.String()),
+  description: Type.Optional(Type.String()),
+  lessonCompleted: Type.Optional(Type.Boolean()),
+});
+
+export const enrolledLessonSchema = Type.Object({
+  id: UUIDSchema,
+  title: Type.String(),
+  type: Type.Enum(LESSON_TYPES),
+  description: Type.Union([Type.String(), Type.Null()]),
+  displayOrder: Type.Number(),
+  lessonCompleted: Type.Optional(Type.Boolean()),
+  courseId: UUIDSchema,
+  courseTitle: Type.String(),
+  chapterId: UUIDSchema,
+  chapterTitle: Type.String(),
+  chapterDisplayOrder: Type.Number(),
+  searchRank: Type.Optional(Type.Number()),
+  matchedAttachmentFileName: Type.Optional(Type.Union([Type.String(), Type.Null()])),
+});
+
+export const initializeLessonContextSchema = Type.Object({
+  contextId: UUIDSchema,
+});
+
+export type InitializeLessonContextBody = Static<typeof initializeLessonContextSchema>;
+export type AdminLessonWithContentSchema = Static<typeof adminLessonSchema>;
+export type LessonForChapterSchema = Static<typeof lessonForChapterSchema>;
+export type CreateLessonBody = Static<typeof createLessonSchema>;
+export type CreateLiveTrainingLessonBody = Static<typeof createLiveTrainingLessonSchema>;
+export type AttachLiveTrainingLessonBody = Static<typeof attachLiveTrainingLessonSchema>;
+export type CreateLiveTrainingLessonResponseData = Static<
+  typeof createLiveTrainingLessonResponseDataSchema
+>;
+export type CreateLiveTrainingLessonResult = {
+  lessonId: UUIDType;
+  liveTrainingId: UUIDType;
+};
+export type UpdateLessonBody = Static<typeof updateLessonSchema>;
+export type UpdateQuizLessonBody = Static<typeof updateQuizLessonSchema>;
+export type CreateQuizLessonBody = Static<typeof createQuizLessonSchema>;
+export type CreateAiMentorLessonBody = Static<typeof createAiMentorLessonSchema>;
+export type OptionBody = Static<typeof optionSchema>;
+export type AdminOptionBody = Static<typeof adminOptionSchema>;
+export type AdminQuestionBody = Static<typeof adminQuestionSchema>;
+export type QuestionBody = Static<typeof questionSchema>;
+export type LessonShow = Static<typeof lessonShowSchema>;
+export type LessonSchema = Static<typeof lessonSchema>;
+export type AiMentorBody = Static<typeof aiMentorLessonSchema>;
+export type UpdateAiMentorLessonBody = Static<typeof updateAiMentorLessonSchema>;
+export type AnswerQuestionBody = Static<typeof answerQuestionsForLessonBody>;
+export type QuestionDetails = Static<typeof questionDetails>;
+export type NextLesson = Static<typeof nextLessonSchema>;
+export type StudentQuestionAnswer = Static<typeof studentQuestionAnswersSchema>;
+export type OnlyAnswerIdAsnwer = Static<typeof onlyAnswerIdSAnswerSchema>;
+export type OnlyValueAnswer = Static<typeof onlyValueAnswerSchema>;
+export type FullAnswer = Static<typeof fullAnswerSchema>;
+export type LessonResource = Static<typeof lessonResourceSchema>;
+export type CreateEmbedLessonBody = Static<typeof createEmbedLessonSchema>;
+export type UpdateEmbedLessonBody = Static<typeof updateEmbedLessonSchema>;
+export type LessonsFilters = Static<typeof lessonsFilterSchema>;
+export type EnrolledLesson = Static<typeof enrolledLessonSchema>;

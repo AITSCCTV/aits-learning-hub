@@ -1,0 +1,42 @@
+app.lms.localhost {
+    handle /.well-known/oauth-* {
+        reverse_proxy localhost:3000
+    }
+
+    handle /api/* {
+        reverse_proxy localhost:3000
+    }
+
+    handle {
+        reverse_proxy localhost:5173
+    }
+}
+
+*.lms.localhost {
+    handle /.well-known/oauth-* {
+        reverse_proxy localhost:3000
+    }
+
+    handle /api/* {
+        reverse_proxy localhost:3000
+    }
+
+    handle {
+        reverse_proxy localhost:5173
+    }
+}
+
+api.lms.localhost {
+    handle {
+        reverse_proxy localhost:3000
+    }
+}
+
+
+mailbox.lms.localhost {
+	reverse_proxy localhost:8025
+}
+
+storage.articulate.localhost {
+	reverse_proxy localhost:8069
+}

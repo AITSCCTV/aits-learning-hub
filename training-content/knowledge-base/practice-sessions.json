@@ -1,0 +1,2120 @@
+[
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C01-S01",
+      "title": "Explain AITS to a colleague",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "New employee",
+      "problem_description": "A colleague asks when AITS started and who you report to.",
+      "available_information": [
+        "Public founding date is available; no approved reporting chart is supplied."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Use the public date and flag the missing reporting line.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Use the public date and flag the missing reporting line."
+      ],
+      "inappropriate_decisions": [
+        "Invent the manager name."
+      ],
+      "consequences": "The colleague receives a traceable introduction without an invented authority.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Invent the manager name.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Use the public date and flag the missing reporting line."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-S01",
+        "course_id": "AITS-C01",
+        "title": "Explain AITS to a colleague",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C01-S02",
+      "title": "Route a mixed service request",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Customer support trainee",
+      "problem_description": "Lotus Workshop needs remote entrance viewing and controlled door entry.",
+      "available_information": [
+        "Existing network details and device models are unknown."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Record CCTV, access-control and connectivity requirements for review.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Record CCTV, access-control and connectivity requirements for review."
+      ],
+      "inappropriate_decisions": [
+        "Promise a model and installation date immediately."
+      ],
+      "consequences": "A useful handover reduces avoidable resurvey and false expectations.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Promise a model and installation date immediately.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Record CCTV, access-control and connectivity requirements for review."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-S02",
+        "course_id": "AITS-C01",
+        "title": "Route a mixed service request",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C01-S03",
+      "title": "Choose a reliable learning source",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "New employee",
+      "problem_description": "A sample checklist conflicts with a supervisor-provided approved current document.",
+      "available_information": [
+        "The sample is Draft and the approved document has an applicable version."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Use the approved applicable source and flag the sample conflict.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Use the approved applicable source and flag the sample conflict."
+      ],
+      "inappropriate_decisions": [
+        "Treat the sample as mandatory because it is newer."
+      ],
+      "consequences": "Authority and applicability are checked before use.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Treat the sample as mandatory because it is newer.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Use the approved applicable source and flag the sample conflict."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "AITS",
+        "APP",
+        "EX",
+        "HOME"
+      ],
+      "metadata": {
+        "document_id": "AITS-C01-S03",
+        "course_id": "AITS-C01",
+        "title": "Choose a reliable learning source",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C02-S01",
+      "title": "Conflicting leave pages",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "New employee",
+      "problem_description": "Two pages show different maternity allowances.",
+      "available_information": [
+        "One is an old overview; one explains the effective 2025 amendment."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Use the newer applicable official text and request HR verification.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Use the newer applicable official text and request HR verification."
+      ],
+      "inappropriate_decisions": [
+        "Copy the old number into the handbook."
+      ],
+      "consequences": "Version checks prevent outdated rights guidance.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Copy the old number into the handbook.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Use the newer applicable official text and request HR verification."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-S01",
+        "course_id": "AITS-C02",
+        "title": "Conflicting leave pages",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C02-S02",
+      "title": "Roster without a break",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Team member",
+      "problem_description": "A sample work plan appears to omit a rest period.",
+      "available_information": [
+        "Actual task category and agreement are unknown."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Record the schedule and ask the responsible reviewer to check it.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Record the schedule and ask the responsible reviewer to check it."
+      ],
+      "inappropriate_decisions": [
+        "Assume all work can continue without rest."
+      ],
+      "consequences": "A factual review can identify the applicable protection.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Assume all work can continue without rest.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Record the schedule and ask the responsible reviewer to check it."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-S02",
+        "course_id": "AITS-C02",
+        "title": "Roster without a break",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C02-S03",
+      "title": "Misaddressed file",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Administrator trainee",
+      "problem_description": "A fictional employee file reaches the wrong recipient.",
+      "available_information": [
+        "The file may include personal details; no actual data is used here."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Stop forwarding and report through a verified private channel.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Stop forwarding and report through a verified private channel."
+      ],
+      "inappropriate_decisions": [
+        "Upload the full file to a public AI chat."
+      ],
+      "consequences": "Limiting further disclosure reduces additional exposure.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Upload the full file to a public AI chat.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Stop forwarding and report through a verified private channel."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-S03",
+        "course_id": "AITS-C02",
+        "title": "Misaddressed file",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C03-S01",
+      "title": "Burning recorder",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Technician trainee",
+      "problem_description": "A fictional recorder smells burnt.",
+      "available_information": [
+        "Its power sources and internal condition are unknown."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Keep clear and request qualified site response.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Keep clear and request qualified site response."
+      ],
+      "inappropriate_decisions": [
+        "Open the powered enclosure."
+      ],
+      "consequences": "Avoiding exposure prevents an observation from becoming an injury.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Open the powered enclosure.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Keep clear and request qualified site response."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-S01",
+        "course_id": "AITS-C03",
+        "title": "Burning recorder",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C03-S02",
+      "title": "Camera above stairs",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Installation trainee",
+      "problem_description": "A customer suggests a chair on a stair to reach a camera.",
+      "available_information": [
+        "No assessed access method or trained supervisor is present."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Pause and request competent access planning.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Pause and request competent access planning."
+      ],
+      "inappropriate_decisions": [
+        "Climb because it is a short job."
+      ],
+      "consequences": "An unsuitable access method can lead to a serious fall.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Climb because it is a short job.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Pause and request competent access planning."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-S02",
+        "course_id": "AITS-C03",
+        "title": "Camera above stairs",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C03-S03",
+      "title": "Falling box near miss",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Stores trainee",
+      "problem_description": "A box falls without striking anyone.",
+      "available_information": [
+        "The stack is unstable and the aisle remains in use."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Keep clear, arrange safe control and report factual observations.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Keep clear, arrange safe control and report factual observations."
+      ],
+      "inappropriate_decisions": [
+        "Hide the event to avoid delay."
+      ],
+      "consequences": "Reporting allows the stacking hazard to be addressed.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Hide the event to avoid delay.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Keep clear, arrange safe control and report factual observations."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "ELEC",
+        "EX",
+        "HEIGHT",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C03-S03",
+        "course_id": "AITS-C03",
+        "title": "Falling box near miss",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C04-S01",
+      "title": "Insufficient PoE budget",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Installation planner",
+      "problem_description": "Four fictional cameras need 15 W each; the usable switch budget is 50 W.",
+      "available_information": [
+        "Per-port compatibility is not yet checked."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Flag the 60 W total and verify a suitable approved design.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Flag the 60 W total and verify a suitable approved design."
+      ],
+      "inappropriate_decisions": [
+        "Approve because four ports are available."
+      ],
+      "consequences": "An undersized budget can produce unstable operation.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Approve because four ports are available.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Flag the 60 W total and verify a suitable approved design."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-S01",
+        "course_id": "AITS-C04",
+        "title": "Insufficient PoE budget",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C04-S02",
+      "title": "Poor entrance image",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Technician trainee",
+      "problem_description": "A camera looks clear on the bench but silhouettes visitors at the entrance.",
+      "available_information": [
+        "Afternoon backlight differs from bench conditions."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Review scene, lens and lighting against the agreed purpose.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Review scene, lens and lighting against the agreed purpose."
+      ],
+      "inappropriate_decisions": [
+        "Claim megapixels alone guarantee identification."
+      ],
+      "consequences": "Testing relevant conditions reveals whether the objective is met.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Claim megapixels alone guarantee identification.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Review scene, lens and lighting against the agreed purpose."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-S02",
+        "course_id": "AITS-C04",
+        "title": "Poor entrance image",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C04-S03",
+      "title": "Live view without playback",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Support trainee",
+      "problem_description": "Fictional C2 has live video but no playback for yesterday.",
+      "available_information": [
+        "Other camera recordings exist; no reset is authorized."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Check recording path and preserve evidence.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Check recording path and preserve evidence."
+      ],
+      "inappropriate_decisions": [
+        "Reset every camera."
+      ],
+      "consequences": "Targeted diagnosis avoids unnecessary disruption.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Reset every camera.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Check recording path and preserve evidence."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "HEIGHT",
+        "NET",
+        "POE",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C04-S03",
+        "course_id": "AITS-C04",
+        "title": "Live view without playback",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C05-S01",
+      "title": "Internet unavailable",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Support trainee",
+      "problem_description": "Lotus Workshop reports no internet on three devices.",
+      "available_information": [
+        "Gateway responds; approved external TCP test passes; configured DNS lookups time out."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Check resolver configuration and compare another client, then escalate evidence.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Check resolver configuration and compare another client, then escalate evidence."
+      ],
+      "inappropriate_decisions": [
+        "Factory-reset the router before recording settings."
+      ],
+      "consequences": "A focused DNS investigation preserves the working network path.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Factory-reset the router before recording settings.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Check resolver configuration and compare another client, then escalate evidence."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-S01",
+        "course_id": "AITS-C05",
+        "title": "Internet unavailable",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C05-S02",
+      "title": "Only one laptop fails",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Helpdesk trainee",
+      "problem_description": "One fictional laptop cannot browse; nearby clients work.",
+      "available_information": [
+        "The affected laptop has an unexpected gateway in the lab snapshot."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Compare with the approved baseline and request authorized correction.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Compare with the approved baseline and request authorized correction."
+      ],
+      "inappropriate_decisions": [
+        "Change every client address."
+      ],
+      "consequences": "A scoped correction avoids expanding a single-device fault.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Change every client address.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Compare with the approved baseline and request authorized correction."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-S02",
+        "course_id": "AITS-C05",
+        "title": "Only one laptop fails",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C05-S03",
+      "title": "Ping is blocked",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Technician trainee",
+      "problem_description": "A device does not reply to ping but its authorized web interface opens.",
+      "available_information": [
+        "ICMP filtering is possible; application access succeeds."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Record both results and test the actual service requirement.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Record both results and test the actual service requirement."
+      ],
+      "inappropriate_decisions": [
+        "Declare the device dead from ping alone."
+      ],
+      "consequences": "Multiple observations prevent a false diagnosis.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Declare the device dead from ping alone.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Record both results and test the actual service requirement."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-S03",
+        "course_id": "AITS-C05",
+        "title": "Ping is blocked",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C06-S01",
+      "title": "Vague camera inquiry",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Sales trainee",
+      "problem_description": "Cedar Office asks for better cameras.",
+      "available_information": [
+        "Purpose, lighting and existing models are unknown."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Ask outcome-based questions and record uncertainty.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Ask outcome-based questions and record uncertainty."
+      ],
+      "inappropriate_decisions": [
+        "Choose the highest-priced model immediately."
+      ],
+      "consequences": "Discovery reduces unsuitable proposals.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Choose the highest-priced model immediately.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Ask outcome-based questions and record uncertainty."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-S01",
+        "course_id": "AITS-C06",
+        "title": "Vague camera inquiry",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C06-S02",
+      "title": "Missed appointment complaint",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Support trainee",
+      "problem_description": "A fictional customer reports disruption from a missed visit.",
+      "available_information": [
+        "The appointment record is available but the cause is unverified."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Acknowledge impact, verify facts and request authorized review.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Acknowledge impact, verify facts and request authorized review."
+      ],
+      "inappropriate_decisions": [
+        "Promise a refund without authority."
+      ],
+      "consequences": "Accurate communication avoids a second broken commitment.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Promise a refund without authority.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Acknowledge impact, verify facts and request authorized review."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-S02",
+        "course_id": "AITS-C06",
+        "title": "Missed appointment complaint",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C06-S03",
+      "title": "Quotation mismatch",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Administration trainee",
+      "problem_description": "The survey lists six camera locations; quote v0.2 lists four.",
+      "available_information": [
+        "The document is still Draft."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Flag the mismatch and route it for revision before issue.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Flag the mismatch and route it for revision before issue."
+      ],
+      "inappropriate_decisions": [
+        "Send the draft as approved."
+      ],
+      "consequences": "Version and scope control prevent a foreseeable dispute.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Send the draft as approved.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Flag the mismatch and route it for revision before issue."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-S03",
+        "course_id": "AITS-C06",
+        "title": "Quotation mismatch",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C07-S01",
+      "title": "Conflicting versions",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Technician trainee",
+      "problem_description": "A printed v1 and digital v2 disagree.",
+      "available_information": [
+        "The approval status of v2 is unclear."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Ask the document owner to confirm the current applicable version.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Ask the document owner to confirm the current applicable version."
+      ],
+      "inappropriate_decisions": [
+        "Assume v2 is approved because its number is higher."
+      ],
+      "consequences": "Authority checks prevent use of an uncontrolled revision.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Assume v2 is approved because its number is higher.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Ask the document owner to confirm the current applicable version."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-S01",
+        "course_id": "AITS-C07",
+        "title": "Conflicting versions",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C07-S02",
+      "title": "Missing test evidence",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Reviewer trainee",
+      "problem_description": "A completion report says all passed but playback was never tested.",
+      "available_information": [
+        "The operator confirms access was unavailable."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Correct the record to not tested and request disposition.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Correct the record to not tested and request disposition."
+      ],
+      "inappropriate_decisions": [
+        "Keep the pass to avoid delay."
+      ],
+      "consequences": "Honest evidence allows a valid completion decision.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Keep the pass to avoid delay.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Correct the record to not tested and request disposition."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-S02",
+        "course_id": "AITS-C07",
+        "title": "Missing test evidence",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  },
+  {
+    "label": "General technical training — synthetic scenario; not AITS SOP",
+    "scenario": {
+      "id": "AITS-C07-S03",
+      "title": "AI says pass",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Supervisor trainee",
+      "problem_description": "An AI approves a site from one photo.",
+      "available_information": [
+        "No electrical, playback or scope evidence is supplied."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Treat it as limited feedback and require applicable evidence.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Treat it as limited feedback and require applicable evidence."
+      ],
+      "inappropriate_decisions": [
+        "Issue competency certification from the score."
+      ],
+      "consequences": "Human review prevents unsupported acceptance.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Issue competency certification from the score.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Treat it as limited feedback and require applicable evidence."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "APP",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C07-S03",
+        "course_id": "AITS-C07",
+        "title": "AI says pass",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    "mentor_instructions": [
+      "Present the problem first. Do not reveal the model response or score anchors initially.",
+      "Ask what the learner would investigate first and why. Wait for the response.",
+      "Respond using only the scenario facts. If the learner asks for unavailable information, say it is unknown; do not invent a test result.",
+      "Reveal relevant available information after the learner requests a corresponding check.",
+      "Ask follow-up questions about scope, authorization and evidence. Explain why a decision helps or could cause harm.",
+      "At the end, compare the response with each rubric criterion. Explain missing steps and the evidence for each score.",
+      "State that the score is formative feedback, not an official competency certification.",
+      "If asked about internal AITS policy, use only approved company-authoritative context; otherwise state the gap."
+    ],
+    "provider_status": "Not connected. This package supplies prompts, sources and rubrics; no live AI assessment is claimed."
+  }
+]

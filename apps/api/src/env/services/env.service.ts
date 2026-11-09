@@ -1,0 +1,396 @@
+import crypto from "crypto";
+
+import {
+  AiCapability,
+  createLumaClient,
+  type PublicConfigurationResponse,
+} from "@mentingo/luma-sdk";
+import { createPhishingClient } from "@mentingo/phishing-simulation-sdk";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
+import { LOGIN_METHOD_ERROR_KEYS } from "@repo/shared";
+import { Value } from "@sinclair/typebox/value";
+
+import {
+  ALLOWED_SECRETS,
+  ENCRYPTION_ALG,
+  ENTRA_ID_SECRETS,
+  INTERNAL_SECRETS,
+  SERVICE_GROUPS,
+} from "src/env/env.config";
+import { entraDirectoryIdSchema } from "src/env/env.schema";
+import { EnvRepository } from "src/env/repositories/env.repository";
+import { resolveVoiceTtsProvider } from "src/env/voice-tts-provider";
+import { UpdateEnvEvent } from "src/events";
+import { toPluginOrigin } from "src/integration/utils/integration-plugin-origin.utils";
+import { OutboxPublisher } from "src/outbox/outbox.publisher";
+import { dbAls } from "src/storage/db/db-als.store";
+
+import type { CurrentUserType } from "src/common/types/current-user.type";
+import type { BulkUpsertEnvBody, EncryptedEnvBody } from "src/env/env.schema";
+
+@Injectable()
+export class EnvService {
+  private readonly KEY_ENCRYPTION_KEY;
+  constructor(
+    private readonly envRepository: EnvRepository,
+    private readonly configService: ConfigService,
+    private readonly outboxPublisher?: OutboxPublisher,
+  ) {
+    this.KEY_ENCRYPTION_KEY = Buffer.from(process.env.MASTER_KEY!, "base64");
+  }
+
+  async bulkUpsertEnv(data: BulkUpsertEnvBody, actor?: CurrentUserType) {
+    return this.persistEnvValues(await this.prepareEnvValues(data), actor);
+  }
+
+  async bulkUpsertInternalEnv(data: BulkUpsertEnvBody, actor?: CurrentUserType) {
+    if (data.some((env) => !INTERNAL_SECRETS.includes(env.name))) {
+      throw new Error("Secret is not an internal secret");
+    }
+    await this.persistEnvValues(this.encryptEnvValues(data), actor);
+  }
+
+  async prepareEnvValues(data: BulkUpsertEnvBody): Promise<EncryptedEnvBody[]> {
+    const validatedEnvs: BulkUpsertEnvBody = [];
+    for (const env of data) {
+      if (!ALLOWED_SECRETS.includes(env.name)) {
+        throw new BadRequestException("Secret not supported");
+      }
+      if (
+        env.name === ENTRA_ID_SECRETS.DIRECTORY_ID &&
+        !Value.Check(entraDirectoryIdSchema, env.value.trim())
+      ) {
+        throw new BadRequestException(LOGIN_METHOD_ERROR_KEYS.INVALID_DIRECTORY_ID);
+      }
+      const value =
+        env.name === "COMPETENCIES_BASE_URL" && env.value
+          ? await toPluginOrigin(env.value)
+          : env.value;
+      validatedEnvs.push({ ...env, value });
+    }
+    return this.encryptEnvValues(validatedEnvs);
+  }
+
+  private encryptEnvValues(data: BulkUpsertEnvBody): EncryptedEnvBody[] {
+    const processedEnvs: EncryptedEnvBody[] = [];
+    for (const env of data) {
+      const dek = crypto.randomBytes(32);
+      const iv = crypto.randomBytes(12);
+
+      const cipher = crypto.createCipheriv(ENCRYPTION_ALG, dek, iv);
+
+      const ciphertext = Buffer.concat([cipher.update(env.value, "utf8"), cipher.final()]);
+
+      const tag = cipher.getAuthTag();
+
+      const dekIv = crypto.randomBytes(12);
+      const dekCipher = crypto.createCipheriv(ENCRYPTION_ALG, this.KEY_ENCRYPTION_KEY, dekIv);
+
+      const encryptedDek = Buffer.concat([dekCipher.update(dek), dekCipher.final()]);
+
+      const dekTag = dekCipher.getAuthTag();
+
+      processedEnvs.push({
+        name: env.name,
+        iv: iv.toString("base64"),
+        ciphertext: ciphertext.toString("base64"),
+        tag: tag.toString("base64"),
+        dekIv: dekIv.toString("base64"),
+        encryptedDek: encryptedDek.toString("base64"),
+        dekTag: dekTag.toString("base64"),
+      });
+    }
+
+    return processedEnvs;
+  }
+
+  async persistEnvValues(data: EncryptedEnvBody[], actor?: CurrentUserType) {
+    await this.envRepository.bulkUpsertEnv(data);
+
+    if (actor && this.outboxPublisher) {
+      const updatedEnvKeys = data.map((env) => env.name);
+      await this.outboxPublisher.publish(
+        new UpdateEnvEvent({
+          actor,
+          updatedEnvKeys,
+        }),
+      );
+    }
+  }
+
+  async getEnv(envName: string) {
+    const env = await this.envRepository.getEnv(envName);
+
+    if (!env) throw new NotFoundException("Secret not found");
+
+    const decipherDek = crypto.createDecipheriv(
+      ENCRYPTION_ALG,
+      this.KEY_ENCRYPTION_KEY,
+      Buffer.from(env.encryptedDekIV, "base64"),
+    );
+
+    decipherDek.setAuthTag(Buffer.from(env.encryptedDekTag, "base64"));
+
+    const dek = Buffer.concat([
+      decipherDek.update(Buffer.from(env.encryptedDek, "base64")),
+      decipherDek.final(),
+    ]);
+
+    const decipherCiphertext = crypto.createDecipheriv(
+      ENCRYPTION_ALG,
+      dek,
+      Buffer.from(env.iv, "base64"),
+    );
+    decipherCiphertext.setAuthTag(Buffer.from(env.tag, "base64"));
+
+    const plaintext = Buffer.concat([
+      decipherCiphertext.update(Buffer.from(env.ciphertext, "base64")),
+      decipherCiphertext.final(),
+    ]).toString("utf8");
+
+    return { name: envName, value: plaintext };
+  }
+
+  async getSSOEnabled() {
+    const [google, microsoft, slack, entraId] = await Promise.all([
+      this.getEnv("VITE_GOOGLE_OAUTH_ENABLED")
+        .then((r) => r.value)
+        .catch(() => process.env.VITE_GOOGLE_OAUTH_ENABLED),
+
+      this.getEnv("VITE_MICROSOFT_OAUTH_ENABLED")
+        .then((r) => r.value)
+        .catch(() => process.env.VITE_MICROSOFT_OAUTH_ENABLED),
+
+      this.getEnv("VITE_SLACK_OAUTH_ENABLED")
+        .then((r) => r.value)
+        .catch(() => process.env.VITE_SLACK_OAUTH_ENABLED),
+
+      this.getEnv("VITE_ENTRA_ID_OAUTH_ENABLED")
+        .then((r) => r.value)
+        .catch(() => process.env.VITE_ENTRA_ID_OAUTH_ENABLED),
+    ]);
+
+    return {
+      google,
+      microsoft,
+      slack,
+      entraId,
+    };
+  }
+
+  async getStripePublishableKey() {
+    const stripePublishableKey = await this.getEnv("VITE_STRIPE_PUBLISHABLE_KEY")
+      .then(({ value }) => value)
+      .catch(() => null);
+
+    return stripePublishableKey;
+  }
+
+  async getStripeConfigured() {
+    const [stripeSecretKey, stripeWebhookSecret, stripePublishableKey] = await Promise.all([
+      this.getEnv("STRIPE_SECRET_KEY")
+        .then(({ value }) => value)
+        .catch(() => this.configService.get("stripe.secretKey")),
+
+      this.getEnv("STRIPE_WEBHOOK_SECRET")
+        .then(({ value }) => value)
+        .catch(() => this.configService.get("stripe.webhookSecret")),
+
+      this.getEnv("VITE_STRIPE_PUBLISHABLE_KEY")
+        .then(({ value }) => value)
+        .catch(() => this.configService.get("stripe.publishableKey")),
+    ]);
+
+    const enabled = !!(stripeWebhookSecret && stripeSecretKey && stripePublishableKey);
+
+    return { enabled };
+  }
+
+  async getAIConfigured() {
+    const aiKey = await this.getEnv("OPENAI_API_KEY")
+      .then((r) => r.value)
+      .catch(() => process.env.OPENAI_API_KEY);
+
+    const enabled = !!aiKey;
+
+    return { enabled };
+  }
+
+  async getLumaConfigured() {
+    const lumaKey = await this.getEnv("LUMA_API_KEY")
+      .then((r) => r.value)
+      .catch(() => process.env.LUMA_API_KEY);
+    const lumaBaseUrl = process.env.LUMA_BASE_URL;
+
+    const enabled = !!lumaKey && !!lumaBaseUrl;
+    if (!enabled) {
+      return {
+        enabled: false,
+        courseGenerationEnabled: false,
+        voiceMentorEnabled: false,
+        voiceTtsProvider: "cartesia",
+      };
+    }
+
+    const configuration = await this.getPublicLumaConfiguration(lumaKey, lumaBaseUrl);
+    const voiceTtsProvider = this.getVoiceTtsProvider(configuration);
+
+    return {
+      enabled: true,
+      courseGenerationEnabled: Boolean(configuration?.courseGeneration),
+      voiceMentorEnabled: Boolean(configuration?.voiceMentor),
+      voiceTtsProvider,
+    };
+  }
+
+  async getLiveKitConfig() {
+    const [url, apiKey, apiSecret] = await Promise.all([
+      this.getEnv("LIVEKIT_URL")
+        .then(({ value }) => value)
+        .catch(() => this.configService.get("livekit.LIVEKIT_URL")),
+
+      this.getEnv("LIVEKIT_API_KEY")
+        .then(({ value }) => value)
+        .catch(() => this.configService.get("livekit.LIVEKIT_API_KEY")),
+
+      this.getEnv("LIVEKIT_API_SECRET")
+        .then(({ value }) => value)
+        .catch(() => this.configService.get("livekit.LIVEKIT_API_SECRET")),
+    ]);
+
+    return {
+      url,
+      apiKey,
+      apiSecret,
+    };
+  }
+
+  async getLiveKitConfigured() {
+    const { url, apiKey, apiSecret } = await this.getLiveKitConfig();
+
+    return { enabled: !!(url && apiKey && apiSecret) };
+  }
+
+  async getPhishingConfigured() {
+    const tenantId = dbAls.getStore()?.tenantId;
+    if (!tenantId) return { enabled: false };
+    const [apiKey, baseURL, webhookSecret] = await Promise.all(
+      ["PHISHING_API_KEY", "PHISHING_BASE_URL", "PHISHING_WEBHOOK_SECRET"].map((key) =>
+        this.getEnv(key)
+          .then(({ value }) => value)
+          .catch(() => process.env[key]),
+      ),
+    );
+    if (!apiKey || !baseURL || !webhookSecret || webhookSecret.length < 32)
+      return { enabled: false };
+    try {
+      const config = await createPhishingClient({ apiKey, baseURL, tenantId }).configuration.get();
+      return { enabled: config.capabilities.phishingSimulation.enabled === true };
+    } catch {
+      return { enabled: false };
+    }
+  }
+
+  async getEnvSetup(userId: string) {
+    const allKeys = Object.values(SERVICE_GROUPS).flat();
+
+    const envValues = await Promise.all(
+      allKeys.map(async (key) => {
+        try {
+          const env = await this.getEnv(key);
+          return { key, value: env?.value };
+        } catch (error) {
+          return { key, value: process.env[key] };
+        }
+      }),
+    );
+
+    const envMap = new Map(envValues.map(({ key, value }) => [key, value]));
+    const lumaConfiguration = await this.getPublicLumaConfiguration(
+      envMap.get("LUMA_API_KEY"),
+      process.env.LUMA_BASE_URL,
+    );
+    const aiMentorEnabled = Boolean(
+      envMap.get("OPENAI_API_KEY")?.trim() ||
+        this.isCapabilityEnabled(lumaConfiguration, AiCapability.AiMentorChat),
+    );
+
+    const fullyConfigured: string[] = [];
+    const partiallyConfigured: Array<{ service: string; missingKeys: string[] }> = [];
+    const notConfigured: Array<{ service: string; missingKeys: string[] }> = [];
+
+    for (const [service, keys] of Object.entries(SERVICE_GROUPS)) {
+      const unsetKeys = keys.filter((key) => !envMap.get(key)?.trim());
+
+      if (unsetKeys.length === 0) {
+        fullyConfigured.push(service);
+      } else if (unsetKeys.length < keys.length) {
+        partiallyConfigured.push({ service, missingKeys: unsetKeys });
+      } else {
+        notConfigured.push({ service, missingKeys: unsetKeys });
+      }
+    }
+
+    return {
+      fullyConfigured,
+      partiallyConfigured,
+      notConfigured,
+      hasIssues:
+        partiallyConfigured.length > 0 ||
+        notConfigured.some(({ service }) => service === "livekit"),
+      aiCapabilities: [
+        {
+          key: "phishing",
+          status: this.toCapabilityStatus((await this.getPhishingConfigured()).enabled),
+        },
+        {
+          key: "aiMentor",
+          status: this.toCapabilityStatus(aiMentorEnabled),
+        },
+        {
+          key: "voiceMentor",
+          status: this.toCapabilityStatus(Boolean(lumaConfiguration?.voiceMentor)),
+        },
+        {
+          key: "courseGeneration",
+          status: this.toCapabilityStatus(Boolean(lumaConfiguration?.courseGeneration)),
+        },
+        {
+          key: "assetGeneration",
+          status: this.toCapabilityStatus(
+            this.isCapabilityEnabled(lumaConfiguration, AiCapability.CourseGenerationVisualAssets),
+          ),
+        },
+      ],
+      isWarningDismissed: await this.envRepository.getIsEnvConfigWarningDismissed(userId),
+    };
+  }
+
+  private async getPublicLumaConfiguration(
+    apiKey?: string,
+    baseURL?: string,
+  ): Promise<PublicConfigurationResponse | null> {
+    if (!apiKey || !baseURL) {
+      return null;
+    }
+
+    const luma = createLumaClient({ apiKey, baseURL });
+    return luma.configuration.get().catch(() => null);
+  }
+
+  private isCapabilityEnabled(
+    configuration: PublicConfigurationResponse | null,
+    capability: AiCapability,
+  ) {
+    return Boolean(configuration?.capabilities?.[capability]?.enabled);
+  }
+
+  private toCapabilityStatus(isEnabled: boolean) {
+    return isEnabled ? "enabled" : "disabled";
+  }
+
+  private getVoiceTtsProvider(configuration: PublicConfigurationResponse | null) {
+    return resolveVoiceTtsProvider(configuration?.capabilities?.[AiCapability.VoiceTextToSpeech]);
+  }
+}

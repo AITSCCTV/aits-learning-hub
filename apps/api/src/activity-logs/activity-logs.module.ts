@@ -1,0 +1,65 @@
+import { Global, Module } from "@nestjs/common";
+import { CqrsModule } from "@nestjs/cqrs";
+
+import { ArticlesActivityHandler } from "src/activity-logs/handlers/articles-activity.handler";
+import { QAActivityHandler } from "src/activity-logs/handlers/qa-activity.handler";
+import { LiveTrainingModule } from "src/live-training/live-training.module";
+import { LocalizationModule } from "src/localization/localization.module";
+
+import { ActivityLogResourceNameService } from "./activity-log-resource-name.service";
+import { ActivityLogsController } from "./activity-logs.controller";
+import { ActivityLogsQueueService } from "./activity-logs.queue.service";
+import { ActivityLogsService } from "./activity-logs.service";
+import { AnnouncementActivityHandler } from "./handlers/announcement-activity.handler";
+import { AuthActivityHandler } from "./handlers/auth-activity.handler";
+import { AutomationActivityHandler } from "./handlers/automation-activity.handler";
+import { CategoryActivityHandler } from "./handlers/category-activity.handler";
+import { ChapterActivityHandler } from "./handlers/chapter-activity.handler";
+import { CourseActivityHandler } from "./handlers/course-activity.handler";
+import { EmailTemplateActivityHandler } from "./handlers/email-template-activity.handler";
+import { EnvActivityHandler } from "./handlers/env-activity.handler";
+import { GroupActivityHandler } from "./handlers/group-activity.handler";
+import { LearningPathActivityHandler } from "./handlers/learning-path-activity.handler";
+import { LessonActivityHandler } from "./handlers/lesson-activity.handler";
+import { LiveTrainingActivityHandler } from "./handlers/live-training-activity.handler";
+import { NewsActivityHandler } from "./handlers/news-activity.handler";
+import { ScormActivityHandler } from "./handlers/scorm-activity.handler";
+import { SettingsActivityHandler } from "./handlers/settings-activity.handler";
+import { UserActivityHandler } from "./handlers/user-activity.handler";
+import { UserPasswordEmailsActivityHandler } from "./handlers/user-password-emails-activity.handler";
+import { UsersImportActivityHandler } from "./handlers/users-import-activity.handler";
+import { ActivityLogsWorker } from "./workers/activity-logs.worker";
+
+@Global()
+@Module({
+  imports: [CqrsModule, LiveTrainingModule, LocalizationModule],
+  controllers: [ActivityLogsController],
+  providers: [
+    ActivityLogsService,
+    AutomationActivityHandler,
+    ActivityLogResourceNameService,
+    ChapterActivityHandler,
+    LessonActivityHandler,
+    CourseActivityHandler,
+    EmailTemplateActivityHandler,
+    AnnouncementActivityHandler,
+    GroupActivityHandler,
+    CategoryActivityHandler,
+    SettingsActivityHandler,
+    UserActivityHandler,
+    UserPasswordEmailsActivityHandler,
+    UsersImportActivityHandler,
+    EnvActivityHandler,
+    AuthActivityHandler,
+    LiveTrainingActivityHandler,
+    NewsActivityHandler,
+    ArticlesActivityHandler,
+    ActivityLogsQueueService,
+    ActivityLogsWorker,
+    QAActivityHandler,
+    LearningPathActivityHandler,
+    ScormActivityHandler,
+  ],
+  exports: [ActivityLogsService, CqrsModule],
+})
+export class ActivityLogsModule {}

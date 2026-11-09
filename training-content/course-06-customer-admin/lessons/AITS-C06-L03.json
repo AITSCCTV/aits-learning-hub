@@ -1,0 +1,53 @@
+{
+  "title": "Quotations and sales coordination",
+  "objectives": [
+    "Check scope and assumptions before a quotation is issued."
+  ],
+  "explanation": [
+    "A quotation should make the proposed scope understandable: items or services, quantities, relevant specifications, assumptions, exclusions and commercial terms supplied by the authorized process. This course does not set AITS pricing, discounts, tax treatment, approval limits or validity periods. Technical feasibility and commercial authorization are different checks.",
+    "Before sending, reconcile the customer request, survey and draft quotation. Look for mismatched quantities, unclear installation scope and unsupported compatibility claims. Use a version identifier so reviewers discuss the same document. If the customer changes requirements, record the change and obtain the necessary revised review rather than editing a signed or approved document silently."
+  ],
+  "example": "A fictional survey calls for six camera locations, but the draft quotation lists four cameras. Flag the mismatch before issue.",
+  "exercise": "Review a sample quotation checklist with scope, quantity, exclusions, version and approval fields.",
+  "model_response": "The quantity mismatch is unresolved; the quotation remains a draft. Ask the technical and commercial reviewers to confirm the revised scope.",
+  "key_points": [
+    "Reconcile scope and quantities",
+    "Separate technical and commercial review",
+    "Track revisions explicitly"
+  ],
+  "references": [
+    "EX",
+    "QA"
+  ],
+  "thai_summary": "ตรวจสอบขอบเขต จำนวน และเวอร์ชันก่อนส่งใบเสนอราคา เงื่อนไขราคาและอำนาจอนุมัติต้องมาจากบริษัท",
+  "id": "AITS-C06-L03",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C06-L02"
+  ],
+  "summary": "Reconcile scope and quantities Separate technical and commercial review Track revisions explicitly",
+  "visual_resources": [
+    "course-06-customer-admin/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C06-L03",
+    "course_id": "AITS-C06",
+    "title": "Quotations and sales coordination",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C06-L03-Q1",
+    "AITS-C06-L03-Q2",
+    "AITS-C06-L03-Q3"
+  ]
+}

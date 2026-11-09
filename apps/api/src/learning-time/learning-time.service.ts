@@ -1,0 +1,469 @@
+import { Inject, Injectable, Logger, NotFoundException, type OnModuleInit } from "@nestjs/common";
+import { PERMISSIONS, type SupportedLanguages } from "@repo/shared";
+import { inArray, or, sql } from "drizzle-orm";
+import { validate as uuidValidate } from "uuid";
+
+import { getSortOptions } from "src/common/helpers/getSortOptions";
+import { getUserNameSearchCondition } from "src/common/helpers/getUserNameSearchCondition";
+import { DEFAULT_PAGE_SIZE } from "src/common/pagination";
+import {
+  getGroupManagerLearnerScopeCondition,
+  shouldApplyGroupManagerScope,
+} from "src/common/permissions/group-manager-scope.utils";
+import { hasPermission } from "src/common/permissions/permission.utils";
+import { FileService } from "src/file/file.service";
+import { IMAGE_QUALITY } from "src/file/image-variants/image-variant.constants";
+import { LearningTimeRepository } from "src/learning-time/learning-time.repository";
+import { LocalizationService } from "src/localization/localization.service";
+import { QUEUE_NAMES, QueueService } from "src/queue";
+import { TenantDbRunnerService } from "src/storage/db/tenant-db-runner.service";
+import { groups, groupUsers, lessonLearningTime, studentCourses, users } from "src/storage/schema";
+import { WsGateway } from "src/websocket";
+
+import type { createCache } from "cache-manager";
+import type { SQL } from "drizzle-orm";
+import type { UUIDType } from "src/common";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+import type { LearningTimeStatisticsSortField } from "src/learning-time/learning-time.schema";
+import type { LearningTimeQuery } from "src/learning-time/learning-time.types";
+import type { LearningTimeJobData } from "src/queue/queue.types";
+import type {
+  AuthenticatedSocket,
+  HeartbeatPayload,
+  JoinLessonPayload,
+  LeaveLessonPayload,
+} from "src/websocket/websocket.types";
+
+type CacheManager = ReturnType<typeof createCache>;
+const CACHE_MANAGER = "CACHE_MANAGER";
+
+interface LessonSession {
+  lessonId: string;
+  courseId: string;
+  socketId: string;
+  joinedAt: number;
+  lastHeartbeat: number;
+  accumulatedSeconds: number;
+}
+
+const HEARTBEAT_INTERVAL = 10; // seconds
+const FLUSH_THRESHOLD = 60; // flush to queue after 60 seconds accumulated
+const SESSION_TTL = 10 * 60 * 1000; // 10 minutes
+
+@Injectable()
+export class LearningTimeService implements OnModuleInit {
+  private readonly logger = new Logger(LearningTimeService.name);
+
+  constructor(
+    private readonly tenantDbRunnerService: TenantDbRunnerService,
+    private readonly queueService: QueueService,
+    private readonly learningTimeRepository: LearningTimeRepository,
+    private readonly wsGateway: WsGateway,
+    private readonly fileService: FileService,
+    private readonly localizationService: LocalizationService,
+    @Inject(CACHE_MANAGER) private cacheManager: CacheManager,
+  ) {}
+
+  onModuleInit() {
+    this.wsGateway.onJoinLesson(this.handleJoinLesson.bind(this));
+    this.wsGateway.onLeaveLesson(this.handleLeaveLesson.bind(this));
+    this.wsGateway.onHeartbeat(this.handleHeartbeat.bind(this));
+    this.wsGateway.onDisconnect(this.handleDisconnect.bind(this));
+
+    this.logger.log("Learning time tracking handlers registered");
+  }
+
+  private getSessionKey(
+    userId: string,
+    lessonId: string,
+    socketId: string,
+    learningStateId?: string | null,
+  ): string {
+    return `learning-session:${userId}:${lessonId}:${socketId}${
+      learningStateId ? `:${learningStateId}` : ""
+    }`;
+  }
+
+  private async getSession(key: string): Promise<LessonSession | null> {
+    return this.cacheManager.get<LessonSession>(key);
+  }
+
+  private async saveSession(key: string, session: LessonSession): Promise<void> {
+    await this.cacheManager.set(key, session, SESSION_TTL);
+  }
+
+  private async deleteSession(key: string): Promise<void> {
+    await this.cacheManager.del(key);
+  }
+
+  private getSocketSessionsKey(socketId: string): string {
+    return `socket-sessions:${socketId}`;
+  }
+
+  private async trackSocketSession(socketId: string, sessionKey: string): Promise<void> {
+    const key = this.getSocketSessionsKey(socketId);
+    const sessions = (await this.cacheManager.get<string[]>(key)) || [];
+    sessions.push(sessionKey);
+
+    await this.cacheManager.set(key, sessions, SESSION_TTL);
+  }
+
+  private async untrackSocketSession(socketId: string, sessionKey: string): Promise<void> {
+    const key = this.getSocketSessionsKey(socketId);
+    const sessions = (await this.cacheManager.get<string[]>(key)) || [];
+    const filtered = sessions.filter((s) => s !== sessionKey);
+
+    if (filtered.length > 0) {
+      await this.cacheManager.set(key, filtered, SESSION_TTL);
+    } else {
+      await this.cacheManager.del(key);
+    }
+  }
+
+  private async getEnrolledLessonCourseId(
+    socket: AuthenticatedSocket,
+    payload: JoinLessonPayload,
+  ): Promise<UUIDType | null> {
+    const { tenantId, userId } = socket.data.user;
+    return this.tenantDbRunnerService.runWithTenant(tenantId, () =>
+      this.learningTimeRepository.getEnrolledCourseIdByLessonId(payload.lessonId, userId),
+    );
+  }
+
+  private async handleJoinLesson(
+    socket: AuthenticatedSocket,
+    payload: JoinLessonPayload,
+  ): Promise<void> {
+    if (!this.canTrackLearningTime(socket)) {
+      return;
+    }
+
+    const courseId = await this.getEnrolledLessonCourseId(socket, payload);
+    if (!courseId) return;
+
+    const userId = socket.data.user.userId;
+    const { lessonId } = payload;
+    const sessionKey = this.getSessionKey(userId, lessonId, socket.id, payload.learningStateId);
+
+    const session: LessonSession = {
+      lessonId,
+      courseId,
+      socketId: socket.id,
+      joinedAt: Date.now(),
+      lastHeartbeat: Date.now(),
+      accumulatedSeconds: 0,
+    };
+
+    await this.saveSession(sessionKey, session);
+    await this.trackSocketSession(socket.id, sessionKey);
+
+    this.logger.debug(`Started learning session for user ${userId} on lesson ${lessonId}`);
+  }
+
+  private async handleLeaveLesson(
+    socket: AuthenticatedSocket,
+    payload: LeaveLessonPayload,
+  ): Promise<void> {
+    if (!this.canTrackLearningTime(socket)) {
+      return;
+    }
+
+    const userId = socket.data.user.userId;
+    const tenantId = socket.data.user.tenantId;
+
+    const { lessonId } = payload;
+    const sessionKey = this.getSessionKey(userId, lessonId, socket.id, payload.learningStateId);
+    const session = await this.getSession(sessionKey);
+
+    if (session && session.accumulatedSeconds > 0) {
+      await this.queueTimeUpdate(
+        userId,
+        lessonId,
+        session.courseId,
+        tenantId,
+        session.accumulatedSeconds,
+      );
+
+      this.logger.debug(
+        `Flushed ${session.accumulatedSeconds}s for user ${userId} on lesson ${lessonId}`,
+      );
+    }
+
+    await this.deleteSession(sessionKey);
+    await this.untrackSocketSession(socket.id, sessionKey);
+  }
+
+  private async handleHeartbeat(
+    socket: AuthenticatedSocket,
+    payload: HeartbeatPayload,
+  ): Promise<void> {
+    if (!this.canTrackLearningTime(socket)) {
+      return;
+    }
+
+    const courseId = await this.getEnrolledLessonCourseId(socket, payload);
+    if (!courseId) return;
+
+    const userId = socket.data.user.userId;
+    const tenantId = socket.data.user.tenantId;
+    const { lessonId, isActive } = payload;
+    const sessionKey = this.getSessionKey(userId, lessonId, socket.id, payload.learningStateId);
+    const session = await this.getSession(sessionKey);
+
+    if (!session) {
+      const newSession: LessonSession = {
+        lessonId,
+        courseId,
+        socketId: socket.id,
+        joinedAt: Date.now(),
+        lastHeartbeat: Date.now(),
+        accumulatedSeconds: 0,
+      };
+
+      await this.saveSession(sessionKey, newSession);
+
+      return;
+    }
+
+    if (isActive) {
+      session.accumulatedSeconds += HEARTBEAT_INTERVAL;
+      session.lastHeartbeat = Date.now();
+
+      if (session.accumulatedSeconds >= FLUSH_THRESHOLD) {
+        await this.queueTimeUpdate(
+          userId,
+          lessonId,
+          courseId,
+          tenantId,
+          session.accumulatedSeconds,
+        );
+        session.accumulatedSeconds = 0;
+
+        this.logger.debug(`Flushed ${FLUSH_THRESHOLD}s for user ${userId} on lesson ${lessonId}`);
+      }
+
+      await this.saveSession(sessionKey, session);
+    } else {
+      session.lastHeartbeat = Date.now();
+
+      await this.saveSession(sessionKey, session);
+    }
+  }
+
+  private async handleDisconnect(socket: AuthenticatedSocket): Promise<void> {
+    const userId = socket.data.user.userId;
+    const tenantId = socket.data.user.tenantId;
+    const socketSessionsKey = this.getSocketSessionsKey(socket.id);
+    const sessionKeys = (await this.cacheManager.get<string[]>(socketSessionsKey)) || [];
+
+    for (const sessionKey of sessionKeys) {
+      const session = await this.getSession(sessionKey);
+
+      if (session && session.accumulatedSeconds > 0) {
+        await this.queueTimeUpdate(
+          userId,
+          session.lessonId,
+          session.courseId,
+          tenantId,
+          session.accumulatedSeconds,
+        );
+
+        this.logger.debug(
+          `Flushed ${session.accumulatedSeconds}s on disconnect for user ${userId}`,
+        );
+      }
+
+      await this.deleteSession(sessionKey);
+    }
+
+    await this.cacheManager.del(socketSessionsKey);
+
+    this.logger.debug(`Cleaned up ${sessionKeys.length} sessions on disconnect for user ${userId}`);
+  }
+
+  private async queueTimeUpdate(
+    userId: string,
+    lessonId: string,
+    courseId: string,
+    tenantId: string,
+    seconds: number,
+  ): Promise<void> {
+    if (!uuidValidate(userId) || !uuidValidate(lessonId) || !uuidValidate(tenantId)) {
+      this.logger.warn(`Skipping learning-time queueing due to invalid data`);
+      return;
+    }
+
+    const jobData: LearningTimeJobData = {
+      userId,
+      lessonId,
+      courseId,
+      tenantId,
+      secondsToAdd: seconds,
+      timestamp: Date.now(),
+    };
+
+    await this.queueService.enqueue(QUEUE_NAMES.LEARNING_TIME, "update-learning-time", jobData, {
+      attempts: 3,
+      backoff: { type: "exponential", delay: 1000 },
+    });
+  }
+
+  async getLearningTimeStatistics(
+    courseId: UUIDType,
+    query: LearningTimeQuery = {},
+    currentUser?: CurrentUserType,
+  ) {
+    const { page = 1, perPage = DEFAULT_PAGE_SIZE, sort = "studentName", searchQuery = "" } = query;
+    const { sortOrder, sortedField } = getSortOptions(sort);
+    const availableUserIds = await this.getFilteredUserIds(query);
+
+    if (currentUser && shouldApplyGroupManagerScope(currentUser, [PERMISSIONS.COURSE_STATISTICS])) {
+      if (
+        query.groupId &&
+        !(await this.learningTimeRepository.isGroupManagedByUser(query.groupId, currentUser.userId))
+      ) {
+        throw new NotFoundException("common.toast.notFound");
+      }
+
+      if (
+        query.userId &&
+        !(await this.learningTimeRepository.isLearnerManagedByUser(
+          query.userId,
+          currentUser.userId,
+        ))
+      ) {
+        throw new NotFoundException("common.toast.notFound");
+      }
+    }
+
+    const conditions: SQL<unknown>[] = [];
+
+    if (currentUser) {
+      const managerScope = getGroupManagerLearnerScopeCondition(
+        currentUser,
+        studentCourses.studentId,
+        [PERMISSIONS.COURSE_STATISTICS],
+      );
+
+      if (managerScope) conditions.push(managerScope);
+    }
+
+    if (searchQuery) {
+      const groupNameSearchCondition = this.localizationService.getLocalizedFieldSearchCondition(
+        groups.name,
+        `%${searchQuery}%`,
+      );
+
+      const searchCondition = or(
+        getUserNameSearchCondition(searchQuery),
+        sql`EXISTS (
+          SELECT 1
+          FROM ${groupUsers}
+          INNER JOIN ${groups} ON ${groups.id} = ${groupUsers.groupId}
+          WHERE ${groupUsers.userId} = ${studentCourses.studentId}
+            AND ${groupNameSearchCondition}
+        )`,
+      );
+
+      if (searchCondition) {
+        conditions.push(searchCondition);
+      }
+    }
+
+    if (query.userId || query.groupId) {
+      if (!availableUserIds.length) conditions.push(sql`FALSE`);
+      const usersCondition = inArray(studentCourses.studentId, availableUserIds);
+      if (availableUserIds.length && usersCondition) {
+        conditions.push(usersCondition);
+      }
+    }
+
+    const [usersWithTime, totalItems] = await Promise.all([
+      this.learningTimeRepository.getTotalLearningTimePerStudentPaginated(
+        courseId,
+        conditions,
+        page,
+        perPage,
+        sortOrder(this.getLearningTimeSortColumn(sortedField as LearningTimeStatisticsSortField)),
+      ),
+      this.learningTimeRepository.getTotalLearningTimePerStudentCount(courseId, conditions),
+    ]);
+
+    const usersWithAvatarUrls = await Promise.all(
+      usersWithTime.map(async ({ studentAvatarKey, ...student }) => {
+        const studentAvatarUrl = studentAvatarKey
+          ? await this.getUsersProfilePictureUrl(studentAvatarKey)
+          : null;
+        return { ...student, studentAvatarUrl };
+      }),
+    );
+
+    return {
+      data: { users: usersWithAvatarUrls },
+      pagination: {
+        totalItems,
+        page,
+        perPage,
+      },
+    };
+  }
+
+  async getDetailedLearningTime(courseId: UUIDType) {
+    return this.learningTimeRepository.getLearningTimeForCourse(courseId);
+  }
+
+  async getFilterOptions(
+    courseId: UUIDType,
+    language?: SupportedLanguages,
+    currentUser?: CurrentUserType,
+  ) {
+    const groupOptions =
+      currentUser && shouldApplyGroupManagerScope(currentUser, [PERMISSIONS.COURSE_STATISTICS])
+        ? await this.learningTimeRepository.getManagedGroups(
+            currentUser.userId,
+            currentUser.tenantId,
+            language,
+          )
+        : await this.learningTimeRepository.getGroupsInCourse(courseId, language);
+
+    return { groups: groupOptions };
+  }
+
+  public getUsersProfilePictureUrl = async (avatarReference: string | null) => {
+    if (!avatarReference) return null;
+    return await this.fileService.getFileUrl(avatarReference, { quality: IMAGE_QUALITY.XXS });
+  };
+
+  private async getFilteredUserIds(query: LearningTimeQuery) {
+    const userIds: UUIDType[] = [];
+
+    if (query.userId) {
+      userIds.push(query.userId);
+    }
+
+    if (query.groupId) {
+      const users = await this.learningTimeRepository.getStudentsByGroup(query.groupId);
+      users.forEach(({ id }) => userIds.push(id));
+    }
+
+    return Array.from(userIds) as UUIDType[];
+  }
+
+  private getLearningTimeSortColumn(sort: LearningTimeStatisticsSortField) {
+    switch (sort) {
+      case "totalSeconds":
+        return sql<number>`SUM(${lessonLearningTime.totalSeconds})::INTEGER`;
+      case "studentName":
+      default:
+        return sql<string>`CONCAT(${users.firstName} || ' ' || ${users.lastName})`;
+    }
+  }
+
+  private canTrackLearningTime(socket: AuthenticatedSocket) {
+    return (
+      hasPermission(socket.data.user.permissions, PERMISSIONS.LEARNING_PROGRESS_UPDATE) &&
+      !hasPermission(socket.data.user.permissions, PERMISSIONS.COURSE_UPDATE) &&
+      !hasPermission(socket.data.user.permissions, PERMISSIONS.COURSE_UPDATE_OWN)
+    );
+  }
+}

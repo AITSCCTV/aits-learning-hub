@@ -1,0 +1,46 @@
+import { createRemixStub } from "@remix-run/testing";
+import { screen } from "@testing-library/react";
+import { describe, it, vi } from "vitest";
+
+import EnvsPage from "~/modules/Admin/Envs/Envs.page";
+import { mockRemixReact } from "~/utils/mocks/remix-run-mock";
+import { renderWith } from "~/utils/testUtils";
+
+mockRemixReact();
+
+const api = vi.hoisted(() => ({ saveSecrets: vi.fn() }));
+
+vi.mock("~/api/api-client", () => ({
+  ApiClient: { api: { envControllerBulkUpsertEnv: api.saveSecrets } },
+}));
+
+vi.mock("~/api/queries/admin/useSecret", () => ({
+  useSecret: () => ({
+    data: { data: { name: "", value: "" } },
+  }),
+}));
+
+const RemixStub = createRemixStub([
+  {
+    path: "/",
+    Component: EnvsPage,
+  },
+]);
+
+describe("Environment page", () => {
+  beforeEach(() => {
+    vi.resetAllMocks();
+    api.saveSecrets.mockResolvedValue({ data: {} });
+  });
+
+  it("renders the Microsoft Calendar environment fields", () => {
+    renderWith({ withQuery: true }).render(<RemixStub />);
+    expect(screen.getByRole("heading", { name: "Environment Variables" }));
+    expect(screen.getByLabelText("Microsoft Calendar Client ID"));
+    expect(screen.getByLabelText("Microsoft Calendar Client Secret"));
+    expect(screen.getByLabelText("Bunny Stream Read-Only API Key"));
+    expect(
+      screen.getByText("Read-only Bunny Stream library key used to verify Bunny Stream webhooks."),
+    );
+  });
+});

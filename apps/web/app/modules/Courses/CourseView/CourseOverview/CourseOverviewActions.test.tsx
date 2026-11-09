@@ -1,0 +1,260 @@
+import { PERMISSIONS, type PermissionKey } from "@repo/shared";
+import { screen } from "@testing-library/react";
+import { userEvent } from "@testing-library/user-event";
+import { MemoryRouter, Route, Routes } from "react-router-dom";
+import { beforeEach, describe, expect, it, vi } from "vitest";
+
+import { renderWith } from "~/utils/testUtils";
+
+import { COURSE_OVERVIEW_HANDLES } from "../../../../../e2e/data/courses/handles";
+
+import CourseOverviewActions from "./CourseOverviewActions";
+
+import type { GetCourseResponse } from "~/api/generated-api";
+
+const enrollCourse = vi.fn();
+let currentUser: { id: string; permissions: PermissionKey[] } | undefined;
+let inviteOnlyRegistration = false;
+let course: Pick<GetCourseResponse["data"], "enrolled" | "id" | "status" | "learningState">;
+let isAdminExperience = false;
+let canEditCourse = false;
+let isCourseStudentModeActive = false;
+let isEffectiveStudentExperience = false;
+let isPreviewMode = false;
+
+vi.mock("../../components/CourseRepetition", () => ({
+  CourseRepetition: () => <div role="status">Repetition progress</div>,
+}));
+
+vi.mock("~/api/mutations", () => ({
+  useEnrollCourse: () => ({
+    mutateAsync: enrollCourse,
+    isPending: false,
+  }),
+}));
+
+vi.mock("~/api/queries", () => ({
+  availableCoursesQueryOptions: vi.fn(() => ({ queryKey: ["available-courses"] })),
+  courseQueryOptions: vi.fn((id: string) => ({ queryKey: ["course", id] })),
+  studentCoursesQueryOptions: vi.fn(() => ({ queryKey: ["student-courses"] })),
+  useCurrentUser: () => ({ data: currentUser }),
+}));
+
+vi.mock("~/api/queries/useGlobalSettings", () => ({
+  useGlobalSettings: () => ({ data: { inviteOnlyRegistration } }),
+}));
+
+vi.mock("~/api/queries/useTopCourses", () => ({
+  topCoursesQueryOptions: vi.fn(() => ({ queryKey: ["top-courses"] })),
+}));
+
+vi.mock("~/modules/Dashboard/Settings/Language/LanguageStore", () => ({
+  useLanguageStore: () => ({ language: "en" }),
+}));
+
+vi.mock("../../context/CourseAccessProvider", () => ({
+  useCourseAccessProvider: () => ({
+    course,
+    isAdminExperience,
+    canEditCourse,
+    isCourseStudentModeActive,
+    isEffectiveStudentExperience,
+    isPreviewMode,
+  }),
+}));
+
+const renderActions = ({
+  onContinueLearning = vi.fn(),
+  onEnrollmentCompleted = vi.fn(),
+  onToggleLearningMode = vi.fn(),
+}: {
+  onContinueLearning?: () => void;
+  onEnrollmentCompleted?: () => void;
+  onToggleLearningMode?: () => void;
+} = {}) =>
+  renderWith().render(
+    <MemoryRouter initialEntries={["/course/course-1"]}>
+      <Routes>
+        <Route
+          path="/course/:id"
+          element={
+            <CourseOverviewActions
+              isTogglingLearningMode={false}
+              onContinueLearning={onContinueLearning}
+              onEnrollmentCompleted={onEnrollmentCompleted}
+              onOpenDetails={vi.fn()}
+              onToggleLearningMode={onToggleLearningMode}
+            />
+          }
+        />
+      </Routes>
+    </MemoryRouter>,
+  );
+
+describe("CourseOverviewActions", () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+    currentUser = undefined;
+    inviteOnlyRegistration = false;
+    course = { enrolled: false, id: "course-1", status: "published" };
+    isAdminExperience = false;
+    canEditCourse = false;
+    isCourseStudentModeActive = false;
+    isEffectiveStudentExperience = false;
+    isPreviewMode = false;
+  });
+
+  it("keeps enrollment and details actions without an extra preview button", () => {
+    currentUser = { id: "student-1", permissions: [PERMISSIONS.LEARNING_PROGRESS_UPDATE] };
+    isPreviewMode = true;
+    const onContinueLearning = vi.fn();
+    renderActions({ onContinueLearning });
+
+    expect(screen.queryByRole("button", { name: "Preview" })).not.toBeInTheDocument();
+    expect(onContinueLearning).not.toHaveBeenCalled();
+    expect(enrollCourse).not.toHaveBeenCalled();
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.ENROLL_BUTTON)).toBeInTheDocument();
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.DETAILS_BUTTON)).toBeInTheDocument();
+  });
+
+  it("links unauthenticated users to registration when registration is open", () => {
+    renderActions();
+
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.LOGIN_ENROLL_LINK)).toHaveAttribute(
+      "href",
+      "/auth/register?returnTo=%2Fcourse%2Fcourse-1",
+    );
+  });
+
+  it("links unauthenticated users to login when registration is invite-only", () => {
+    inviteOnlyRegistration = true;
+
+    renderActions();
+
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.LOGIN_ENROLL_LINK)).toHaveAttribute(
+      "href",
+      "/auth/login?returnTo=%2Fcourse%2Fcourse-1",
+    );
+  });
+
+  it("lets an administrator exit learning mode", async () => {
+    const user = userEvent.setup();
+    const onToggleLearningMode = vi.fn();
+    isAdminExperience = true;
+    isCourseStudentModeActive = true;
+
+    renderActions({ onToggleLearningMode });
+
+    await user.click(screen.getByTestId(COURSE_OVERVIEW_HANDLES.STUDENT_MODE_BUTTON));
+
+    expect(screen.getByText("Exit learning mode")).toBeInTheDocument();
+    expect(onToggleLearningMode).toHaveBeenCalledOnce();
+  });
+
+  it("disables learning-mode entry for draft courses", async () => {
+    const onToggleLearningMode = vi.fn();
+    isAdminExperience = true;
+    course = { enrolled: false, id: "course-1", status: "draft" };
+
+    renderActions({ onToggleLearningMode });
+
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.STUDENT_MODE_BUTTON)).toBeDisabled();
+    await userEvent.setup().click(screen.getByTestId(COURSE_OVERVIEW_HANDLES.STUDENT_MODE_BUTTON));
+
+    expect(onToggleLearningMode).not.toHaveBeenCalled();
+  });
+
+  it("lets an enrolled learner continue learning", async () => {
+    const user = userEvent.setup();
+    const onContinueLearning = vi.fn();
+    currentUser = { id: "user-1", permissions: [] };
+    course = { enrolled: true, id: "course-1", status: "published" };
+
+    renderActions({ onContinueLearning });
+
+    await user.click(screen.getByTestId(COURSE_OVERVIEW_HANDLES.START_LEARNING_BUTTON));
+
+    expect(onContinueLearning).toHaveBeenCalledOnce();
+  });
+
+  it("notifies the overview after enrollment succeeds", async () => {
+    const user = userEvent.setup();
+    const onEnrollmentCompleted = vi.fn();
+    currentUser = { id: "user-1", permissions: [] };
+
+    renderActions({ onEnrollmentCompleted });
+
+    await user.click(screen.getByTestId(COURSE_OVERVIEW_HANDLES.ENROLL_BUTTON));
+
+    expect(enrollCourse).toHaveBeenCalledWith({ id: "course-1" });
+    expect(onEnrollmentCompleted).toHaveBeenCalledOnce();
+  });
+
+  it("hides continue learning after accepted completion", () => {
+    currentUser = { id: "user-1", permissions: [] };
+    course = {
+      enrolled: true,
+      id: "course-1",
+      status: "published",
+      learningState: {
+        enabled: true,
+        current: { id: "current", completedAt: "2026-10-19T12:00:00Z", finishedChapterCount: 4 },
+        repetition: null,
+      },
+    };
+
+    renderActions();
+
+    expect(
+      screen.queryByTestId(COURSE_OVERVIEW_HANDLES.START_LEARNING_BUTTON),
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.DETAILS_BUTTON)).toBeVisible();
+  });
+
+  it("allows continuing an active repetition while retaining accepted completion", async () => {
+    const onContinueLearning = vi.fn();
+    currentUser = { id: "user-1", permissions: [] };
+    isEffectiveStudentExperience = true;
+    course = {
+      enrolled: true,
+      id: "course-1",
+      status: "published",
+      learningState: {
+        enabled: false,
+        current: { id: "current", completedAt: "2026-10-19T12:00:00Z", finishedChapterCount: 4 },
+        repetition: { id: "repetition", completedAt: null, finishedChapterCount: 1 },
+      },
+    };
+
+    renderActions({ onContinueLearning });
+    await userEvent
+      .setup()
+      .click(screen.getByTestId(COURSE_OVERVIEW_HANDLES.START_LEARNING_BUTTON));
+
+    expect(onContinueLearning).toHaveBeenCalledOnce();
+    expect(screen.queryByRole("status")).not.toBeInTheDocument();
+  });
+
+  it("keeps course actions available on small screens", () => {
+    currentUser = { id: "user-1", permissions: [] };
+    course = { enrolled: true, id: "course-1", status: "published" };
+
+    renderActions();
+
+    const actions = screen.getByTestId(COURSE_OVERVIEW_HANDLES.ACTIONS);
+
+    expect(actions).toHaveClass("flex", "flex-wrap");
+    expect(actions).not.toHaveClass("hidden");
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.START_LEARNING_BUTTON)).toBeVisible();
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.DETAILS_BUTTON)).toBeVisible();
+  });
+
+  it("hides enrollment while keeping course details available for Group Managers", () => {
+    currentUser = { id: "manager-1", permissions: [PERMISSIONS.MANAGED_GROUP_RESULTS_READ] };
+
+    renderActions();
+
+    expect(screen.queryByTestId(COURSE_OVERVIEW_HANDLES.ENROLL_BUTTON)).not.toBeInTheDocument();
+    expect(screen.getByTestId(COURSE_OVERVIEW_HANDLES.DETAILS_BUTTON)).toBeVisible();
+  });
+});

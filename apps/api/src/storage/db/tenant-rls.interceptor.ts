@@ -1,0 +1,65 @@
+import { Injectable, NotFoundException } from "@nestjs/common";
+import { defer, from, lastValueFrom } from "rxjs";
+
+import { TenantDbRunnerService } from "./tenant-db-runner.service";
+import { TenantResolverService } from "./tenant-resolver.service";
+
+import type { CallHandler, ExecutionContext, NestInterceptor } from "@nestjs/common";
+
+@Injectable()
+export class TenantRlsInterceptor implements NestInterceptor {
+  private static readonly BYPASSED_PATHS = new Set<string>([
+    "/api/healthcheck",
+    "/api/phishing/webhook",
+    "/api/phishing/webhook/probe",
+    "/api/phishing/webhook/email",
+    "/api/integration/tenants",
+    "/api/certificates/share",
+    "/api/certificates/share-image",
+    "/api/live-training/livekit/webhook",
+    "/api/calendar/microsoft/notifications",
+    "/api/calendar/microsoft/lifecycle-notifications",
+    "/api/oauth/register",
+    "/api/oauth/authorize",
+    "/api/oauth/token",
+    "/api/oauth/revoke",
+    "/api/mcp",
+    "/api/mcp/external-conversations",
+  ]);
+
+  constructor(
+    private readonly runner: TenantDbRunnerService,
+    private readonly tenantResolver: TenantResolverService,
+  ) {}
+
+  intercept(ctx: ExecutionContext, next: CallHandler) {
+    if (ctx.getType() !== "http") {
+      return next.handle();
+    }
+
+    const req = ctx.switchToHttp().getRequest();
+
+    const { path } = req;
+
+    if (path && this.shouldBypassTenantResolution(path)) {
+      return next.handle();
+    }
+
+    return defer(() =>
+      from(
+        this.tenantResolver.resolveTenantId(req).then((tenantId) => {
+          if (!tenantId) throw new NotFoundException("tenant.error.notFound");
+
+          return this.runner.runWithTenantContext(tenantId, () => lastValueFrom(next.handle()));
+        }),
+      ),
+    );
+  }
+
+  private shouldBypassTenantResolution(path: string): boolean {
+    if (TenantRlsInterceptor.BYPASSED_PATHS.has(path)) return true;
+
+    const normalizedPath = path.endsWith("/") ? path.slice(0, -1) : path;
+    return TenantRlsInterceptor.BYPASSED_PATHS.has(normalizedPath);
+  }
+}

@@ -1,0 +1,1760 @@
+import {
+  BadRequestException,
+  ConflictException,
+  ForbiddenException,
+  forwardRef,
+  Inject,
+  Injectable,
+  InternalServerErrorException,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
+import {
+  AUTOMATION_EVENT_KINDS,
+  OnboardingPages,
+  PERMISSIONS,
+  SESSION_REVOCATION_SOCKET,
+  SYSTEM_ROLE_PERMISSIONS,
+  SYSTEM_ROLE_SLUGS,
+  SYSTEM_RULE_SET_SLUGS,
+  type PermissionKey,
+  type SystemRoleSlug,
+  type SupportedLanguages,
+  SUPPORTED_LANGUAGES,
+} from "@repo/shared";
+import * as bcrypt from "bcryptjs";
+import {
+  and,
+  asc,
+  count,
+  eq,
+  getTableColumns,
+  ilike,
+  inArray,
+  isNull,
+  not,
+  or,
+  sql,
+} from "drizzle-orm";
+import { alias } from "drizzle-orm/pg-core";
+import { isEqual } from "lodash";
+import { match } from "ts-pattern";
+
+import { CORS_ORIGIN } from "src/auth/consts";
+import { CreatePasswordService } from "src/auth/create-password.service";
+import { NotificationAccountActionService } from "src/automation-execution/services/notification-account-action.service";
+import { createUserNotificationEvent } from "src/automation-execution/utils/create-user-notification-event";
+import { DatabasePg } from "src/common";
+import { getGroupFilterConditions } from "src/common/helpers/getGroupFilterConditions";
+import { getSortOptions } from "src/common/helpers/getSortOptions";
+import hashPassword from "src/common/helpers/hashPassword";
+import { DEFAULT_PAGE_SIZE } from "src/common/pagination";
+import { getGroupManagerCourseScopeCondition } from "src/common/permissions/group-manager-scope.utils";
+import {
+  userHasPermissionCondition as buildUserHasPermissionCondition,
+  userLacksAnyPermissionsCondition as buildUserLacksAnyPermissionsCondition,
+} from "src/common/permissions/permission-sql.utils";
+import { hasPermission } from "src/common/permissions/permission.utils";
+import { CourseService } from "src/courses/course.service";
+import { ArchiveUsersEvent, CreateUserEvent, DeleteUserEvent, UpdateUserEvent } from "src/events";
+import { FileService } from "src/file/file.service";
+import { IMAGE_QUALITY } from "src/file/image-variants/image-variant.constants";
+import { GroupService } from "src/group/group.service";
+import { BULK_ASSIGN_USERS_TO_GROUPS_SOURCES } from "src/group/types/group-membership-assignment.types";
+import { LocalizationService } from "src/localization/localization.service";
+import { OutboxPublisher } from "src/outbox/outbox.publisher";
+import { SessionRevocationService } from "src/redis";
+import { S3Service } from "src/s3/s3.service";
+import { SettingsService } from "src/settings/settings.service";
+import { StatisticsService } from "src/statistics/statistics.service";
+import { DB_ADMIN } from "src/storage/db/db.providers";
+import {
+  USER_CREATION_FLOW_TYPE,
+  type CreateUserContext,
+  type CreateUserCoreResult,
+} from "src/user/user.types";
+import { WsGateway } from "src/websocket/websocket.gateway";
+
+import {
+  credentials,
+  groups,
+  groupManagerGroups,
+  groupUsers,
+  permissionRoles,
+  permissionRoleRuleSets,
+  permissionRuleSetPermissions,
+  permissionRuleSets,
+  permissionUserRoles,
+  userDetails,
+  users,
+  settings,
+  tenants,
+  userOnboarding,
+  studentCourses,
+  courses,
+  coursesSummaryStats,
+} from "../storage/schema";
+
+import {
+  type UsersFilterSchema,
+  type UserSortField,
+  type UsersQuery,
+  UserSortFields,
+} from "./schemas/userQuery";
+import { USER_LONG_INACTIVITY_DAYS, USER_SHORT_INACTIVITY_DAYS } from "./user.constants";
+
+import type {
+  UpdateUserProfileBody,
+  UpsertUserDetailsBody,
+  BulkAssignUserGroups,
+  UpdateUserBody,
+  BulkUpdateUsersRolesBody,
+} from "./schemas/updateUser.schema";
+import type { UserDetailsResponse, UserDetailsWithAvatarKey } from "./schemas/user.schema";
+import type { UserActivityLogSnapshot } from "src/activity-logs/types";
+import type { UUIDType } from "src/common";
+import type { CurrentUserType } from "src/common/types/current-user.type";
+import type { ImageQuality } from "src/file/image-variants/image-variant.types";
+import type { LocalizedGroup } from "src/group/group.types";
+import type { ChangePasswordBody } from "src/user/schemas/changePassword.schema";
+import type { CreateUserBody } from "src/user/schemas/createUser.schema";
+import type { AdminOverdueCourseNotificationRecipient } from "src/user/types/admin-overdue-course-notification-recipient.type";
+import type { CreateUserSettingsResolution } from "src/user/types/create-user-settings-resolution.type";
+
+@Injectable()
+export class UserService {
+  private readonly SYSTEM_ROLE_DISPLAY_NAME: Record<SystemRoleSlug, string> = {
+    [SYSTEM_ROLE_SLUGS.ADMIN]: "Admin",
+    [SYSTEM_ROLE_SLUGS.CONTENT_CREATOR]: "Content Creator",
+    [SYSTEM_ROLE_SLUGS.TRAINER]: "Trainer",
+    [SYSTEM_ROLE_SLUGS.GROUP_MANAGER]: "Group Manager",
+    [SYSTEM_ROLE_SLUGS.STUDENT]: "Student",
+  };
+  private readonly SYSTEM_ROLE_PRIORITY: Record<string, number> = {
+    [SYSTEM_ROLE_SLUGS.ADMIN]: 0,
+    [SYSTEM_ROLE_SLUGS.CONTENT_CREATOR]: 1,
+    [SYSTEM_ROLE_SLUGS.TRAINER]: 2,
+    [SYSTEM_ROLE_SLUGS.GROUP_MANAGER]: 3,
+    [SYSTEM_ROLE_SLUGS.STUDENT]: 4,
+  };
+
+  constructor(
+    @Inject("DB") private readonly db: DatabasePg,
+    @Inject(DB_ADMIN) private readonly dbAdmin: DatabasePg,
+    private readonly outboxPublisher: OutboxPublisher,
+    private fileService: FileService,
+    private s3Service: S3Service,
+    private createPasswordService: CreatePasswordService,
+    private settingsService: SettingsService,
+    private readonly groupService: GroupService,
+    private readonly localizationService: LocalizationService,
+    private statisticsService: StatisticsService,
+    private readonly sessionRevocationService: SessionRevocationService,
+    private readonly wsGateway: WsGateway,
+    @Inject(forwardRef(() => CourseService)) private readonly courseService: CourseService,
+    private readonly notificationAccountActionService: NotificationAccountActionService,
+  ) {}
+
+  public async getUsers(query: UsersQuery = {}) {
+    const {
+      sort = UserSortFields.firstName,
+      page = 1,
+      perPage = DEFAULT_PAGE_SIZE,
+      filters = {},
+    } = query;
+
+    const { sortOrder, sortedField } = getSortOptions(sort);
+    const conditions = this.getFiltersConditions(filters);
+    conditions.push(isNull(users.deletedAt));
+
+    const usersData = await this.db
+      .select({
+        ...getTableColumns(users),
+        roleSlugs: sql<
+          string[]
+        >`COALESCE(json_agg(DISTINCT ${permissionRoles.slug}) FILTER (WHERE ${permissionRoles.slug} IS NOT NULL), '[]')`.as(
+          "roleSlugs",
+        ),
+        groups: sql<LocalizedGroup[]>`COALESCE(json_agg(DISTINCT jsonb_build_object('id', ${
+          groups.id
+        }, 'name', ${this.localizationService.getLocalizedSqlField(
+          groups.name,
+          undefined,
+          groups,
+        )})) FILTER (WHERE ${groups.id} IS NOT NULL), '[]')`.as("groups"),
+      })
+      .from(users)
+      .leftJoin(
+        permissionUserRoles,
+        and(
+          eq(users.id, permissionUserRoles.userId),
+          eq(users.tenantId, permissionUserRoles.tenantId),
+        ),
+      )
+      .leftJoin(
+        permissionRoles,
+        and(
+          eq(permissionRoles.id, permissionUserRoles.roleId),
+          eq(permissionRoles.tenantId, permissionUserRoles.tenantId),
+        ),
+      )
+      .leftJoin(groupUsers, eq(users.id, groupUsers.userId))
+      .leftJoin(groups, eq(groupUsers.groupId, groups.id))
+      .where(and(...conditions))
+      .groupBy(users.id)
+      .orderBy(sortOrder(this.getColumnToSortBy(sortedField as UserSortField)))
+      .limit(perPage)
+      .offset((page - 1) * perPage);
+
+    const usersWithProfilePictures = await Promise.all(
+      usersData.map(async (user) => {
+        const { avatarReference, ...userWithoutAvatar } = user;
+        const usersProfilePictureUrl = await this.getUsersProfilePictureUrl(avatarReference);
+
+        return {
+          ...userWithoutAvatar,
+          roleSlugs: this.sortRoleSlugs(userWithoutAvatar.roleSlugs),
+          profilePictureUrl: usersProfilePictureUrl,
+        };
+      }),
+    );
+
+    const [{ totalItems }] = await this.db
+      .select({ totalItems: count() })
+      .from(users)
+      .where(and(...conditions));
+
+    return {
+      data: usersWithProfilePictures,
+      pagination: {
+        totalItems,
+        page,
+        perPage,
+      },
+    };
+  }
+
+  public async getRoles(tenantId: UUIDType) {
+    const isLiveTrainingEnabled =
+      await this.settingsService.isLiveTrainingEnabledForTenant(tenantId);
+
+    const conditions = [eq(permissionRoles.tenantId, tenantId)];
+
+    if (!isLiveTrainingEnabled) {
+      conditions.push(not(eq(permissionRoles.slug, SYSTEM_ROLE_SLUGS.TRAINER)));
+    }
+
+    return this.db
+      .select({
+        ...getTableColumns(permissionRoles),
+      })
+      .from(permissionRoles)
+      .where(and(...conditions))
+      .orderBy(
+        sql<number>`
+          CASE
+            WHEN ${permissionRoles.slug} = ${SYSTEM_ROLE_SLUGS.ADMIN} THEN 0
+            WHEN ${permissionRoles.slug} = ${SYSTEM_ROLE_SLUGS.CONTENT_CREATOR} THEN 1
+            WHEN ${permissionRoles.slug} = ${SYSTEM_ROLE_SLUGS.TRAINER} THEN 2
+            WHEN ${permissionRoles.slug} = ${SYSTEM_ROLE_SLUGS.GROUP_MANAGER} THEN 3
+            WHEN ${permissionRoles.slug} = ${SYSTEM_ROLE_SLUGS.STUDENT} THEN 4
+            ELSE 999
+          END
+        `,
+        asc(permissionRoles.name),
+      );
+  }
+
+  public async getUserById(id: UUIDType, db?: DatabasePg, language?: SupportedLanguages) {
+    const dbInstance = db ?? this.db;
+    const managedGroup = alias(groups, "managed_group");
+
+    const [user] = await dbInstance
+      .select({
+        ...getTableColumns(users),
+        groups: sql<LocalizedGroup[]>`COALESCE(json_agg(DISTINCT jsonb_build_object('id', ${
+          groups.id
+        }, 'name', ${this.localizationService.getLocalizedSqlField(
+          groups.name,
+          language,
+          groups,
+        )})) FILTER (WHERE ${groups.id} IS NOT NULL), '[]')`.as("groups"),
+        managedGroups: sql<LocalizedGroup[]>`COALESCE(json_agg(DISTINCT jsonb_build_object('id', ${
+          managedGroup.id
+        }, 'name', ${this.localizationService.getLocalizedSqlField(
+          managedGroup.name,
+          language,
+          groups,
+          "managed_group",
+        )})) FILTER (WHERE ${managedGroup.id} IS NOT NULL), '[]')`.as("managedGroups"),
+        requiresPasswordChange:
+          sql<boolean>`COALESCE(bool_or(${credentials.requiresPasswordChange}), false)`.as(
+            "requiresPasswordChange",
+          ),
+      })
+      .from(users)
+      .leftJoin(credentials, eq(users.id, credentials.userId))
+      .leftJoin(groupUsers, eq(users.id, groupUsers.userId))
+      .leftJoin(groups, eq(groupUsers.groupId, groups.id))
+      .leftJoin(groupManagerGroups, eq(users.id, groupManagerGroups.managerUserId))
+      .leftJoin(managedGroup, eq(groupManagerGroups.groupId, managedGroup.id))
+      .where(and(eq(users.id, id), isNull(users.deletedAt)))
+      .groupBy(users.id);
+
+    if (!user) {
+      throw new NotFoundException("adminUserView.error.userNotFound");
+    }
+
+    const { avatarReference, ...userWithoutAvatar } = user;
+    const usersProfilePictureUrl = await this.getUsersProfilePictureUrl(avatarReference);
+    const { roleSlugs } = await this.getUserAccess(user.id, dbInstance);
+
+    return {
+      ...userWithoutAvatar,
+      profilePictureUrl: usersProfilePictureUrl,
+      roleSlugs,
+    };
+  }
+
+  public async getUserByEmail(email: string) {
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(and(eq(users.email, email), isNull(users.deletedAt)));
+
+    return user;
+  }
+
+  public async getUserDetails(
+    userId: UUIDType,
+    currentUser: CurrentUserType | null,
+  ): Promise<UserDetailsResponse> {
+    let canViewContactDetails = false;
+    const [userBio]: UserDetailsWithAvatarKey[] = await this.db
+      .select({
+        id: users.id,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        avatarReference: users.avatarReference,
+        description: userDetails.description,
+        contactEmail: currentUser ? userDetails.contactEmail : sql<null>`NULL`,
+        contactPhone: currentUser ? userDetails.contactPhoneNumber : sql<null>`NULL`,
+        jobTitle: userDetails.jobTitle,
+      })
+      .from(users)
+      .leftJoin(userDetails, eq(userDetails.userId, users.id))
+      .where(and(eq(users.id, userId), isNull(users.deletedAt)));
+
+    if (!userBio) throw new NotFoundException("common.toast.notFound");
+
+    if (currentUser) {
+      const canViewSelf = userId === currentUser.userId;
+      const canManageUsers = hasPermission(currentUser.permissions, PERMISSIONS.USER_MANAGE);
+      const isGroupManager = hasPermission(
+        currentUser.permissions,
+        PERMISSIONS.MANAGED_GROUP_RESULTS_READ,
+      );
+      const { roleSlugs: targetRoleSlugs } = await this.getUserAccess(userId);
+      const targetIsAdmin = targetRoleSlugs.includes(SYSTEM_ROLE_SLUGS.ADMIN);
+      const targetHasPublicProfile =
+        targetRoleSlugs.includes(SYSTEM_ROLE_SLUGS.ADMIN) ||
+        targetRoleSlugs.includes(SYSTEM_ROLE_SLUGS.CONTENT_CREATOR);
+
+      canViewContactDetails = canViewSelf || canManageUsers || targetIsAdmin;
+
+      const managerCourseScope = isGroupManager
+        ? getGroupManagerCourseScopeCondition(currentUser, courses.id, [])
+        : undefined;
+
+      const [managedCourseByAuthor] = managerCourseScope
+        ? await this.db
+            .select({ id: courses.id })
+            .from(courses)
+            .where(and(eq(courses.authorId, userId), managerCourseScope))
+            .limit(1)
+        : [];
+
+      const canView =
+        canViewSelf ||
+        canManageUsers ||
+        (!isGroupManager && targetHasPublicProfile) ||
+        Boolean(managedCourseByAuthor);
+
+      if (!canView) throw new ForbiddenException("common.toast.noAccess");
+    }
+
+    const { avatarReference, ...user } = userBio;
+
+    const profilePictureUrl = await this.getUsersProfilePictureUrl(avatarReference);
+
+    return {
+      ...user,
+      contactEmail: canViewContactDetails ? user.contactEmail : null,
+      contactPhone: canViewContactDetails ? user.contactPhone : null,
+      profilePictureUrl,
+    };
+  }
+
+  public async updateUser(id: UUIDType, data: UpdateUserBody, actor?: CurrentUserType) {
+    const [existingUser] = await this.db
+      .select()
+      .from(users)
+      .leftJoin(groupUsers, eq(users.id, groupUsers.userId))
+      .leftJoin(groups, eq(groupUsers.groupId, groups.id))
+      .where(and(eq(users.id, id), isNull(users.deletedAt)));
+
+    if (!existingUser?.users) {
+      throw new NotFoundException("User not found");
+    }
+
+    const currentAccess = await this.getUserAccess(id);
+
+    const nextRoleSlugs = data.roleSlugs ?? currentAccess.roleSlugs;
+
+    const currentManagedGroupIds = await this.getManagedGroupIds(id);
+
+    const nextManagedGroupIds = nextRoleSlugs.includes(SYSTEM_ROLE_SLUGS.GROUP_MANAGER)
+      ? (data.managedGroupIds ?? currentManagedGroupIds)
+      : [];
+
+    const rolesChanged = Boolean(
+      data.roleSlugs && (await this.haveRoleAssignmentsChanged(id, data.roleSlugs)),
+    );
+
+    const managedGroupsChanged = !this.haveSameIds(currentManagedGroupIds, nextManagedGroupIds);
+    const shouldRevokeSession = rolesChanged || managedGroupsChanged;
+    const shouldRefreshCourseAuthorMetadata =
+      data.firstName !== undefined || data.lastName !== undefined;
+
+    const updatedUser = await this.db.transaction(async (trx) => {
+      const previousSnapshot = actor ? await this.buildUserActivitySnapshot(id, trx) : null;
+
+      const { groups, managedGroupIds: _managedGroupIds, roleSlugs, ...userData } = data;
+
+      const hasUserDataToUpdate = Object.keys(userData).length > 0;
+      const [updatedUser] = hasUserDataToUpdate
+        ? await trx.update(users).set(userData).where(eq(users.id, id)).returning()
+        : [existingUser.users];
+
+      const { avatarReference, ...userWithoutAvatar } = updatedUser;
+      const usersProfilePictureUrl = await this.getUsersProfilePictureUrl(avatarReference);
+
+      if (groups !== undefined) {
+        await this.groupService.setUserGroups(groups ?? [], id, {
+          actor,
+          db: trx,
+        });
+      }
+
+      if (roleSlugs !== undefined) {
+        await this.replaceUserRoleAssignments(id, existingUser.users.tenantId, roleSlugs, trx);
+      }
+
+      if (data.managedGroupIds !== undefined || managedGroupsChanged) {
+        await this.replaceManagedGroupAssignments(
+          id,
+          existingUser.users.tenantId,
+          nextManagedGroupIds,
+          trx,
+        );
+      }
+
+      const updatedSnapshot = actor ? await this.buildUserActivitySnapshot(id, trx) : null;
+
+      const shouldPublishEvent =
+        actor && previousSnapshot && updatedSnapshot && !isEqual(previousSnapshot, updatedSnapshot);
+
+      if (shouldPublishEvent) {
+        await this.outboxPublisher.publish(
+          new UpdateUserEvent({
+            userId: id,
+            actor,
+            previousUserData: previousSnapshot,
+            updatedUserData: updatedSnapshot,
+          }),
+          trx,
+        );
+      }
+
+      const updatedGroups =
+        updatedSnapshot?.groups ?? (await this.getUserGroupsForSnapshot(id, trx));
+
+      return {
+        ...userWithoutAvatar,
+        profilePictureUrl: usersProfilePictureUrl,
+        groups: updatedGroups,
+      };
+    });
+
+    if (shouldRevokeSession) await this.revokeSessionsAndNotifyUsers([id]);
+    if (shouldRefreshCourseAuthorMetadata) await this.courseService.refreshAuthorMetadata(id);
+
+    return updatedUser;
+  }
+
+  async upsertUserDetails(userId: UUIDType, data: UpsertUserDetailsBody) {
+    const existingUser = await this.getExistingUser(userId);
+
+    if (!existingUser) {
+      throw new NotFoundException("User not found");
+    }
+
+    const [updatedUserDetails] = await this.db
+      .insert(userDetails)
+      .values({ userId, ...data })
+      .onConflictDoUpdate({
+        target: userDetails.userId,
+        set: data,
+      })
+      .returning();
+
+    await this.courseService.refreshAuthorMetadata(userId);
+
+    return updatedUserDetails;
+  }
+
+  async updateUserProfile(
+    id: UUIDType,
+    data: UpdateUserProfileBody,
+    userAvatar?: Express.Multer.File,
+  ) {
+    const existingUser = await this.getExistingUser(id);
+
+    if (!existingUser) {
+      throw new NotFoundException("User not found");
+    }
+
+    if (!data && !userAvatar) {
+      throw new NotFoundException("No data provided for user profile update");
+    }
+
+    if (userAvatar) {
+      const { fileKey } = await this.fileService.uploadFile(
+        userAvatar,
+        "user-avatars",
+        existingUser.tenantId,
+      );
+      data.userAvatar = fileKey;
+    }
+
+    await this.db.transaction(async (tx) => {
+      const userUpdates = {
+        ...(data.firstName && { firstName: data.firstName }),
+        ...(data.lastName && { lastName: data.lastName }),
+        ...((data.userAvatar || data.userAvatar === null) && {
+          avatarReference: data.userAvatar,
+        }),
+      };
+
+      const userDetailsUpdates = {
+        ...(data.description && { description: data.description }),
+        ...(data.contactEmail && { contactEmail: data.contactEmail }),
+        ...(data.contactPhone && { contactPhoneNumber: data.contactPhone }),
+        ...(data.jobTitle && { jobTitle: data.jobTitle }),
+      };
+
+      if (Object.keys(userUpdates).length > 0) {
+        await tx.update(users).set(userUpdates).where(eq(users.id, id));
+      }
+
+      if (Object.keys(userDetailsUpdates).length > 0) {
+        await tx.update(userDetails).set(userDetailsUpdates).where(eq(userDetails.userId, id));
+      }
+    });
+
+    await this.courseService.refreshAuthorMetadata(id);
+  }
+
+  async changePassword(id: UUIDType, data: ChangePasswordBody) {
+    const existingUser = await this.getExistingUser(id);
+
+    const { oldPassword, newPassword, confirmPassword } = data;
+
+    if (newPassword !== confirmPassword) {
+      throw new BadRequestException("changePasswordView.validation.passwordsDontMatch");
+    }
+
+    if (!existingUser) {
+      throw new NotFoundException("User not found");
+    }
+
+    const [userCredentials] = await this.db
+      .select()
+      .from(credentials)
+      .where(eq(credentials.userId, id));
+
+    if (!userCredentials) {
+      return await this.createPasswordService.createUserPassword(id, newPassword);
+    }
+
+    if (!oldPassword) {
+      throw new BadRequestException("changePasswordView.validation.oldPassword");
+    }
+
+    const isOldPasswordValid = await bcrypt.compare(oldPassword, userCredentials.password);
+
+    if (!isOldPasswordValid) {
+      throw new UnauthorizedException("Invalid old password");
+    }
+
+    const hashedNewPassword = await hashPassword(newPassword);
+    await this.db
+      .update(credentials)
+      .set({ password: hashedNewPassword, requiresPasswordChange: false })
+      .where(eq(credentials.userId, id));
+  }
+
+  async getPasswordStatus(id: UUIDType) {
+    const [userCredentials] = await this.db
+      .select({ id: credentials.id })
+      .from(credentials)
+      .where(eq(credentials.userId, id))
+      .limit(1);
+
+    return { hasPassword: Boolean(userCredentials) };
+  }
+
+  async resetPassword(id: UUIDType, newPassword: string) {
+    const existingUser = await this.getExistingUser(id);
+
+    if (!existingUser) {
+      throw new NotFoundException("User not found");
+    }
+
+    const [userCredentials] = await this.db
+      .select()
+      .from(credentials)
+      .where(eq(credentials.userId, id));
+
+    if (!userCredentials) {
+      return await this.createPasswordService.createUserPassword(id, newPassword);
+    }
+
+    const hashedNewPassword = await hashPassword(newPassword);
+    await this.db
+      .update(credentials)
+      .set({ password: hashedNewPassword, requiresPasswordChange: false })
+      .where(eq(credentials.userId, id));
+  }
+
+  public async deleteUser(actor: CurrentUserType, id: UUIDType) {
+    if (id === actor.userId) {
+      throw new BadRequestException("You cannot delete your own account");
+    }
+
+    const [userToDelete] = await this.db
+      .select({ id: users.id })
+      .from(users)
+      .where(
+        and(
+          eq(users.id, id),
+          isNull(users.deletedAt),
+          buildUserHasPermissionCondition(
+            this.db,
+            users.id,
+            users.tenantId,
+            PERMISSIONS.LEARNING_PROGRESS_UPDATE,
+          ),
+          buildUserLacksAnyPermissionsCondition(this.db, users.id, users.tenantId, [
+            PERMISSIONS.COURSE_UPDATE,
+            PERMISSIONS.COURSE_UPDATE_OWN,
+            PERMISSIONS.LEARNING_MODE_USE,
+          ]),
+        ),
+      );
+
+    if (!userToDelete) throw new BadRequestException("You can only delete students");
+
+    const userSnapshot = await this.buildUserActivitySnapshot(id);
+
+    return this.db.transaction(async (trx) => {
+      await this.deflateStatisticsForCourseDeletedUser(userToDelete.id, trx);
+
+      const idPart = id.split("-")[0];
+
+      const [deletedUser] = await trx
+        .update(users)
+        .set({
+          deletedAt: sql`NOW()`,
+          email: `deleted_${idPart}@user.com`,
+          firstName: "deleted user",
+          lastName: "deleted user",
+        })
+        .where(eq(users.id, id))
+        .returning();
+
+      if (userSnapshot) {
+        await this.outboxPublisher.publish(
+          new DeleteUserEvent({
+            userId: id,
+            actor,
+            deletedUserData: userSnapshot,
+          }),
+          trx,
+        );
+      }
+
+      return deletedUser;
+    });
+  }
+
+  public async deleteBulkUsers(actor: CurrentUserType, ids: UUIDType[]) {
+    if (ids.includes(actor.userId)) {
+      throw new BadRequestException("You cannot delete yourself");
+    }
+
+    const usersToDelete = await this.db
+      .select({ id: users.id })
+      .from(users)
+      .where(
+        and(
+          inArray(users.id, ids),
+          isNull(users.deletedAt),
+          buildUserHasPermissionCondition(
+            this.db,
+            users.id,
+            users.tenantId,
+            PERMISSIONS.LEARNING_PROGRESS_UPDATE,
+          ),
+          buildUserLacksAnyPermissionsCondition(this.db, users.id, users.tenantId, [
+            PERMISSIONS.COURSE_UPDATE,
+            PERMISSIONS.COURSE_UPDATE_OWN,
+            PERMISSIONS.LEARNING_MODE_USE,
+          ]),
+        ),
+      );
+
+    if (usersToDelete.length !== ids.length)
+      throw new BadRequestException("You can only delete students");
+
+    const usersSnapshots = await Promise.all(ids.map((id) => this.buildUserActivitySnapshot(id)));
+
+    return this.db.transaction(async (trx) => {
+      await Promise.all(
+        ids.map(async (id) => {
+          await this.deflateStatisticsForCourseDeletedUser(id, trx);
+        }),
+      );
+
+      await Promise.all(
+        ids.map((id) =>
+          trx
+            .update(users)
+            .set({
+              deletedAt: sql`NOW()`,
+              email: `deleted_${id.split("-")[0]}@user.com`,
+              firstName: "deleted user",
+              lastName: "deleted user",
+            })
+            .where(eq(users.id, id)),
+        ),
+      );
+
+      await Promise.all(
+        usersSnapshots.map((snapshot, index) => {
+          const userId = ids[index];
+          if (!snapshot) return Promise.resolve();
+
+          return this.outboxPublisher.publish(
+            new DeleteUserEvent({
+              userId,
+              actor,
+              deletedUserData: snapshot,
+            }),
+            trx,
+          );
+        }),
+      );
+    });
+  }
+
+  public async createUser(
+    data: CreateUserBody,
+    dbInstance?: DatabasePg,
+    context: CreateUserContext = { flowType: USER_CREATION_FLOW_TYPE.PASSWORD_REMINDER },
+  ) {
+    const createUser = async (trx: DatabasePg) => {
+      await this.assertUserEmailAvailable(data.email, trx);
+
+      const { createdUser, newUsersLanguage } = await this.createUserCore(trx, data, context);
+      if (context.flowType === USER_CREATION_FLOW_TYPE.REGISTRATION) return createdUser;
+      if (context.flowType === USER_CREATION_FLOW_TYPE.ADMIN) {
+        const snapshot = await this.buildUserActivitySnapshot(createdUser.id, trx);
+        await this.outboxPublisher.publish(
+          new CreateUserEvent({
+            userId: createdUser.id,
+            actor: context.creator,
+            createdUserData: snapshot,
+          }),
+          trx,
+        );
+      }
+      await this.publishAccountSetupNotification(createdUser, newUsersLanguage, context, trx);
+
+      return createdUser;
+    };
+
+    if (dbInstance) return await createUser(dbInstance);
+
+    return await this.db.transaction(createUser);
+  }
+
+  private async publishAccountSetupNotification(
+    createdUser: typeof users.$inferSelect,
+    language: SupportedLanguages,
+    context: CreateUserContext,
+    transaction: DatabasePg,
+  ): Promise<void> {
+    const [tenant] = await transaction
+      .select({ host: tenants.host })
+      .from(tenants)
+      .where(eq(tenants.id, createdUser.tenantId));
+    const origin = context.flowType === USER_CREATION_FLOW_TYPE.INVITE ? context.origin : undefined;
+    const accountActionIntentId =
+      await this.notificationAccountActionService.createNotificationAccountActionIntent(
+        {
+          userId: createdUser.id,
+          kind: "create_password",
+          applicationOrigin: (origin || tenant?.host || CORS_ORIGIN).replace(/\/$/, ""),
+          tokenTtlMs: 365 * 86400000,
+          usesCalendarYearExpiry: true,
+          reminderCount: 0,
+        },
+        transaction,
+      );
+    let invitedBy = "Admin";
+    if (context.flowType === USER_CREATION_FLOW_TYPE.INVITE)
+      invitedBy = context.invitedByUserName ?? "Admin";
+    if (context.flowType === USER_CREATION_FLOW_TYPE.ADMIN) {
+      const creator = await this.getUserById(context.creator.userId, transaction);
+      invitedBy = `${creator.firstName} ${creator.lastName}`.trim() || "Admin";
+    }
+    const kind =
+      context.flowType === USER_CREATION_FLOW_TYPE.PASSWORD_REMINDER
+        ? AUTOMATION_EVENT_KINDS.PASSWORD_REMINDER
+        : AUTOMATION_EVENT_KINDS.USER_INVITE;
+    await this.outboxPublisher.publish(
+      createUserNotificationEvent({
+        kind,
+        user: createdUser,
+        language,
+        eventFields: {
+          invitedByUserName: invitedBy,
+          invited_by_user_name: invitedBy,
+        },
+        accountActionIntentId,
+      }),
+      transaction,
+    );
+  }
+
+  private async assertUserEmailAvailable(email: string, dbInstance: DatabasePg) {
+    const [existingUser] = await dbInstance
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
+
+    if (existingUser) throw new ConflictException("registerView.toast.userAlreadyExists");
+  }
+
+  private async createUserCore(
+    trx: DatabasePg,
+    data: CreateUserBody,
+    context: CreateUserContext,
+  ): Promise<CreateUserCoreResult> {
+    const { roleSlugs, managedGroupIds = [], ...userData } = data;
+    const [createdUser] = await trx.insert(users).values(userData).returning();
+
+    if (!createdUser) throw new InternalServerErrorException("common.toast.somethingWentWrong");
+
+    await this.insertUserRoleAssignmentsForNewUser(
+      [{ userId: createdUser.id, tenantId: createdUser.tenantId, roleSlugs }],
+      trx,
+    );
+
+    const permissions = await this.getPermissionsForRoleSlugs(roleSlugs, createdUser.tenantId, trx);
+
+    if (hasPermission(permissions, PERMISSIONS.MANAGED_GROUP_RESULTS_READ)) {
+      await this.replaceManagedGroupAssignments(
+        createdUser.id,
+        createdUser.tenantId,
+        managedGroupIds,
+        trx,
+      );
+    }
+
+    await trx.insert(userOnboarding).values({ userId: createdUser.id });
+
+    const { newUsersLanguage, settingsOverride } = await this.resolveCreateUserSettings(
+      data,
+      context,
+      trx,
+    );
+
+    await this.settingsService.createSettingsIfNotExists(
+      createdUser.id,
+      roleSlugs,
+      settingsOverride,
+      trx,
+    );
+
+    if (context.flowType === USER_CREATION_FLOW_TYPE.REGISTRATION) {
+      await trx.insert(credentials).values({
+        userId: createdUser.id,
+        password: context.hashedPassword,
+      });
+
+      return { createdUser, newUsersLanguage };
+    }
+
+    const rolePermissions = await this.getPermissionsForRoleSlugs(
+      roleSlugs,
+      createdUser.tenantId,
+      trx,
+    );
+
+    const canManageContent =
+      rolePermissions.includes(PERMISSIONS.COURSE_UPDATE) ||
+      rolePermissions.includes(PERMISSIONS.COURSE_UPDATE_OWN);
+
+    const canManageTenant = rolePermissions.includes(PERMISSIONS.TENANT_MANAGE);
+
+    if (canManageContent || canManageTenant) {
+      await trx
+        .insert(userDetails)
+        .values({ userId: createdUser.id, contactEmail: createdUser.email });
+    }
+
+    return { createdUser, newUsersLanguage };
+  }
+
+  private async resolveCreateUserSettings(
+    data: CreateUserBody,
+    context: CreateUserContext,
+    trx: DatabasePg,
+  ): Promise<CreateUserSettingsResolution> {
+    const newUsersLanguage = await match(context)
+      .with({ flowType: USER_CREATION_FLOW_TYPE.ADMIN }, async (adminContext) => {
+        if (data.language) return data.language;
+
+        const creatorSettings = await this.settingsService.getUserSettings(
+          adminContext.creator.userId,
+          trx,
+        );
+
+        return creatorSettings.language;
+      })
+      .otherwise(() => data.language ?? SUPPORTED_LANGUAGES.EN);
+
+    const settingsOverride = match(context)
+      .with(
+        { flowType: USER_CREATION_FLOW_TYPE.ADMIN },
+        { flowType: USER_CREATION_FLOW_TYPE.REGISTRATION },
+        () => ({ language: newUsersLanguage }),
+      )
+      .otherwise(() => undefined);
+
+    return { newUsersLanguage, settingsOverride };
+  }
+
+  public getUsersProfilePictureUrl = async (
+    avatarReference: string | null,
+    options: { quality?: ImageQuality } = { quality: IMAGE_QUALITY.XXS },
+  ) => {
+    if (!avatarReference) return null;
+    return await this.fileService.getFileUrl(avatarReference, options);
+  };
+
+  public async getAdminsToNotifyAboutNewUser(emailToExclude: string) {
+    return this.db
+      .select({
+        id: users.id,
+        email: users.email,
+        tenantId: users.tenantId,
+      })
+      .from(users)
+      .innerJoin(settings, eq(users.id, settings.userId))
+      .where(
+        and(
+          isNull(users.deletedAt),
+          buildUserHasPermissionCondition(
+            this.db,
+            users.id,
+            users.tenantId,
+            PERMISSIONS.TENANT_MANAGE,
+          ),
+          sql`${settings.settings}->>'adminNewUserNotification' = 'true'`,
+          not(eq(users.email, emailToExclude)),
+        ),
+      );
+  }
+
+  public async getStudentEmailsByIds(studentIds: UUIDType[]) {
+    return this.db
+      .select({
+        id: users.id,
+        email: users.email,
+      })
+      .from(users)
+      .where(
+        and(
+          buildUserHasPermissionCondition(
+            this.db,
+            users.id,
+            users.tenantId,
+            PERMISSIONS.LEARNING_PROGRESS_UPDATE,
+          ),
+          buildUserLacksAnyPermissionsCondition(this.db, users.id, users.tenantId, [
+            PERMISSIONS.COURSE_UPDATE,
+            PERMISSIONS.COURSE_UPDATE_OWN,
+          ]),
+          inArray(users.id, studentIds),
+          isNull(users.deletedAt),
+        ),
+      );
+  }
+
+  async bulkAssignUsersToGroup(data: BulkAssignUserGroups, actor?: CurrentUserType) {
+    if (!actor) throw new BadRequestException("common.toast.somethingWentWrong");
+
+    await this.groupService.changeUsersGroups(
+      data.map(({ userId, groups }) => ({ userId, groupIds: groups })),
+      {
+        actor,
+        source: BULK_ASSIGN_USERS_TO_GROUPS_SOURCES.BULK_EDIT,
+      },
+    );
+  }
+
+  public async getAdminsWithSettings() {
+    const adminsWithSettings = await this.db
+      .select({
+        user: users,
+        settings: settings,
+      })
+      .from(users)
+      .leftJoin(settings, eq(users.id, settings.userId))
+      .where(
+        and(
+          buildUserHasPermissionCondition(
+            this.db,
+            users.id,
+            users.tenantId,
+            PERMISSIONS.TENANT_MANAGE,
+          ),
+          isNull(users.deletedAt),
+        ),
+      );
+
+    return adminsWithSettings;
+  }
+
+  public async bulkArchiveUsers(userIds: UUIDType[]) {
+    const usersToArchive = await this.db
+      .select({ id: users.id })
+      .from(users)
+      .where(and(inArray(users.id, userIds), eq(users.archived, false), isNull(users.deletedAt)));
+
+    if (!usersToArchive.length) throw new NotFoundException("No users found to archive");
+
+    const usersToArchiveIds = usersToArchive.map(({ id }) => id);
+
+    const archivedUsers = await this.db
+      .update(users)
+      .set({ archived: true })
+      .where(inArray(users.id, usersToArchiveIds))
+      .returning();
+
+    await this.outboxPublisher.publish(new ArchiveUsersEvent(usersToArchiveIds));
+
+    return {
+      archivedUsersCount: archivedUsers.length,
+      usersAlreadyArchivedCount: userIds.length - usersToArchive.length,
+    };
+  }
+
+  private async buildUserActivitySnapshot(
+    userId: UUIDType,
+    dbInstance: DatabasePg = this.db,
+  ): Promise<UserActivityLogSnapshot | null> {
+    const [user] = await dbInstance
+      .select({
+        ...getTableColumns(users),
+      })
+      .from(users)
+      .where(and(eq(users.id, userId), isNull(users.deletedAt)));
+
+    if (!user) return null;
+
+    const userGroups = await this.getUserGroupsForSnapshot(userId, dbInstance);
+    const managedGroups = await this.getManagedGroupsForSnapshot(userId, dbInstance);
+
+    return {
+      ...user,
+      groups: userGroups,
+      managedGroups,
+    };
+  }
+
+  private async getUserGroupsForSnapshot(
+    userId: UUIDType,
+    dbInstance: DatabasePg = this.db,
+  ): Promise<LocalizedGroup[]> {
+    const userGroups = await dbInstance
+      .select({
+        id: groups.id,
+        name: this.localizationService.getLocalizedSqlField(groups.name, undefined, groups),
+      })
+      .from(groupUsers)
+      .innerJoin(groups, eq(groupUsers.groupId, groups.id))
+      .where(eq(groupUsers.userId, userId))
+      .orderBy(asc(this.localizationService.getLocalizedSqlField(groups.name, undefined, groups)));
+
+    return userGroups.map(({ id, name }) => ({ id, name: name ?? "" }));
+  }
+
+  private async getManagedGroupsForSnapshot(
+    userId: UUIDType,
+    dbInstance: DatabasePg = this.db,
+  ): Promise<LocalizedGroup[]> {
+    return dbInstance
+      .select({
+        id: groups.id,
+        name: this.localizationService.getLocalizedSqlField(groups.name, undefined, groups),
+      })
+      .from(groupManagerGroups)
+      .innerJoin(groups, eq(groupManagerGroups.groupId, groups.id))
+      .where(eq(groupManagerGroups.managerUserId, userId))
+      .orderBy(asc(this.localizationService.getLocalizedSqlField(groups.name, undefined, groups)))
+      .then((managedGroups) => managedGroups.map(({ id, name }) => ({ id, name: name ?? "" })));
+  }
+
+  private async getManagedGroupIds(
+    userId: UUIDType,
+    dbInstance: DatabasePg = this.db,
+  ): Promise<UUIDType[]> {
+    const assignments = await dbInstance
+      .select({ groupId: groupManagerGroups.groupId })
+      .from(groupManagerGroups)
+      .where(eq(groupManagerGroups.managerUserId, userId));
+
+    return assignments.map(({ groupId }) => groupId);
+  }
+
+  private haveSameIds(currentIds: UUIDType[], nextIds: UUIDType[]): boolean {
+    const current = new Set(currentIds);
+    const next = new Set(nextIds);
+    return current.size === next.size && [...current].every((id) => next.has(id));
+  }
+
+  private async replaceManagedGroupAssignments(
+    userId: UUIDType,
+    tenantId: UUIDType,
+    groupIds: UUIDType[],
+    dbInstance: DatabasePg = this.db,
+  ): Promise<void> {
+    const uniqueGroupIds = [...new Set(groupIds)];
+
+    if (uniqueGroupIds.length) {
+      const validGroups = await dbInstance
+        .select({ id: groups.id })
+        .from(groups)
+        .where(and(eq(groups.tenantId, tenantId), inArray(groups.id, uniqueGroupIds)));
+
+      if (validGroups.length !== uniqueGroupIds.length) {
+        throw new NotFoundException("common.toast.notFound");
+      }
+    }
+
+    await dbInstance.delete(groupManagerGroups).where(eq(groupManagerGroups.managerUserId, userId));
+
+    if (!uniqueGroupIds.length) return;
+
+    await dbInstance.insert(groupManagerGroups).values(
+      uniqueGroupIds.map((groupId) => ({
+        managerUserId: userId,
+        groupId,
+        tenantId,
+      })),
+    );
+  }
+
+  private getFiltersConditions(filters: UsersFilterSchema) {
+    const conditions = [];
+
+    if (filters.keyword) {
+      conditions.push(
+        or(
+          ilike(users.firstName, `%${filters.keyword.toLowerCase()}%`),
+          ilike(users.lastName, `%${filters.keyword.toLowerCase()}%`),
+          ilike(users.email, `%${filters.keyword.toLowerCase()}%`),
+        ),
+      );
+    }
+    if (filters.archived !== undefined) {
+      conditions.push(eq(users.archived, filters.archived));
+    }
+
+    if (filters.roleSlug) {
+      conditions.push(sql`
+        EXISTS (
+          SELECT 1
+          FROM permission_user_roles pur
+          INNER JOIN permission_roles pr
+            ON pr.id = pur.role_id
+           AND pr.tenant_id = pur.tenant_id
+          WHERE pur.user_id = ${users.id}
+            AND pr.slug = ${filters.roleSlug}
+        )
+      `);
+    }
+
+    if (filters.groups?.length) {
+      conditions.push(getGroupFilterConditions(filters.groups));
+    }
+
+    return conditions.length ? conditions : [sql`1=1`];
+  }
+
+  private getColumnToSortBy(sort: UserSortField) {
+    switch (sort) {
+      case UserSortFields.firstName:
+        return users.firstName;
+      case UserSortFields.lastName:
+        return users.lastName;
+      case UserSortFields.email:
+        return users.email;
+      case UserSortFields.createdAt:
+        return users.createdAt;
+      default:
+        return users.firstName;
+    }
+  }
+
+  public async getAdminsToNotifyAboutFinishedCourse(): Promise<
+    { email: string; id: string; tenantId: string }[]
+  > {
+    return this.db
+      .select({
+        id: users.id,
+        email: users.email,
+        tenantId: users.tenantId,
+      })
+      .from(users)
+      .innerJoin(settings, eq(users.id, settings.userId))
+      .where(
+        and(
+          buildUserHasPermissionCondition(
+            this.db,
+            users.id,
+            users.tenantId,
+            PERMISSIONS.TENANT_MANAGE,
+          ),
+          sql`${settings.settings}->>'adminFinishedCourseNotification' = 'true'`,
+          isNull(users.deletedAt),
+        ),
+      );
+  }
+
+  public async getAdminsToNotifyAboutOverdueCourse(): Promise<
+    AdminOverdueCourseNotificationRecipient[]
+  > {
+    const globalSettings = alias(settings, "global_settings");
+
+    return this.db
+      .select({
+        id: users.id,
+        email: users.email,
+        firstName: users.firstName,
+        lastName: users.lastName,
+        tenantId: users.tenantId,
+        tenantHost: tenants.host,
+        defaultEmailSettings: sql<
+          AdminOverdueCourseNotificationRecipient["defaultEmailSettings"]
+        >`json_build_object(
+          'language',
+          ${settings.settings}->>'language',
+          'primaryColor',
+          COALESCE(NULLIF(${globalSettings.settings}->>'primaryColor', ''), '#4796FD'),
+          'companyName',
+          COALESCE(NULLIF(${globalSettings.settings} #>> '{companyInformation,companyName}', ''), 'Mentingo.com')
+        )`,
+      })
+      .from(users)
+      .innerJoin(settings, eq(users.id, settings.userId))
+      .innerJoin(tenants, eq(users.tenantId, tenants.id))
+      .leftJoin(globalSettings, isNull(globalSettings.userId))
+      .where(
+        and(
+          buildUserHasPermissionCondition(
+            this.db,
+            users.id,
+            users.tenantId,
+            PERMISSIONS.COURSE_ENROLLMENT,
+          ),
+          sql`${settings.settings}->>'adminOverdueCourseNotification' = 'true'`,
+          isNull(users.deletedAt),
+        ),
+      );
+  }
+
+  async checkUsersInactivity() {
+    const shortInactivity = await this.statisticsService.getInactiveStudents(
+      USER_SHORT_INACTIVITY_DAYS,
+    );
+
+    const longInactivity =
+      await this.statisticsService.getInactiveStudents(USER_LONG_INACTIVITY_DAYS);
+
+    return { shortInactivity, longInactivity };
+  }
+
+  async getAllOnboardingStatus(userId: UUIDType) {
+    const [onboardingStatus] = await this.db
+      .select()
+      .from(userOnboarding)
+      .where(eq(userOnboarding.userId, userId))
+      .limit(1);
+
+    return onboardingStatus;
+  }
+
+  async markOnboardingPageAsCompleted(userId: UUIDType, page: OnboardingPages) {
+    const [existingOnboarding] = await this.db
+      .select()
+      .from(userOnboarding)
+      .where(eq(userOnboarding.userId, userId));
+
+    if (existingOnboarding) {
+      const [updatedOnboarding] = await this.db
+        .update(userOnboarding)
+        .set({ [page]: true })
+        .where(eq(userOnboarding.userId, userId))
+        .returning();
+
+      return updatedOnboarding;
+    }
+
+    const [newUserOnboarding] = await this.db
+      .insert(userOnboarding)
+      .values({ userId, [page]: true })
+      .returning();
+
+    if (!newUserOnboarding) {
+      throw new Error("Failed to mark onboarding as completed");
+    }
+
+    return newUserOnboarding;
+  }
+
+  async resetOnboardingForUser(userId: UUIDType) {
+    const onboardingPagesWithValues = Object.values(OnboardingPages).reduce(
+      (acc, page) => {
+        acc[page] = false;
+        return acc;
+      },
+      {} as Record<string, boolean>,
+    );
+
+    const [updatedOnboarding] = await this.db
+      .update(userOnboarding)
+      .set({
+        ...onboardingPagesWithValues,
+      })
+      .where(eq(userOnboarding.userId, userId))
+      .returning();
+
+    return updatedOnboarding;
+  }
+
+  async updateUsersRoles(data: BulkUpdateUsersRolesBody, currentUser: CurrentUserType) {
+    if (data.userIds.includes(currentUser.userId)) {
+      throw new BadRequestException("adminUsersView.toast.cannotUpdateOwnRole");
+    }
+
+    if (!data.userIds.length) {
+      throw new BadRequestException("adminUsersView.toast.noUserSelected");
+    }
+
+    const usersToUpdate = await this.db
+      .select({ id: users.id, tenantId: users.tenantId })
+      .from(users)
+      .where(and(inArray(users.id, data.userIds), isNull(users.deletedAt)));
+
+    if (usersToUpdate.length !== data.userIds.length) {
+      throw new BadRequestException("adminUsersView.toast.noUserSelected");
+    }
+
+    const usersWithChangedRoles = await Promise.all(
+      usersToUpdate.map(async (user) => {
+        const hasChanged = await this.haveRoleAssignmentsChanged(user.id, data.roleSlugs);
+        return hasChanged ? user.id : null;
+      }),
+    );
+
+    await this.db.transaction(async (trx) => {
+      const permissions = await this.getPermissionsForRoleSlugs(
+        data.roleSlugs,
+        usersToUpdate[0].tenantId,
+        trx,
+      );
+
+      const canReadManagedGroupResults = hasPermission(
+        permissions,
+        PERMISSIONS.MANAGED_GROUP_RESULTS_READ,
+      );
+
+      await Promise.all(
+        usersToUpdate.map(async (user) => {
+          await this.replaceUserRoleAssignments(user.id, user.tenantId, data.roleSlugs, trx);
+
+          if (!canReadManagedGroupResults) {
+            await this.replaceManagedGroupAssignments(user.id, user.tenantId, [], trx);
+          }
+        }),
+      );
+    });
+
+    const usersToRevoke = usersWithChangedRoles.filter((userId): userId is UUIDType =>
+      Boolean(userId),
+    );
+
+    if (usersToRevoke.length) await this.revokeSessionsAndNotifyUsers(usersToRevoke);
+  }
+
+  private async revokeSessionsAndNotifyUsers(userIds: UUIDType[]): Promise<void> {
+    await Promise.all(
+      userIds.map(async (userId) => {
+        await this.sessionRevocationService.revokeUserSessions(userId);
+        this.wsGateway.emitToUser(userId, SESSION_REVOCATION_SOCKET.EVENTS.PERMISSIONS_UPDATED, {
+          reason: SESSION_REVOCATION_SOCKET.REASONS.ROLES_CHANGED,
+          messageKey: SESSION_REVOCATION_SOCKET.MESSAGE_KEYS.PERMISSIONS_UPDATED,
+        });
+      }),
+    );
+  }
+
+  private async haveRoleAssignmentsChanged(userId: UUIDType, nextRoleSlugs: string[]) {
+    const { roleSlugs: currentRoleSlugs } = await this.getUserAccess(userId);
+
+    const uniqueCurrentRoleSlugs = new Set(currentRoleSlugs);
+    const uniqueNextRoleSlugs = new Set(nextRoleSlugs);
+
+    if (uniqueCurrentRoleSlugs.size !== uniqueNextRoleSlugs.size) return true;
+
+    for (const roleSlug of uniqueCurrentRoleSlugs) {
+      if (!uniqueNextRoleSlugs.has(roleSlug)) return true;
+    }
+
+    return false;
+  }
+
+  private async replaceUserRoleAssignments(
+    userId: UUIDType,
+    tenantId: UUIDType,
+    roleSlugs: string[],
+    dbInstance: DatabasePg = this.db,
+  ): Promise<void> {
+    await this.ensureSystemRolesForTenant(tenantId, dbInstance);
+
+    const uniqueRoleSlugs = Array.from(new Set(roleSlugs));
+
+    if (!uniqueRoleSlugs.length) {
+      throw new BadRequestException("adminUsersView.toast.userMustHaveAtLeastOneRole");
+    }
+
+    await this.assertTrainerRoleAvailable(tenantId, uniqueRoleSlugs);
+
+    const roles = await dbInstance
+      .select({ id: permissionRoles.id, slug: permissionRoles.slug })
+      .from(permissionRoles)
+      .where(
+        and(eq(permissionRoles.tenantId, tenantId), inArray(permissionRoles.slug, uniqueRoleSlugs)),
+      );
+
+    if (roles.length !== uniqueRoleSlugs.length) {
+      throw new BadRequestException("adminUsersView.toast.invalidRole");
+    }
+
+    await dbInstance.delete(permissionUserRoles).where(eq(permissionUserRoles.userId, userId));
+
+    await dbInstance.insert(permissionUserRoles).values(
+      roles.map((role) => ({
+        userId,
+        roleId: role.id,
+        tenantId,
+      })),
+    );
+  }
+
+  private async insertUserRoleAssignmentsForNewUser(
+    assignments: Array<{
+      userId: UUIDType;
+      tenantId: UUIDType;
+      roleSlugs: string[];
+    }>,
+    dbInstance: DatabasePg = this.db,
+  ): Promise<void> {
+    if (!assignments.length) return;
+
+    const [{ userId, tenantId, roleSlugs }] = assignments;
+
+    await this.ensureSystemRolesForTenant(tenantId, dbInstance);
+
+    const uniqueRoleSlugs = [...new Set(roleSlugs)];
+
+    if (!uniqueRoleSlugs.length) {
+      throw new BadRequestException("adminUsersView.toast.userMustHaveAtLeastOneRole");
+    }
+
+    await this.assertTrainerRoleAvailable(tenantId, uniqueRoleSlugs);
+
+    const roles = await dbInstance
+      .select({
+        id: permissionRoles.id,
+        slug: permissionRoles.slug,
+      })
+      .from(permissionRoles)
+      .where(
+        and(eq(permissionRoles.tenantId, tenantId), inArray(permissionRoles.slug, uniqueRoleSlugs)),
+      );
+
+    if (roles.length !== uniqueRoleSlugs.length) {
+      throw new BadRequestException("adminUsersView.toast.invalidRole");
+    }
+
+    await dbInstance.insert(permissionUserRoles).values(
+      roles.map((role) => ({
+        userId,
+        roleId: role.id,
+        tenantId,
+      })),
+    );
+  }
+
+  public async assertTrainerRoleAvailable(tenantId: UUIDType, roleSlugs: string[]): Promise<void> {
+    if (!roleSlugs.includes(SYSTEM_ROLE_SLUGS.TRAINER)) return;
+
+    const isLiveTrainingEnabled =
+      await this.settingsService.isLiveTrainingEnabledForTenant(tenantId);
+
+    if (isLiveTrainingEnabled) return;
+
+    throw new BadRequestException("adminUsersView.toast.trainerRoleRequiresLiveTraining");
+  }
+
+  public async ensureSystemRolesForTenant(
+    tenantId: UUIDType,
+    dbInstance: DatabasePg = this.db,
+  ): Promise<void> {
+    for (const roleSlug of Object.values(SYSTEM_ROLE_SLUGS)) {
+      const ruleSetSlug = SYSTEM_RULE_SET_SLUGS[roleSlug];
+      const permissions = SYSTEM_ROLE_PERMISSIONS[roleSlug];
+
+      const [role] = await dbInstance
+        .insert(permissionRoles)
+        .values({
+          tenantId,
+          name: this.SYSTEM_ROLE_DISPLAY_NAME[roleSlug],
+          slug: roleSlug,
+          isSystem: true,
+        })
+        .onConflictDoUpdate({
+          target: [permissionRoles.tenantId, permissionRoles.slug],
+          set: {
+            name: this.SYSTEM_ROLE_DISPLAY_NAME[roleSlug],
+            isSystem: true,
+            updatedAt: sql`NOW()`,
+          },
+        })
+        .returning({ id: permissionRoles.id });
+
+      const [ruleSet] = await dbInstance
+        .insert(permissionRuleSets)
+        .values({
+          tenantId,
+          name: `${this.SYSTEM_ROLE_DISPLAY_NAME[roleSlug]} Default`,
+          slug: ruleSetSlug,
+          isSystem: true,
+        })
+        .onConflictDoUpdate({
+          target: [permissionRuleSets.tenantId, permissionRuleSets.slug],
+          set: {
+            name: `${this.SYSTEM_ROLE_DISPLAY_NAME[roleSlug]} Default`,
+            isSystem: true,
+            updatedAt: sql`NOW()`,
+          },
+        })
+        .returning({ id: permissionRuleSets.id });
+
+      await dbInstance
+        .insert(permissionRoleRuleSets)
+        .values({
+          tenantId,
+          roleId: role.id,
+          ruleSetId: ruleSet.id,
+        })
+        .onConflictDoNothing({
+          target: [permissionRoleRuleSets.roleId, permissionRoleRuleSets.ruleSetId],
+        });
+
+      await dbInstance
+        .delete(permissionRuleSetPermissions)
+        .where(
+          and(
+            eq(permissionRuleSetPermissions.ruleSetId, ruleSet.id),
+            eq(permissionRuleSetPermissions.tenantId, tenantId),
+          ),
+        );
+
+      if (permissions.length) {
+        await dbInstance
+          .insert(permissionRuleSetPermissions)
+          .values(
+            permissions.map((permission) => ({
+              tenantId,
+              ruleSetId: ruleSet.id,
+              permission,
+            })),
+          )
+          .onConflictDoNothing({
+            target: [
+              permissionRuleSetPermissions.ruleSetId,
+              permissionRuleSetPermissions.permission,
+            ],
+          });
+      }
+    }
+  }
+
+  public async getPermissionsForRoleSlugs(
+    roleSlugs: string[],
+    tenantId: UUIDType,
+    dbInstance: DatabasePg = this.db,
+  ): Promise<PermissionKey[]> {
+    const uniqueRoleSlugs = Array.from(new Set(roleSlugs));
+
+    if (!uniqueRoleSlugs.length) {
+      return [];
+    }
+
+    const rolePermissions = await dbInstance
+      .selectDistinct({ permission: permissionRuleSetPermissions.permission })
+      .from(permissionRoles)
+      .innerJoin(
+        permissionRoleRuleSets,
+        and(
+          eq(permissionRoleRuleSets.roleId, permissionRoles.id),
+          eq(permissionRoleRuleSets.tenantId, permissionRoles.tenantId),
+        ),
+      )
+      .innerJoin(
+        permissionRuleSetPermissions,
+        and(
+          eq(permissionRuleSetPermissions.ruleSetId, permissionRoleRuleSets.ruleSetId),
+          eq(permissionRuleSetPermissions.tenantId, permissionRoleRuleSets.tenantId),
+        ),
+      )
+      .where(
+        and(eq(permissionRoles.tenantId, tenantId), inArray(permissionRoles.slug, uniqueRoleSlugs)),
+      );
+
+    return rolePermissions.map(({ permission }) => permission);
+  }
+
+  private async getUserAccess(userId: UUIDType, dbInstance: DatabasePg = this.db) {
+    const roleRows = await dbInstance
+      .select({
+        roleSlug: permissionRoles.slug,
+      })
+      .from(permissionUserRoles)
+      .innerJoin(
+        permissionRoles,
+        and(
+          eq(permissionRoles.id, permissionUserRoles.roleId),
+          eq(permissionRoles.tenantId, permissionUserRoles.tenantId),
+        ),
+      )
+      .where(eq(permissionUserRoles.userId, userId));
+
+    const permissionRows = await dbInstance
+      .select({
+        permission: permissionRuleSetPermissions.permission,
+      })
+      .from(permissionUserRoles)
+      .innerJoin(
+        permissionRoles,
+        and(
+          eq(permissionRoles.id, permissionUserRoles.roleId),
+          eq(permissionRoles.tenantId, permissionUserRoles.tenantId),
+        ),
+      )
+      .innerJoin(
+        permissionRoleRuleSets,
+        and(
+          eq(permissionRoleRuleSets.roleId, permissionRoles.id),
+          eq(permissionRoleRuleSets.tenantId, permissionRoles.tenantId),
+        ),
+      )
+      .innerJoin(
+        permissionRuleSetPermissions,
+        and(
+          eq(permissionRuleSetPermissions.ruleSetId, permissionRoleRuleSets.ruleSetId),
+          eq(permissionRuleSetPermissions.tenantId, permissionRoleRuleSets.tenantId),
+        ),
+      )
+      .where(eq(permissionUserRoles.userId, userId));
+
+    const roleSlugs = this.sortRoleSlugs(Array.from(new Set(roleRows.map((row) => row.roleSlug))));
+    const permissions = Array.from(
+      new Set(permissionRows.map((row) => row.permission as PermissionKey)),
+    );
+
+    return { roleSlugs, permissions };
+  }
+
+  private sortRoleSlugs(roleSlugs: string[]): string[] {
+    return [...roleSlugs].sort((left, right) => {
+      const leftPriority = this.SYSTEM_ROLE_PRIORITY[left] ?? Number.MAX_SAFE_INTEGER;
+      const rightPriority = this.SYSTEM_ROLE_PRIORITY[right] ?? Number.MAX_SAFE_INTEGER;
+
+      if (leftPriority !== rightPriority) return leftPriority - rightPriority;
+
+      return left.localeCompare(right);
+    });
+  }
+
+  private async deflateStatisticsForCourseDeletedUser(userId: UUIDType, trx: DatabasePg = this.db) {
+    const courseStatistics = await trx
+      .select({
+        courseId: studentCourses.courseId,
+        courseCompleted: sql<boolean>`CASE WHEN ${studentCourses.completedAt} IS NOT NULL THEN TRUE ELSE FALSE END`,
+        isPaid: sql<boolean>`CASE WHEN ${studentCourses.paymentId} IS NOT NULL THEN TRUE ELSE FALSE END`,
+      })
+      .from(studentCourses)
+      .where(eq(studentCourses.studentId, userId));
+
+    await Promise.all(
+      courseStatistics.map((courseStatistic) =>
+        trx
+          .update(coursesSummaryStats)
+          .set({
+            completedCourseStudentCount: sql`CASE WHEN ${courseStatistic.courseCompleted} THEN ${coursesSummaryStats.completedCourseStudentCount} - 1 ELSE ${coursesSummaryStats.completedCourseStudentCount} END`,
+            freePurchasedCount: sql`CASE WHEN ${courseStatistic.isPaid} THEN ${coursesSummaryStats.freePurchasedCount} ELSE ${coursesSummaryStats.freePurchasedCount} - 1 END`,
+            paidPurchasedCount: sql`CASE WHEN ${courseStatistic.isPaid} THEN ${coursesSummaryStats.paidPurchasedCount} - 1 ELSE ${coursesSummaryStats.paidPurchasedCount} END`,
+          })
+          .where(eq(coursesSummaryStats.courseId, courseStatistic.courseId)),
+      ),
+    );
+  }
+
+  private async getExistingUser(userId: UUIDType) {
+    const [existingUser] = await this.db
+      .select()
+      .from(users)
+      .where(and(eq(users.id, userId), isNull(users.deletedAt)));
+
+    return existingUser;
+  }
+}

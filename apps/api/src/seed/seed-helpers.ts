@@ -1,0 +1,701 @@
+import { faker } from "@faker-js/faker";
+import { ConfigService } from "@nestjs/config";
+import {
+  AI_MENTOR_ROLEPLAY_DIFFICULTY,
+  AI_MENTOR_TYPE,
+  ASSESSMENT_ATTEMPT_LIMIT_MODES,
+  ASSESSMENT_FEEDBACK_MODES,
+  ASSESSMENT_GRADING_MODES,
+  ASSESSMENT_QUESTION_TYPES,
+  ASSESSMENT_TEXT_COMPARISON_MODES,
+  ENTITY_TYPES,
+  RESOURCE_VISIBILITY,
+  SYSTEM_ROLE_PERMISSIONS,
+  SYSTEM_ROLE_SLUGS,
+  SYSTEM_RULE_SET_SLUGS,
+  SUPPORTED_LANGUAGES,
+  type SystemRoleSlug,
+  type SupportedLanguages,
+} from "@repo/shared";
+import { and, eq, sql } from "drizzle-orm/sql";
+
+import { buildJsonbField } from "src/common/helpers/sqlHelpers";
+import { EnvRepository } from "src/env/repositories/env.repository";
+import { EnvService } from "src/env/services/env.service";
+import { EXTENSION_TO_MIME_TYPE_MAP, RESOURCE_RELATIONSHIP_TYPES } from "src/file/file.constants";
+import { SearchIndexRepository } from "src/global-search/search-index.repository";
+import { SearchIndexService } from "src/global-search/search-index.service";
+import { LESSON_TYPES } from "src/lesson/lesson.type";
+import { BLANK_ANSWER_MARKER_REGEX } from "src/questions/fill-in-the-blanks.utils";
+import { QUESTION_TYPE } from "src/questions/schema/question.types";
+import {
+  aiJudgeBlockingErrors,
+  aiJudgeConfigurations,
+  aiJudgeCriteria,
+  aiJudgeScoreGuidance,
+  aiMentorConfigurations,
+  aiMentorLessons,
+  aiMentorRoleplayConfigurations,
+  articles,
+  categories,
+  chapters,
+  courses,
+  learningPaths,
+  lessons,
+  news,
+  permissionRoleRuleSets,
+  permissionRoles,
+  permissionRuleSetPermissions,
+  permissionRuleSets,
+  permissionUserRoles,
+  questionsAndAnswers,
+  assessments,
+  assessmentQuestions,
+  assessmentQuestionChoiceOptions,
+  assessmentQuestionTrueFalseStatements,
+  assessmentQuestionScaleOptions,
+  assessmentQuestionBlanks,
+  assessmentQuestionBlankAnswerSets,
+  assessmentQuestionDragAndDropOptions,
+  tenants,
+  resources,
+  resourceEntity,
+} from "src/storage/schema";
+import { StripeService } from "src/stripe/stripe.service";
+
+import type { DatabasePg, UUIDType } from "../common";
+import type { NiceCourseData } from "../utils/types/test-types";
+
+type SeedQuestionData = NonNullable<
+  NonNullable<NiceCourseData["chapters"][number]["lessons"][number]["questions"]>[number]
+>;
+
+const isFillInTheBlanksQuestion = (questionType: SeedQuestionData["type"]) =>
+  questionType === QUESTION_TYPE.FILL_IN_THE_BLANKS_DND ||
+  questionType === QUESTION_TYPE.FILL_IN_THE_BLANKS_TEXT;
+
+const replaceSeedBlankMarkers = (description: string | undefined, answerIds: UUIDType[]) => {
+  if (!description) return description;
+
+  return description.replace(BLANK_ANSWER_MARKER_REGEX, (marker, markerAnswerId: string) => {
+    if (!/^\d+$/.test(markerAnswerId)) return marker;
+
+    const answerId = answerIds[Number(markerAnswerId) - 1];
+    return answerId ? `<blank-answer-${answerId}>` : marker;
+  });
+};
+
+const normalizeOptionalString = (value: string | null | undefined) => value ?? undefined;
+
+const createSeedAssessmentQuestion = async (
+  db: DatabasePg,
+  assessmentId: UUIDType,
+  questionData: SeedQuestionData,
+  displayOrder: number,
+  createdAt: string,
+  tenantId: UUIDType,
+  language: SupportedLanguages = SUPPORTED_LANGUAGES.EN,
+) => {
+  const questionId = crypto.randomUUID();
+  const options = questionData.options ?? [];
+  const optionIds = options.map(() => crypto.randomUUID());
+  const correctOptionIds = options.flatMap((option, index) =>
+    option.isCorrect ? [optionIds[index]] : [],
+  );
+  const description = isFillInTheBlanksQuestion(questionData.type)
+    ? replaceSeedBlankMarkers(normalizeOptionalString(questionData.description), correctOptionIds)
+    : questionData.description;
+  const questionType =
+    questionData.type as (typeof ASSESSMENT_QUESTION_TYPES)[keyof typeof ASSESSMENT_QUESTION_TYPES];
+  const isManual =
+    questionData.type === QUESTION_TYPE.BRIEF_RESPONSE ||
+    questionData.type === QUESTION_TYPE.DETAILED_RESPONSE;
+
+  await db.insert(assessmentQuestions).values({
+    id: questionId,
+    assessmentId,
+    questionType,
+    displayOrder,
+    maximumPoints: "1",
+    gradingMode: isManual ? ASSESSMENT_GRADING_MODES.MANUAL : ASSESSMENT_GRADING_MODES.AUTOMATIC,
+    prompt: buildJsonbField(language, description ?? questionData.title),
+    title: buildJsonbField(language, questionData.title),
+    description: questionData.description
+      ? buildJsonbField(language, questionData.description)
+      : null,
+    createdAt,
+    updatedAt: createdAt,
+    tenantId,
+  });
+
+  if (questionData.photoS3Key) {
+    const extension = questionData.photoS3Key.split(".").pop()?.toLowerCase() ?? "jpg";
+    const [resource] = await db
+      .insert(resources)
+      .values({
+        reference: questionData.photoS3Key,
+        contentType: EXTENSION_TO_MIME_TYPE_MAP[extension] ?? "image/jpeg",
+        metadata: {},
+        visibility: RESOURCE_VISIBILITY.PUBLIC,
+        uploadedBy: null,
+        archived: false,
+        createdAt,
+        updatedAt: createdAt,
+        tenantId,
+      })
+      .returning({ id: resources.id });
+
+    await db.insert(resourceEntity).values({
+      resourceId: resource.id,
+      entityId: questionId,
+      entityType: ENTITY_TYPES.ASSESSMENT_QUESTION,
+      relationshipType: RESOURCE_RELATIONSHIP_TYPES.PROMPT_IMAGE,
+      createdAt,
+      updatedAt: createdAt,
+      tenantId,
+    });
+  }
+
+  if (questionType === ASSESSMENT_QUESTION_TYPES.TRUE_OR_FALSE) {
+    await db.insert(assessmentQuestionTrueFalseStatements).values(
+      options.map((option, index) => ({
+        id: optionIds[index],
+        questionId,
+        language: language,
+        displayOrder: index + 1,
+        correctValue: option.isCorrect ?? false,
+        statement: option.optionText,
+        createdAt,
+        updatedAt: createdAt,
+        tenantId,
+      })),
+    );
+  } else if (questionType === ASSESSMENT_QUESTION_TYPES.SCALE_1_5) {
+    await db.insert(assessmentQuestionScaleOptions).values(
+      options.map((option, index) => ({
+        id: optionIds[index],
+        questionId,
+        displayOrder: index + 1,
+        scaleValue: option.scaleAnswer ?? index + 1,
+        label: buildJsonbField(language, option.optionText),
+        createdAt,
+        updatedAt: createdAt,
+        tenantId,
+      })),
+    );
+  } else if (isFillInTheBlanksQuestion(questionData.type)) {
+    await db.insert(assessmentQuestionBlanks).values(
+      correctOptionIds.map((blankId) => ({
+        id: blankId,
+        questionId,
+        textComparisonMode: ASSESSMENT_TEXT_COMPARISON_MODES.EXACT,
+        createdAt,
+        updatedAt: createdAt,
+        tenantId,
+      })),
+    );
+    await db.insert(assessmentQuestionBlankAnswerSets).values(
+      correctOptionIds.map((blankId) => {
+        const answer = options.find((option, optionIndex) => optionIds[optionIndex] === blankId)!;
+        return {
+          blankId,
+          language: language,
+          preferredAnswer: answer.matchedWord || answer.optionText,
+          acceptedAnswers: [answer.matchedWord || answer.optionText],
+          createdAt,
+          updatedAt: createdAt,
+          tenantId,
+        };
+      }),
+    );
+    if (questionType === ASSESSMENT_QUESTION_TYPES.FILL_IN_THE_BLANKS_DND)
+      await db.insert(assessmentQuestionDragAndDropOptions).values(
+        options.map((option, index) => ({
+          id: optionIds[index],
+          questionId,
+          language: language,
+          label: option.optionText,
+          targetBlankId: option.isCorrect ? optionIds[index] : null,
+          displayOrder: index + 1,
+          createdAt,
+          updatedAt: createdAt,
+          tenantId,
+        })),
+      );
+  } else if (options.length) {
+    await db.insert(assessmentQuestionChoiceOptions).values(
+      options.map((option, index) => ({
+        id: optionIds[index],
+        questionId,
+        language: language,
+        displayOrder: index + 1,
+        isCorrect: option.isCorrect ?? false,
+        label: option.optionText,
+        createdAt,
+        updatedAt: createdAt,
+        tenantId,
+      })),
+    );
+  }
+};
+
+export async function createNiceCourses(
+  creatorUserIds: UUIDType[],
+  db: DatabasePg,
+  data: NiceCourseData[],
+  tenantId: UUIDType,
+) {
+  const createdCourses = [];
+
+  for (let i = 0; i < data.length; i++) {
+    const courseData = data[i];
+    const courseLanguage = courseData.language ?? SUPPORTED_LANGUAGES.EN;
+    const creatorIndex = i % creatorUserIds.length;
+    const creatorUserId = creatorUserIds[creatorIndex];
+
+    const [existingCategory] = await db
+      .select()
+      .from(categories)
+      .where(
+        and(
+          sql`${categories.title}->>${categories.baseLanguage} = ${courseData.category}`,
+          eq(categories.tenantId, tenantId),
+        ),
+      );
+
+    const [category] = existingCategory
+      ? [existingCategory]
+      : await db
+          .insert(categories)
+          .values({
+            title: buildJsonbField(courseLanguage, courseData.category),
+            baseLanguage: courseLanguage,
+            availableLocales: [courseLanguage],
+            tenantId,
+          })
+          .returning();
+
+    const createdAt = faker.date.past({ years: 1, refDate: new Date() }).toISOString();
+
+    // --- create stripe product and price ---
+    let stripeProductId = null;
+    let stripePriceId = null;
+
+    const envService = new EnvService(new EnvRepository(db), new ConfigService());
+
+    const { enabled: isStripeConfigured } = await envService.getStripeConfigured();
+
+    if (isStripeConfigured) {
+      const stripeService = new StripeService(envService, db);
+
+      const existingStripeProduct = await stripeService.searchProducts({
+        query: `name:\'${courseData.title}\'`,
+      });
+
+      // if product exists, search for price
+      if (existingStripeProduct.data.length > 0) {
+        const price = await stripeService.searchPrices({
+          query: `product:\'${existingStripeProduct.data?.[0].id}\' AND active:\'true\'`,
+        });
+
+        stripeProductId = existingStripeProduct.data?.[0]?.id;
+        stripePriceId = price.data?.[0]?.id;
+      } else {
+        // create product and price
+        const { productId, priceId } = await stripeService.createProduct({
+          name: courseData.title,
+          description: courseData.description,
+          amountInCents: courseData.priceInCents ? courseData.priceInCents : 0,
+          currency: courseData.currency ? courseData.currency : "usd",
+        });
+
+        stripeProductId = productId;
+        stripePriceId = priceId;
+      }
+    }
+
+    const [course] = await db
+      .insert(courses)
+      .values({
+        id: crypto.randomUUID(),
+        title: buildJsonbField(courseLanguage, courseData.title),
+        description: buildJsonbField(courseLanguage, courseData.description),
+        baseLanguage: courseLanguage,
+        availableLocales: [courseLanguage],
+        thumbnailS3Key: courseData.thumbnailS3Key,
+        status: courseData.status,
+        priceInCents: courseData.priceInCents,
+        chapterCount: courseData.chapters.length,
+        hasCertificate: courseData.hasCertificate,
+        authorId: creatorUserId,
+        categoryId: category.id,
+        createdAt: createdAt,
+        updatedAt: createdAt,
+        stripeProductId,
+        stripePriceId,
+        tenantId,
+      })
+      .returning();
+
+    for (const [index, chapterData] of courseData.chapters.entries()) {
+      const [chapter] = await db
+        .insert(chapters)
+        .values({
+          id: crypto.randomUUID(),
+          title: buildJsonbField(courseLanguage, chapterData.title),
+          authorId: creatorUserId,
+          courseId: course.id,
+          isFreemium: chapterData.isFreemium,
+          createdAt: createdAt,
+          updatedAt: createdAt,
+          displayOrder: index + 1,
+          lessonCount: chapterData.lessons.length,
+          tenantId,
+        })
+        .returning();
+
+      for (const [index, lessonData] of chapterData.lessons.entries()) {
+        const [lesson] = await db
+          .insert(lessons)
+          .values({
+            id: crypto.randomUUID(),
+            title: buildJsonbField(courseLanguage, lessonData.title),
+            description: buildJsonbField(courseLanguage, lessonData.description ?? ""),
+            type: lessonData.type,
+            displayOrder: index + 1,
+            fileS3Key: null,
+            fileType: null,
+            thresholdScore: lessonData.type === LESSON_TYPES.QUIZ ? 0 : null,
+            chapterId: chapter.id,
+            createdAt: createdAt,
+            updatedAt: createdAt,
+            tenantId,
+          })
+          .returning();
+        if (
+          lessonData.type === LESSON_TYPES.AI_MENTOR &&
+          lessonData.additionalInstructions &&
+          lessonData.aiJudgeConfiguration
+        ) {
+          const [aiMentorLesson] = await db
+            .insert(aiMentorLessons)
+            .values({
+              lessonId: lesson.id,
+              tenantId,
+            })
+            .returning();
+
+          const [aiMentorConfiguration] = await db
+            .insert(aiMentorConfigurations)
+            .values({
+              aiMentorLessonId: aiMentorLesson.id,
+              type: AI_MENTOR_TYPE.ROLEPLAY,
+              additionalInstructions: buildJsonbField(
+                courseLanguage,
+                lessonData.additionalInstructions,
+              ),
+              tenantId,
+            })
+            .returning();
+
+          await db.insert(aiMentorRoleplayConfigurations).values({
+            configurationId: aiMentorConfiguration.id,
+            difficulty: AI_MENTOR_ROLEPLAY_DIFFICULTY.REALISTIC,
+            tenantId,
+          });
+
+          const [configuration] = await db
+            .insert(aiJudgeConfigurations)
+            .values({
+              aiMentorLessonId: aiMentorLesson.id,
+              taskGoal: buildJsonbField(courseLanguage, lessonData.aiJudgeConfiguration.taskGoal),
+              passingThresholdPercent: lessonData.aiJudgeConfiguration.passingThresholdPercent,
+              tenantId,
+            })
+            .returning();
+
+          for (const criterionData of lessonData.aiJudgeConfiguration.criteria) {
+            const [criterion] = await db
+              .insert(aiJudgeCriteria)
+              .values({
+                configurationId: configuration.id,
+                title: buildJsonbField(courseLanguage, criterionData.title),
+                expectedBehavior: buildJsonbField(courseLanguage, criterionData.expectedBehavior),
+                maxScore: criterionData.maxScore,
+                tenantId,
+              })
+              .returning();
+
+            await db.insert(aiJudgeScoreGuidance).values(
+              criterionData.scoreGuidance.map((guidance) => ({
+                criterionId: criterion.id,
+                score: guidance.score,
+                description: buildJsonbField(courseLanguage, guidance.description),
+                example: guidance.example
+                  ? buildJsonbField(courseLanguage, guidance.example)
+                  : undefined,
+                tenantId,
+              })),
+            );
+          }
+
+          if (lessonData.aiJudgeConfiguration.blockingErrors.length)
+            await db.insert(aiJudgeBlockingErrors).values(
+              lessonData.aiJudgeConfiguration.blockingErrors.map((blockingError) => ({
+                configurationId: configuration.id,
+                description: buildJsonbField(courseLanguage, blockingError.description),
+                tenantId,
+              })),
+            );
+        }
+        if (lessonData.type === LESSON_TYPES.QUIZ && lessonData.questions) {
+          const [assessment] = await db
+            .insert(assessments)
+            .values({
+              lessonId: lesson.id,
+              passingScorePercentage: "0",
+              attemptLimitMode: ASSESSMENT_ATTEMPT_LIMIT_MODES.NONE,
+              maximumAttempts: null,
+              attemptCooldown: null,
+              feedbackMode: ASSESSMENT_FEEDBACK_MODES.FULL,
+              baseLanguage: courseLanguage,
+              availableLocales: [courseLanguage],
+              createdAt,
+              updatedAt: createdAt,
+              tenantId,
+            })
+            .returning({ id: assessments.id });
+          for (const [index, questionData] of lessonData.questions.entries()) {
+            await createSeedAssessmentQuestion(
+              db,
+              assessment.id,
+              questionData,
+              index + 1,
+              createdAt,
+              tenantId,
+              courseLanguage,
+            );
+          }
+        }
+      }
+    }
+    createdCourses.push(course);
+  }
+
+  return createdCourses;
+}
+
+export async function seedTruncateAllTables(db: DatabasePg): Promise<void> {
+  await db.transaction(async (tx) => {
+    const result = await tx.execute(sql`
+        SELECT tablename FROM pg_tables WHERE schemaname = 'public'
+      `);
+
+    const tables = (result as unknown as Record<string, unknown>[]).map(
+      (row) => row.tablename as string,
+    );
+
+    await tx.execute(sql`SET CONSTRAINTS ALL DEFERRED`);
+
+    for (const table of tables) {
+      console.log(`Truncating table ${table}`);
+      await tx.execute(sql`TRUNCATE TABLE ${sql.identifier(table)} CASCADE`);
+    }
+
+    await tx.execute(sql`SET CONSTRAINTS ALL IMMEDIATE`);
+  });
+}
+
+export async function refreshSeedSearchDocuments(db: DatabasePg, tenantId: UUIDType) {
+  await db.transaction(async (trx) => {
+    await trx.execute(sql`SELECT set_config('app.tenant_id', ${tenantId}, true)`);
+
+    const searchIndexService = new SearchIndexService(new SearchIndexRepository(trx));
+
+    const [courseRows, lessonRows, learningPathRows, newsRows, articleRows, questionAnswerRows] =
+      await Promise.all([
+        trx.select({ id: courses.id }).from(courses).where(eq(courses.tenantId, tenantId)),
+        trx.select({ id: lessons.id }).from(lessons).where(eq(lessons.tenantId, tenantId)),
+        trx
+          .select({ id: learningPaths.id })
+          .from(learningPaths)
+          .where(eq(learningPaths.tenantId, tenantId)),
+        trx.select({ id: news.id }).from(news).where(eq(news.tenantId, tenantId)),
+        trx.select({ id: articles.id }).from(articles).where(eq(articles.tenantId, tenantId)),
+        trx
+          .select({ id: questionsAndAnswers.id })
+          .from(questionsAndAnswers)
+          .where(eq(questionsAndAnswers.tenantId, tenantId)),
+      ]);
+
+    await Promise.all([
+      ...courseRows.map((course) => searchIndexService.refreshCourse(course.id, trx)),
+      searchIndexService.refreshLessons(
+        lessonRows.map((lesson) => lesson.id),
+        trx,
+      ),
+      ...learningPathRows.map((learningPath) =>
+        searchIndexService.refreshLearningPath(learningPath.id, trx),
+      ),
+      ...newsRows.map((newsRow) => searchIndexService.refreshNews(newsRow.id, trx)),
+      ...articleRows.map((article) => searchIndexService.refreshArticle(article.id, trx)),
+      ...questionAnswerRows.map((questionAnswer) =>
+        searchIndexService.refreshQA(questionAnswer.id, trx),
+      ),
+    ]);
+
+    console.log(
+      `🔎 Refreshed search documents for tenant ${tenantId}: ${courseRows.length} courses, ${lessonRows.length} lessons, ${learningPathRows.length} learning paths, ${newsRows.length} news, ${articleRows.length} articles, ${questionAnswerRows.length} Q&A entries`,
+    );
+  });
+}
+
+export async function ensureSeedTenant(
+  db: DatabasePg,
+  options?: { name?: string; host?: string; isManaging?: boolean },
+) {
+  const host = options?.host ?? "seed.local";
+  const name = options?.name ?? "Seed Tenant";
+  const isManaging = options?.isManaging ?? false;
+
+  const [existing] = await db.select().from(tenants).where(eq(tenants.host, host));
+  if (existing) return existing;
+
+  const [createdTenant] = await db
+    .insert(tenants)
+    .values({
+      name,
+      host,
+      isManaging,
+    })
+    .returning();
+
+  return createdTenant;
+}
+
+export { addEmailSuffix, getTenantEmailSuffix } from "@repo/shared";
+
+const SYSTEM_ROLE_DISPLAY_NAME: Record<SystemRoleSlug, string> = {
+  [SYSTEM_ROLE_SLUGS.ADMIN]: "Admin",
+  [SYSTEM_ROLE_SLUGS.CONTENT_CREATOR]: "Content Creator",
+  [SYSTEM_ROLE_SLUGS.TRAINER]: "Trainer",
+  [SYSTEM_ROLE_SLUGS.GROUP_MANAGER]: "Group Manager",
+  [SYSTEM_ROLE_SLUGS.STUDENT]: "Student",
+};
+
+export async function seedSystemRolesForTenant(db: DatabasePg, tenantId: UUIDType) {
+  for (const roleSlug of Object.values(SYSTEM_ROLE_SLUGS)) {
+    const ruleSetSlug = SYSTEM_RULE_SET_SLUGS[roleSlug];
+    const permissions = SYSTEM_ROLE_PERMISSIONS[roleSlug];
+
+    const [role] = await db
+      .insert(permissionRoles)
+      .values({
+        tenantId,
+        name: SYSTEM_ROLE_DISPLAY_NAME[roleSlug],
+        slug: roleSlug,
+        isSystem: true,
+      })
+      .onConflictDoNothing({
+        target: [permissionRoles.tenantId, permissionRoles.slug],
+      })
+      .returning({ id: permissionRoles.id });
+    const roleId = role?.id ?? (await findPermissionRoleId(db, tenantId, roleSlug));
+
+    const [ruleSet] = await db
+      .insert(permissionRuleSets)
+      .values({
+        tenantId,
+        name: SYSTEM_ROLE_DISPLAY_NAME[roleSlug],
+        slug: ruleSetSlug,
+        isSystem: true,
+      })
+      .onConflictDoNothing({
+        target: [permissionRuleSets.tenantId, permissionRuleSets.slug],
+      })
+      .returning({ id: permissionRuleSets.id });
+    const ruleSetId = ruleSet?.id ?? (await findPermissionRuleSetId(db, tenantId, ruleSetSlug));
+
+    await db
+      .insert(permissionRoleRuleSets)
+      .values({
+        tenantId,
+        roleId,
+        ruleSetId,
+      })
+      .onConflictDoNothing({
+        target: [permissionRoleRuleSets.roleId, permissionRoleRuleSets.ruleSetId],
+      });
+
+    await db
+      .delete(permissionRuleSetPermissions)
+      .where(eq(permissionRuleSetPermissions.ruleSetId, ruleSetId));
+
+    if (permissions.length) {
+      await db.insert(permissionRuleSetPermissions).values(
+        permissions.map((permission) => ({
+          tenantId,
+          ruleSetId,
+          permission,
+        })),
+      );
+    }
+  }
+}
+
+async function findPermissionRoleId(db: DatabasePg, tenantId: UUIDType, roleSlug: SystemRoleSlug) {
+  const [role] = await db
+    .select({ id: permissionRoles.id })
+    .from(permissionRoles)
+    .where(and(eq(permissionRoles.tenantId, tenantId), eq(permissionRoles.slug, roleSlug)))
+    .limit(1);
+
+  if (!role) throw new Error(`System role ${roleSlug} was not inserted or found`);
+
+  return role.id;
+}
+
+async function findPermissionRuleSetId(db: DatabasePg, tenantId: UUIDType, ruleSetSlug: string) {
+  const [ruleSet] = await db
+    .select({ id: permissionRuleSets.id })
+    .from(permissionRuleSets)
+    .where(and(eq(permissionRuleSets.tenantId, tenantId), eq(permissionRuleSets.slug, ruleSetSlug)))
+    .limit(1);
+
+  if (!ruleSet) throw new Error(`System rule set ${ruleSetSlug} was not inserted or found`);
+
+  return ruleSet.id;
+}
+
+export async function assignSystemRoleToUser(
+  db: DatabasePg,
+  userId: UUIDType,
+  tenantId: UUIDType,
+  roleSlug: SystemRoleSlug,
+) {
+  const [role] = await db
+    .select({ id: permissionRoles.id })
+    .from(permissionRoles)
+    .where(and(eq(permissionRoles.tenantId, tenantId), eq(permissionRoles.slug, roleSlug)))
+    .limit(1);
+
+  if (!role) {
+    throw new Error(`System role '${roleSlug}' not found for tenant ${tenantId}`);
+  }
+
+  await db.delete(permissionUserRoles).where(eq(permissionUserRoles.userId, userId));
+
+  await db.insert(permissionUserRoles).values({
+    userId,
+    roleId: role.id,
+    tenantId,
+  });
+}
+
+export async function seedSystemRolesForAllTenants(db: DatabasePg) {
+  const existingTenants = await db.select({ id: tenants.id }).from(tenants);
+
+  await Promise.all(existingTenants.map((tenant) => seedSystemRolesForTenant(db, tenant.id)));
+}
+
+export { seedUserRoleGrantSql } from "./database-role";

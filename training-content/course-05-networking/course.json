@@ -1,0 +1,966 @@
+{
+  "slug": "networking",
+  "title": "Networking and Technical Support",
+  "title_th": "เครือข่ายและการสนับสนุนทางเทคนิค",
+  "roles": [
+    "Technicians",
+    "Support trainees"
+  ],
+  "lessons": [
+    {
+      "title": "LAN switches routers and Wi-Fi",
+      "objectives": [
+        "Explain the path from a device to an external service."
+      ],
+      "explanation": [
+        "A local area network connects nearby devices. A switch commonly connects wired devices within that network, a router forwards traffic between networks, and an access point gives wireless devices access to a network. One physical product may combine these functions. A Wi-Fi connection alone does not prove internet access.",
+        "Trace the path from the client through access, local switching, gateway and upstream connection to the service. A fault can affect one device, one wireless area, one VLAN or the whole site. Start by asking what works as well as what fails. Comparing affected and unaffected paths narrows the investigation without changing the network."
+      ],
+      "example": "A fictional laptop sees the office Wi-Fi name but cannot open websites. Another wired workstation works. Begin with the laptop/wireless path rather than declaring a site-wide ISP outage.",
+      "exercise": "Draw a laptop-to-internet path and mark which observations would distinguish a client fault from a shared fault.",
+      "model_response": "Laptop → access point → switch → router → provider → service. Compare another client, wired access and another service using authorized tests.",
+      "key_points": [
+        "Wi-Fi connection is not proof of internet",
+        "Separate device and shared scope",
+        "Compare working and failing paths"
+      ],
+      "references": [
+        "NET",
+        "EX"
+      ],
+      "thai_summary": "การเชื่อมต่อ Wi-Fi ไม่ยืนยันว่าใช้อินเทอร์เน็ตได้ เปรียบเทียบเส้นทางที่ใช้งานได้กับเส้นทางที่มีปัญหา",
+      "id": "AITS-C05-L01",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01"
+      ],
+      "summary": "Wi-Fi connection is not proof of internet Separate device and shared scope Compare working and failing paths",
+      "visual_resources": [
+        "course-05-networking/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L01",
+        "course_id": "AITS-C05",
+        "title": "LAN switches routers and Wi-Fi",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C05-L01-Q1",
+        "AITS-C05-L01-Q2",
+        "AITS-C05-L01-Q3"
+      ],
+      "html": "<h1>LAN switches routers and Wi-Fi</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C05-L01 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Explain the path from a device to an external service.</p><h2>Explanation</h2><p>A local area network connects nearby devices. A switch commonly connects wired devices within that network, a router forwards traffic between networks, and an access point gives wireless devices access to a network. One physical product may combine these functions. A Wi-Fi connection alone does not prove internet access.</p><p>Trace the path from the client through access, local switching, gateway and upstream connection to the service. A fault can affect one device, one wireless area, one VLAN or the whole site. Start by asking what works as well as what fails. Comparing affected and unaffected paths narrows the investigation without changing the network.</p><h2>Synthetic example</h2><p>A fictional laptop sees the office Wi-Fi name but cannot open websites. Another wired workstation works. Begin with the laptop/wireless path rather than declaring a site-wide ISP outage.</p><h2>Practical exercise</h2><p>Draw a laptop-to-internet path and mark which observations would distinguish a client fault from a shared fault.</p><h2>Model response</h2><p>Laptop → access point → switch → router → provider → service. Compare another client, wired access and another service using authorized tests.</p><h2>Summary</h2><p>Wi-Fi connection is not proof of internet Separate device and shared scope Compare working and failing paths</p><h2>Thai summary — translation pending review</h2><p>การเชื่อมต่อ Wi-Fi ไม่ยืนยันว่าใช้อินเทอร์เน็ตได้ เปรียบเทียบเส้นทางที่ใช้งานได้กับเส้นทางที่มีปัญหา</p><h2>References</h2><p>NET: Cisco networking basics — https://www.cisco.com/site/us/en/learn/topics/small-business/networking-basics.html</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "IP addressing DHCP and DNS",
+      "objectives": [
+        "Distinguish an address, a gateway and name resolution."
+      ],
+      "explanation": [
+        "An IP address identifies an interface on a network; the subnet prefix helps determine which destinations are local. A default gateway provides a path to other networks. Private IPv4 ranges include 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16; they are not globally routed public addresses. Avoid duplicate assignments and do not change addressing without an approved plan.",
+        "DHCP supplies configuration such as an address lease and network options. DNS resolves names to records used to locate services. These functions are different: a valid lease does not prove DNS or upstream access works. In the synthetic 192.168.10.0/24 exercise, a client at .20 and gateway at .1 share the subnet; .0 and .255 are not ordinary host choices for that subnet."
+      ],
+      "example": "A lab client has 192.168.10.20/24, gateway 192.168.10.1 and an approved resolver. Record all three before drawing a conclusion about a failed website.",
+      "exercise": "Explain the difference between DHCP and DNS to a nontechnical colleague.",
+      "model_response": "DHCP helps a device obtain network configuration; DNS helps translate a service name into the records needed to find it.",
+      "key_points": [
+        "Address, prefix and gateway work together",
+        "DHCP supplies configuration",
+        "DNS handles names"
+      ],
+      "references": [
+        "IP",
+        "DHCP",
+        "NET",
+        "EX"
+      ],
+      "thai_summary": "IP ระบุอินเทอร์เฟซ DHCP แจกค่าตั้งเครือข่าย และ DNS ช่วยค้นหาปลายทางจากชื่อ ทั้งสามหน้าที่แตกต่างกัน",
+      "id": "AITS-C05-L02",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C05-L01"
+      ],
+      "summary": "Address, prefix and gateway work together DHCP supplies configuration DNS handles names",
+      "visual_resources": [
+        "course-05-networking/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L02",
+        "course_id": "AITS-C05",
+        "title": "IP addressing DHCP and DNS",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "IP",
+          "DHCP",
+          "NET",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C05-L02-Q1",
+        "AITS-C05-L02-Q2",
+        "AITS-C05-L02-Q3"
+      ],
+      "html": "<h1>IP addressing DHCP and DNS</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C05-L02 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Distinguish an address, a gateway and name resolution.</p><h2>Explanation</h2><p>An IP address identifies an interface on a network; the subnet prefix helps determine which destinations are local. A default gateway provides a path to other networks. Private IPv4 ranges include 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16; they are not globally routed public addresses. Avoid duplicate assignments and do not change addressing without an approved plan.</p><p>DHCP supplies configuration such as an address lease and network options. DNS resolves names to records used to locate services. These functions are different: a valid lease does not prove DNS or upstream access works. In the synthetic 192.168.10.0/24 exercise, a client at .20 and gateway at .1 share the subnet; .0 and .255 are not ordinary host choices for that subnet.</p><h2>Synthetic example</h2><p>A lab client has 192.168.10.20/24, gateway 192.168.10.1 and an approved resolver. Record all three before drawing a conclusion about a failed website.</p><h2>Practical exercise</h2><p>Explain the difference between DHCP and DNS to a nontechnical colleague.</p><h2>Model response</h2><p>DHCP helps a device obtain network configuration; DNS helps translate a service name into the records needed to find it.</p><h2>Summary</h2><p>Address, prefix and gateway work together DHCP supplies configuration DNS handles names</p><h2>Thai summary — translation pending review</h2><p>IP ระบุอินเทอร์เฟซ DHCP แจกค่าตั้งเครือข่าย และ DNS ช่วยค้นหาปลายทางจากชื่อ ทั้งสามหน้าที่แตกต่างกัน</p><h2>References</h2><p>IP: RFC 1918 private addressing — https://www.rfc-editor.org/rfc/rfc1918</p><p>DHCP: RFC 2131 DHCP — https://www.rfc-editor.org/rfc/rfc2131</p><p>NET: Cisco networking basics — https://www.cisco.com/site/us/en/learn/topics/small-business/networking-basics.html</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Investigate internet unavailable",
+      "objectives": [
+        "Choose diagnostic steps that test a hypothesis."
+      ],
+      "explanation": [
+        "First establish safety, authorization, affected users, services, start time and recent changes. Ask whether all sites fail or one application fails. Observe link and connection state safely. Read the client’s address, prefix, gateway and DNS configuration before changing it. Compare a known-good device on the relevant network.",
+        "On an authorized test device, basic diagnostics can include ipconfig /all, a gateway reachability test and nslookup for an approved test name. A ping timeout is evidence, not proof that a device is offline: filtering or policy may block replies. If gateway and external connectivity appear available but name resolution fails, investigate the configured resolver and related policy. Change one authorized variable at a time, record before/after results and preserve a rollback route."
+      ],
+      "example": "Synthetic outage: all clients reach the gateway; an approved external TCP test succeeds; lookups through the configured resolver time out. This supports a DNS-path hypothesis, not a confirmed broken cable.",
+      "exercise": "Choose the next two read-only checks and explain what each result would tell you.",
+      "model_response": "Compare resolver configuration with the approved baseline and test the configured resolver from another affected client. Record results and escalate before changing settings.",
+      "key_points": [
+        "Define scope and recent changes",
+        "Observe before changing",
+        "A failed ping is not a complete diagnosis"
+      ],
+      "references": [
+        "NET",
+        "DHCP",
+        "EX"
+      ],
+      "thai_summary": "กำหนดขอบเขตปัญหาและเก็บข้อมูลก่อนเปลี่ยนค่า Ping ไม่ตอบไม่ได้แปลว่าอุปกรณ์ปิดเสมอไป",
+      "id": "AITS-C05-L03",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C05-L02"
+      ],
+      "summary": "Define scope and recent changes Observe before changing A failed ping is not a complete diagnosis",
+      "visual_resources": [
+        "course-05-networking/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L03",
+        "course_id": "AITS-C05",
+        "title": "Investigate internet unavailable",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "DHCP",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C05-L03-Q1",
+        "AITS-C05-L03-Q2",
+        "AITS-C05-L03-Q3"
+      ],
+      "html": "<h1>Investigate internet unavailable</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C05-L03 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Choose diagnostic steps that test a hypothesis.</p><h2>Explanation</h2><p>First establish safety, authorization, affected users, services, start time and recent changes. Ask whether all sites fail or one application fails. Observe link and connection state safely. Read the client’s address, prefix, gateway and DNS configuration before changing it. Compare a known-good device on the relevant network.</p><p>On an authorized test device, basic diagnostics can include ipconfig /all, a gateway reachability test and nslookup for an approved test name. A ping timeout is evidence, not proof that a device is offline: filtering or policy may block replies. If gateway and external connectivity appear available but name resolution fails, investigate the configured resolver and related policy. Change one authorized variable at a time, record before/after results and preserve a rollback route.</p><h2>Synthetic example</h2><p>Synthetic outage: all clients reach the gateway; an approved external TCP test succeeds; lookups through the configured resolver time out. This supports a DNS-path hypothesis, not a confirmed broken cable.</p><h2>Practical exercise</h2><p>Choose the next two read-only checks and explain what each result would tell you.</p><h2>Model response</h2><p>Compare resolver configuration with the approved baseline and test the configured resolver from another affected client. Record results and escalate before changing settings.</p><h2>Summary</h2><p>Define scope and recent changes Observe before changing A failed ping is not a complete diagnosis</p><h2>Thai summary — translation pending review</h2><p>กำหนดขอบเขตปัญหาและเก็บข้อมูลก่อนเปลี่ยนค่า Ping ไม่ตอบไม่ได้แปลว่าอุปกรณ์ปิดเสมอไป</p><h2>References</h2><p>NET: Cisco networking basics — https://www.cisco.com/site/us/en/learn/topics/small-business/networking-basics.html</p><p>DHCP: RFC 2131 DHCP — https://www.rfc-editor.org/rfc/rfc2131</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Isolation escalation and customer updates",
+      "objectives": [
+        "Hand over an investigation with evidence and a clear next action."
+      ],
+      "explanation": [
+        "Device isolation has two meanings: narrowing a fault to a device/path, and restricting a device for security containment. Do not disconnect equipment or change VLANs under the second meaning without the applicable authorization. For diagnosis, compare a known-good cable, port or client only where the test is safe and approved. Preserve the original state and record each change.",
+        "An escalation includes impact, scope, timestamps, relevant topology, tests and results, changes made, rollback status and the requested help. Exclude passwords and unnecessary personal information. Tell the customer what is known, what remains uncertain and when the next agreed update will occur. Do not promise resolution times or quote an AITS SLA that has not been verified."
+      ],
+      "example": "Synthetic update: “Two office devices cannot resolve names. Gateway checks passed. We are checking the resolver path and will update you at the agreed time.”",
+      "exercise": "Write a support escalation with three observations and one explicit request.",
+      "model_response": "Two clients affected since 09:10; gateway reachable; configured resolver times out. No configuration changed. Please review resolver/service policy and advise the authorized next test.",
+      "key_points": [
+        "One controlled comparison at a time",
+        "Escalate evidence and uncertainty",
+        "Promise only an agreed update"
+      ],
+      "references": [
+        "EX",
+        "QA"
+      ],
+      "thai_summary": "ส่งต่อผลทดสอบ การเปลี่ยนแปลง และสิ่งที่ยังไม่ทราบ แจ้งเวลาติดตามที่ตกลงกันโดยไม่รับรอง SLA ที่ยังไม่ยืนยัน",
+      "id": "AITS-C05-L04",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C05-L03"
+      ],
+      "summary": "One controlled comparison at a time Escalate evidence and uncertainty Promise only an agreed update",
+      "visual_resources": [
+        "course-05-networking/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L04",
+        "course_id": "AITS-C05",
+        "title": "Isolation escalation and customer updates",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C05-L04-Q1",
+        "AITS-C05-L04-Q2",
+        "AITS-C05-L04-Q3"
+      ],
+      "html": "<h1>Isolation escalation and customer updates</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C05-L04 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Hand over an investigation with evidence and a clear next action.</p><h2>Explanation</h2><p>Device isolation has two meanings: narrowing a fault to a device/path, and restricting a device for security containment. Do not disconnect equipment or change VLANs under the second meaning without the applicable authorization. For diagnosis, compare a known-good cable, port or client only where the test is safe and approved. Preserve the original state and record each change.</p><p>An escalation includes impact, scope, timestamps, relevant topology, tests and results, changes made, rollback status and the requested help. Exclude passwords and unnecessary personal information. Tell the customer what is known, what remains uncertain and when the next agreed update will occur. Do not promise resolution times or quote an AITS SLA that has not been verified.</p><h2>Synthetic example</h2><p>Synthetic update: “Two office devices cannot resolve names. Gateway checks passed. We are checking the resolver path and will update you at the agreed time.”</p><h2>Practical exercise</h2><p>Write a support escalation with three observations and one explicit request.</p><h2>Model response</h2><p>Two clients affected since 09:10; gateway reachable; configured resolver times out. No configuration changed. Please review resolver/service policy and advise the authorized next test.</p><h2>Summary</h2><p>One controlled comparison at a time Escalate evidence and uncertainty Promise only an agreed update</p><h2>Thai summary — translation pending review</h2><p>ส่งต่อผลทดสอบ การเปลี่ยนแปลง และสิ่งที่ยังไม่ทราบ แจ้งเวลาติดตามที่ตกลงกันโดยไม่รับรอง SLA ที่ยังไม่ยืนยัน</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p>"
+    }
+  ],
+  "flow": [
+    "Scope the outage",
+    "Check safe link state",
+    "Read IP settings",
+    "Test gateway and DNS",
+    "Escalate evidence"
+  ],
+  "id": "AITS-C05",
+  "folder": "course-05-networking",
+  "metadata": {
+    "document_id": "AITS-C05",
+    "course_id": "AITS-C05",
+    "title": "Networking and Technical Support",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "DHCP",
+      "EX",
+      "IP",
+      "NET",
+      "QA"
+    ]
+  },
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "estimated_minutes": 100,
+  "language": "en",
+  "translation_status": "Thai summaries only; AI translation pending native-speaker review",
+  "objectives": [
+    "Explain the path from a device to an external service.",
+    "Distinguish an address, a gateway and name resolution.",
+    "Choose diagnostic steps that test a hypothesis.",
+    "Hand over an investigation with evidence and a clear next action."
+  ],
+  "assessments": [
+    {
+      "question": "What commonly connects different IP networks?",
+      "choices": [
+        "Passive label",
+        "Cable tray",
+        "Router"
+      ],
+      "correct_answer": "Router",
+      "explanation": "Routing forwards traffic between networks.",
+      "id": "AITS-C05-L01-Q1",
+      "related_lesson": "AITS-C05-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L01-Q1",
+        "course_id": "AITS-C05",
+        "title": "What commonly connects different IP networks?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does a Wi-Fi icon prove a website is reachable?",
+      "choices": [
+        "Only at full signal",
+        "No",
+        "Yes"
+      ],
+      "correct_answer": "No",
+      "explanation": "Wireless association is only one part of the path.",
+      "id": "AITS-C05-L01-Q2",
+      "related_lesson": "AITS-C05-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L01-Q2",
+        "course_id": "AITS-C05",
+        "title": "Does a Wi-Fi icon prove a website is reachable?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "One laptop fails while a wired workstation works. What is useful next?",
+      "choices": [
+        "Compare the affected access path",
+        "Reset the entire site",
+        "Declare every server down"
+      ],
+      "correct_answer": "Compare the affected access path",
+      "explanation": "Comparison narrows the scope without disruption.",
+      "id": "AITS-C05-L01-Q3",
+      "related_lesson": "AITS-C05-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L01-Q3",
+        "course_id": "AITS-C05",
+        "title": "One laptop fails while a wired workstation works. What is useful next?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is a private IPv4 example?",
+      "choices": [
+        "A MAC label",
+        "192.168.10.20",
+        "A domain name"
+      ],
+      "correct_answer": "192.168.10.20",
+      "explanation": "192.168.0.0/16 is a private-address block.",
+      "id": "AITS-C05-L02-Q1",
+      "related_lesson": "AITS-C05-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "IP",
+        "DHCP",
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L02-Q1",
+        "course_id": "AITS-C05",
+        "title": "Which is a private IPv4 example?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "IP",
+          "DHCP",
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which function commonly leases client addressing?",
+      "choices": [
+        "DHCP",
+        "DNS",
+        "A document editor"
+      ],
+      "correct_answer": "DHCP",
+      "explanation": "DHCP distributes network configuration.",
+      "id": "AITS-C05-L02-Q2",
+      "related_lesson": "AITS-C05-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "IP",
+        "DHCP",
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L02-Q2",
+        "course_id": "AITS-C05",
+        "title": "Which function commonly leases client addressing?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "IP",
+          "DHCP",
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What does DNS primarily help with?",
+      "choices": [
+        "Supplying PoE power",
+        "Replacing a damaged cable",
+        "Resolving names to records"
+      ],
+      "correct_answer": "Resolving names to records",
+      "explanation": "Name resolution is distinct from physical connectivity.",
+      "id": "AITS-C05-L02-Q3",
+      "related_lesson": "AITS-C05-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "IP",
+        "DHCP",
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L02-Q3",
+        "course_id": "AITS-C05",
+        "title": "What does DNS primarily help with?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "IP",
+          "DHCP",
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should come before resetting the router?",
+      "choices": [
+        "Scope, evidence and authorization",
+        "Repeated resets",
+        "Replacing every cable"
+      ],
+      "correct_answer": "Scope, evidence and authorization",
+      "explanation": "A reset may disrupt users and erase useful evidence.",
+      "id": "AITS-C05-L03-Q1",
+      "related_lesson": "AITS-C05-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "DHCP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L03-Q1",
+        "course_id": "AITS-C05",
+        "title": "What should come before resetting the router?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "DHCP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does a ping timeout prove a device is off?",
+      "choices": [
+        "Yes",
+        "Only on Wi-Fi",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Filtering or policy can prevent replies.",
+      "id": "AITS-C05-L03-Q2",
+      "related_lesson": "AITS-C05-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "DHCP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L03-Q2",
+        "course_id": "AITS-C05",
+        "title": "Does a ping timeout prove a device is off?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "DHCP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Gateway and external service tests work but name lookup fails. What is a reasonable hypothesis?",
+      "choices": [
+        "A proven mains fault",
+        "A DNS-path issue",
+        "A guaranteed camera fault"
+      ],
+      "correct_answer": "A DNS-path issue",
+      "explanation": "The evidence narrows the next checks but is not final proof.",
+      "id": "AITS-C05-L03-Q3",
+      "related_lesson": "AITS-C05-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "DHCP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L03-Q3",
+        "course_id": "AITS-C05",
+        "title": "Gateway and external service tests work but name lookup fails. What is a reasonable hypothesis?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "DHCP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What belongs in an escalation?",
+      "choices": [
+        "Customer passwords",
+        "Only “internet broken”",
+        "Tests, results and changes made"
+      ],
+      "correct_answer": "Tests, results and changes made",
+      "explanation": "Specific evidence lets the next person continue.",
+      "id": "AITS-C05-L04-Q1",
+      "related_lesson": "AITS-C05-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L04-Q1",
+        "course_id": "AITS-C05",
+        "title": "What belongs in an escalation?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Should you disconnect a critical device without authorization?",
+      "choices": [
+        "Only if an AI suggests it",
+        "No",
+        "Yes for every fault"
+      ],
+      "correct_answer": "No",
+      "explanation": "Containment and service impact require the approved authority.",
+      "id": "AITS-C05-L04-Q2",
+      "related_lesson": "AITS-C05-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L04-Q2",
+        "course_id": "AITS-C05",
+        "title": "Should you disconnect a critical device without authorization?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "A ping timeout alone proves a device is powered off.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "A timeout can reflect filtering or policy; compare other authorized service tests before deciding that a device is off.",
+      "id": "AITS-C05-L04-Q3",
+      "related_lesson": "AITS-C05-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L04-Q3",
+        "course_id": "AITS-C05",
+        "title": "A ping timeout alone proves a device is powered off.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "AITS-C05-S01",
+      "title": "Internet unavailable",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Support trainee",
+      "problem_description": "Lotus Workshop reports no internet on three devices.",
+      "available_information": [
+        "Gateway responds; approved external TCP test passes; configured DNS lookups time out."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Check resolver configuration and compare another client, then escalate evidence.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Check resolver configuration and compare another client, then escalate evidence."
+      ],
+      "inappropriate_decisions": [
+        "Factory-reset the router before recording settings."
+      ],
+      "consequences": "A focused DNS investigation preserves the working network path.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Factory-reset the router before recording settings.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Check resolver configuration and compare another client, then escalate evidence."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-S01",
+        "course_id": "AITS-C05",
+        "title": "Internet unavailable",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C05-S02",
+      "title": "Only one laptop fails",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Helpdesk trainee",
+      "problem_description": "One fictional laptop cannot browse; nearby clients work.",
+      "available_information": [
+        "The affected laptop has an unexpected gateway in the lab snapshot."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Compare with the approved baseline and request authorized correction.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Compare with the approved baseline and request authorized correction."
+      ],
+      "inappropriate_decisions": [
+        "Change every client address."
+      ],
+      "consequences": "A scoped correction avoids expanding a single-device fault.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Change every client address.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Compare with the approved baseline and request authorized correction."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-S02",
+        "course_id": "AITS-C05",
+        "title": "Only one laptop fails",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C05-S03",
+      "title": "Ping is blocked",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Technician trainee",
+      "problem_description": "A device does not reply to ping but its authorized web interface opens.",
+      "available_information": [
+        "ICMP filtering is possible; application access succeeds."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Record both results and test the actual service requirement.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Record both results and test the actual service requirement."
+      ],
+      "inappropriate_decisions": [
+        "Declare the device dead from ping alone."
+      ],
+      "consequences": "Multiple observations prevent a false diagnosis.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Declare the device dead from ping alone.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Record both results and test the actual service requirement."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "DHCP",
+        "EX",
+        "IP",
+        "NET",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-S03",
+        "course_id": "AITS-C05",
+        "title": "Ping is blocked",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    }
+  ]
+}

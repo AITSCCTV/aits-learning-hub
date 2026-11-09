@@ -1,0 +1,53 @@
+{
+  "title": "Quality assurance and completion review",
+  "objectives": [
+    "Distinguish process prevention from checking a finished result."
+  ],
+  "explanation": [
+    "Quality assurance builds reliable methods, training and review into the work. Quality control checks outputs against defined requirements. Both are useful: a final inspection can detect a defect, while a better preparation process may prevent it. The ISO overview supports this general distinction; this course makes no claim that AITS holds a particular certification.",
+    "For a completion review, compare the approved scope with evidence and open issues. Confirm that required tests have results, exceptions have an authorized disposition and the handover is understandable. Record recurring problems for improvement without changing a controlled procedure on your own. A customer signature alone does not erase an unresolved safety or technical issue."
+  ],
+  "example": "Repeated wrong device quantities suggest a preparation and reconciliation problem, even if a final count catches each error.",
+  "exercise": "Propose one preventive process check and one final output check for an installation kit.",
+  "model_response": "Preventive: reconcile approved scope and picking list before dispatch. Output: verify actual kit quantities and condition against the list.",
+  "key_points": [
+    "QA improves the process",
+    "QC checks the output",
+    "Close work against evidence and scope"
+  ],
+  "references": [
+    "QA",
+    "EX"
+  ],
+  "thai_summary": "QA ช่วยป้องกันปัญหาในกระบวนการ ส่วน QC ตรวจผลลัพธ์ ต้องปิดงานตามหลักฐานและขอบเขตที่ตกลง",
+  "id": "AITS-C07-L03",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C07-L02"
+  ],
+  "summary": "QA improves the process QC checks the output Close work against evidence and scope",
+  "visual_resources": [
+    "course-07-sop-quality/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C07-L03",
+    "course_id": "AITS-C07",
+    "title": "Quality assurance and completion review",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "QA",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C07-L03-Q1",
+    "AITS-C07-L03-Q2",
+    "AITS-C07-L03-Q3"
+  ]
+}

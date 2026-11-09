@@ -1,0 +1,88 @@
+import { Module } from "@nestjs/common";
+
+import { ArticlesModule } from "src/articles/articles.module";
+import { CategoryModule } from "src/category/category.module";
+import { ChapterModule } from "src/chapter/chapter.module";
+import { CourseModule } from "src/courses/course.module";
+import { FileModule } from "src/file/files.module";
+import { GlobalSearchModule } from "src/global-search/global-search.module";
+import { GroupModule } from "src/group/group.module";
+import { LearningPathModule } from "src/learning-path/learning-path.module";
+import { LessonModule } from "src/lesson/lesson.module";
+import { LocalizationModule } from "src/localization/localization.module";
+import { NewsModule } from "src/news/news.module";
+import { PermissionsModule } from "src/permissions/permissions.module";
+import { QAModule } from "src/qa/qa.module";
+import { QuizModule } from "src/quiz/quiz.module";
+import { RedisClientsModule } from "src/redis";
+import { ResourceLibraryModule } from "src/resource-library/resource-library.module";
+import { ScormModule } from "src/scorm/scorm.module";
+import { HelpdeskModule } from "src/self-onboarding/self-onboarding.module";
+import { SettingsModule } from "src/settings/settings.module";
+import { UserModule } from "src/user/user.module";
+
+import { ExternalConversationsController } from "./external-conversations.controller";
+import { ExternalConversationsRepository } from "./external-conversations.repository";
+import { ExternalTranscriptSignatureGuard } from "./external-transcript-signature.guard";
+import { McpActorRepository } from "./mcp-actor.repository";
+import { McpAuthGuard } from "./mcp-auth.guard";
+import { McpConsentController } from "./mcp-consent.controller";
+import { McpHttpService } from "./mcp-http.service";
+import { McpOAuthController } from "./mcp-oauth.controller";
+import { McpOAuthService } from "./mcp-oauth.service";
+import { McpResourceService } from "./mcp-resource.service";
+import { McpStudentLessonRepository } from "./mcp-student-lesson.repository";
+import { McpTokenService } from "./mcp-token.service";
+import { McpUploadGrantService } from "./mcp-upload-grant.service";
+import { McpController } from "./mcp.controller";
+
+@Module({
+  imports: [
+    CourseModule,
+    LocalizationModule,
+    FileModule,
+    ChapterModule,
+    CategoryModule,
+    LessonModule,
+    LearningPathModule,
+    ArticlesModule,
+    NewsModule,
+    QAModule,
+    QuizModule,
+    ResourceLibraryModule,
+    ScormModule,
+    PermissionsModule,
+    RedisClientsModule,
+    SettingsModule,
+    GlobalSearchModule,
+    HelpdeskModule,
+    GroupModule,
+    UserModule,
+  ],
+  providers: [
+    ExternalTranscriptSignatureGuard,
+    ExternalConversationsRepository,
+    McpHttpService,
+    McpStudentLessonRepository,
+    McpActorRepository,
+    McpAuthGuard,
+    McpTokenService,
+    McpUploadGrantService,
+    McpOAuthService,
+    McpResourceService,
+  ],
+  controllers: [
+    McpOAuthController,
+    McpConsentController,
+    McpController,
+    ExternalConversationsController,
+  ],
+  exports: [
+    McpHttpService,
+    McpTokenService,
+    McpUploadGrantService,
+    McpOAuthService,
+    McpResourceService,
+  ],
+})
+export class McpModule {}

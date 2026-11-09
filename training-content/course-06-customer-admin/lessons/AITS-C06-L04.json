@@ -1,0 +1,53 @@
+{
+  "title": "Administrative records and handovers",
+  "objectives": [
+    "Maintain accurate controlled documents and protect confidentiality."
+  ],
+  "explanation": [
+    "Use clear names, stable references and version information so another person can locate the right record. Check dates, quantities, customer identifiers and attachments against the source. A copied spreadsheet can become an uncontrolled duplicate; follow the approved storage and retention rules once supplied. Do not invent a retention period.",
+    "Restrict access according to the task, verify recipients and use approved transfer methods. A handover should state status, outstanding questions, evidence location and next owner or requested action. Do not mark a task complete merely because an email was sent. Confirm that the intended outcome or handover acceptance has been recorded by the appropriate person."
+  ],
+  "example": "Two files are named final.xlsx. In the exercise, assign a stable request reference and explicit version, then identify which version is approved.",
+  "exercise": "Prepare a handover for a draft quotation awaiting technical review.",
+  "model_response": "CO-101 v0.2 remains Draft; six-location scope awaits confirmation. Evidence is in the authorized case folder. Technical review requested before commercial approval.",
+  "key_points": [
+    "Check records against their source",
+    "Use explicit versions and status",
+    "Handover requires a clear next action"
+  ],
+  "references": [
+    "EX",
+    "QA"
+  ],
+  "thai_summary": "ใช้เลขอ้างอิง เวอร์ชัน และสถานะให้ชัด ตรวจสอบข้อมูลกับต้นทางและส่งต่องานพร้อมรายการที่ยังค้าง",
+  "id": "AITS-C06-L04",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C06-L03"
+  ],
+  "summary": "Check records against their source Use explicit versions and status Handover requires a clear next action",
+  "visual_resources": [
+    "course-06-customer-admin/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C06-L04",
+    "course_id": "AITS-C06",
+    "title": "Administrative records and handovers",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C06-L04-Q1",
+    "AITS-C06-L04-Q2",
+    "AITS-C06-L04-Q3"
+  ]
+}

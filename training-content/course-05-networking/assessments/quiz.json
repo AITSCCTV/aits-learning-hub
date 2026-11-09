@@ -1,0 +1,450 @@
+{
+  "metadata": {
+    "document_id": "AITS-C05-QUIZ",
+    "course_id": "AITS-C05",
+    "title": "Course practice assessment",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "DHCP",
+      "EX",
+      "IP",
+      "NET",
+      "QA"
+    ]
+  },
+  "passing_threshold_percent": 80,
+  "threshold_status": "Proposed practice threshold; not company competency policy",
+  "questions": [
+    {
+      "question": "What commonly connects different IP networks?",
+      "choices": [
+        "Passive label",
+        "Cable tray",
+        "Router"
+      ],
+      "correct_answer": "Router",
+      "explanation": "Routing forwards traffic between networks.",
+      "id": "AITS-C05-L01-Q1",
+      "related_lesson": "AITS-C05-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L01-Q1",
+        "course_id": "AITS-C05",
+        "title": "What commonly connects different IP networks?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does a Wi-Fi icon prove a website is reachable?",
+      "choices": [
+        "Only at full signal",
+        "No",
+        "Yes"
+      ],
+      "correct_answer": "No",
+      "explanation": "Wireless association is only one part of the path.",
+      "id": "AITS-C05-L01-Q2",
+      "related_lesson": "AITS-C05-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L01-Q2",
+        "course_id": "AITS-C05",
+        "title": "Does a Wi-Fi icon prove a website is reachable?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "One laptop fails while a wired workstation works. What is useful next?",
+      "choices": [
+        "Compare the affected access path",
+        "Reset the entire site",
+        "Declare every server down"
+      ],
+      "correct_answer": "Compare the affected access path",
+      "explanation": "Comparison narrows the scope without disruption.",
+      "id": "AITS-C05-L01-Q3",
+      "related_lesson": "AITS-C05-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L01-Q3",
+        "course_id": "AITS-C05",
+        "title": "One laptop fails while a wired workstation works. What is useful next?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which is a private IPv4 example?",
+      "choices": [
+        "A MAC label",
+        "192.168.10.20",
+        "A domain name"
+      ],
+      "correct_answer": "192.168.10.20",
+      "explanation": "192.168.0.0/16 is a private-address block.",
+      "id": "AITS-C05-L02-Q1",
+      "related_lesson": "AITS-C05-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "IP",
+        "DHCP",
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L02-Q1",
+        "course_id": "AITS-C05",
+        "title": "Which is a private IPv4 example?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "IP",
+          "DHCP",
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which function commonly leases client addressing?",
+      "choices": [
+        "DHCP",
+        "DNS",
+        "A document editor"
+      ],
+      "correct_answer": "DHCP",
+      "explanation": "DHCP distributes network configuration.",
+      "id": "AITS-C05-L02-Q2",
+      "related_lesson": "AITS-C05-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "IP",
+        "DHCP",
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L02-Q2",
+        "course_id": "AITS-C05",
+        "title": "Which function commonly leases client addressing?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "IP",
+          "DHCP",
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What does DNS primarily help with?",
+      "choices": [
+        "Supplying PoE power",
+        "Replacing a damaged cable",
+        "Resolving names to records"
+      ],
+      "correct_answer": "Resolving names to records",
+      "explanation": "Name resolution is distinct from physical connectivity.",
+      "id": "AITS-C05-L02-Q3",
+      "related_lesson": "AITS-C05-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "IP",
+        "DHCP",
+        "NET",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L02-Q3",
+        "course_id": "AITS-C05",
+        "title": "What does DNS primarily help with?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "IP",
+          "DHCP",
+          "NET",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should come before resetting the router?",
+      "choices": [
+        "Scope, evidence and authorization",
+        "Repeated resets",
+        "Replacing every cable"
+      ],
+      "correct_answer": "Scope, evidence and authorization",
+      "explanation": "A reset may disrupt users and erase useful evidence.",
+      "id": "AITS-C05-L03-Q1",
+      "related_lesson": "AITS-C05-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "DHCP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L03-Q1",
+        "course_id": "AITS-C05",
+        "title": "What should come before resetting the router?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "DHCP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does a ping timeout prove a device is off?",
+      "choices": [
+        "Yes",
+        "Only on Wi-Fi",
+        "No"
+      ],
+      "correct_answer": "No",
+      "explanation": "Filtering or policy can prevent replies.",
+      "id": "AITS-C05-L03-Q2",
+      "related_lesson": "AITS-C05-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "DHCP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L03-Q2",
+        "course_id": "AITS-C05",
+        "title": "Does a ping timeout prove a device is off?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "DHCP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Gateway and external service tests work but name lookup fails. What is a reasonable hypothesis?",
+      "choices": [
+        "A proven mains fault",
+        "A DNS-path issue",
+        "A guaranteed camera fault"
+      ],
+      "correct_answer": "A DNS-path issue",
+      "explanation": "The evidence narrows the next checks but is not final proof.",
+      "id": "AITS-C05-L03-Q3",
+      "related_lesson": "AITS-C05-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "NET",
+        "DHCP",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L03-Q3",
+        "course_id": "AITS-C05",
+        "title": "Gateway and external service tests work but name lookup fails. What is a reasonable hypothesis?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "NET",
+          "DHCP",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What belongs in an escalation?",
+      "choices": [
+        "Customer passwords",
+        "Only “internet broken”",
+        "Tests, results and changes made"
+      ],
+      "correct_answer": "Tests, results and changes made",
+      "explanation": "Specific evidence lets the next person continue.",
+      "id": "AITS-C05-L04-Q1",
+      "related_lesson": "AITS-C05-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L04-Q1",
+        "course_id": "AITS-C05",
+        "title": "What belongs in an escalation?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Should you disconnect a critical device without authorization?",
+      "choices": [
+        "Only if an AI suggests it",
+        "No",
+        "Yes for every fault"
+      ],
+      "correct_answer": "No",
+      "explanation": "Containment and service impact require the approved authority.",
+      "id": "AITS-C05-L04-Q2",
+      "related_lesson": "AITS-C05-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L04-Q2",
+        "course_id": "AITS-C05",
+        "title": "Should you disconnect a critical device without authorization?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "A ping timeout alone proves a device is powered off.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "A timeout can reflect filtering or policy; compare other authorized service tests before deciding that a device is off.",
+      "id": "AITS-C05-L04-Q3",
+      "related_lesson": "AITS-C05-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C05-L04-Q3",
+        "course_id": "AITS-C05",
+        "title": "A ping timeout alone proves a device is powered off.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    }
+  ]
+}

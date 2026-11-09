@@ -1,0 +1,931 @@
+{
+  "slug": "customer-admin",
+  "title": "Sales Customer Support and Administration",
+  "title_th": "การขาย การบริการลูกค้า และงานธุรการ",
+  "roles": [
+    "Sales",
+    "Customer support",
+    "Administration"
+  ],
+  "lessons": [
+    {
+      "title": "Discover and record requirements",
+      "objectives": [
+        "Turn a customer inquiry into an actionable record."
+      ],
+      "explanation": [
+        "Begin with the outcome the customer wants and the problem they experience. Use open questions, then confirm specifics: site type, affected area, existing equipment, constraints and desired timing. Read back your understanding in plain language. Do not collect credentials or unnecessary personal data to make the record look complete.",
+        "A useful request record distinguishes customer statements from confirmed observations. Include a reference, contact channel authorized for follow-up, scope, open questions and the next responsible action. The fields in this lesson are a generic practice template; actual AITS systems and mandatory fields require company confirmation."
+      ],
+      "example": "Fictional Cedar Office says “we need better cameras.” Ask what must be visible, under what lighting and for what purpose before proposing a specification.",
+      "exercise": "Create an inquiry record using only synthetic details.",
+      "model_response": "Request CO-101: improve entrance image under afternoon light. Existing model unknown. Survey and privacy review needed. Customer prefers follow-up through the agreed business channel.",
+      "key_points": [
+        "Ask about outcome before product",
+        "Read back the requirement",
+        "Separate statements from verified facts"
+      ],
+      "references": [
+        "EX",
+        "QA"
+      ],
+      "thai_summary": "สอบถามผลลัพธ์ที่ลูกค้าต้องการก่อนเสนอสินค้า แยกคำบอกเล่าจากข้อเท็จจริงที่ตรวจสอบแล้ว",
+      "id": "AITS-C06-L01",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01"
+      ],
+      "summary": "Ask about outcome before product Read back the requirement Separate statements from verified facts",
+      "visual_resources": [
+        "course-06-customer-admin/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L01",
+        "course_id": "AITS-C06",
+        "title": "Discover and record requirements",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C06-L01-Q1",
+        "AITS-C06-L01-Q2",
+        "AITS-C06-L01-Q3"
+      ],
+      "html": "<h1>Discover and record requirements</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C06-L01 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Turn a customer inquiry into an actionable record.</p><h2>Explanation</h2><p>Begin with the outcome the customer wants and the problem they experience. Use open questions, then confirm specifics: site type, affected area, existing equipment, constraints and desired timing. Read back your understanding in plain language. Do not collect credentials or unnecessary personal data to make the record look complete.</p><p>A useful request record distinguishes customer statements from confirmed observations. Include a reference, contact channel authorized for follow-up, scope, open questions and the next responsible action. The fields in this lesson are a generic practice template; actual AITS systems and mandatory fields require company confirmation.</p><h2>Synthetic example</h2><p>Fictional Cedar Office says “we need better cameras.” Ask what must be visible, under what lighting and for what purpose before proposing a specification.</p><h2>Practical exercise</h2><p>Create an inquiry record using only synthetic details.</p><h2>Model response</h2><p>Request CO-101: improve entrance image under afternoon light. Existing model unknown. Survey and privacy review needed. Customer prefers follow-up through the agreed business channel.</p><h2>Summary</h2><p>Ask about outcome before product Read back the requirement Separate statements from verified facts</p><h2>Thai summary — translation pending review</h2><p>สอบถามผลลัพธ์ที่ลูกค้าต้องการก่อนเสนอสินค้า แยกคำบอกเล่าจากข้อเท็จจริงที่ตรวจสอบแล้ว</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p>"
+    },
+    {
+      "title": "Complaints and professional communication",
+      "objectives": [
+        "Acknowledge a complaint and agree a next step without unsupported promises."
+      ],
+      "explanation": [
+        "Listen without interrupting, summarize the issue and acknowledge its impact. Ask focused questions to establish what happened and what outcome the customer seeks. Avoid assigning blame before evidence is available. A respectful acknowledgement can be accurate without admitting an unverified cause or promising compensation.",
+        "Record the complaint, impact, evidence available, agreed contact method and next update. Escalate to the authorized responsible function when the request exceeds your role. Do not invent a refund rule or service deadline. If language becomes abusive or safety is threatened, seek the applicable supervisor/site response instead of escalating the confrontation."
+      ],
+      "example": "Cedar Office reports that a missed appointment interrupted work. “I understand this disrupted your schedule. I will record the details and ask the responsible team to confirm the next step.”",
+      "exercise": "Draft a complaint response containing acknowledgement, clarification and a realistic next action.",
+      "model_response": "I understand the disruption. Please confirm the appointment reference and what occurred. I will ask the responsible team to review it and agree the next update with you.",
+      "key_points": [
+        "Acknowledge impact",
+        "Clarify facts without blame",
+        "Agree the next update"
+      ],
+      "references": [
+        "EX",
+        "QA"
+      ],
+      "thai_summary": "รับฟังและยอมรับผลกระทบ ตรวจสอบข้อเท็จจริง และส่งต่อเมื่อเกินอำนาจ อย่าสัญญาชดเชยหรือกำหนดเวลาโดยไม่มีอำนาจ",
+      "id": "AITS-C06-L02",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C06-L01"
+      ],
+      "summary": "Acknowledge impact Clarify facts without blame Agree the next update",
+      "visual_resources": [
+        "course-06-customer-admin/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L02",
+        "course_id": "AITS-C06",
+        "title": "Complaints and professional communication",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C06-L02-Q1",
+        "AITS-C06-L02-Q2",
+        "AITS-C06-L02-Q3"
+      ],
+      "html": "<h1>Complaints and professional communication</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C06-L02 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Acknowledge a complaint and agree a next step without unsupported promises.</p><h2>Explanation</h2><p>Listen without interrupting, summarize the issue and acknowledge its impact. Ask focused questions to establish what happened and what outcome the customer seeks. Avoid assigning blame before evidence is available. A respectful acknowledgement can be accurate without admitting an unverified cause or promising compensation.</p><p>Record the complaint, impact, evidence available, agreed contact method and next update. Escalate to the authorized responsible function when the request exceeds your role. Do not invent a refund rule or service deadline. If language becomes abusive or safety is threatened, seek the applicable supervisor/site response instead of escalating the confrontation.</p><h2>Synthetic example</h2><p>Cedar Office reports that a missed appointment interrupted work. “I understand this disrupted your schedule. I will record the details and ask the responsible team to confirm the next step.”</p><h2>Practical exercise</h2><p>Draft a complaint response containing acknowledgement, clarification and a realistic next action.</p><h2>Model response</h2><p>I understand the disruption. Please confirm the appointment reference and what occurred. I will ask the responsible team to review it and agree the next update with you.</p><h2>Summary</h2><p>Acknowledge impact Clarify facts without blame Agree the next update</p><h2>Thai summary — translation pending review</h2><p>รับฟังและยอมรับผลกระทบ ตรวจสอบข้อเท็จจริง และส่งต่อเมื่อเกินอำนาจ อย่าสัญญาชดเชยหรือกำหนดเวลาโดยไม่มีอำนาจ</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p>"
+    },
+    {
+      "title": "Quotations and sales coordination",
+      "objectives": [
+        "Check scope and assumptions before a quotation is issued."
+      ],
+      "explanation": [
+        "A quotation should make the proposed scope understandable: items or services, quantities, relevant specifications, assumptions, exclusions and commercial terms supplied by the authorized process. This course does not set AITS pricing, discounts, tax treatment, approval limits or validity periods. Technical feasibility and commercial authorization are different checks.",
+        "Before sending, reconcile the customer request, survey and draft quotation. Look for mismatched quantities, unclear installation scope and unsupported compatibility claims. Use a version identifier so reviewers discuss the same document. If the customer changes requirements, record the change and obtain the necessary revised review rather than editing a signed or approved document silently."
+      ],
+      "example": "A fictional survey calls for six camera locations, but the draft quotation lists four cameras. Flag the mismatch before issue.",
+      "exercise": "Review a sample quotation checklist with scope, quantity, exclusions, version and approval fields.",
+      "model_response": "The quantity mismatch is unresolved; the quotation remains a draft. Ask the technical and commercial reviewers to confirm the revised scope.",
+      "key_points": [
+        "Reconcile scope and quantities",
+        "Separate technical and commercial review",
+        "Track revisions explicitly"
+      ],
+      "references": [
+        "EX",
+        "QA"
+      ],
+      "thai_summary": "ตรวจสอบขอบเขต จำนวน และเวอร์ชันก่อนส่งใบเสนอราคา เงื่อนไขราคาและอำนาจอนุมัติต้องมาจากบริษัท",
+      "id": "AITS-C06-L03",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C06-L02"
+      ],
+      "summary": "Reconcile scope and quantities Separate technical and commercial review Track revisions explicitly",
+      "visual_resources": [
+        "course-06-customer-admin/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L03",
+        "course_id": "AITS-C06",
+        "title": "Quotations and sales coordination",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C06-L03-Q1",
+        "AITS-C06-L03-Q2",
+        "AITS-C06-L03-Q3"
+      ],
+      "html": "<h1>Quotations and sales coordination</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C06-L03 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Check scope and assumptions before a quotation is issued.</p><h2>Explanation</h2><p>A quotation should make the proposed scope understandable: items or services, quantities, relevant specifications, assumptions, exclusions and commercial terms supplied by the authorized process. This course does not set AITS pricing, discounts, tax treatment, approval limits or validity periods. Technical feasibility and commercial authorization are different checks.</p><p>Before sending, reconcile the customer request, survey and draft quotation. Look for mismatched quantities, unclear installation scope and unsupported compatibility claims. Use a version identifier so reviewers discuss the same document. If the customer changes requirements, record the change and obtain the necessary revised review rather than editing a signed or approved document silently.</p><h2>Synthetic example</h2><p>A fictional survey calls for six camera locations, but the draft quotation lists four cameras. Flag the mismatch before issue.</p><h2>Practical exercise</h2><p>Review a sample quotation checklist with scope, quantity, exclusions, version and approval fields.</p><h2>Model response</h2><p>The quantity mismatch is unresolved; the quotation remains a draft. Ask the technical and commercial reviewers to confirm the revised scope.</p><h2>Summary</h2><p>Reconcile scope and quantities Separate technical and commercial review Track revisions explicitly</p><h2>Thai summary — translation pending review</h2><p>ตรวจสอบขอบเขต จำนวน และเวอร์ชันก่อนส่งใบเสนอราคา เงื่อนไขราคาและอำนาจอนุมัติต้องมาจากบริษัท</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p>"
+    },
+    {
+      "title": "Administrative records and handovers",
+      "objectives": [
+        "Maintain accurate controlled documents and protect confidentiality."
+      ],
+      "explanation": [
+        "Use clear names, stable references and version information so another person can locate the right record. Check dates, quantities, customer identifiers and attachments against the source. A copied spreadsheet can become an uncontrolled duplicate; follow the approved storage and retention rules once supplied. Do not invent a retention period.",
+        "Restrict access according to the task, verify recipients and use approved transfer methods. A handover should state status, outstanding questions, evidence location and next owner or requested action. Do not mark a task complete merely because an email was sent. Confirm that the intended outcome or handover acceptance has been recorded by the appropriate person."
+      ],
+      "example": "Two files are named final.xlsx. In the exercise, assign a stable request reference and explicit version, then identify which version is approved.",
+      "exercise": "Prepare a handover for a draft quotation awaiting technical review.",
+      "model_response": "CO-101 v0.2 remains Draft; six-location scope awaits confirmation. Evidence is in the authorized case folder. Technical review requested before commercial approval.",
+      "key_points": [
+        "Check records against their source",
+        "Use explicit versions and status",
+        "Handover requires a clear next action"
+      ],
+      "references": [
+        "EX",
+        "QA"
+      ],
+      "thai_summary": "ใช้เลขอ้างอิง เวอร์ชัน และสถานะให้ชัด ตรวจสอบข้อมูลกับต้นทางและส่งต่องานพร้อมรายการที่ยังค้าง",
+      "id": "AITS-C06-L04",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C06-L03"
+      ],
+      "summary": "Check records against their source Use explicit versions and status Handover requires a clear next action",
+      "visual_resources": [
+        "course-06-customer-admin/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L04",
+        "course_id": "AITS-C06",
+        "title": "Administrative records and handovers",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C06-L04-Q1",
+        "AITS-C06-L04-Q2",
+        "AITS-C06-L04-Q3"
+      ],
+      "html": "<h1>Administrative records and handovers</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C06-L04 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Maintain accurate controlled documents and protect confidentiality.</p><h2>Explanation</h2><p>Use clear names, stable references and version information so another person can locate the right record. Check dates, quantities, customer identifiers and attachments against the source. A copied spreadsheet can become an uncontrolled duplicate; follow the approved storage and retention rules once supplied. Do not invent a retention period.</p><p>Restrict access according to the task, verify recipients and use approved transfer methods. A handover should state status, outstanding questions, evidence location and next owner or requested action. Do not mark a task complete merely because an email was sent. Confirm that the intended outcome or handover acceptance has been recorded by the appropriate person.</p><h2>Synthetic example</h2><p>Two files are named final.xlsx. In the exercise, assign a stable request reference and explicit version, then identify which version is approved.</p><h2>Practical exercise</h2><p>Prepare a handover for a draft quotation awaiting technical review.</p><h2>Model response</h2><p>CO-101 v0.2 remains Draft; six-location scope awaits confirmation. Evidence is in the authorized case folder. Technical review requested before commercial approval.</p><h2>Summary</h2><p>Check records against their source Use explicit versions and status Handover requires a clear next action</p><h2>Thai summary — translation pending review</h2><p>ใช้เลขอ้างอิง เวอร์ชัน และสถานะให้ชัด ตรวจสอบข้อมูลกับต้นทางและส่งต่องานพร้อมรายการที่ยังค้าง</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p>"
+    }
+  ],
+  "flow": [
+    "Listen",
+    "Clarify need",
+    "Record facts",
+    "Coordinate review",
+    "Confirm next action"
+  ],
+  "id": "AITS-C06",
+  "folder": "course-06-customer-admin",
+  "metadata": {
+    "document_id": "AITS-C06",
+    "course_id": "AITS-C06",
+    "title": "Sales Customer Support and Administration",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "QA"
+    ]
+  },
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "estimated_minutes": 100,
+  "language": "en",
+  "translation_status": "Thai summaries only; AI translation pending native-speaker review",
+  "objectives": [
+    "Turn a customer inquiry into an actionable record.",
+    "Acknowledge a complaint and agree a next step without unsupported promises.",
+    "Check scope and assumptions before a quotation is issued.",
+    "Maintain accurate controlled documents and protect confidentiality."
+  ],
+  "assessments": [
+    {
+      "question": "What is the best first response to “better cameras”?",
+      "choices": [
+        "Request all passwords",
+        "Ask what outcome the customer needs",
+        "Quote the most expensive model"
+      ],
+      "correct_answer": "Ask what outcome the customer needs",
+      "explanation": "Discovery should establish the actual requirement.",
+      "id": "AITS-C06-L01-Q1",
+      "related_lesson": "AITS-C06-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L01-Q1",
+        "course_id": "AITS-C06",
+        "title": "What is the best first response to “better cameras”?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "How should unverified customer information be recorded?",
+      "choices": [
+        "As a customer statement pending verification",
+        "As a tested fact",
+        "As an approved design"
+      ],
+      "correct_answer": "As a customer statement pending verification",
+      "explanation": "The source and confidence of a statement matter.",
+      "id": "AITS-C06-L01-Q2",
+      "related_lesson": "AITS-C06-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L01-Q2",
+        "course_id": "AITS-C06",
+        "title": "How should unverified customer information be recorded?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Which data collection principle fits this exercise?",
+      "choices": [
+        "Collect every personal detail",
+        "Copy passwords for convenience",
+        "Collect what is needed for the task"
+      ],
+      "correct_answer": "Collect what is needed for the task",
+      "explanation": "Unnecessary collection increases exposure without improving the request.",
+      "id": "AITS-C06-L01-Q3",
+      "related_lesson": "AITS-C06-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L01-Q3",
+        "course_id": "AITS-C06",
+        "title": "Which data collection principle fits this exercise?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Which response avoids an unsupported promise?",
+      "choices": [
+        "I will request review and agree an update",
+        "You will receive a full refund today",
+        "We guarantee repair in ten minutes"
+      ],
+      "correct_answer": "I will request review and agree an update",
+      "explanation": "The first response commits to an action within the stated role.",
+      "id": "AITS-C06-L02-Q1",
+      "related_lesson": "AITS-C06-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L02-Q1",
+        "course_id": "AITS-C06",
+        "title": "Which response avoids an unsupported promise?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "What should complaint notes distinguish?",
+      "choices": [
+        "Only the staff opinion",
+        "Only the customer’s tone",
+        "Reported impact and confirmed facts"
+      ],
+      "correct_answer": "Reported impact and confirmed facts",
+      "explanation": "Both impact and evidence matter.",
+      "id": "AITS-C06-L02-Q2",
+      "related_lesson": "AITS-C06-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L02-Q2",
+        "course_id": "AITS-C06",
+        "title": "What should complaint notes distinguish?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "A request exceeds your authority. What next?",
+      "choices": [
+        "Hide the request",
+        "Escalate through the verified route",
+        "Approve it anyway"
+      ],
+      "correct_answer": "Escalate through the verified route",
+      "explanation": "Authority limits should be respected.",
+      "id": "AITS-C06-L02-Q3",
+      "related_lesson": "AITS-C06-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L02-Q3",
+        "course_id": "AITS-C06",
+        "title": "A request exceeds your authority. What next?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Survey says six cameras; draft quote says four. What next?",
+      "choices": [
+        "Send it unchanged",
+        "Guess that two are free",
+        "Resolve the mismatch before issue"
+      ],
+      "correct_answer": "Resolve the mismatch before issue",
+      "explanation": "A mismatch can create an avoidable delivery dispute.",
+      "id": "AITS-C06-L03-Q1",
+      "related_lesson": "AITS-C06-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L03-Q1",
+        "course_id": "AITS-C06",
+        "title": "Survey says six cameras; draft quote says four. What next?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Who can set an AITS discount in this lesson?",
+      "choices": [
+        "The AI mentor",
+        "No authority is established here",
+        "Every new employee"
+      ],
+      "correct_answer": "No authority is established here",
+      "explanation": "Company approval rules have not been supplied.",
+      "id": "AITS-C06-L03-Q2",
+      "related_lesson": "AITS-C06-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L03-Q2",
+        "course_id": "AITS-C06",
+        "title": "Who can set an AITS discount in this lesson?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "How should a changed customer requirement be handled?",
+      "choices": [
+        "Record it and obtain revised review",
+        "Silently alter the approved file",
+        "Delete the original record"
+      ],
+      "correct_answer": "Record it and obtain revised review",
+      "explanation": "Revision history preserves the decision context.",
+      "id": "AITS-C06-L03-Q3",
+      "related_lesson": "AITS-C06-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L03-Q3",
+        "course_id": "AITS-C06",
+        "title": "How should a changed customer requirement be handled?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Which file name gives better traceability?",
+      "choices": [
+        "misc",
+        "CO-101-quotation-v0.2-Draft",
+        "final-final-new"
+      ],
+      "correct_answer": "CO-101-quotation-v0.2-Draft",
+      "explanation": "A reference, version and status reduce ambiguity.",
+      "id": "AITS-C06-L04-Q1",
+      "related_lesson": "AITS-C06-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L04-Q1",
+        "course_id": "AITS-C06",
+        "title": "Which file name gives better traceability?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Can this course set the company retention period?",
+      "choices": [
+        "No",
+        "Yes, seven years for everything",
+        "Yes, delete after a week"
+      ],
+      "correct_answer": "No",
+      "explanation": "Retention depends on approved policy and applicable obligations.",
+      "id": "AITS-C06-L04-Q2",
+      "related_lesson": "AITS-C06-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L04-Q2",
+        "course_id": "AITS-C06",
+        "title": "Can this course set the company retention period?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "Sending an email always proves a task is complete.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "The required outcome and acceptance must be checked.",
+      "id": "AITS-C06-L04-Q3",
+      "related_lesson": "AITS-C06-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-L04-Q3",
+        "course_id": "AITS-C06",
+        "title": "Sending an email always proves a task is complete.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "AITS-C06-S01",
+      "title": "Vague camera inquiry",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Sales trainee",
+      "problem_description": "Cedar Office asks for better cameras.",
+      "available_information": [
+        "Purpose, lighting and existing models are unknown."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Ask outcome-based questions and record uncertainty.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Ask outcome-based questions and record uncertainty."
+      ],
+      "inappropriate_decisions": [
+        "Choose the highest-priced model immediately."
+      ],
+      "consequences": "Discovery reduces unsuitable proposals.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Choose the highest-priced model immediately.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Ask outcome-based questions and record uncertainty."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-S01",
+        "course_id": "AITS-C06",
+        "title": "Vague camera inquiry",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C06-S02",
+      "title": "Missed appointment complaint",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Support trainee",
+      "problem_description": "A fictional customer reports disruption from a missed visit.",
+      "available_information": [
+        "The appointment record is available but the cause is unverified."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Acknowledge impact, verify facts and request authorized review.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Acknowledge impact, verify facts and request authorized review."
+      ],
+      "inappropriate_decisions": [
+        "Promise a refund without authority."
+      ],
+      "consequences": "Accurate communication avoids a second broken commitment.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Promise a refund without authority.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Acknowledge impact, verify facts and request authorized review."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-S02",
+        "course_id": "AITS-C06",
+        "title": "Missed appointment complaint",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C06-S03",
+      "title": "Quotation mismatch",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Administration trainee",
+      "problem_description": "The survey lists six camera locations; quote v0.2 lists four.",
+      "available_information": [
+        "The document is still Draft."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Flag the mismatch and route it for revision before issue.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Flag the mismatch and route it for revision before issue."
+      ],
+      "inappropriate_decisions": [
+        "Send the draft as approved."
+      ],
+      "consequences": "Version and scope control prevent a foreseeable dispute.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Send the draft as approved.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Flag the mismatch and route it for revision before issue."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C06-S03",
+        "course_id": "AITS-C06",
+        "title": "Quotation mismatch",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    }
+  ]
+}

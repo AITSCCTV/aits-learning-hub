@@ -1,0 +1,55 @@
+{
+  "title": "Incidents site conduct and quality",
+  "objectives": [
+    "Record observations and maintain professional site boundaries."
+  ],
+  "explanation": [
+    "If an incident or near miss occurs, protect yourself, seek the designated emergency response and avoid disturbing the scene except where necessary for immediate safety. Do not attempt a rescue beyond your training. Record time, location, observed conditions and witnesses through the verified reporting route. Do not speculate about blame or publish images of people.",
+    "At a customer site, confirm access permission, work boundaries and the approved scope. Protect property, keep routes clear and obtain permission before taking evidence photographs. Quality assurance means building reliable checks into the process; final inspection alone cannot repair every planning failure. Record incomplete work and unresolved risks truthfully so that the next person can act."
+  ],
+  "example": "A box falls near a colleague without injury. Treat the near miss as useful safety information rather than hiding it because nobody was hurt.",
+  "exercise": "Write a four-line near-miss report using fictional facts.",
+  "model_response": "At 10:20 a loosely stacked box fell in aisle B. No injury observed. Area access was restricted safely. Supervisor review of stacking controls requested.",
+  "key_points": [
+    "Report near misses as well as harm",
+    "Respect site permissions",
+    "Record unfinished work honestly"
+  ],
+  "references": [
+    "HEIGHT",
+    "QA",
+    "EX"
+  ],
+  "thai_summary": "รายงานเหตุเกือบเกิดอุบัติเหตุและข้อบกพร่องตามช่องทางที่ยืนยันแล้ว เคารพพื้นที่ลูกค้าและบันทึกข้อจำกัดตามจริง",
+  "id": "AITS-C03-L04",
+  "estimated_minutes": 15,
+  "prerequisites": [
+    "AITS-C03-L03"
+  ],
+  "summary": "Report near misses as well as harm Respect site permissions Record unfinished work honestly",
+  "visual_resources": [
+    "course-03-workplace-safety/infographics/workflow.svg"
+  ],
+  "metadata": {
+    "document_id": "AITS-C03-L04",
+    "course_id": "AITS-C03",
+    "title": "Incidents site conduct and quality",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "Mixed; see references and labeled examples",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "HEIGHT",
+      "QA",
+      "EX"
+    ]
+  },
+  "knowledge_checks": [
+    "AITS-C03-L04-Q1",
+    "AITS-C03-L04-Q2",
+    "AITS-C03-L04-Q3"
+  ]
+}

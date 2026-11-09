@@ -1,0 +1,276 @@
+import type { ActivityLogActionType, SupportedLanguages } from "@repo/shared";
+import type { UUIDType } from "src/common";
+import type { LessonTypes } from "src/lesson/lesson.type";
+import type { QuestionType } from "src/questions/schema/question.types";
+
+export {
+  ACTIVITY_LOG_ACTION_TYPES,
+  ACTIVITY_LOG_RESOURCE_TYPES,
+  type ActivityLogActionType,
+  type ActivityLogResourceType,
+} from "@repo/shared";
+
+export type ActivityLogMetadata = {
+  operation: ActivityLogActionType;
+  changedFields?: string[];
+  before?: Record<string, string> | null;
+  after?: Record<string, string> | null;
+  context?: Record<string, string> | null;
+};
+
+export type ActivityLogUpdateMetadata = {
+  changedFields: string[];
+  before: Record<string, string>;
+  after: Record<string, string>;
+  context?: Record<string, string> | null;
+};
+
+export type ActivityLogCreateMetadata = {
+  after: Record<string, string>;
+  context?: Record<string, string> | null;
+};
+
+export type ActivityLogMetadataSchema = "create" | "update";
+
+export type ActivityLogMetadataBySchema<TSchema extends ActivityLogMetadataSchema> =
+  TSchema extends "create" ? ActivityLogCreateMetadata : ActivityLogUpdateMetadata;
+
+export type LessonActivityLogOption = {
+  id?: UUIDType;
+  optionText?: string | null;
+  isCorrect?: boolean;
+  displayOrder?: number | null;
+  matchedWord?: string | null;
+  scaleAnswer?: number | null;
+};
+
+export type LessonActivityLogQuestion = {
+  id?: UUIDType;
+  title?: string | null;
+  description?: string | null;
+  solutionExplanation?: string | null;
+  type?: QuestionType;
+  photoS3Key?: string | null;
+  displayOrder?: number | null;
+  options?: LessonActivityLogOption[];
+};
+
+export type LessonActivityLogResource = {
+  id?: UUIDType;
+  fileUrl?: string;
+  contentType?: string;
+  allowFullscreen?: boolean;
+  displayOrder?: number | null;
+};
+
+export type LiveTrainingActivityLogSnapshot = {
+  id: UUIDType;
+  title: string | null;
+  description?: string | null;
+  status: string;
+  deliveryType: string;
+  visibilityScope: string;
+  startsAt: string;
+  endsAt: string;
+  allDay: boolean;
+  timezone: string;
+  location?: string | null;
+  maxParticipants: number;
+  authorId: UUIDType;
+  hostIds?: UUIDType[];
+  linkedCourseIds?: UUIDType[];
+  settings?: Record<string, unknown>;
+};
+
+export type LessonActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+  description?: string | null;
+  type: LessonTypes;
+  fileS3Key?: string | null;
+  fileType?: string | null;
+  isExternal?: boolean;
+  chapterId: UUIDType;
+  displayOrder?: number | null;
+  thresholdScore?: number | null;
+  attemptsLimit?: number | null;
+  quizCooldownInHours?: number | null;
+  quizSummary?: string[];
+  lessonResources?: LessonActivityLogResource[];
+  questions?: LessonActivityLogQuestion[];
+  aiMentor?: {
+    name?: string | null;
+    avatarReference?: string | null;
+    voiceMode?: string | null;
+    ttsPreset?: string | null;
+    customTtsReference?: string | null;
+  };
+};
+
+export type CourseActivityLogSnapshot = {
+  id: UUIDType;
+  archived?: boolean;
+  title?: string | null;
+  description?: string | null;
+  status?: string | null;
+  priceInCents?: number | null;
+  currency?: string | null;
+  hasCertificate?: boolean;
+  isScorm?: boolean;
+  categoryId?: UUIDType | null;
+  authorId?: UUIDType | null;
+  thumbnailS3Key?: string | null;
+  thumbnailPositionY?: number;
+  learningOutcomes?: string[];
+  showAuthorSection?: boolean;
+  baseLanguage?: string;
+  availableLocales?: string[];
+  settings?: Record<string, unknown>;
+  stripeProductId?: string | null;
+  stripePriceId?: string | null;
+};
+
+export type ChapterActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+  courseId?: UUIDType;
+  authorId?: UUIDType;
+  displayOrder?: number | null;
+  isFreemium?: boolean;
+  lessonCount?: number | null;
+};
+
+export type AnnouncementActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+  content?: string | null;
+  authorId?: UUIDType | null;
+  isEveryone?: boolean;
+  groupId?: UUIDType | null;
+};
+
+export type GroupActivityLogSnapshot = {
+  id: UUIDType;
+  name?: string | null;
+  characteristic?: string | null;
+  userCount?: number | null;
+};
+
+export type CategoryActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+};
+
+export type NewsActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+  summary?: string | null;
+  translations?: Partial<
+    Record<
+      SupportedLanguages,
+      {
+        title?: string;
+        summary?: string;
+        content?: string;
+      }
+    >
+  >;
+  status?: string | null;
+  isPublic?: boolean | null;
+  publishedAt?: string | null;
+  authorId?: UUIDType | null;
+  baseLanguage?: string;
+  availableLocales?: string[];
+};
+
+export type UserActivityLogSnapshot = {
+  id: UUIDType;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  role?: string | null;
+  archived?: boolean | null;
+  groups?: Array<{ id: UUIDType; name?: string | null }>;
+  managedGroups?: Array<{ id: UUIDType; name?: string | null }>;
+};
+
+export type SettingsActivityLogSnapshot = {
+  id: UUIDType;
+  unregisteredUserCoursesAccessibility?: boolean;
+  enforceSSO?: boolean;
+  primaryColor?: string | null;
+  contrastColor?: string | null;
+  companyInformation?: Record<string, unknown> | null;
+  platformLogoS3Key?: string | null;
+  platformSimpleLogoS3Key?: string | null;
+  loginBackgroundImageS3Key?: string | null;
+  certificateBackgroundImage?: string | null;
+  MFAEnforcedRoles?: string[] | null;
+  defaultCourseCurrency?: string | null;
+  inviteOnlyRegistration?: boolean;
+  userEmailTriggers?: Record<string, boolean> | null;
+  adminNewUserNotification?: boolean;
+  adminFinishedCourseNotification?: boolean;
+  configWarningDismissed?: boolean;
+};
+
+export type QuestionsAndAnswersActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+  description?: string | null;
+  metadata?: unknown | null;
+  baseLanguage?: string | null;
+  availableLocales?: string[] | null;
+};
+
+export type ArticleActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+  summary?: string | null;
+  translations?: Partial<
+    Record<
+      SupportedLanguages,
+      {
+        title?: string;
+        summary?: string;
+        content?: string;
+      }
+    >
+  >;
+  status?: string | null;
+  content?: string | null;
+  isPublic?: boolean | null;
+  publishedAt?: string | null;
+  authorId?: UUIDType | null;
+  baseLanguage?: string;
+  availableLocales?: string[];
+};
+
+export type ArticleSectionActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+  translations?: Partial<Record<SupportedLanguages, { title?: string }>>;
+  baseLanguage?: string;
+  availableLocales?: string[];
+};
+
+export type LearningPathActivityLogSnapshot = {
+  id: UUIDType;
+  title?: string | null;
+  description?: string | null;
+  status?: string | null;
+  authorId?: UUIDType | null;
+  sequenceEnabled?: boolean;
+  includesCertificate?: boolean;
+  baseLanguage?: string;
+  availableLocales?: string[];
+  settings?: Record<string, unknown>;
+};
+
+export type ScormActivityLogSnapshot = {
+  id: UUIDType;
+  entityType?: string | null;
+  standard?: string | null;
+  status?: string | null;
+  packageId?: UUIDType | null;
+};

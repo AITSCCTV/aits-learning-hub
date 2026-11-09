@@ -1,0 +1,937 @@
+{
+  "slug": "employee-rights",
+  "title": "Employee Rights and Workplace Fundamentals",
+  "title_th": "สิทธิพนักงานและพื้นฐานการทำงาน",
+  "roles": [
+    "All new employees"
+  ],
+  "lessons": [
+    {
+      "title": "Statutory rights and company documents",
+      "objectives": [
+        "Separate legal minimums from unverified AITS arrangements."
+      ],
+      "explanation": [
+        "Thai statutory employment protections and an employer’s additional benefits are different sources of entitlement. A company handbook may explain administration and provide more generous arrangements, but this training has not verified AITS benefits, payroll rules or leave approval channels. Ask for current employment terms, work rules, pay records and the applicable HR contact.",
+        "Keep copies of documents you are entitled to hold and ask for clarification when terms are unclear. Record the actual dates and facts of a concern. Do not assume that signing a document makes every term lawful. Individual questions require review of current Thai law, the employment relationship and relevant exceptions by a qualified HR or legal reviewer."
+      ],
+      "example": "A colleague says AITS grants a particular bonus. No approved policy is supplied. Treat that as unverified, not as an entitlement.",
+      "exercise": "Create two columns: statutory topics to verify and company arrangements to obtain.",
+      "model_response": "Statutory: hours, rest, leave and wage protections. Company: work schedule, extra benefits, request channel and designated contacts.",
+      "key_points": [
+        "Law and company benefits have different sources",
+        "Obtain current employment documents",
+        "Record facts when raising concerns"
+      ],
+      "references": [
+        "MOL",
+        "EX"
+      ],
+      "thai_summary": "แยกสิทธิตามกฎหมายออกจากสวัสดิการบริษัท ขอเอกสารการจ้างและข้อบังคับฉบับปัจจุบันจากผู้รับผิดชอบ",
+      "id": "AITS-C02-L01",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C01"
+      ],
+      "summary": "Law and company benefits have different sources Obtain current employment documents Record facts when raising concerns",
+      "visual_resources": [
+        "course-02-employee-rights/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L01",
+        "course_id": "AITS-C02",
+        "title": "Statutory rights and company documents",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C02-L01-Q1",
+        "AITS-C02-L01-Q2",
+        "AITS-C02-L01-Q3"
+      ],
+      "html": "<h1>Statutory rights and company documents</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C02-L01 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Separate legal minimums from unverified AITS arrangements.</p><h2>Explanation</h2><p>Thai statutory employment protections and an employer’s additional benefits are different sources of entitlement. A company handbook may explain administration and provide more generous arrangements, but this training has not verified AITS benefits, payroll rules or leave approval channels. Ask for current employment terms, work rules, pay records and the applicable HR contact.</p><p>Keep copies of documents you are entitled to hold and ask for clarification when terms are unclear. Record the actual dates and facts of a concern. Do not assume that signing a document makes every term lawful. Individual questions require review of current Thai law, the employment relationship and relevant exceptions by a qualified HR or legal reviewer.</p><h2>Synthetic example</h2><p>A colleague says AITS grants a particular bonus. No approved policy is supplied. Treat that as unverified, not as an entitlement.</p><h2>Practical exercise</h2><p>Create two columns: statutory topics to verify and company arrangements to obtain.</p><h2>Model response</h2><p>Statutory: hours, rest, leave and wage protections. Company: work schedule, extra benefits, request channel and designated contacts.</p><h2>Summary</h2><p>Law and company benefits have different sources Obtain current employment documents Record facts when raising concerns</p><h2>Thai summary — translation pending review</h2><p>แยกสิทธิตามกฎหมายออกจากสวัสดิการบริษัท ขอเอกสารการจ้างและข้อบังคับฉบับปัจจุบันจากผู้รับผิดชอบ</p><h2>References</h2><p>MOL: Ministry of Labour employment rights — https://www.mol.go.th/employee/สิทธิหน้าที่นายจ้าง-ลูกจ้าง</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Hours rest and holidays",
+      "objectives": [
+        "Recognize the ordinary statutory baseline and its limits."
+      ],
+      "explanation": [
+        "For ordinary work, Ministry of Labour guidance describes normal limits of eight hours a day and 48 hours a week, with lawful arrangements and sector exceptions requiring review. Specified hazardous work has a seven-hour daily and 42-hour weekly limit. The ordinary rest rule provides at least one hour after no more than five consecutive working hours; agreed split breaks and statutory exceptions must be checked.",
+        "The general baseline includes at least one weekly holiday with no more than six days between, at least 13 traditional holidays including National Labour Day, and at least six working days of annual holiday after one continuous year. These are legal baselines, not a statement of the AITS roster. Overtime consent, exceptions and pay should be checked separately; do not infer that a customer deadline overrides them."
+      ],
+      "example": "A fictional roster appears to schedule continuous work without a break. Identify the concern and ask HR to check the actual arrangement and exceptions.",
+      "exercise": "Annotate a sample 09:00–18:00 schedule with a one-hour midday break, then list what remains unknown.",
+      "model_response": "Eight working hours are shown. Weekly total, holiday arrangements, actual duties and any overtime remain to be verified.",
+      "key_points": [
+        "Ordinary baseline: 8 hours/day and 48/week",
+        "Rest and weekly holidays matter",
+        "AITS schedules remain unverified"
+      ],
+      "references": [
+        "MOL",
+        "EX"
+      ],
+      "thai_summary": "ชั่วโมงทำงานและวันหยุดที่กล่าวถึงเป็นหลักกฎหมายทั่วไป ไม่ใช่ตารางทำงานของ AITS ต้องตรวจสอบข้อยกเว้นและข้อเท็จจริง",
+      "id": "AITS-C02-L02",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C02-L01"
+      ],
+      "summary": "Ordinary baseline: 8 hours/day and 48/week Rest and weekly holidays matter AITS schedules remain unverified",
+      "visual_resources": [
+        "course-02-employee-rights/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L02",
+        "course_id": "AITS-C02",
+        "title": "Hours rest and holidays",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C02-L02-Q1",
+        "AITS-C02-L02-Q2",
+        "AITS-C02-L02-Q3"
+      ],
+      "html": "<h1>Hours rest and holidays</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C02-L02 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Recognize the ordinary statutory baseline and its limits.</p><h2>Explanation</h2><p>For ordinary work, Ministry of Labour guidance describes normal limits of eight hours a day and 48 hours a week, with lawful arrangements and sector exceptions requiring review. Specified hazardous work has a seven-hour daily and 42-hour weekly limit. The ordinary rest rule provides at least one hour after no more than five consecutive working hours; agreed split breaks and statutory exceptions must be checked.</p><p>The general baseline includes at least one weekly holiday with no more than six days between, at least 13 traditional holidays including National Labour Day, and at least six working days of annual holiday after one continuous year. These are legal baselines, not a statement of the AITS roster. Overtime consent, exceptions and pay should be checked separately; do not infer that a customer deadline overrides them.</p><h2>Synthetic example</h2><p>A fictional roster appears to schedule continuous work without a break. Identify the concern and ask HR to check the actual arrangement and exceptions.</p><h2>Practical exercise</h2><p>Annotate a sample 09:00–18:00 schedule with a one-hour midday break, then list what remains unknown.</p><h2>Model response</h2><p>Eight working hours are shown. Weekly total, holiday arrangements, actual duties and any overtime remain to be verified.</p><h2>Summary</h2><p>Ordinary baseline: 8 hours/day and 48/week Rest and weekly holidays matter AITS schedules remain unverified</p><h2>Thai summary — translation pending review</h2><p>ชั่วโมงทำงานและวันหยุดที่กล่าวถึงเป็นหลักกฎหมายทั่วไป ไม่ใช่ตารางทำงานของ AITS ต้องตรวจสอบข้อยกเว้นและข้อเท็จจริง</p><h2>References</h2><p>MOL: Ministry of Labour employment rights — https://www.mol.go.th/employee/สิทธิหน้าที่นายจ้าง-ลูกจ้าง</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Leave categories and recent changes",
+      "objectives": [
+        "Locate current leave guidance and avoid outdated figures."
+      ],
+      "explanation": [
+        "Leave categories include sickness, necessary personal business, maternity, qualifying spouse support, sterilization, military service and training, each with conditions and payment rules. Sick leave and paid sick-leave limits are different concepts. Do not use an old overview as the sole source for current allowances.",
+        "The official explanation of the 2025 amendment, effective 7 December 2025, describes maternity leave of up to 120 days with employer-paid wages up to 60 days. It also describes up to 15 days of qualifying continuous child-care leave at 50% wages with the required medical evidence, and up to 15 days to assist a spouse who gives birth, paid in full, subject to the application and 90-day timing rules. These are statutory summaries, not AITS benefits. HR/legal review must confirm current text and individual eligibility before release."
+      ],
+      "example": "An older Ministry overview still says 90 maternity days. The newer official amendment explanation supersedes that figure for the relevant covered situation.",
+      "exercise": "Write a respectful request for current leave guidance without sharing medical details in a group chat.",
+      "model_response": "Please confirm the applicable leave category, current entitlement, required documents and private submission channel for my circumstances.",
+      "key_points": [
+        "Check amendment and effective date",
+        "Leave duration and pay are separate",
+        "Submit sensitive evidence privately"
+      ],
+      "references": [
+        "LEAVE",
+        "EX"
+      ],
+      "thai_summary": "ตรวจสอบกฎหมายฉบับแก้ไขและวันที่ใช้บังคับ วันลากับวันที่ได้รับค่าจ้างไม่ใช่เรื่องเดียวกัน ส่งเอกสารสุขภาพผ่านช่องทางที่ได้รับอนุญาต",
+      "id": "AITS-C02-L03",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C02-L02"
+      ],
+      "summary": "Check amendment and effective date Leave duration and pay are separate Submit sensitive evidence privately",
+      "visual_resources": [
+        "course-02-employee-rights/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L03",
+        "course_id": "AITS-C02",
+        "title": "Leave categories and recent changes",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "LEAVE",
+          "EX"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C02-L03-Q1",
+        "AITS-C02-L03-Q2",
+        "AITS-C02-L03-Q3"
+      ],
+      "html": "<h1>Leave categories and recent changes</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C02-L03 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Locate current leave guidance and avoid outdated figures.</p><h2>Explanation</h2><p>Leave categories include sickness, necessary personal business, maternity, qualifying spouse support, sterilization, military service and training, each with conditions and payment rules. Sick leave and paid sick-leave limits are different concepts. Do not use an old overview as the sole source for current allowances.</p><p>The official explanation of the 2025 amendment, effective 7 December 2025, describes maternity leave of up to 120 days with employer-paid wages up to 60 days. It also describes up to 15 days of qualifying continuous child-care leave at 50% wages with the required medical evidence, and up to 15 days to assist a spouse who gives birth, paid in full, subject to the application and 90-day timing rules. These are statutory summaries, not AITS benefits. HR/legal review must confirm current text and individual eligibility before release.</p><h2>Synthetic example</h2><p>An older Ministry overview still says 90 maternity days. The newer official amendment explanation supersedes that figure for the relevant covered situation.</p><h2>Practical exercise</h2><p>Write a respectful request for current leave guidance without sharing medical details in a group chat.</p><h2>Model response</h2><p>Please confirm the applicable leave category, current entitlement, required documents and private submission channel for my circumstances.</p><h2>Summary</h2><p>Check amendment and effective date Leave duration and pay are separate Submit sensitive evidence privately</p><h2>Thai summary — translation pending review</h2><p>ตรวจสอบกฎหมายฉบับแก้ไขและวันที่ใช้บังคับ วันลากับวันที่ได้รับค่าจ้างไม่ใช่เรื่องเดียวกัน ส่งเอกสารสุขภาพผ่านช่องทางที่ได้รับอนุญาต</p><h2>References</h2><p>LEAVE: PRD explanation of Labour Protection Act No 9 — https://secretary.prd.go.th/th/content/category/detail/id/9/iid/451880</p><p>EX: Original instructional examples — training-content/build_content.py</p>"
+    },
+    {
+      "title": "Conduct confidentiality and concerns",
+      "objectives": [
+        "Communicate professionally and protect personal information."
+      ],
+      "explanation": [
+        "General professional practice includes accurate records, respectful communication, honesty about mistakes and protection of information entrusted to you. Collect only information needed for the legitimate task and share it only with authorized recipients through approved systems. This is privacy awareness, not a complete interpretation of Thailand’s PDPA or an AITS retention policy.",
+        "Before sending a document, check recipient, attachment, purpose and sensitivity. Never put customer passwords into a ticket or AI practice chat. For a concern, separate what you observed from what you suspect, preserve relevant evidence lawfully, and use a verified responsible channel. If the usual contact is implicated, seek an alternative authorized route. This lesson does not invent a company grievance procedure or promise a particular investigation outcome."
+      ],
+      "example": "A fictional employee receives a customer list by mistake. Stop further sharing and report the misdelivery through the verified internal route.",
+      "exercise": "Rewrite an accusatory message as an observation, impact and request.",
+      "model_response": "The file was sent to an unintended recipient at 10:15. It contains contact details. Please advise the authorized containment and reporting steps.",
+      "key_points": [
+        "Separate observation from suspicion",
+        "Share only with authorized recipients",
+        "Verify the route for concerns"
+      ],
+      "references": [
+        "EX",
+        "QA"
+      ],
+      "thai_summary": "สื่อสารอย่างสุภาพ บันทึกข้อเท็จจริง และจำกัดการเปิดเผยข้อมูล ตรวจสอบผู้รับและช่องทางก่อนส่งข้อมูลสำคัญ",
+      "id": "AITS-C02-L04",
+      "estimated_minutes": 15,
+      "prerequisites": [
+        "AITS-C02-L03"
+      ],
+      "summary": "Separate observation from suspicion Share only with authorized recipients Verify the route for concerns",
+      "visual_resources": [
+        "course-02-employee-rights/infographics/workflow.svg"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L04",
+        "course_id": "AITS-C02",
+        "title": "Conduct confidentiality and concerns",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Mixed; see references and labeled examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      },
+      "knowledge_checks": [
+        "AITS-C02-L04-Q1",
+        "AITS-C02-L04-Q2",
+        "AITS-C02-L04-Q3"
+      ],
+      "html": "<h1>Conduct confidentiality and concerns</h1><p><strong>Sample Content — Pending Company Approval</strong></p><p>Version 0.1.0 | AITS-C02-L04 | Draft | 15 minutes</p><h2>Learning objective</h2><p>Communicate professionally and protect personal information.</p><h2>Explanation</h2><p>General professional practice includes accurate records, respectful communication, honesty about mistakes and protection of information entrusted to you. Collect only information needed for the legitimate task and share it only with authorized recipients through approved systems. This is privacy awareness, not a complete interpretation of Thailand’s PDPA or an AITS retention policy.</p><p>Before sending a document, check recipient, attachment, purpose and sensitivity. Never put customer passwords into a ticket or AI practice chat. For a concern, separate what you observed from what you suspect, preserve relevant evidence lawfully, and use a verified responsible channel. If the usual contact is implicated, seek an alternative authorized route. This lesson does not invent a company grievance procedure or promise a particular investigation outcome.</p><h2>Synthetic example</h2><p>A fictional employee receives a customer list by mistake. Stop further sharing and report the misdelivery through the verified internal route.</p><h2>Practical exercise</h2><p>Rewrite an accusatory message as an observation, impact and request.</p><h2>Model response</h2><p>The file was sent to an unintended recipient at 10:15. It contains contact details. Please advise the authorized containment and reporting steps.</p><h2>Summary</h2><p>Separate observation from suspicion Share only with authorized recipients Verify the route for concerns</p><h2>Thai summary — translation pending review</h2><p>สื่อสารอย่างสุภาพ บันทึกข้อเท็จจริง และจำกัดการเปิดเผยข้อมูล ตรวจสอบผู้รับและช่องทางก่อนส่งข้อมูลสำคัญ</p><h2>References</h2><p>EX: Original instructional examples — training-content/build_content.py</p><p>QA: ISO quality assurance overview — https://www.iso.org/quality-management/quality-assurance</p>"
+    }
+  ],
+  "flow": [
+    "Identify the question",
+    "Check current law",
+    "Check company terms",
+    "Use a private channel",
+    "Record clarification"
+  ],
+  "id": "AITS-C02",
+  "folder": "course-02-employee-rights",
+  "metadata": {
+    "document_id": "AITS-C02",
+    "course_id": "AITS-C02",
+    "title": "Employee Rights and Workplace Fundamentals",
+    "version": "0.1.0",
+    "created_date": "2026-11-09",
+    "last_updated_date": "2026-11-09",
+    "author_source": "AI-assisted instructional draft; source references attached",
+    "information_classification": "General industry knowledge",
+    "approval_status": "Draft",
+    "responsible_reviewer": "Company to designate",
+    "source_references": [
+      "EX",
+      "LEAVE",
+      "MOL",
+      "QA"
+    ]
+  },
+  "prerequisites": [
+    "AITS-C01"
+  ],
+  "estimated_minutes": 100,
+  "language": "en",
+  "translation_status": "Thai summaries only; AI translation pending native-speaker review",
+  "objectives": [
+    "Separate legal minimums from unverified AITS arrangements.",
+    "Recognize the ordinary statutory baseline and its limits.",
+    "Locate current leave guidance and avoid outdated figures.",
+    "Communicate professionally and protect personal information."
+  ],
+  "assessments": [
+    {
+      "question": "What establishes an additional AITS benefit?",
+      "choices": [
+        "A colleague’s guess",
+        "A generic training example",
+        "Applicable approved company terms"
+      ],
+      "correct_answer": "Applicable approved company terms",
+      "explanation": "Company-specific benefits need company evidence.",
+      "id": "AITS-C02-L01-Q1",
+      "related_lesson": "AITS-C02-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L01-Q1",
+        "course_id": "AITS-C02",
+        "title": "What establishes an additional AITS benefit?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which record helps resolve a pay concern?",
+      "choices": [
+        "A public accusation without facts",
+        "Accurate dates and relevant pay records",
+        "An altered screenshot"
+      ],
+      "correct_answer": "Accurate dates and relevant pay records",
+      "explanation": "Accurate records allow the issue to be checked.",
+      "id": "AITS-C02-L01-Q2",
+      "related_lesson": "AITS-C02-L01",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L01-Q2",
+        "course_id": "AITS-C02",
+        "title": "Which record helps resolve a pay concern?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Can this course determine an individual legal dispute?",
+      "choices": [
+        "No; facts and current law need qualified review",
+        "Yes for every worker",
+        "Yes if the quiz is passed"
+      ],
+      "correct_answer": "No; facts and current law need qualified review",
+      "explanation": "Applicability and exceptions require case-specific review.",
+      "id": "AITS-C02-L01-Q3",
+      "related_lesson": "AITS-C02-L01",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L01-Q3",
+        "course_id": "AITS-C02",
+        "title": "Can this course determine an individual legal dispute?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What is the ordinary weekly normal-hours baseline described here?",
+      "choices": [
+        "72 hours",
+        "48 hours",
+        "60 hours"
+      ],
+      "correct_answer": "48 hours",
+      "explanation": "Special categories and arrangements still require applicability review.",
+      "id": "AITS-C02-L02-Q1",
+      "related_lesson": "AITS-C02-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L02-Q1",
+        "course_id": "AITS-C02",
+        "title": "What is the ordinary weekly normal-hours baseline described here?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does the course establish AITS office opening hours?",
+      "choices": [
+        "No",
+        "Yes, 09:00–18:00",
+        "Yes, seven days a week"
+      ],
+      "correct_answer": "No",
+      "explanation": "The schedule is an exercise only.",
+      "id": "AITS-C02-L02-Q2",
+      "related_lesson": "AITS-C02-L02",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L02-Q2",
+        "course_id": "AITS-C02",
+        "title": "Does the course establish AITS office opening hours?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "What should a missing-break concern trigger?",
+      "choices": [
+        "Automatic acceptance because the site is busy",
+        "Deletion of the time record",
+        "A factual review of the arrangement and applicable law"
+      ],
+      "correct_answer": "A factual review of the arrangement and applicable law",
+      "explanation": "Record facts and obtain competent clarification.",
+      "id": "AITS-C02-L02-Q3",
+      "related_lesson": "AITS-C02-L02",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "MOL",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L02-Q3",
+        "course_id": "AITS-C02",
+        "title": "What should a missing-break concern trigger?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "MOL",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which source should resolve an outdated maternity figure?",
+      "choices": [
+        "The applicable newer official amendment",
+        "The oldest cached page",
+        "A generic company example"
+      ],
+      "correct_answer": "The applicable newer official amendment",
+      "explanation": "Effective legislation must be checked instead of copying obsolete summaries.",
+      "id": "AITS-C02-L03-Q1",
+      "related_lesson": "AITS-C02-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "LEAVE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L03-Q1",
+        "course_id": "AITS-C02",
+        "title": "Which source should resolve an outdated maternity figure?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "LEAVE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Does 120 days mean all 120 are employer-paid under this summary?",
+      "choices": [
+        "Yes",
+        "Only if the AI says so",
+        "No; the summary distinguishes up to 60 paid days"
+      ],
+      "correct_answer": "No; the summary distinguishes up to 60 paid days",
+      "explanation": "Duration and employer payment are distinct.",
+      "id": "AITS-C02-L03-Q2",
+      "related_lesson": "AITS-C02-L03",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "LEAVE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L03-Q2",
+        "course_id": "AITS-C02",
+        "title": "Does 120 days mean all 120 are employer-paid under this summary?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "LEAVE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Where should sensitive medical evidence be sent?",
+      "choices": [
+        "An unknown personal account",
+        "The verified private authorized channel",
+        "A public team chat"
+      ],
+      "correct_answer": "The verified private authorized channel",
+      "explanation": "Limit disclosure and verify the recipient.",
+      "id": "AITS-C02-L03-Q3",
+      "related_lesson": "AITS-C02-L03",
+      "difficulty": "intermediate",
+      "type": "multiple_choice",
+      "source_references": [
+        "LEAVE",
+        "EX"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L03-Q3",
+        "course_id": "AITS-C02",
+        "title": "Where should sensitive medical evidence be sent?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "LEAVE",
+          "EX"
+        ]
+      }
+    },
+    {
+      "question": "Which detail should be excluded from a troubleshooting ticket?",
+      "choices": [
+        "The device model",
+        "The symptom start time",
+        "The customer password"
+      ],
+      "correct_answer": "The customer password",
+      "explanation": "Passwords should not be copied into routine records.",
+      "id": "AITS-C02-L04-Q1",
+      "related_lesson": "AITS-C02-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L04-Q1",
+        "course_id": "AITS-C02",
+        "title": "Which detail should be excluded from a troubleshooting ticket?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "What is the best opening to a concern report?",
+      "choices": [
+        "A demand to delete evidence",
+        "Specific observed facts",
+        "An unsupported accusation"
+      ],
+      "correct_answer": "Specific observed facts",
+      "explanation": "Facts help a responsible reviewer investigate.",
+      "id": "AITS-C02-L04-Q2",
+      "related_lesson": "AITS-C02-L04",
+      "difficulty": "beginner",
+      "type": "multiple_choice",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L04-Q2",
+        "course_id": "AITS-C02",
+        "title": "What is the best opening to a concern report?",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    },
+    {
+      "question": "This training establishes the approved AITS grievance procedure.",
+      "choices": [
+        "True",
+        "False"
+      ],
+      "correct_answer": "False",
+      "explanation": "The company procedure has not been supplied.",
+      "id": "AITS-C02-L04-Q3",
+      "related_lesson": "AITS-C02-L04",
+      "difficulty": "intermediate",
+      "type": "true_false",
+      "source_references": [
+        "EX",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-L04-Q3",
+        "course_id": "AITS-C02",
+        "title": "This training establishes the approved AITS grievance procedure.",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "General industry knowledge",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX",
+          "QA"
+        ]
+      }
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "AITS-C02-S01",
+      "title": "Conflicting leave pages",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "New employee",
+      "problem_description": "Two pages show different maternity allowances.",
+      "available_information": [
+        "One is an old overview; one explains the effective 2025 amendment."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Use the newer applicable official text and request HR verification.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Use the newer applicable official text and request HR verification."
+      ],
+      "inappropriate_decisions": [
+        "Copy the old number into the handbook."
+      ],
+      "consequences": "Version checks prevent outdated rights guidance.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Copy the old number into the handbook.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Use the newer applicable official text and request HR verification."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-S01",
+        "course_id": "AITS-C02",
+        "title": "Conflicting leave pages",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C02-S02",
+      "title": "Roster without a break",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Team member",
+      "problem_description": "A sample work plan appears to omit a rest period.",
+      "available_information": [
+        "Actual task category and agreement are unknown."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Record the schedule and ask the responsible reviewer to check it.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Record the schedule and ask the responsible reviewer to check it."
+      ],
+      "inappropriate_decisions": [
+        "Assume all work can continue without rest."
+      ],
+      "consequences": "A factual review can identify the applicable protection.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Assume all work can continue without rest.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Record the schedule and ask the responsible reviewer to check it."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-S02",
+        "course_id": "AITS-C02",
+        "title": "Roster without a break",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    },
+    {
+      "id": "AITS-C02-S03",
+      "title": "Misaddressed file",
+      "context": "Synthetic classroom exercise; not an AITS procedure.",
+      "employee_role": "Administrator trainee",
+      "problem_description": "A fictional employee file reaches the wrong recipient.",
+      "available_information": [
+        "The file may include personal details; no actual data is used here."
+      ],
+      "decision_points": [
+        "What would you check first, and why?",
+        "What requires confirmation or authorization?",
+        "What would you record and hand over?"
+      ],
+      "expected_actions": [
+        "Stop forwarding and report through a verified private channel.",
+        "Record evidence, uncertainty and the next authorized action."
+      ],
+      "appropriate_decisions": [
+        "Stop forwarding and report through a verified private channel."
+      ],
+      "inappropriate_decisions": [
+        "Upload the full file to a public AI chat."
+      ],
+      "consequences": "Limiting further disclosure reduces additional exposure.",
+      "evaluation_rubric": [
+        {
+          "criterion": "Evidence and scope",
+          "max_score": 2,
+          "anchors": {
+            "0": "Makes unsupported assumptions",
+            "1": "Identifies some relevant facts",
+            "2": "Uses the available facts and names missing evidence"
+          }
+        },
+        {
+          "criterion": "Decision quality",
+          "max_score": 2,
+          "anchors": {
+            "0": "Upload the full file to a public AI chat.",
+            "1": "Partially appropriate but misses a necessary check",
+            "2": "Stop forwarding and report through a verified private channel."
+          }
+        },
+        {
+          "criterion": "Authority and safety",
+          "max_score": 2,
+          "anchors": {
+            "0": "Acts beyond authority or creates exposure",
+            "1": "Recognizes a limit but gives no next action",
+            "2": "Pauses where necessary and seeks the correct authorized review"
+          }
+        },
+        {
+          "criterion": "Handover",
+          "max_score": 2,
+          "anchors": {
+            "0": "No useful record",
+            "1": "Records symptom only",
+            "2": "Records result, uncertainty and next action"
+          }
+        }
+      ],
+      "scoring": "0–8 formative points; any unsafe or unauthorized action requires coaching regardless of total. Not competency certification.",
+      "source_references": [
+        "EX",
+        "EX",
+        "LEAVE",
+        "MOL",
+        "QA"
+      ],
+      "metadata": {
+        "document_id": "AITS-C02-S03",
+        "course_id": "AITS-C02",
+        "title": "Misaddressed file",
+        "version": "0.1.0",
+        "created_date": "2026-11-09",
+        "last_updated_date": "2026-11-09",
+        "author_source": "AI-assisted instructional draft; source references attached",
+        "information_classification": "Hypothetical examples",
+        "approval_status": "Draft",
+        "responsible_reviewer": "Company to designate",
+        "source_references": [
+          "EX"
+        ]
+      }
+    }
+  ]
+}
