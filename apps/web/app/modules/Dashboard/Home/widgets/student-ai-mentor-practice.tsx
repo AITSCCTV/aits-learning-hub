@@ -23,6 +23,7 @@ import {
 import { queryClient } from "~/api/queryClient";
 import { AiMentorReplayLoader } from "~/components/AiMentorReplayLoader";
 import { Icon } from "~/components/Icon";
+import { LocalizedText } from "~/components/LocalizedText";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -337,7 +338,7 @@ export function WidgetStudentAiMentorPractice({
             <Tooltip>
               <TooltipTrigger asChild>
                 <Badge variant="secondary" className="uppercase">
-                  Beta
+                  <LocalizedText textKey="interface.beta" />
                 </Badge>
               </TooltipTrigger>
               <TooltipContent side="bottom">{t("studentLessonView.tooltip.beta")}</TooltipContent>

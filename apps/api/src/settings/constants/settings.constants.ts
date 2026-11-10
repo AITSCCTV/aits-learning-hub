@@ -42,7 +42,7 @@ export const DEFAULT_GLOBAL_SETTINGS = {
 };
 
 export const DEFAULT_STUDENT_SETTINGS = {
-  language: SUPPORTED_LANGUAGES.EN,
+  language: SUPPORTED_LANGUAGES.TH,
   isMFAEnabled: false,
   MFASecret: null,
 };

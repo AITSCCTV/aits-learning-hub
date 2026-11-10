@@ -1,3 +1,4 @@
+import { LocalizedText } from "~/components/LocalizedText";
 export const FileLoader = () => {
   return (
     <div role="status">
@@ -17,7 +18,9 @@ export const FileLoader = () => {
           fill="currentFill"
         />
       </svg>
-      <span className="sr-only">Loading...</span>
+      <span className="sr-only">
+        <LocalizedText textKey="interface.loading" />
+      </span>
     </div>
   );
 };

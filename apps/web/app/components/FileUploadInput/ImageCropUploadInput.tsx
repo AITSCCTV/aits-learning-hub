@@ -1,6 +1,6 @@
-import { t } from "i18next";
 import { useRef, useState } from "react";
 import Cropper from "react-easy-crop";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "../../lib/utils";
 import { Icon } from "../Icon";
@@ -34,6 +34,7 @@ export const ImageCropUploadInput = ({
   cropShape,
   maxResolution,
 }: ImageCropUploadProps) => {
+  const { t } = useTranslation();
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [processedImageUrl, setProcessedImageUrl] = useState<string | null>(null);
@@ -81,7 +82,11 @@ export const ImageCropUploadInput = ({
                 onCropComplete={onCropComplete}
               />
             ) : (
-              <img src={processedImageUrl} alt="Uploaded" className="h-full w-full object-cover" />
+              <img
+                src={processedImageUrl}
+                alt={t("interface.uploaded")}
+                className="h-full w-full object-cover"
+              />
             )}
           </>
         ) : (

@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 
 import { useGlobalSettings } from "~/api/queries/useGlobalSettings";
 import { Icon } from "~/components/Icon";
+import { LocalizedText } from "~/components/LocalizedText";
 import { Badge } from "~/components/ui/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "~/components/ui/tooltip";
 
@@ -125,7 +126,7 @@ const SelectLessonType = ({ setContentTypeToDisplay }: SelectLessonTypeProps) =>
                         <Tooltip>
                           <TooltipTrigger>
                             <Badge variant="secondary" className="uppercase">
-                              Beta
+                              <LocalizedText textKey="interface.beta" />
                             </Badge>
                           </TooltipTrigger>
                           <TooltipContent side="bottom">

@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { Icon } from "~/components/Icon";
 import { cn } from "~/lib/utils";
 
@@ -20,6 +22,7 @@ export function UploadFileCard({
   removeDisabled = false,
   showRemove = true,
 }: UploadFileCardProps) {
+  const { t } = useTranslation();
   return (
     <div
       className={cn(
@@ -33,7 +36,7 @@ export function UploadFileCard({
       {showRemove && (
         <button
           type="button"
-          aria-label="Remove file"
+          aria-label={t("interface.removeFile")}
           onClick={onRemove}
           disabled={removeDisabled}
           className={cn(

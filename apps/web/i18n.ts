@@ -14,7 +14,7 @@ import thTranslations from "app/locales/th/translation.json";
 // eslint-disable-next-line import/no-named-as-default-member
 i18n.use(initReactI18next).init({
   fallbackLng: SUPPORTED_LANGUAGES.EN,
-  lng: SUPPORTED_LANGUAGES.EN,
+  lng: SUPPORTED_LANGUAGES.TH,
   ns: ["translation"],
   defaultNS: "translation",
   interpolation: {

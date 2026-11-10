@@ -14,6 +14,8 @@ import * as Sentry from "@sentry/react";
 import { StrictMode, useEffect } from "react";
 import { hydrateRoot } from "react-dom/client";
 
+import { LocalizedText } from "~/components/LocalizedText";
+
 import { version } from "../version.json";
 
 Sentry.init({
@@ -49,7 +51,13 @@ Sentry.setTags({
 hydrateRoot(
   document,
   <StrictMode>
-    <Sentry.ErrorBoundary fallback={<div>An error occurred</div>}>
+    <Sentry.ErrorBoundary
+      fallback={
+        <div>
+          <LocalizedText textKey="interface.error" />
+        </div>
+      }
+    >
       <RemixBrowser />
     </Sentry.ErrorBoundary>
   </StrictMode>,

@@ -945,7 +945,7 @@ export class UserService {
 
         return creatorSettings.language;
       })
-      .otherwise(() => data.language ?? SUPPORTED_LANGUAGES.EN);
+      .otherwise(() => data.language ?? SUPPORTED_LANGUAGES.TH);
 
     const settingsOverride = match(context)
       .with(

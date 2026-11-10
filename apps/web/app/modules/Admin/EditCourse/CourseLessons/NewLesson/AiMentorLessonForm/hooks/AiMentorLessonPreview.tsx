@@ -2,6 +2,7 @@ import { X } from "lucide-react";
 import { createPortal } from "react-dom";
 
 import { useCurrentUser, useLesson } from "~/api/queries";
+import { LocalizedText } from "~/components/LocalizedText";
 import { Button } from "~/components/ui/button";
 import AiMentorLesson from "~/modules/Courses/Lesson/AiMentorLesson/AiMentorLesson";
 import { useLanguageStore } from "~/modules/Dashboard/Settings/Language/LanguageStore";
@@ -28,7 +29,9 @@ const AiMentorLessonPreview = ({ onClose, lesson }: AiMentorPreviewProps) => {
         <div className="flex items-center justify-between rounded-t-lg bg-white p-4">
           <div>
             <h2 className="font-medium text-primary-800">{lesson.title}</h2>
-            <h2 className="text-sm text-gray-400">AI Mentor</h2>
+            <h2 className="text-sm text-gray-400">
+              <LocalizedText textKey="interface.mentor" />
+            </h2>
           </div>
           <div className="flex gap-3">
             <Button

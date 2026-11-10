@@ -2,6 +2,7 @@ import useEmblaCarousel, { type UseEmblaCarouselType } from "embla-carousel-reac
 import { ChevronLeft, ChevronRight, Loader2 } from "lucide-react";
 import * as React from "react";
 
+import { LocalizedText } from "~/components/LocalizedText";
 import { Button } from "~/components/ui/button";
 import { cn } from "~/lib/utils";
 
@@ -263,7 +264,7 @@ const CarouselPrevious = React.forwardRef<
         {...props}
       >
         <ChevronLeft size={iconSize} className={cn("text-black", iconClassName)} />
-        <span className="sr-only">Previous slide</span>
+        <span className="sr-only"><LocalizedText textKey="interface.previousSlide" /></span>
       </Button>
     );
   },
@@ -308,7 +309,7 @@ const CarouselNext = React.forwardRef<
         ) : (
           <ChevronRight size={iconSize} className={cn("text-black", iconClassName)} />
         )}
-        <span className="sr-only">Next slide</span>
+        <span className="sr-only"><LocalizedText textKey="interface.nextSlide" /></span>
       </Button>
     );
   },

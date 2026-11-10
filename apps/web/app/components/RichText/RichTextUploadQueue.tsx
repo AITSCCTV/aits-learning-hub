@@ -9,8 +9,10 @@ import {
   XCircle,
 } from "lucide-react";
 import { useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { match } from "ts-pattern";
 
+import { LocalizedText } from "~/components/LocalizedText";
 import { Button } from "~/components/ui/button";
 import { CircularProgress } from "~/components/ui/circular-progress";
 import { Progress } from "~/components/ui/progress";
@@ -28,19 +30,31 @@ type RichTextUploadQueueProps = {
 };
 
 const statusMeta = {
-  [UPLOAD_STATUS.QUEUED]: { label: "Queued", icon: Clock3, colorClass: "text-neutral-600" },
+  [UPLOAD_STATUS.QUEUED]: {
+    label: "interface.queued",
+    icon: Clock3,
+    colorClass: "text-neutral-600",
+  },
   [UPLOAD_STATUS.UPLOADING]: {
-    label: "Uploading",
+    label: "interface.uploading",
     icon: Loader2,
     colorClass: "text-primary-700",
   },
   [UPLOAD_STATUS.PROCESSING]: {
-    label: "Processing",
+    label: "interface.processing",
     icon: Loader2,
     colorClass: "text-secondary-700",
   },
-  [UPLOAD_STATUS.SUCCESS]: { label: "Done", icon: CheckCircle2, colorClass: "text-success-700" },
-  [UPLOAD_STATUS.FAILED]: { label: "Failed", icon: XCircle, colorClass: "text-error-700" },
+  [UPLOAD_STATUS.SUCCESS]: {
+    label: "interface.done",
+    icon: CheckCircle2,
+    colorClass: "text-success-700",
+  },
+  [UPLOAD_STATUS.FAILED]: {
+    label: "interface.failed",
+    icon: XCircle,
+    colorClass: "text-error-700",
+  },
 } satisfies Record<
   RichTextUploadStatus,
   { label: string; icon: typeof CheckCircle2; colorClass: string }
@@ -59,6 +73,7 @@ export const RichTextUploadQueue = ({
   onClearFinished,
   onRemoveItem,
 }: RichTextUploadQueueProps) => {
+  const { t } = useTranslation();
   const [isExpanded, setIsExpanded] = useState(true);
 
   const activeItems = useMemo(
@@ -91,7 +106,7 @@ export const RichTextUploadQueue = ({
     <section
       data-testid={RICH_TEXT_HANDLES.UPLOAD_QUEUE}
       className="pointer-events-auto w-full overflow-hidden rounded-xl border border-neutral-200 bg-white"
-      aria-label="Upload queue"
+      aria-label={t("interface.uploadQueue")}
     >
       <button
         type="button"
@@ -109,9 +124,13 @@ export const RichTextUploadQueue = ({
             labelClassName="text-sm font-semibold text-neutral-800"
           />
           <div>
-            <p className="text-lg font-semibold text-neutral-950">Uploads</p>
+            <p className="text-lg font-semibold text-neutral-950">
+              <LocalizedText textKey="interface.uploads" />
+            </p>
             <p className="text-sm text-neutral-600">
-              {activeItems.length ? `${activeItems.length} active` : `${items.length} completed`}
+              {activeItems.length
+                ? t("interface.activeCount", { count: activeItems.length })
+                : t("interface.completedCount", { count: items.length })}
             </p>
           </div>
         </div>
@@ -129,7 +148,7 @@ export const RichTextUploadQueue = ({
               }}
             >
               <Trash2 className="mr-1.5 size-3.5" />
-              Clear
+              <LocalizedText textKey="interface.clear" />
             </Button>
           )}
           <span className="rounded-md p-1.5 text-neutral-600">
@@ -163,7 +182,7 @@ export const RichTextUploadQueue = ({
                         className={cn("size-4", colorClass, isAnimated && "animate-spin")}
                       />
                       <p className={cn("text-xs font-medium", colorClass)}>
-                        {label}
+                        {t(label)}
                         {status === UPLOAD_STATUS.UPLOADING && progress !== null
                           ? ` (${progress}%)`
                           : ""}

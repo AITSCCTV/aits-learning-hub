@@ -1,7 +1,8 @@
+import { SUPPORTED_LANGUAGES } from "@repo/shared";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
-import { detectBrowserLanguage, isSupportedLanguage } from "../../../../utils/browser-language";
+import { isSupportedLanguage } from "../../../../utils/browser-language";
 
 import type { SupportedLanguages } from "@repo/shared";
 
@@ -12,7 +13,7 @@ type LanguageStore = {
 };
 
 function getDefaultLanguage(): SupportedLanguages {
-  return detectBrowserLanguage();
+  return SUPPORTED_LANGUAGES.TH;
 }
 
 export const useLanguageStore = create<LanguageStore>()(
@@ -32,7 +33,7 @@ export const useLanguageStore = create<LanguageStore>()(
           return currentState.language;
         }
 
-        const browserLang = detectBrowserLanguage();
+        const browserLang = getDefaultLanguage();
         set({ language: browserLang });
         return browserLang;
       },

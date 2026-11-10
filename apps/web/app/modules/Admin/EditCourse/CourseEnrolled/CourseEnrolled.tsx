@@ -122,7 +122,7 @@ export const CourseEnrolled = ({
         <Checkbox
           checked={table.getIsAllPageRowsSelected()}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
+          aria-label={t("interface.selectAll")}
         />
       ),
       cell: ({ row }) => (
@@ -130,7 +130,7 @@ export const CourseEnrolled = ({
           data-testid={COURSE_ENROLLED_HANDLES.rowCheckbox(row.original.id)}
           checked={row.getIsSelected()}
           onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
+          aria-label={t("interface.selectRow")}
           onClick={(event) => {
             event.stopPropagation();
             handleRowSelectionRange({

@@ -1,6 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate, useSearchParams } from "@remix-run/react";
-import { SUPPORTED_LANGUAGES } from "@repo/shared";
 import { FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { z } from "zod";
@@ -15,8 +14,8 @@ import { Label } from "~/components/ui/label";
 import { useToast } from "~/components/ui/use-toast";
 import { cn } from "~/lib/utils";
 import { LOGIN_REDIRECT_URL } from "~/modules/Auth/constants";
+import { useLanguageStore } from "~/modules/Dashboard/Settings/Language/LanguageStore";
 import { passwordSchema } from "~/modules/Dashboard/Settings/schema/password.schema";
-import { detectBrowserLanguage } from "~/utils/browser-language";
 import { setPageTitle } from "~/utils/setPageTitle";
 
 import { CREATE_NEW_PASSWORD_PAGE_HANDLES } from "../../../e2e/data/auth/handles";
@@ -50,6 +49,7 @@ export default function CreateNewPasswordPage() {
   const { mutateAsync: createPassword } = useCreatePassword();
   const { mutateAsync: resetPassword } = useResetPassword();
   const { t } = useTranslation();
+  const language = useLanguageStore((state) => state.language);
 
   const methods = useForm<CreateNewPasswordFormValues>({
     resolver: zodResolver(createNewPasswordSchema(t)),
@@ -91,9 +91,7 @@ export default function CreateNewPasswordPage() {
         data: {
           password: data.newPassword,
           createToken,
-          language: Object.values(SUPPORTED_LANGUAGES).includes(detectBrowserLanguage())
-            ? detectBrowserLanguage()
-            : SUPPORTED_LANGUAGES.EN,
+          language,
         },
       }).then(() => {
         toast({

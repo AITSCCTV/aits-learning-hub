@@ -6,6 +6,7 @@ import {
 import { Loader2, UserRound, UsersRound } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { LocalizedText } from "~/components/LocalizedText";
 import { Badge } from "~/components/ui/badge";
 import { Button } from "~/components/ui/button";
 import {
@@ -138,7 +139,7 @@ export function WidgetPickerDialog({
                             <Tooltip>
                               <TooltipTrigger asChild>
                                 <Badge variant="secondary" className="uppercase">
-                                  Beta
+                                  <LocalizedText textKey="interface.beta" />
                                 </Badge>
                               </TooltipTrigger>
                               <TooltipContent side="bottom">

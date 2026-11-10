@@ -32,13 +32,13 @@ export const getCategoriesColumns = ({
         data-testid={CATEGORIES_PAGE_HANDLES.SELECT_ALL_CHECKBOX}
         checked={table.getIsAllPageRowsSelected()}
         onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
+        aria-label={t("interface.selectAll")}
       />
     ),
     cell: ({ row, table }) => (
       <Checkbox
         checked={row.getIsSelected()}
-        aria-label="Select row"
+        aria-label={t("interface.selectRow")}
         data-testid={CATEGORIES_PAGE_HANDLES.rowCheckbox(row.original.id)}
         onClick={(event) => {
           event.stopPropagation();

@@ -115,7 +115,7 @@ const EditorToolbar = ({
   return (
     <Toolbar
       className="m-0 flex w-full max-w-full items-center justify-between overflow-x-auto p-2 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      aria-label="Formatting options"
+      aria-label={t("interface.formatting")}
     >
       <TooltipProvider>
         <ToggleGroup className="flex shrink-0 flex-row items-center gap-x-2" type="multiple">

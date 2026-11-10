@@ -2,6 +2,7 @@ import { useFormContext } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 
 import { useCategoriesSuspense } from "~/api/queries";
+import { LocalizedText } from "~/components/LocalizedText";
 import { Button } from "~/components/ui/button";
 import { FormField } from "~/components/ui/form";
 import { Input } from "~/components/ui/input";
@@ -111,7 +112,9 @@ export function CourseDetailsStep({ handleBack, handleNext }: StepComponentProps
             <p className="font-medium">
               {t("uploadFile.header")} {t("uploadFile.subHeader")}
             </p>
-            <p className="text-sm text-muted-foreground">SVG, PNG, JPG (max. to 50MB)</p>
+            <p className="text-sm text-muted-foreground">
+              <LocalizedText textKey="interface.imageFormats" />
+            </p>
           </div>
         </Label>
       </div>

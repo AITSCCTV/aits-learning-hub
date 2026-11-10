@@ -8,8 +8,10 @@ import {
 import { clamp } from "lodash-es";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
+import { useTranslation } from "react-i18next";
 import { match } from "ts-pattern";
 import videojs from "video.js";
+import thaiVideoLabels from "video.js/dist/lang/th.json";
 
 import "video.js/dist/video-js.css";
 import "videojs-youtube";
@@ -35,6 +37,8 @@ import { useVideoCoverageTracker } from "./useVideoCoverageTracker";
 import type { VideoAspectRatio } from "./aspectRatio";
 import type { VideoCoverageTrackingOptions } from "./videoCoverage.types";
 import type { KeyboardEvent } from "react";
+
+videojs.addLanguage("th", thaiVideoLabels);
 
 interface VideoPlayerProps {
   url: string;
@@ -192,6 +196,7 @@ export const VideoPlayer = ({
   onTimeUpdate,
   poster,
 }: VideoPlayerProps) => {
+  const { t, i18n } = useTranslation();
   const [controlsVisible, setControlsVisible] = useState(true);
   const [player, setPlayer] = useState<VideoJSType | null>(null);
   const [qualityControlHost, setQualityControlHost] = useState<HTMLDivElement | null>(null);
@@ -448,6 +453,10 @@ export const VideoPlayer = ({
   );
 
   const type = useMemo(() => getTypeByProvider(resolvedProvider), [resolvedProvider]);
+
+  useEffect(() => {
+    player?.language(i18n.language);
+  }, [player, i18n.language]);
 
   const options = useMemo(
     () => ({
@@ -852,7 +861,7 @@ export const VideoPlayer = ({
       data-vjs-player
       data-video-player-shortcuts
       role="button"
-      aria-label="Video player"
+      aria-label={t("interface.videoPlayer")}
       tabIndex={0}
       onKeyDown={handleKeyDown}
       className={cn(

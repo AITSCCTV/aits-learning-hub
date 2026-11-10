@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link, useLocation } from "@remix-run/react";
 import { format, startOfDay, subYears } from "date-fns";
-import { enUS, pl } from "date-fns/locale";
 import { useEffect, useMemo } from "react";
 import { Controller, FormProvider, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
@@ -25,6 +24,7 @@ import { Label } from "~/components/ui/label";
 import { Popover, PopoverContent, PopoverTrigger } from "~/components/ui/popover";
 import { cn } from "~/lib/utils";
 import { useLanguageStore } from "~/modules/Dashboard/Settings/Language/LanguageStore";
+import { getDateLocale } from "~/utils/getDateLocale";
 import { setPageTitle } from "~/utils/setPageTitle";
 
 import { REGISTER_PAGE_HANDLES } from "../../../e2e/data/auth/handles";
@@ -149,7 +149,7 @@ export default function RegisterPage() {
     return today;
   }, [globalSettings?.ageLimit]);
 
-  const calendarLocale = i18n.language.startsWith("pl") ? pl : enUS;
+  const calendarLocale = getDateLocale(i18n.language);
 
   if (inviteOnlyRegistration) {
     return (
@@ -180,7 +180,7 @@ export default function RegisterPage() {
             <Card className="w-full max-w-md" data-testid={REGISTER_PAGE_HANDLES.PAGE}>
               <CardHeader>
                 <div className="mb-2 flex justify-center">
-                  <PlatformLogo className="h-16 w-auto py-2" alt="Platform Logo" />
+                  <PlatformLogo className="h-16 w-auto py-2" alt={t("interface.platformLogo")} />
                 </div>
                 <CardTitle className="text-xl">{t("registerView.header")}</CardTitle>
                 <CardDescription className="max-w-md text-sm leading-6">
@@ -195,7 +195,7 @@ export default function RegisterPage() {
                       <Input
                         id="firstName"
                         type="text"
-                        placeholder="John"
+                        placeholder={t("interface.firstNameExample")}
                         data-testid={REGISTER_PAGE_HANDLES.FIRST_NAME}
                         {...register("firstName")}
                       />
@@ -209,7 +209,7 @@ export default function RegisterPage() {
                       <Input
                         id="lastName"
                         type="text"
-                        placeholder="Doe"
+                        placeholder={t("interface.lastNameExample")}
                         data-testid={REGISTER_PAGE_HANDLES.LAST_NAME}
                         {...register("lastName")}
                       />

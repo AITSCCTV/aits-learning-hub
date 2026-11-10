@@ -19,11 +19,11 @@ export default function DeadlineStatCard({
   isAdminExperience,
   onOpen,
 }: DeadlineStatCardProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const daysLeft = dueDate
     ? Math.max(0, Math.ceil((new Date(dueDate).getTime() - Date.now()) / MILLISECONDS_PER_DAY))
     : 0;
-  const formattedDueDate = dueDate ? new Date(dueDate).toLocaleDateString() : null;
+  const formattedDueDate = dueDate ? new Date(dueDate).toLocaleDateString(i18n.language) : null;
 
   return (
     <button
