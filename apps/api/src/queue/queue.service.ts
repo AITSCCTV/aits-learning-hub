@@ -1,29 +1,43 @@
-import { Injectable, type OnModuleDestroy, type OnModuleInit } from "@nestjs/common";
+import {
+  Injectable,
+  Logger,
+  type OnApplicationShutdown,
+  type OnModuleDestroy,
+  type OnModuleInit,
+} from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { type Job, type JobsOptions, type ConnectionOptions, Queue, QueueEvents } from "bullmq";
+import IORedis from "ioredis";
 
-import { buildRedisConnection } from "src/common/configuration/redis";
 import { QUEUE_NAMES, type QueueName } from "src/queue/queue.types";
 
 import type { RedisConfigSchema } from "src/common/configuration/redis";
 
 interface QueueInstance {
   queue: Queue;
-  events: QueueEvents;
+  events?: QueueEvents;
 }
 
 @Injectable()
-export class QueueService implements OnModuleInit, OnModuleDestroy {
+export class QueueService implements OnModuleInit, OnModuleDestroy, OnApplicationShutdown {
+  private readonly logger = new Logger(QueueService.name);
   private queues: Map<QueueName, QueueInstance> = new Map();
-  private connection: ConnectionOptions;
+  private readonly connection: IORedis;
+  private readonly producerConnection: IORedis;
 
   constructor(private readonly configService: ConfigService) {
     const redisCfg = this.configService.get("redis") as RedisConfigSchema | undefined;
-    if (!redisCfg) {
+    if (!redisCfg?.REDIS_URL) {
       throw new Error("Redis configuration is required for QueueService");
     }
 
-    this.connection = buildRedisConnection(redisCfg);
+    // Workers may wait for Redis recovery; HTTP producers should fail promptly.
+    this.connection = new IORedis(redisCfg.REDIS_URL, { maxRetriesPerRequest: null });
+    this.producerConnection = new IORedis(redisCfg.REDIS_URL, { maxRetriesPerRequest: 1 });
+    this.connection.on("error", () => this.logger.error("Queue worker Redis connection failed"));
+    this.producerConnection.on("error", () =>
+      this.logger.error("Queue producer Redis connection failed"),
+    );
   }
 
   onModuleInit() {
@@ -33,14 +47,13 @@ export class QueueService implements OnModuleInit, OnModuleDestroy {
   }
 
   private initializeQueue(name: QueueName): QueueInstance {
-    if (this.queues.has(name)) {
-      return this.queues.get(name)!;
-    }
+    const existing = this.queues.get(name);
+    if (existing) return existing;
 
-    const queue = new Queue(name, { connection: this.connection });
-    const events = new QueueEvents(name, { connection: this.connection });
+    const queue = new Queue(name, { connection: this.producerConnection });
+    queue.on("error", () => this.logger.error(`Queue ${name} connection failed`));
 
-    const instance = { queue, events };
+    const instance = { queue };
     this.queues.set(name, instance);
 
     return instance;
@@ -61,6 +74,11 @@ export class QueueService implements OnModuleInit, OnModuleDestroy {
       throw new Error(`Queue ${name} not initialized`);
     }
 
+    // QueueEvents uses a dedicated blocking connection. Most queues never need it.
+    if (!instance.events) {
+      instance.events = new QueueEvents(name, { connection: this.connection });
+      instance.events.on("error", () => this.logger.error(`Queue ${name} event connection failed`));
+    }
     return instance.events;
   }
 
@@ -91,9 +109,14 @@ export class QueueService implements OnModuleInit, OnModuleDestroy {
 
     for (const instance of this.queues.values()) {
       closePromises.push(instance.queue.close());
-      closePromises.push(instance.events.close());
+      if (instance.events) closePromises.push(instance.events.close());
     }
 
     await Promise.all(closePromises);
+  }
+
+  async onApplicationShutdown() {
+    // All workers finish onModuleDestroy before shared connections are closed.
+    await Promise.all([this.connection.quit(), this.producerConnection.quit()]);
   }
 }

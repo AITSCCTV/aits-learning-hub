@@ -16,6 +16,7 @@ RUN pnpm deploy --filter=api pnpm-deploy-output --prod --legacy
 FROM node:22.15.0-alpine
 WORKDIR /app
 COPY --from=base /app/pnpm-deploy-output /app
+COPY --from=base /app/deployment/certs/supabase-ca.crt /app/certs/supabase-ca.crt
 # The Workflow builder's nested .gitignore excludes these bundles from pnpm deploy.
 COPY --from=base /app/apps/api/dist/workflow /app/dist/workflow
 RUN test -s /app/dist/workflow/manifest.json \

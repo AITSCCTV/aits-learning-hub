@@ -27,6 +27,7 @@ import { DB_ADMIN } from "./storage/db/db.providers";
 import { createCorsOriginOption } from "./utils/cors";
 import { Environment, environmentValidation } from "./utils/environment-validation";
 import { exportSchemaToFile } from "./utils/save-swagger-to-file";
+import { serveFrontend } from "./utils/serve-frontend";
 import { setupValidation } from "./utils/setup-validation";
 import { RedisIoAdapter } from "./websocket/websocket.adapter";
 
@@ -70,6 +71,9 @@ async function bootstrap() {
     }),
   );
   app.use(cookieParser());
+  if (process.env.WEB_DIST_DIR) {
+    serveFrontend(app.getHttpAdapter().getInstance(), process.env.WEB_DIST_DIR);
+  }
   app.use(
     "/api/live-training/livekit/webhook",
     bodyParser.raw({
@@ -137,6 +141,6 @@ async function bootstrap() {
   const redisIoAdapter = new RedisIoAdapter(app, redisPublisher, redisSubscriber);
   app.useWebSocketAdapter(redisIoAdapter);
 
-  await app.listen(3000);
+  await app.listen(Number(process.env.PORT || 3000), "0.0.0.0");
 }
 bootstrap();

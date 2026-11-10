@@ -10,6 +10,7 @@ import { migrate } from "drizzle-orm/postgres-js/migrator";
 import { makeWorkerUtils } from "graphile-worker";
 import postgres from "postgres";
 
+import { getDatabaseRole } from "./database-role";
 import { DATABASE_MIGRATION_LOCK } from "./db.constants";
 import { WORKFLOW_BASELINE } from "./workflow-baseline.constants";
 import { grantWorkflowRuntimeRole } from "./workflow-runtime-role";
@@ -99,12 +100,7 @@ export class DatabaseMigrationService {
       return;
     }
 
-    const parsedUrl = new URL(appUrl);
-    const role = parsedUrl.searchParams.get("user") || decodeURIComponent(parsedUrl.username);
-
-    if (!role) {
-      throw new Error("Application database URL must specify its runtime role");
-    }
+    const role = getDatabaseRole(appUrl);
 
     const [account] = await admin`SELECT rolname FROM pg_roles WHERE rolname = ${role}`;
 
