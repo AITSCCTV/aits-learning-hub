@@ -8,6 +8,8 @@ The combined image includes the frontend under `/app/public`. Its same-origin AP
 
 The image enables `QUEUE_ROLLOUT_CONNECTION_GATE=true` for the 50-client free Redis instance. Render overlaps the old and new processes during deployment. The new process opens HTTP and its shared producer connections first, then polls Redis client count every five seconds. Its 24 duplicated worker sockets start only when at most 20 clients remain, allowing the old process to retire first. Queued work is retained and completion listeners remain available during the handover. Other deployments retain immediate worker startup unless they opt in to this flag. This is a single-service free-pilot rollout strategy, not a multi-replica scaling design.
 
+The hosted Supabase Free project's session pool size is 30 (changed from its default 15 on 10 November 2026). The default caused `EMAXCONNSESSION` during overlapping Render startup. This is a connection-pool setting, not a compute or plan upgrade. Keep the session pooler because the application uses PostgreSQL LISTEN and session behavior. Monitor total database sessions before increasing concurrency; the configured pool is per database/user combination and is not a guarantee of production capacity.
+
 Set these variables only on the backend service:
 
 | Variable                                               | Source                                                                               |
