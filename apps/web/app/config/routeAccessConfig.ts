@@ -118,6 +118,8 @@ export const routeAccessConfig = createRouteConfig({
   "articles/:articleId/edit": ARTICLE_EDIT_ACCESS,
   "news/add": NEWS_EDIT_ACCESS,
   "news/:newsId/edit": NEWS_EDIT_ACCESS,
+  learn: AUTHENTICATED_USER_ACCESS,
+  app: AUTHENTICATED_USER_ACCESS,
   dashboard: DASHBOARD_READ_ACCESS,
   "aits-mentor": DASHBOARD_READ_ACCESS,
   knowledge: DASHBOARD_READ_ACCESS,

@@ -27865,6 +27865,90 @@
               {
                 "type": "object",
                 "properties": {
+                  "employeeLearning": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "const": 1,
+                        "type": "number"
+                      },
+                      "stage": {
+                        "anyOf": [
+                          {
+                            "const": "company",
+                            "type": "string"
+                          },
+                          {
+                            "const": "people",
+                            "type": "string"
+                          },
+                          {
+                            "const": "role",
+                            "type": "string"
+                          },
+                          {
+                            "const": "ready",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "role": {
+                        "anyOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "const": "hr",
+                            "type": "string"
+                          },
+                          {
+                            "const": "accounting",
+                            "type": "string"
+                          },
+                          {
+                            "const": "sales",
+                            "type": "string"
+                          },
+                          {
+                            "const": "admin",
+                            "type": "string"
+                          },
+                          {
+                            "const": "technician",
+                            "type": "string"
+                          },
+                          {
+                            "const": "network",
+                            "type": "string"
+                          },
+                          {
+                            "const": "engineer",
+                            "type": "string"
+                          },
+                          {
+                            "const": "management",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "completedLessons": {
+                        "maxItems": 200,
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                          "maxLength": 80,
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "version",
+                      "stage",
+                      "role",
+                      "completedLessons"
+                    ]
+                  },
                   "language": {
                     "anyOf": [
                       {
@@ -27926,6 +28010,90 @@
               {
                 "type": "object",
                 "properties": {
+                  "employeeLearning": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "const": 1,
+                        "type": "number"
+                      },
+                      "stage": {
+                        "anyOf": [
+                          {
+                            "const": "company",
+                            "type": "string"
+                          },
+                          {
+                            "const": "people",
+                            "type": "string"
+                          },
+                          {
+                            "const": "role",
+                            "type": "string"
+                          },
+                          {
+                            "const": "ready",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "role": {
+                        "anyOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "const": "hr",
+                            "type": "string"
+                          },
+                          {
+                            "const": "accounting",
+                            "type": "string"
+                          },
+                          {
+                            "const": "sales",
+                            "type": "string"
+                          },
+                          {
+                            "const": "admin",
+                            "type": "string"
+                          },
+                          {
+                            "const": "technician",
+                            "type": "string"
+                          },
+                          {
+                            "const": "network",
+                            "type": "string"
+                          },
+                          {
+                            "const": "engineer",
+                            "type": "string"
+                          },
+                          {
+                            "const": "management",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "completedLessons": {
+                        "maxItems": 200,
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                          "maxLength": 80,
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "version",
+                      "stage",
+                      "role",
+                      "completedLessons"
+                    ]
+                  },
                   "language": {
                     "anyOf": [
                       {
@@ -28008,6 +28176,90 @@
           {
             "type": "object",
             "properties": {
+              "employeeLearning": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "const": 1,
+                    "type": "number"
+                  },
+                  "stage": {
+                    "anyOf": [
+                      {
+                        "const": "company",
+                        "type": "string"
+                      },
+                      {
+                        "const": "people",
+                        "type": "string"
+                      },
+                      {
+                        "const": "role",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ready",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "role": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "const": "hr",
+                        "type": "string"
+                      },
+                      {
+                        "const": "accounting",
+                        "type": "string"
+                      },
+                      {
+                        "const": "sales",
+                        "type": "string"
+                      },
+                      {
+                        "const": "admin",
+                        "type": "string"
+                      },
+                      {
+                        "const": "technician",
+                        "type": "string"
+                      },
+                      {
+                        "const": "network",
+                        "type": "string"
+                      },
+                      {
+                        "const": "engineer",
+                        "type": "string"
+                      },
+                      {
+                        "const": "management",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "completedLessons": {
+                    "maxItems": 200,
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "maxLength": 80,
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "version",
+                  "stage",
+                  "role",
+                  "completedLessons"
+                ]
+              },
               "language": {
                 "anyOf": [
                   {
@@ -28064,6 +28316,90 @@
           {
             "type": "object",
             "properties": {
+              "employeeLearning": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "const": 1,
+                    "type": "number"
+                  },
+                  "stage": {
+                    "anyOf": [
+                      {
+                        "const": "company",
+                        "type": "string"
+                      },
+                      {
+                        "const": "people",
+                        "type": "string"
+                      },
+                      {
+                        "const": "role",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ready",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "role": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "const": "hr",
+                        "type": "string"
+                      },
+                      {
+                        "const": "accounting",
+                        "type": "string"
+                      },
+                      {
+                        "const": "sales",
+                        "type": "string"
+                      },
+                      {
+                        "const": "admin",
+                        "type": "string"
+                      },
+                      {
+                        "const": "technician",
+                        "type": "string"
+                      },
+                      {
+                        "const": "network",
+                        "type": "string"
+                      },
+                      {
+                        "const": "engineer",
+                        "type": "string"
+                      },
+                      {
+                        "const": "management",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "completedLessons": {
+                    "maxItems": 200,
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "maxLength": 80,
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "version",
+                  "stage",
+                  "role",
+                  "completedLessons"
+                ]
+              },
               "language": {
                 "anyOf": [
                   {
@@ -28136,6 +28472,90 @@
               {
                 "type": "object",
                 "properties": {
+                  "employeeLearning": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "const": 1,
+                        "type": "number"
+                      },
+                      "stage": {
+                        "anyOf": [
+                          {
+                            "const": "company",
+                            "type": "string"
+                          },
+                          {
+                            "const": "people",
+                            "type": "string"
+                          },
+                          {
+                            "const": "role",
+                            "type": "string"
+                          },
+                          {
+                            "const": "ready",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "role": {
+                        "anyOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "const": "hr",
+                            "type": "string"
+                          },
+                          {
+                            "const": "accounting",
+                            "type": "string"
+                          },
+                          {
+                            "const": "sales",
+                            "type": "string"
+                          },
+                          {
+                            "const": "admin",
+                            "type": "string"
+                          },
+                          {
+                            "const": "technician",
+                            "type": "string"
+                          },
+                          {
+                            "const": "network",
+                            "type": "string"
+                          },
+                          {
+                            "const": "engineer",
+                            "type": "string"
+                          },
+                          {
+                            "const": "management",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "completedLessons": {
+                        "maxItems": 200,
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                          "maxLength": 80,
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "version",
+                      "stage",
+                      "role",
+                      "completedLessons"
+                    ]
+                  },
                   "language": {
                     "anyOf": [
                       {
@@ -28197,6 +28617,90 @@
               {
                 "type": "object",
                 "properties": {
+                  "employeeLearning": {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                      "version": {
+                        "const": 1,
+                        "type": "number"
+                      },
+                      "stage": {
+                        "anyOf": [
+                          {
+                            "const": "company",
+                            "type": "string"
+                          },
+                          {
+                            "const": "people",
+                            "type": "string"
+                          },
+                          {
+                            "const": "role",
+                            "type": "string"
+                          },
+                          {
+                            "const": "ready",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "role": {
+                        "anyOf": [
+                          {
+                            "type": "null"
+                          },
+                          {
+                            "const": "hr",
+                            "type": "string"
+                          },
+                          {
+                            "const": "accounting",
+                            "type": "string"
+                          },
+                          {
+                            "const": "sales",
+                            "type": "string"
+                          },
+                          {
+                            "const": "admin",
+                            "type": "string"
+                          },
+                          {
+                            "const": "technician",
+                            "type": "string"
+                          },
+                          {
+                            "const": "network",
+                            "type": "string"
+                          },
+                          {
+                            "const": "engineer",
+                            "type": "string"
+                          },
+                          {
+                            "const": "management",
+                            "type": "string"
+                          }
+                        ]
+                      },
+                      "completedLessons": {
+                        "maxItems": 200,
+                        "uniqueItems": true,
+                        "type": "array",
+                        "items": {
+                          "maxLength": 80,
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "version",
+                      "stage",
+                      "role",
+                      "completedLessons"
+                    ]
+                  },
                   "language": {
                     "anyOf": [
                       {
@@ -29177,6 +29681,90 @@
           "data": {
             "type": "object",
             "properties": {
+              "employeeLearning": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "const": 1,
+                    "type": "number"
+                  },
+                  "stage": {
+                    "anyOf": [
+                      {
+                        "const": "company",
+                        "type": "string"
+                      },
+                      {
+                        "const": "people",
+                        "type": "string"
+                      },
+                      {
+                        "const": "role",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ready",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "role": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "const": "hr",
+                        "type": "string"
+                      },
+                      {
+                        "const": "accounting",
+                        "type": "string"
+                      },
+                      {
+                        "const": "sales",
+                        "type": "string"
+                      },
+                      {
+                        "const": "admin",
+                        "type": "string"
+                      },
+                      {
+                        "const": "technician",
+                        "type": "string"
+                      },
+                      {
+                        "const": "network",
+                        "type": "string"
+                      },
+                      {
+                        "const": "engineer",
+                        "type": "string"
+                      },
+                      {
+                        "const": "management",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "completedLessons": {
+                    "maxItems": 200,
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "maxLength": 80,
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "version",
+                  "stage",
+                  "role",
+                  "completedLessons"
+                ]
+              },
               "language": {
                 "anyOf": [
                   {
@@ -31649,6 +32237,90 @@
           "data": {
             "type": "object",
             "properties": {
+              "employeeLearning": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "const": 1,
+                    "type": "number"
+                  },
+                  "stage": {
+                    "anyOf": [
+                      {
+                        "const": "company",
+                        "type": "string"
+                      },
+                      {
+                        "const": "people",
+                        "type": "string"
+                      },
+                      {
+                        "const": "role",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ready",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "role": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "const": "hr",
+                        "type": "string"
+                      },
+                      {
+                        "const": "accounting",
+                        "type": "string"
+                      },
+                      {
+                        "const": "sales",
+                        "type": "string"
+                      },
+                      {
+                        "const": "admin",
+                        "type": "string"
+                      },
+                      {
+                        "const": "technician",
+                        "type": "string"
+                      },
+                      {
+                        "const": "network",
+                        "type": "string"
+                      },
+                      {
+                        "const": "engineer",
+                        "type": "string"
+                      },
+                      {
+                        "const": "management",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "completedLessons": {
+                    "maxItems": 200,
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "maxLength": 80,
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "version",
+                  "stage",
+                  "role",
+                  "completedLessons"
+                ]
+              },
               "language": {
                 "anyOf": [
                   {
@@ -31730,6 +32402,90 @@
           "data": {
             "type": "object",
             "properties": {
+              "employeeLearning": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "const": 1,
+                    "type": "number"
+                  },
+                  "stage": {
+                    "anyOf": [
+                      {
+                        "const": "company",
+                        "type": "string"
+                      },
+                      {
+                        "const": "people",
+                        "type": "string"
+                      },
+                      {
+                        "const": "role",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ready",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "role": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "const": "hr",
+                        "type": "string"
+                      },
+                      {
+                        "const": "accounting",
+                        "type": "string"
+                      },
+                      {
+                        "const": "sales",
+                        "type": "string"
+                      },
+                      {
+                        "const": "admin",
+                        "type": "string"
+                      },
+                      {
+                        "const": "technician",
+                        "type": "string"
+                      },
+                      {
+                        "const": "network",
+                        "type": "string"
+                      },
+                      {
+                        "const": "engineer",
+                        "type": "string"
+                      },
+                      {
+                        "const": "management",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "completedLessons": {
+                    "maxItems": 200,
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "maxLength": 80,
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "version",
+                  "stage",
+                  "role",
+                  "completedLessons"
+                ]
+              },
               "language": {
                 "anyOf": [
                   {
@@ -32774,6 +33530,90 @@
           "data": {
             "type": "object",
             "properties": {
+              "employeeLearning": {
+                "additionalProperties": false,
+                "type": "object",
+                "properties": {
+                  "version": {
+                    "const": 1,
+                    "type": "number"
+                  },
+                  "stage": {
+                    "anyOf": [
+                      {
+                        "const": "company",
+                        "type": "string"
+                      },
+                      {
+                        "const": "people",
+                        "type": "string"
+                      },
+                      {
+                        "const": "role",
+                        "type": "string"
+                      },
+                      {
+                        "const": "ready",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "role": {
+                    "anyOf": [
+                      {
+                        "type": "null"
+                      },
+                      {
+                        "const": "hr",
+                        "type": "string"
+                      },
+                      {
+                        "const": "accounting",
+                        "type": "string"
+                      },
+                      {
+                        "const": "sales",
+                        "type": "string"
+                      },
+                      {
+                        "const": "admin",
+                        "type": "string"
+                      },
+                      {
+                        "const": "technician",
+                        "type": "string"
+                      },
+                      {
+                        "const": "network",
+                        "type": "string"
+                      },
+                      {
+                        "const": "engineer",
+                        "type": "string"
+                      },
+                      {
+                        "const": "management",
+                        "type": "string"
+                      }
+                    ]
+                  },
+                  "completedLessons": {
+                    "maxItems": 200,
+                    "uniqueItems": true,
+                    "type": "array",
+                    "items": {
+                      "maxLength": 80,
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "version",
+                  "stage",
+                  "role",
+                  "completedLessons"
+                ]
+              },
               "language": {
                 "anyOf": [
                   {

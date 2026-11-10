@@ -78,7 +78,38 @@ export const dashboardSettingsResponseSchema = Type.Object({
   catalog: Type.Array(dashboardWidgetCatalogEntrySchema),
 });
 
+export const employeeLearningSchema = Type.Object(
+  {
+    version: Type.Literal(1),
+    stage: Type.Union([
+      Type.Literal("company"),
+      Type.Literal("people"),
+      Type.Literal("role"),
+      Type.Literal("ready"),
+    ]),
+    role: Type.Union([
+      Type.Null(),
+      ...[
+        "hr",
+        "accounting",
+        "sales",
+        "admin",
+        "technician",
+        "network",
+        "engineer",
+        "management",
+      ].map((role) => Type.Literal(role)),
+    ]),
+    completedLessons: Type.Array(Type.String({ maxLength: 80 }), {
+      maxItems: 200,
+      uniqueItems: true,
+    }),
+  },
+  { additionalProperties: false },
+);
+
 export const studentSettingsJSONContentSchema = Type.Object({
+  employeeLearning: Type.Optional(employeeLearningSchema),
   language: Type.Enum(SUPPORTED_LANGUAGES),
   isMFAEnabled: Type.Boolean({ default: false }),
   MFASecret: Type.Union([Type.String({ default: null }), Type.Null()]),

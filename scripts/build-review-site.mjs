@@ -17,7 +17,7 @@ for (const course of curriculum.courses) {
     const body = (await fs.readFile(target, "utf8")).replace(/^[\s\S]*?(?=<h1>)/, "");
     await fs.writeFile(
       target,
-      `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AITS course lesson</title><style>${css}</style><nav><a href="../../index.html">← All courses</a></nav><main>${body}</main></html>`,
+      `<!doctype html><html lang="en"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>AITS course lesson</title><style>${css}</style><nav><a href="../../review.html">← All courses</a></nav><main>${body}</main></html>`,
     );
   }
 }
@@ -41,7 +41,13 @@ index = index.replace(
   /<section><h2>Sources, knowledge and evidence[\s\S]*$/,
   '<section><h2>Sources and practice definitions</h2><ul><li><a href="sources/inventory.json">Source registry</a></li><li><a href="knowledge-base/items.json">Draft knowledge records</a></li><li><a href="knowledge-base/practice-sessions.json">Mentor practice definitions (not a live AI service)</a></li></ul></section></html>',
 );
-await fs.writeFile(path.join(out, "index.html"), index);
+await fs.writeFile(path.join(out, "review.html"), index);
+await fs.copyFile(path.join(source, "welcome.html"), path.join(out, "index.html"));
+await fs.copyFile(path.join(source, "welcome.js"), path.join(out, "welcome.js"));
+await fs.copyFile(
+  path.join(root, "apps/web/app/modules/Aits/employee-learning.css"),
+  path.join(out, "welcome.css"),
+);
 await fs.writeFile(path.join(out, ".nojekyll"), "");
 const manifest = JSON.parse(await fs.readFile(path.join(out, "content-manifest.json"), "utf8"));
 for (const asset of manifest.assets) {

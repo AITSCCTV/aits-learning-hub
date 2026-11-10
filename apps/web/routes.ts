@@ -5,6 +5,8 @@ export const routes: (
 ) => RouteManifest | Promise<RouteManifest> = (defineRoutes) => {
   return defineRoutes((route) => {
     route("", "modules/layout.tsx", () => {
+      route("", "modules/Aits/EmployeeWelcome.page.tsx", { index: true });
+      route("learn", "modules/Aits/EmployeeLearning.page.tsx");
       route("auth", "modules/Auth/Auth.layout.tsx", () => {
         route("login", "modules/Auth/Login.page.tsx", { index: true });
         route("register", "modules/Auth/Register.page.tsx");
@@ -48,7 +50,7 @@ export const routes: (
           });
         });
         route("", "modules/Dashboard/UserDashboard.layout.tsx", () => {
-          route("", "modules/Dashboard/IndexRedirect.page.tsx", { index: true });
+          route("app", "modules/Dashboard/IndexRedirect.page.tsx");
           route("dashboard", "modules/Dashboard/Home/HomeDashboard.page.tsx");
           route("aits-mentor", "modules/Aits/Mentor.page.tsx");
           route("knowledge", "modules/Aits/Knowledge.page.tsx");

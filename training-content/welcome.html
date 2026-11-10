@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AITS Learning Hub · ยินดีต้อนรับ</title>
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Prompt:wght@400;500;600;700&display=swap"
+    />
+    <link rel="stylesheet" href="welcome.css" />
+  </head>
+  <body class="el el-welcome">
+    <header class="el-top">
+      <a class="el-logo" href="./">AITS<span>Learning Hub</span></a>
+      <div class="el-language" aria-label="Language / ภาษา">
+        <button id="th" aria-pressed="true">ไทย</button
+        ><button id="en" aria-pressed="false">English</button>
+      </div>
+    </header>
+    <main class="el-welcome-grid">
+      <section class="el-intro">
+        <span class="el-eyebrow" data-copy="brand">พื้นที่เรียนรู้ของทีม AITS</span>
+        <h1 data-copy="title">ยินดีด้วยที่ได้ร่วมทีม AITSCCTV</h1>
+        <p data-copy="body">
+          ก้าวแรกของคุณเริ่มที่นี่ รู้จักบริษัท พบทีมที่พร้อมช่วยคุณ
+          และเรียนสิ่งที่ใช้ได้จริงในงานของคุณ
+        </p>
+        <a
+          class="el-primary"
+          href="https://aits-learning-hub.onrender.com/auth/login"
+          data-copy="login"
+          >เข้าสู่ระบบเพื่อเริ่มต้น →</a
+        >
+        <small data-copy="note">หากระบบกำลังพัก อาจใช้เวลาสักครู่ในการเริ่มต้น</small>
+        <small><a href="review.html" data-copy="review">เอกสารประกอบสำหรับผู้ตรวจทาน</a></small>
+      </section>
+      <section class="el-journey" aria-label="Your first steps">
+        <div class="el-spark" aria-hidden="true">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <path
+              d="M32 4l7 21 21 7-21 7-7 21-7-21-21-7 21-7z"
+              stroke="currentColor"
+              stroke-width="3"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </div>
+        <div class="el-journey-stop">
+          <span aria-hidden="true">01</span>
+          <div>
+            <small>AITS</small>
+            <h2 data-copy="company">รู้จักบริษัทและวิธีทำงาน</h2>
+          </div>
+        </div>
+        <div class="el-journey-stop">
+          <span aria-hidden="true">02</span>
+          <div>
+            <small>TEAM</small>
+            <h2 data-copy="people">รู้จักผู้ช่วยเหลือและทีมงาน</h2>
+          </div>
+        </div>
+        <div class="el-journey-stop">
+          <span aria-hidden="true">03</span>
+          <div>
+            <small>LEARN</small>
+            <h2 data-copy="role">เลือกบทเรียนให้เหมาะกับคุณ</h2>
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="welcome.js"></script>
+  </body>
+</html>

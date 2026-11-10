@@ -1,0 +1,1948 @@
+[
+  {
+    "id": "welcome",
+    "title": {
+      "th": "ยินดีต้อนรับสู่ AITS",
+      "en": "Welcome to AITS"
+    },
+    "roles": [],
+    "lessons": [
+      {
+        "id": "AITS-C01-L01",
+        "title": {
+          "th": "เอกลักษณ์และประวัติของบริษัท",
+          "en": "Company identity and history"
+        },
+        "paragraphs": [
+          {
+            "th": "หน้าเกี่ยวกับเราอย่างเป็นทางการระบุ A.I.T.S. บริษัท จำกัด และก่อตั้งเมื่อปี พ.ศ. 2548 เทียบเท่ากับปี พ.ศ. 2548 โดยกล่าวถึงธุรกิจที่เกี่ยวข้องกับคุณภาพการติดตั้งและบริการอย่างมืออาชีพ นี่เป็นแถลงการณ์ของบริษัทมหาชน พวกเขาไม่ได้สร้างสัญญาพนักงานหรือมาตรฐานการยอมรับภาคสนาม",
+            "en": "The official About us page identifies A.I.T.S. Company Limited and dates its founding to Buddhist year 2548, equivalent to 2005. It describes a business concerned with installation quality and professional service. These are public company statements; they do not establish an employee contract or a field acceptance standard."
+          },
+          {
+            "th": "ข้อความพันธกิจสาธารณะเน้นมาตรฐานการบริการ เทคโนโลยี ความใส่ใจต่อความต้องการของลูกค้า และความรับผิดชอบ ในหลักสูตรนี้ หัวข้อเหล่านี้จะแนะนำธุรกิจ เป้าหมายเฉพาะ หน้าที่ส่วนบุคคล และมาตรการการปฏิบัติงานจำเป็นต้องมีเอกสารภายในที่ได้รับอนุมัติในปัจจุบัน ห้ามอนุมานสายการรายงานหรือผลประโยชน์ของพนักงานจากภาษาทางการตลาด",
+            "en": "The public mission text emphasizes service standards, technology, attention to customer needs and responsibility. In this course, these themes introduce the business. Specific targets, individual duties and performance measures require current approved internal documents. Do not infer a reporting line or an employee benefit from marketing language."
+          }
+        ],
+        "points": [
+          {
+            "th": "ประวัติศาสตร์สาธารณะ: ก่อตั้งในปี พ.ศ. 2548",
+            "en": "Public history: founded in 2005"
+          },
+          {
+            "th": "คุณภาพการบริการและความรับผิดชอบถือเป็นประเด็นสาธารณะ",
+            "en": "Service quality and responsibility are public themes"
+          },
+          {
+            "th": "หน้าที่ภายในจำเป็นต้องมีบันทึกที่ได้รับอนุมัติ",
+            "en": "Internal duties need approved records"
+          }
+        ],
+        "example": {
+          "th": "เพื่อนร่วมงานคนใหม่ถามว่าบริษัทเริ่มในปี 2548 หรือ 2548 อธิบายการแปลงปฏิทินและระบุแหล่งที่มาของหน้าบริษัท",
+          "en": "A fictional new colleague asks whether the company began in 2548 or 2005. Explain the calendar conversion and identify the company page as the source."
+        },
+        "question": {
+          "th": "ปีใดตรงกับประกาศก่อตั้งปี พ.ศ. 2548?",
+          "en": "Which year matches the published founding year 2548 BE?"
+        },
+        "options": [
+          {
+            "th": "พ.ศ. 2548 ส.ศ",
+            "en": "2005 CE"
+          },
+          {
+            "th": "ค.ศ. 2015",
+            "en": "2015 CE"
+          },
+          {
+            "th": "ส.ศ. 1995",
+            "en": "1995 CE"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "สำหรับวันที่ตามปฏิทินไทยนี้ ให้ลบ 543",
+          "en": "For this Thai calendar date, subtract 543."
+        }
+      },
+      {
+        "id": "AITS-C01-L02",
+        "title": {
+          "th": "บริการและความต้องการของลูกค้า",
+          "en": "Services and customer needs"
+        },
+        "paragraphs": [
+          {
+            "th": "AITS เปิดเผยรายชื่อกล้องวงจรปิด สายเคเบิลเครือข่าย ระบบรักษาความปลอดภัย อินเทอร์เน็ต ระบบโทรศัพท์ ระบบควบคุมการเข้าออก ระบบอัตโนมัติในบ้าน และบริการพลังงานแสงอาทิตย์ เรียนรู้ว่าแต่ละหมวดหมู่กล่าวถึงอะไรก่อนเสนอผลิตภัณฑ์ กล้องวงจรปิดรองรับการตรวจสอบด้วยภาพ การควบคุมการเข้าถึงจัดการรายการ โครงสร้างพื้นฐานเครือข่ายเชื่อมต่ออุปกรณ์และบริการ",
+            "en": "AITS publicly lists CCTV, network cabling, security systems, internet, telephone systems, access control, home automation and solar services. Learn what each category addresses before proposing a product. CCTV supports visual monitoring; access control manages entry; network infrastructure connects devices and services."
+          },
+          {
+            "th": "คำขอของลูกค้าอาจมีหลายประเภท ถามเกี่ยวกับปัญหา สถานที่ อุปกรณ์ที่มีอยู่ และผลลัพธ์ที่ต้องการ บันทึกความไม่แน่นอนแทนการระบุความเข้ากันได้ ราคา วันที่ติดตั้ง หรือระดับการบริการ การสำรวจทางเทคนิคและกระบวนการเสนอราคาที่ได้รับอนุมัติจะแยกจากการฝึกอบรมเบื้องต้นนี้",
+            "en": "A customer request may span several categories. Ask about the problem, location, existing equipment and desired outcome. Record uncertainty instead of promising compatibility, price, installation dates or a service level. A technical survey and approved quotation process are separate from this introductory training."
+          }
+        ],
+        "points": [
+          {
+            "th": "เริ่มต้นด้วยผลลัพธ์ของลูกค้า",
+            "en": "Start with the customer outcome"
+          },
+          {
+            "th": "อาจมีบริการหลายอย่างที่เกี่ยวข้อง",
+            "en": "Several services may be involved"
+          },
+          {
+            "th": "อย่าสัญญาว่าความเข้ากันได้ที่ไม่ได้รับการยืนยัน",
+            "en": "Do not promise unverified compatibility"
+          }
+        ],
+        "example": {
+          "th": "โรงงาน Lotus ที่สวมขึ้นมาต้องการเห็นทางเข้าจากระยะไกลและจำกัดการเข้าถึงประตูพนักงาน กล้องวงจรปิดและการควบคุมการเข้าถึงมีความเกี่ยวข้อง การเชื่อมต่อยังต้องมีการตรวจสอบอีกด้วย",
+          "en": "Fictional Lotus Workshop wants to see its entrance remotely and restrict staff-door access. CCTV and access control are relevant; connectivity also needs investigation."
+        },
+        "question": {
+          "th": "หมวดหมู่ใดที่จัดการการเข้าประตูแบบควบคุมโดยตรง",
+          "en": "Which category directly addresses controlled door entry?"
+        },
+        "options": [
+          {
+            "th": "การเรียกเก็บเงินค่าโทรศัพท์",
+            "en": "Telephone billing"
+          },
+          {
+            "th": "การสร้างพลังงานแสงอาทิตย์",
+            "en": "Solar generation"
+          },
+          {
+            "th": "การควบคุมการเข้าถึง",
+            "en": "Access control"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "สิทธิ์ในการเข้าเป็นข้อกำหนดในการควบคุมการเข้าถึง",
+          "en": "Entry permissions are an access-control requirement."
+        }
+      },
+      {
+        "id": "AITS-C01-L03",
+        "title": {
+          "th": "พบปะทีมงานและส่งมอบอย่างชัดเจน",
+          "en": "Meet the teams and hand over clearly"
+        },
+        "paragraphs": [
+          {
+            "th": "แผนผังองค์กรของ AITS ที่ให้มานั้นวางผู้ก่อตั้งและซีอีโอไว้เหนือฝ่ายบริหารและการดำเนินงาน การจัดการประกอบด้วยทรัพยากรบุคคลและการจัดซื้อ การบัญชี การขายและการบริหารโครงการ การดำเนินงานรวมถึงการจัดการทางเทคนิค ช่างเทคนิคภาคสนาม โครงสร้างพื้นฐานเครือข่าย และกล้องวงจรปิดและวิศวกรรมบ้านอัจฉริยะ ยืนยันสายการรายงานของคุณเองกับผู้จัดการของคุณ",
+            "en": "The supplied AITS organization chart places the Founder and CEO above management and operations. Management includes HR and purchasing, accounting, project sales and administration. Operations includes technical management, field technicians, network infrastructure, and CCTV and smart-home engineering. Confirm your own reporting line with your manager."
+          },
+          {
+            "th": "สำหรับเรื่องบุคลากร โปรดติดต่อฝ่ายทรัพยากรบุคคลหรือ CEO หากต้องการความช่วยเหลือด้านไอทีหรือวิศวกรรม โปรดสอบถาม Ethan, Kaung หรือ Kai ผู้ติดต่อทางบัญชีจะถูกเพิ่มในภายหลัง ขอให้ผู้จัดการของคุณแนะนำคุณ อย่าเดาที่อยู่อีเมลหรือหมายเลขโทรศัพท์",
+            "en": "For people matters, contact HR or the CEO. For IT or engineering support, ask Ethan, Kaung or Kai. The accounting contact will be added later; ask your manager to introduce you. Do not guess email addresses or phone numbers."
+          }
+        ],
+        "points": [
+          {
+            "th": "รู้ว่าทีมไหนสามารถช่วยได้",
+            "en": "Know which team can help"
+          },
+          {
+            "th": "ยืนยันผู้จัดการโดยตรงของคุณ",
+            "en": "Confirm your direct manager"
+          },
+          {
+            "th": "แบ่งปันข้อเท็จจริง หลักฐาน และการดำเนินการต่อไป",
+            "en": "Share facts, evidence and the next action"
+          }
+        ],
+        "example": {
+          "th": "สตาร์ทเตอร์ใหม่จำเป็นต้องเข้าถึงระบบ สอบถาม Ethan, Kaung หรือ Kai สำหรับกระบวนการอนุมัติ และยืนยันการอนุมัติจากผู้จัดการที่จำเป็น",
+          "en": "A new starter needs system access. Ask Ethan, Kaung or Kai for the approved process, and confirm any required manager approval."
+        },
+        "question": {
+          "th": "ใครสามารถช่วยคุณค้นหากระบวนการสนับสนุนด้านไอทีหรือวิศวกรรมได้บ้าง",
+          "en": "Who can help you find the IT or engineering support process?"
+        },
+        "options": [
+          {
+            "th": "อีธาน คัง หรือ ไค",
+            "en": "Ethan, Kaung or Kai"
+          },
+          {
+            "th": "ที่อยู่ติดต่อที่คาดเดาได้",
+            "en": "A guessed contact address"
+          },
+          {
+            "th": "ลูกค้าภายนอกใดๆ",
+            "en": "Any external customer"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "ใช้ผู้ติดต่อด้านเทคนิคที่ระบุชื่อและปฏิบัติตามกระบวนการเข้าถึงที่ได้รับอนุญาต",
+          "en": "Use the named technical contacts and follow the authorized access process."
+        }
+      },
+      {
+        "id": "AITS-C01-L04",
+        "title": {
+          "th": "ศูนย์กลางการเรียนรู้และวงจรการเรียนรู้แรกของคุณ",
+          "en": "Learning Hub and your first learning cycle"
+        },
+        "paragraphs": [
+          {
+            "th": "เปิดศูนย์การเรียนรู้ด้วยบัญชีที่ได้รับมอบหมาย เลือกหลักสูตรที่ได้รับมอบหมาย และอ่านวัตถุประสงค์ของบทเรียน ทบทวนคำอธิบายและแบบฝึกหัดก่อนทำแบบทดสอบ ตรวจสอบข้อเสนอแนะ ทบทวนบทเรียนที่เกี่ยวข้อง และลองอีกครั้งเมื่อแพลตฟอร์มอนุญาต การเสร็จสิ้นที่บันทึกไว้จะแสดงกิจกรรมการเรียนรู้ ไม่อนุญาตให้งานไฟฟ้าหรือรับรองความสามารถในงาน",
+            "en": "Open the Learning Hub with your assigned account, select an assigned course and read the lesson objectives. Work through the explanation and exercise before taking the quiz. Review feedback, revisit the relevant lesson and retry when the platform permits. A recorded completion shows learning activity; it does not authorize electrical work or certify job competence."
+          },
+          {
+            "th": "ห้องสมุดความรู้แยกบันทึกที่ได้รับอนุมัติออกจากตัวอย่างที่มีป้ายกำกับชัดเจน ตรวจสอบชื่อ เวอร์ชัน แหล่งที่มา สถานะการอนุมัติ และการบังคับใช้ก่อนใช้เอกสาร การเผยแพร่หลักสูตรและการอนุมัติความรู้เป็นการควบคุมที่แยกจากกัน หากไม่มีนโยบายภายใน โปรดสอบถามฝ่ายทรัพยากรบุคคลหรือหัวหน้างานของคุณเกี่ยวกับเอกสารที่ได้รับอนุมัติในปัจจุบัน การฝึกปฏิบัติด้าน AI ไม่สามารถให้อำนาจหน้าที่ของบริษัทที่ขาดหายไปได้",
+            "en": "The knowledge library separates approved records from clearly labeled samples. Check title, version, source, approval state and applicability before using a document. Course publication and knowledge approval are separate controls. If internal policy is unavailable, ask HR or your supervisor for the current approved document. AI practice cannot supply missing company authority."
+          }
+        ],
+        "points": [
+          {
+            "th": "อ่านและฝึกฝนก่อนทำแบบทดสอบ",
+            "en": "Read and practise before the quiz"
+          },
+          {
+            "th": "การสำเร็จคือหลักฐานการเรียนรู้",
+            "en": "Completion is learning evidence"
+          },
+          {
+            "th": "ตรวจสอบแหล่งที่มา เวอร์ชัน และการอนุมัติ",
+            "en": "Check source, version and approval"
+          }
+        ],
+        "example": {
+          "th": "รายการตรวจสอบตัวอย่างจะปรากฏในห้องสมุด คุณสามารถใช้มันสำหรับแบบฝึกหัดได้ แต่ไม่ควรถือว่าเป็นการอนุญาตให้ดำเนินการติดตั้งแบบสด",
+          "en": "A sample checklist appears in the library. You may use it for the exercise, but should not treat it as permission to perform a live installation."
+        },
+        "question": {
+          "th": "การทำแบบทดสอบการตระหนักรู้ด้านความปลอดภัยอนุญาตให้มีกระแสไฟฟ้าทำงานหรือไม่",
+          "en": "Does completing a safety-awareness quiz authorize live electrical work?"
+        },
+        "options": [
+          {
+            "th": "เลขที่",
+            "en": "No"
+          },
+          {
+            "th": "ใช่โดยอัตโนมัติ",
+            "en": "Yes, automatically"
+          },
+          {
+            "th": "เฉพาะในกรณีที่คะแนนเป็น 100%",
+            "en": "Only if the score is 100%"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "การอนุมัติงานและความสามารถในการปฏิบัติจำเป็นต้องมีการควบคุมแยกต่างหาก",
+          "en": "Task authorization and practical competence require separate controls."
+        }
+      }
+    ]
+  },
+  {
+    "id": "employee-rights",
+    "title": {
+      "th": "สิทธิของพนักงานและพื้นฐานสถานที่ทำงาน",
+      "en": "Employee Rights and Workplace Fundamentals"
+    },
+    "roles": ["hr", "management"],
+    "lessons": [
+      {
+        "id": "AITS-C02-L01",
+        "title": {
+          "th": "สิทธิตามกฎหมายและเอกสารของบริษัท",
+          "en": "Statutory rights and company documents"
+        },
+        "paragraphs": [
+          {
+            "th": "การคุ้มครองการจ้างงานตามกฎหมายของไทยและผลประโยชน์เพิ่มเติมของนายจ้างเป็นแหล่งสิทธิที่แตกต่างกัน คู่มือของบริษัทอาจอธิบายการบริหารงานและให้การเตรียมการที่เอื้อเฟื้อมากขึ้น แต่การฝึกอบรมนี้ไม่ได้ตรวจสอบสิทธิประโยชน์ของ AITS กฎเกณฑ์การจ่ายเงินเดือน หรือช่องทางการอนุมัติการลา สอบถามเงื่อนไขการจ้างงานในปัจจุบัน กฎการทำงาน บันทึกการจ่ายเงิน และการติดต่อฝ่ายทรัพยากรบุคคลที่เกี่ยวข้อง",
+            "en": "Thai statutory employment protections and an employer’s additional benefits are different sources of entitlement. A company handbook may explain administration and provide more generous arrangements, but this training has not verified AITS benefits, payroll rules or leave approval channels. Ask for current employment terms, work rules, pay records and the applicable HR contact."
+          },
+          {
+            "th": "เก็บสำเนาเอกสารที่คุณมีสิทธิ์ถือไว้และขอคำชี้แจงเมื่อเงื่อนไขไม่ชัดเจน บันทึกวันที่จริงและข้อเท็จจริงของข้อกังวล อย่าคิดว่าการลงนามในเอกสารจะทำให้ทุกวาระถูกต้องตามกฎหมาย คำถามส่วนบุคคลจำเป็นต้องได้รับการตรวจสอบกฎหมายไทยในปัจจุบัน ความสัมพันธ์ในการจ้างงาน และข้อยกเว้นที่เกี่ยวข้องโดยฝ่ายทรัพยากรบุคคลหรือผู้ตรวจสอบกฎหมายที่มีคุณสมบัติเหมาะสม",
+            "en": "Keep copies of documents you are entitled to hold and ask for clarification when terms are unclear. Record the actual dates and facts of a concern. Do not assume that signing a document makes every term lawful. Individual questions require review of current Thai law, the employment relationship and relevant exceptions by a qualified HR or legal reviewer."
+          }
+        ],
+        "points": [
+          {
+            "th": "ผลประโยชน์ด้านกฎหมายและบริษัทมีแหล่งที่มาที่แตกต่างกัน",
+            "en": "Law and company benefits have different sources"
+          },
+          {
+            "th": "รับเอกสารการจ้างงานปัจจุบัน",
+            "en": "Obtain current employment documents"
+          },
+          {
+            "th": "บันทึกข้อเท็จจริงเมื่อแจ้งข้อกังวล",
+            "en": "Record facts when raising concerns"
+          }
+        ],
+        "example": {
+          "th": "เพื่อนร่วมงานคนหนึ่งบอกว่า AITS ให้โบนัสพิเศษ ไม่มีการจัดหานโยบายที่ได้รับอนุมัติ ถือว่าสิ่งนั้นไม่ได้รับการยืนยัน ไม่ใช่เป็นการให้สิทธิ์",
+          "en": "A colleague says AITS grants a particular bonus. No approved policy is supplied. Treat that as unverified, not as an entitlement."
+        },
+        "question": {
+          "th": "อะไรกำหนดผลประโยชน์เพิ่มเติมของ AITS?",
+          "en": "What establishes an additional AITS benefit?"
+        },
+        "options": [
+          {
+            "th": "การเดาของเพื่อนร่วมงาน",
+            "en": "A colleague’s guess"
+          },
+          {
+            "th": "ตัวอย่างการฝึกอบรมทั่วไป",
+            "en": "A generic training example"
+          },
+          {
+            "th": "ข้อกำหนดของบริษัทที่ได้รับอนุมัติที่ใช้บังคับ",
+            "en": "Applicable approved company terms"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "ผลประโยชน์เฉพาะบริษัทจำเป็นต้องมีหลักฐานของบริษัท",
+          "en": "Company-specific benefits need company evidence."
+        }
+      },
+      {
+        "id": "AITS-C02-L02",
+        "title": {
+          "th": "เวลาพักผ่อนและวันหยุด",
+          "en": "Hours rest and holidays"
+        },
+        "paragraphs": [
+          {
+            "th": "สำหรับงานปกติ คำแนะนำของกระทรวงแรงงานจะอธิบายขีดจำกัดปกติไว้ที่ 8 ชั่วโมงต่อวัน และ 48 ชั่วโมงต่อสัปดาห์ โดยมีการจัดการที่ถูกต้องตามกฎหมายและข้อยกเว้นในภาคส่วนที่ต้องได้รับการตรวจสอบ งานอันตรายที่ระบุมีขีดจำกัดเจ็ดชั่วโมงต่อวัน และ 42 ชั่วโมงต่อสัปดาห์ กฎการพักผ่อนตามปกติกำหนดไว้อย่างน้อยหนึ่งชั่วโมงหลังจากไม่เกินห้าชั่วโมงทำงานติดต่อกัน ต้องตรวจสอบการแบ่งแยกที่ตกลงกันไว้และข้อยกเว้นตามกฎหมาย",
+            "en": "For ordinary work, Ministry of Labour guidance describes normal limits of eight hours a day and 48 hours a week, with lawful arrangements and sector exceptions requiring review. Specified hazardous work has a seven-hour daily and 42-hour weekly limit. The ordinary rest rule provides at least one hour after no more than five consecutive working hours; agreed split breaks and statutory exceptions must be checked."
+          },
+          {
+            "th": "The general baseline includes at least one weekly holiday with no more than six days between, at least 13 traditional holidays including National Labour Day, and at least six working days of annual holiday after one continuous year. สิ่งเหล่านี้เป็นบรรทัดฐานทางกฎหมาย ไม่ใช่คำแถลงของบัญชีรายชื่อ AITS ความยินยอมล่วงเวลา ข้อยกเว้น และการจ่ายเงินควรได้รับการตรวจสอบแยกกัน อย่าสรุปว่ากำหนดเวลาของลูกค้ามาแทนที่พวกเขา",
+            "en": "The general baseline includes at least one weekly holiday with no more than six days between, at least 13 traditional holidays including National Labour Day, and at least six working days of annual holiday after one continuous year. These are legal baselines, not a statement of the AITS roster. Overtime consent, exceptions and pay should be checked separately; do not infer that a customer deadline overrides them."
+          }
+        ],
+        "points": [
+          {
+            "th": "พื้นฐานสามัญ: 8 ชั่วโมง/วัน และ 48 ชั่วโมง/สัปดาห์",
+            "en": "Ordinary baseline: 8 hours/day and 48/week"
+          },
+          {
+            "th": "การพักผ่อนและวันหยุดประจำสัปดาห์มีความสำคัญ",
+            "en": "Rest and weekly holidays matter"
+          },
+          {
+            "th": "ตาราง AITS ยังคงไม่ได้รับการยืนยัน",
+            "en": "AITS schedules remain unverified"
+          }
+        ],
+        "example": {
+          "th": "บัญชีรายชื่อสมมติดูเหมือนจะกำหนดเวลาการทำงานต่อเนื่องโดยไม่หยุดพัก ระบุข้อกังวลและขอให้ฝ่ายทรัพยากรบุคคลตรวจสอบการจัดการและข้อยกเว้นที่เกิดขึ้นจริง",
+          "en": "A fictional roster appears to schedule continuous work without a break. Identify the concern and ask HR to check the actual arrangement and exceptions."
+        },
+        "question": {
+          "th": "เส้นฐานชั่วโมงปกติปกติรายสัปดาห์ที่อธิบายไว้ที่นี่คืออะไร",
+          "en": "What is the ordinary weekly normal-hours baseline described here?"
+        },
+        "options": [
+          {
+            "th": "72 ชม",
+            "en": "72 hours"
+          },
+          {
+            "th": "48 ชม",
+            "en": "48 hours"
+          },
+          {
+            "th": "60 ชม",
+            "en": "60 hours"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "หมวดหมู่พิเศษและการจัดเตรียมยังคงต้องมีการตรวจสอบการบังคับใช้",
+          "en": "Special categories and arrangements still require applicability review."
+        }
+      },
+      {
+        "id": "AITS-C02-L03",
+        "title": {
+          "th": "ออกจากหมวดหมู่และการเปลี่ยนแปลงล่าสุด",
+          "en": "Leave categories and recent changes"
+        },
+        "paragraphs": [
+          {
+            "th": "หมวดหมู่การลา ได้แก่ การเจ็บป่วย ธุรกิจส่วนตัวที่จำเป็น การคลอดบุตร การสนับสนุนคู่สมรสที่มีคุณสมบัติเหมาะสม การทำหมัน การรับราชการทหาร และการฝึกอบรม โดยแต่ละประเภทมีเงื่อนไขและกฎการจ่ายเงิน ขีดจำกัดการลาป่วยและการลาป่วยโดยได้รับค่าจ้างเป็นแนวคิดที่แตกต่างกัน อย่าใช้ภาพรวมเก่าเป็นแหล่งเดียวสำหรับค่าเผื่อปัจจุบัน",
+            "en": "Leave categories include sickness, necessary personal business, maternity, qualifying spouse support, sterilization, military service and training, each with conditions and payment rules. Sick leave and paid sick-leave limits are different concepts. Do not use an old overview as the sole source for current allowances."
+          },
+          {
+            "th": "คำอธิบายอย่างเป็นทางการของการแก้ไขปี 2025 ซึ่งมีผลใช้บังคับในวันที่ 7 ธันวาคม 2025 ระบุการลาคลอดบุตรได้สูงสุด 120 วัน โดยได้รับค่าจ้างสูงสุด 60 วัน นอกจากนี้ยังอธิบายการลาเพื่อดูแลเด็กอย่างต่อเนื่องตามเงื่อนไขนานสูงสุด 15 วัน โดยได้รับค่าจ้าง 50% พร้อมหลักฐานทางการแพทย์ที่จำเป็น และสูงสุด 15 วันเพื่อช่วยเหลือคู่สมรสที่คลอดบุตร โดยได้รับค่าจ้างเต็มจำนวน ขึ้นอยู่กับใบสมัครและกฎกำหนดเวลา 90 วัน นี่เป็นบทสรุปทางกฎหมาย ไม่ใช่สิทธิประโยชน์ของ AITS การตรวจสอบด้านทรัพยากรบุคคล/กฎหมายต้องยืนยันข้อความปัจจุบันและคุณสมบัติของแต่ละบุคคลก่อนที่จะเผยแพร่",
+            "en": "The official explanation of the 2025 amendment, effective 7 December 2025, describes maternity leave of up to 120 days with employer-paid wages up to 60 days. It also describes up to 15 days of qualifying continuous child-care leave at 50% wages with the required medical evidence, and up to 15 days to assist a spouse who gives birth, paid in full, subject to the application and 90-day timing rules. These are statutory summaries, not AITS benefits. HR/legal review must confirm current text and individual eligibility before release."
+          }
+        ],
+        "points": [
+          {
+            "th": "ตรวจสอบการแก้ไขและวันที่มีผลบังคับใช้",
+            "en": "Check amendment and effective date"
+          },
+          {
+            "th": "ระยะเวลาการลาและค่าจ้างจะแยกกัน",
+            "en": "Leave duration and pay are separate"
+          },
+          {
+            "th": "ส่งหลักฐานที่ละเอียดอ่อนเป็นการส่วนตัว",
+            "en": "Submit sensitive evidence privately"
+          }
+        ],
+        "example": {
+          "th": "ภาพรวมกระทรวงเก่ายังบอก 90 วันคลอดบุตร คำอธิบายการแก้ไขอย่างเป็นทางการที่ใหม่กว่าจะแทนที่ตัวเลขนั้นสำหรับสถานการณ์ที่ครอบคลุมที่เกี่ยวข้อง",
+          "en": "An older Ministry overview still says 90 maternity days. The newer official amendment explanation supersedes that figure for the relevant covered situation."
+        },
+        "question": {
+          "th": "แหล่งข้อมูลใดควรแก้ไขตัวเลขการคลอดบุตรที่ล้าสมัย",
+          "en": "Which source should resolve an outdated maternity figure?"
+        },
+        "options": [
+          {
+            "th": "การแก้ไขเพิ่มเติมอย่างเป็นทางการที่ใหม่กว่าที่เกี่ยวข้อง",
+            "en": "The applicable newer official amendment"
+          },
+          {
+            "th": "เพจแคชที่เก่าแก่ที่สุด",
+            "en": "The oldest cached page"
+          },
+          {
+            "th": "ตัวอย่างบริษัททั่วไป",
+            "en": "A generic company example"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "กฎหมายที่มีประสิทธิผลจะต้องได้รับการตรวจสอบแทนการคัดลอกบทสรุปที่ล้าสมัย",
+          "en": "Effective legislation must be checked instead of copying obsolete summaries."
+        }
+      },
+      {
+        "id": "AITS-C02-L04",
+        "title": {
+          "th": "ดำเนินการรักษาความลับและข้อกังวล",
+          "en": "Conduct confidentiality and concerns"
+        },
+        "paragraphs": [
+          {
+            "th": "แนวปฏิบัติทางวิชาชีพทั่วไปประกอบด้วยบันทึกที่ถูกต้อง การสื่อสารด้วยความเคารพ ความซื่อสัตย์เกี่ยวกับข้อผิดพลาด และการปกป้องข้อมูลที่มอบความไว้วางใจให้กับคุณ รวบรวมเฉพาะข้อมูลที่จำเป็นสำหรับงานที่ถูกต้องตามกฎหมาย และแบ่งปันเฉพาะกับผู้รับที่ได้รับอนุญาตผ่านระบบที่ได้รับอนุมัติเท่านั้น นี่คือการตระหนักรู้เกี่ยวกับความเป็นส่วนตัว ไม่ใช่การตีความ PDPA ของประเทศไทยหรือนโยบายการเก็บรักษาของ AITS อย่างสมบูรณ์",
+            "en": "General professional practice includes accurate records, respectful communication, honesty about mistakes and protection of information entrusted to you. Collect only information needed for the legitimate task and share it only with authorized recipients through approved systems. This is privacy awareness, not a complete interpretation of Thailand’s PDPA or an AITS retention policy."
+          },
+          {
+            "th": "ก่อนส่งเอกสาร ให้ตรวจสอบผู้รับ เอกสารแนบ วัตถุประสงค์ และความไว อย่าใส่รหัสผ่านของลูกค้าลงในตั๋วหรือฝึกแชทด้วย AI สำหรับข้อกังวล ให้แยกสิ่งที่คุณสังเกตเห็นออกจากสิ่งที่คุณสงสัย เก็บรักษาหลักฐานที่เกี่ยวข้องอย่างถูกต้องตามกฎหมาย และใช้ช่องทางที่รับผิดชอบที่ได้รับการตรวจสอบแล้ว หากเกี่ยวข้องกับการติดต่อตามปกติ ให้แสวงหาเส้นทางอื่นที่ได้รับอนุญาต บทเรียนนี้ไม่ได้สร้างขั้นตอนการร้องทุกข์ของบริษัทหรือรับประกันผลการสอบสวนโดยเฉพาะ",
+            "en": "Before sending a document, check recipient, attachment, purpose and sensitivity. Never put customer passwords into a ticket or AI practice chat. For a concern, separate what you observed from what you suspect, preserve relevant evidence lawfully, and use a verified responsible channel. If the usual contact is implicated, seek an alternative authorized route. This lesson does not invent a company grievance procedure or promise a particular investigation outcome."
+          }
+        ],
+        "points": [
+          {
+            "th": "แยกการสังเกตออกจากความสงสัย",
+            "en": "Separate observation from suspicion"
+          },
+          {
+            "th": "แบ่งปันกับผู้รับที่ได้รับอนุญาตเท่านั้น",
+            "en": "Share only with authorized recipients"
+          },
+          {
+            "th": "ตรวจสอบเส้นทางสำหรับข้อกังวล",
+            "en": "Verify the route for concerns"
+          }
+        ],
+        "example": {
+          "th": "พนักงานสมมติได้รับรายชื่อลูกค้าโดยไม่ได้ตั้งใจ หยุดการแบ่งปันเพิ่มเติมและรายงานการจัดส่งที่ผิดพลาดผ่านเส้นทางภายในที่ได้รับการตรวจสอบแล้ว",
+          "en": "A fictional employee receives a customer list by mistake. Stop further sharing and report the misdelivery through the verified internal route."
+        },
+        "question": {
+          "th": "รายละเอียดใดที่ควรแยกออกจากตั๋วการแก้ไขปัญหา",
+          "en": "Which detail should be excluded from a troubleshooting ticket?"
+        },
+        "options": [
+          {
+            "th": "รุ่นของอุปกรณ์",
+            "en": "The device model"
+          },
+          {
+            "th": "เวลาเริ่มมีอาการ",
+            "en": "The symptom start time"
+          },
+          {
+            "th": "รหัสผ่านลูกค้า",
+            "en": "The customer password"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "รหัสผ่านไม่ควรถูกคัดลอกลงในบันทึกประจำ",
+          "en": "Passwords should not be copied into routine records."
+        }
+      }
+    ]
+  },
+  {
+    "id": "workplace-safety",
+    "title": {
+      "th": "ความปลอดภัยในสถานที่ทำงานและมาตรฐานวิชาชีพ",
+      "en": "Workplace Safety and Professional Standards"
+    },
+    "roles": ["technician", "engineer", "network", "management"],
+    "lessons": [
+      {
+        "id": "AITS-C03-L01",
+        "title": {
+          "th": "รับรู้ถึงอันตรายก่อนทำงาน",
+          "en": "Recognize hazards before work"
+        },
+        "paragraphs": [
+          {
+            "th": "อันตรายคือแหล่งที่มาของอันตรายที่อาจเกิดขึ้น ความเสี่ยงจะพิจารณาว่าอันตรายอาจเกิดขึ้นได้อย่างไรและผลที่ตามมา ก่อนทำงาน ให้มองหาสายเคเบิลที่ชำรุด พื้นที่เปียก การเข้าถึงที่ไม่มั่นคง วัตถุหล่น การจราจร การบรรทุกของหนัก และทางออกที่ถูกบล็อก ไซต์ที่ดูเรียบร้อยยังคงมีบริการที่ซ่อนอยู่หรืออุปกรณ์ที่มีพลังอยู่",
+            "en": "A hazard is a source of possible harm; risk considers how harm could occur and its consequences. Before work, look for damaged cables, wet areas, unstable access, falling objects, traffic, heavy loads and blocked exits. A neat-looking site can still contain hidden services or energized equipment."
+          },
+          {
+            "th": "ต้องการขจัดอันตรายหรือเปลี่ยนวิธีการก่อนที่จะพึ่งอุปกรณ์ป้องกันส่วนบุคคลเท่านั้น ผู้เริ่มต้นควรรายงานสภาพที่ไม่ปลอดภัยและอยู่นอกพื้นที่อันตราย อย่าเริ่มงานที่ไม่คุ้นเคยเพราะลูกค้าบอกว่าเป็นเรื่องเร่งด่วน หลักสูตรการรับรู้นี้ไม่ได้แทนที่การประเมินความเสี่ยง การฝึกอบรมงาน การกำกับดูแล หรือการควบคุมเฉพาะสถานที่ของนายจ้าง",
+            "en": "Prefer eliminating a hazard or changing the method before relying only on personal protective equipment. A beginner should report an unsafe condition and stay outside the danger area. Do not start an unfamiliar task because a customer says it is urgent. This awareness course does not replace the employer’s risk assessment, task training, supervision or site-specific controls."
+          }
+        ],
+        "points": [
+          {
+            "th": "มองหากลไกของอันตราย",
+            "en": "Look for the mechanism of harm"
+          },
+          {
+            "th": "ลบหรือลดการสัมผัส",
+            "en": "Remove or reduce exposure"
+          },
+          {
+            "th": "หยุดชั่วคราวเมื่อขาดการควบคุมที่ปลอดภัย",
+            "en": "Pause when safe controls are missing"
+          }
+        ],
+        "example": {
+          "th": "มีสายเคเบิลหลวมตัดผ่านทางเดินที่พลุกพล่าน แบบฝึกหัดนี้ขอวิธีแก้ปัญหาการกำหนดเส้นทางและการสื่อสารที่มีการควบคุม ไม่ใช่แค่การตะโกนเตือนเพียงครั้งเดียว",
+          "en": "A loose cable crosses a busy walkway. The exercise asks for a controlled routing solution and communication, not merely a warning shouted once."
+        },
+        "question": {
+          "th": "อันตรายคืออะไร?",
+          "en": "What is a hazard?"
+        },
+        "options": [
+          {
+            "th": "ลูกค้าร้องเรียนใดๆ",
+            "en": "Any customer complaint"
+          },
+          {
+            "th": "แหล่งที่มาของอันตรายที่อาจเกิดขึ้น",
+            "en": "A source of possible harm"
+          },
+          {
+            "th": "มีเพียงอาการบาดเจ็บที่สมบูรณ์เท่านั้น",
+            "en": "Only a completed injury"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "อันตรายสามารถเกิดขึ้นได้ก่อนที่เหตุการณ์จะเกิดขึ้น",
+          "en": "A hazard can exist before an incident occurs."
+        }
+      },
+      {
+        "id": "AITS-C03-L02",
+        "title": {
+          "th": "ความรู้เรื่องไฟฟ้าและอุปกรณ์",
+          "en": "Electrical and equipment awareness"
+        },
+        "paragraphs": [
+          {
+            "th": "ประเทศไทยมีข้อบังคับและข้อกำหนดการฝึกอบรมด้านความปลอดภัยทางไฟฟ้าเฉพาะด้าน ดัชนีอ้างอิง DLPW เชื่อมโยงกฎระเบียบและประกาศ บทเรียนออนไลน์สั้นๆ ไม่ใช่วุฒิการศึกษานั้น อย่าเปิดอุปกรณ์ที่มีพลังงาน เอาชนะเจ้าหน้าที่รักษาความปลอดภัย หรือซ่อมแซมแบบด้นสด ความร้อนที่ไม่คาดคิด กลิ่นไหม้ ตัวนำที่สัมผัส หรือของเหลวที่ไหลเข้าไป จำเป็นต้องหยุดอย่างปลอดภัยและการประเมินที่มีคุณสมบัติ",
+            "en": "Thailand has specific occupational electrical-safety regulations and training requirements; the DLPW reference index links the regulation and notices. A short online lesson is not that qualification. Do not open energized equipment, defeat guards or improvise repairs. Unexpected heat, burning smell, exposed conductors or liquid ingress require a safe stop and qualified assessment."
+          },
+          {
+            "th": "อุปกรณ์เครือข่ายยังคงสามารถเชื่อมต่อกับแหล่งจ่ายไฟหลัก พลังงานสำรอง หรือแหล่งพลังงานอื่นๆ ได้ การปิดสวิตช์ที่มองเห็นได้เพียงสวิตช์เดียวไม่ได้พิสูจน์ว่าพลังงานทั้งหมดถูกแยกออกจากกัน การแยก การตรวจสอบ และการเพิ่มพลังงานใหม่เป็นของบุคลากรที่ได้รับอนุญาตที่ผ่านการฝึกอบรมโดยใช้วิธีการที่ได้รับอนุมัติ จัดการอุปกรณ์โดยใช้วิธียกและยกที่กำหนด ตรวจสอบบรรจุภัณฑ์ ขั้วต่อ และคำแนะนำของผู้ผลิตโดยไม่ทำให้เกิดการสัมผัส",
+            "en": "Network equipment can still be connected to mains supplies, backup power or other energy sources. Switching off one visible switch does not prove all energy is isolated. Isolation, verification and re-energization belong to trained authorized personnel using the approved method. Handle equipment using rated lifting and carrying methods; inspect packaging, connectors and manufacturer instructions without creating exposure."
+          }
+        ],
+        "points": [
+          {
+            "th": "อุปกรณ์เครือข่ายอาจมีพลังงานที่เป็นอันตรายได้",
+            "en": "A network device can have hazardous energy"
+          },
+          {
+            "th": "ห้ามทำการซ่อมระบบไฟฟ้าโดยฉับพลัน",
+            "en": "Do not improvise electrical repairs"
+          },
+          {
+            "th": "ใช้การแยกและการตรวจสอบที่มีคุณสมบัติเหมาะสม",
+            "en": "Use qualified isolation and verification"
+          }
+        ],
+        "example": {
+          "th": "เครื่องบันทึกส่งกลิ่นไหม้ ทำให้ผู้คนมีความชัดเจนและแสวงหาการตอบสนองฉุกเฉิน/ตามหลักเกณฑ์ของสถานที่ อย่าเปิดกล่องเพื่อตรวจสอบ",
+          "en": "A recorder emits a burning smell. Keep people clear and seek the site emergency/qualified response; do not open the enclosure to inspect it."
+        },
+        "question": {
+          "th": "การถอดปลั๊กสายเคเบิลเส้นเดียวพิสูจน์ว่าพลังงานทั้งหมดถูกแยกออกจากกันหรือไม่?",
+          "en": "Does unplugging one cable prove all energy is isolated?"
+        },
+        "options": [
+          {
+            "th": "เลขที่",
+            "en": "No"
+          },
+          {
+            "th": "เสมอ",
+            "en": "Always"
+          },
+          {
+            "th": "สำหรับเครื่องบันทึกเท่านั้น",
+            "en": "Only for a recorder"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "การสำรองข้อมูลหรือวัสดุสิ้นเปลืองอื่นๆ อาจยังคงอยู่ จำเป็นต้องมีการตรวจสอบคุณสมบัติ",
+          "en": "Backup or other supplies may remain; qualified verification is required."
+        }
+      },
+      {
+        "id": "AITS-C03-L03",
+        "title": {
+          "th": "ความสูง PPE และการจัดการ",
+          "en": "Height PPE and handling"
+        },
+        "paragraphs": [
+          {
+            "th": "พิจารณาว่าสามารถทำงานได้จากพื้นดินหรือไม่ ในกรณีที่จำเป็นต้องมีการทำงานที่สูง ผู้มีความสามารถจะต้องวางแผนการเข้าถึงที่เหมาะสม การป้องกันการพลัดตก การตรวจสอบอุปกรณ์ และการเตรียมการในกรณีฉุกเฉิน สายรัดเพียงอย่างเดียวไม่ได้ทำให้การตั้งค่าที่ไม่ปลอดภัยเป็นที่ยอมรับได้ บันไดไม่ใช่วิธีแก้ปัญหาแบบสากล และเก้าอี้ก็ไม่ใช่อุปกรณ์สำหรับเข้าถึง",
+            "en": "Consider whether work can be done from the ground. Where height work remains necessary, competent people must plan suitable access, fall prevention, equipment inspection and emergency arrangements. A harness alone does not make an unsafe setup acceptable. Ladders are not a universal solution, and a chair is not access equipment."
+          },
+          {
+            "th": "เลือก PPE สำหรับอันตรายที่ประเมิน ความพอดีที่ถูกต้อง และความเข้ากันได้ ตรวจสอบและปฏิบัติตามคำแนะนำ ไม่ควรใช้อุปกรณ์ที่เสียหาย อย่าติดอุปกรณ์ป้องกันการตกเข้ากับพุกที่ไม่ผ่านการตรวจสอบ กันผู้คนให้ห่างจากบริเวณที่มีสิ่งของหล่นลงมา และใช้การจัดการที่ได้รับอนุมัติ แบบฝึกหัดของผู้เรียนเป็นการทบทวนการวางแผนกระดาษ โดยจะไม่มีการปีนเขา การยก หรือการติดตั้งแบบสด",
+            "en": "Select PPE for the assessed hazard, correct fit and compatibility. Inspect it and follow its instructions; damaged equipment should not be used. Do not attach fall protection to an unverified anchor. Keep people clear of falling-object areas and use approved handling arrangements. The learner’s exercise is a paper planning review; it includes no climbing, lifting experiment or live installation."
+          }
+        ],
+        "points": [
+          {
+            "th": "หลีกเลี่ยงการสัมผัสกับความสูงหากเป็นไปได้",
+            "en": "Avoid height exposure where possible"
+          },
+          {
+            "th": "PPE ไม่ได้มาแทนที่การวางแผน",
+            "en": "PPE does not replace planning"
+          },
+          {
+            "th": "ไม่มีการปีนเขาในการออกกำลังกายนี้",
+            "en": "No climbing in this exercise"
+          }
+        ],
+        "example": {
+          "th": "กล้องอยู่เหนือปล่องบันได การตอบสนองการวางแผนที่ปลอดภัยจะพิจารณาการติดตั้งแบบอื่นหรือการประเมินการเข้าถึงอย่างเหมาะสม โดยไม่สร้างความสมดุลให้กับบันไดบนขั้นบันได",
+          "en": "A camera is above a stairwell. The safe planning response considers another mounting arrangement or properly assessed access, not balancing a ladder on a step."
+        },
+        "question": {
+          "th": "การสวมสายรัดทำให้สมอทุกตัวเหมาะสมหรือไม่?",
+          "en": "Does wearing a harness make every anchor suitable?"
+        },
+        "options": [
+          {
+            "th": "ใช่",
+            "en": "Yes"
+          },
+          {
+            "th": "ภายในอาคารเท่านั้น",
+            "en": "Only indoors"
+          },
+          {
+            "th": "เลขที่",
+            "en": "No"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "จุดยึดและระบบที่สมบูรณ์จำเป็นต้องได้รับการประเมินที่มีความสามารถ",
+          "en": "Anchors and the complete system need competent assessment."
+        }
+      },
+      {
+        "id": "AITS-C03-L04",
+        "title": {
+          "th": "ความประพฤติและคุณภาพของสถานที่เกิดเหตุ",
+          "en": "Incidents site conduct and quality"
+        },
+        "paragraphs": [
+          {
+            "th": "หากเกิดอุบัติเหตุหรือเหตุการณ์เกือบพลาด ให้ป้องกันตัวเอง ค้นหาการตอบสนองฉุกเฉินที่กำหนดไว้ และหลีกเลี่ยงการรบกวนสถานที่เกิดเหตุ ยกเว้นในกรณีที่จำเป็นเพื่อความปลอดภัยในทันที อย่าพยายามช่วยชีวิตนอกเหนือการฝึกของคุณ บันทึกเวลา สถานที่ สภาพที่สังเกตได้ และพยานผ่านเส้นทางการรายงานที่ได้รับการตรวจสอบแล้ว ห้ามคาดเดาเกี่ยวกับการกล่าวโทษหรือเผยแพร่ภาพบุคคล",
+            "en": "If an incident or near miss occurs, protect yourself, seek the designated emergency response and avoid disturbing the scene except where necessary for immediate safety. Do not attempt a rescue beyond your training. Record time, location, observed conditions and witnesses through the verified reporting route. Do not speculate about blame or publish images of people."
+          },
+          {
+            "th": "ที่ไซต์งานของลูกค้า ให้ยืนยันสิทธิ์การเข้าถึง ขอบเขตงาน และขอบเขตที่ได้รับอนุมัติ ปกป้องทรัพย์สิน รักษาเส้นทางให้ชัดเจน และขออนุญาตก่อนถ่ายรูปหลักฐาน การประกันคุณภาพหมายถึงการสร้างการตรวจสอบที่เชื่อถือได้ในกระบวนการ การตรวจสอบขั้นสุดท้ายเพียงอย่างเดียวไม่สามารถซ่อมแซมความล้มเหลวในการวางแผนทั้งหมดได้ บันทึกงานที่ไม่สมบูรณ์และความเสี่ยงที่ยังไม่ได้รับการแก้ไขตามความเป็นจริง เพื่อให้บุคคลต่อไปสามารถดำเนินการได้",
+            "en": "At a customer site, confirm access permission, work boundaries and the approved scope. Protect property, keep routes clear and obtain permission before taking evidence photographs. Quality assurance means building reliable checks into the process; final inspection alone cannot repair every planning failure. Record incomplete work and unresolved risks truthfully so that the next person can act."
+          }
+        ],
+        "points": [
+          {
+            "th": "รายงานเหตุการณ์ใกล้พลาดและอันตราย",
+            "en": "Report near misses as well as harm"
+          },
+          {
+            "th": "เคารพสิทธิ์ของไซต์",
+            "en": "Respect site permissions"
+          },
+          {
+            "th": "บันทึกงานที่ยังไม่เสร็จอย่างตรงไปตรงมา",
+            "en": "Record unfinished work honestly"
+          }
+        ],
+        "example": {
+          "th": "กล่องตกลงไปใกล้เพื่อนร่วมงานโดยไม่ได้รับบาดเจ็บ ปฏิบัติต่อเหตุการณ์ Near Miss เสมือนเป็นข้อมูลด้านความปลอดภัยที่เป็นประโยชน์ แทนที่จะปกปิดไว้เพราะไม่มีใครได้รับบาดเจ็บ",
+          "en": "A box falls near a colleague without injury. Treat the near miss as useful safety information rather than hiding it because nobody was hurt."
+        },
+        "question": {
+          "th": "ควรจะมองข้ามการพลาดท่าใกล้เพราะไม่มีใครได้รับบาดเจ็บหรือไม่?",
+          "en": "Should a near miss be ignored because no one was hurt?"
+        },
+        "options": [
+          {
+            "th": "ถ้ามันเกิดขึ้นกลางแจ้งเท่านั้น",
+            "en": "Only if it happened outdoors"
+          },
+          {
+            "th": "เลขที่",
+            "en": "No"
+          },
+          {
+            "th": "ใช่",
+            "en": "Yes"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "มันสามารถเปิดเผยความล้มเหลวในการควบคุมก่อนได้รับบาดเจ็บ",
+          "en": "It can reveal a control failure before an injury."
+        }
+      }
+    ]
+  },
+  {
+    "id": "cctv-installation",
+    "title": {
+      "th": "กล้องวงจรปิดและพื้นฐานการติดตั้ง",
+      "en": "CCTV and Installation Fundamentals"
+    },
+    "roles": ["technician", "engineer", "sales", "network"],
+    "lessons": [
+      {
+        "id": "AITS-C04-L01",
+        "title": {
+          "th": "กล้องบันทึกและดู",
+          "en": "Cameras recorders and viewing"
+        },
+        "paragraphs": [
+          {
+            "th": "ระบบกล้องวงจรปิดผสมผสานการจับภาพ การขนส่ง การบันทึกหรือการจัดเก็บ และการรับชมที่ได้รับอนุญาต กล้อง IP ส่งวิดีโอดิจิทัลผ่านเครือข่ายไปยัง NVR หรือระบบการจัดการวิดีโอ กล้องอะนาล็อกมักจะส่งวิดีโอไปยัง DVR เพื่อบันทึก มีการออกแบบแบบไฮบริด ดังนั้นควรตรวจสอบอุปกรณ์จริงแทนที่จะอาศัยชื่อเพียงอย่างเดียว",
+            "en": "A CCTV system combines image capture, transport, recording or storage, and authorized viewing. IP cameras send digital video over a network to an NVR or video-management system; analog cameras commonly send video to a DVR for recording. Hybrid designs exist, so verify the actual equipment rather than relying on the name alone."
+          },
+          {
+            "th": "ภาพสดที่มองเห็นไม่ได้พิสูจน์การบันทึก ความแม่นยำของเวลา การเล่นหรือการส่งออก การทดสอบการส่งมอบที่สมบูรณ์จะพิจารณาถึงวัตถุประสงค์ที่ตกลงกันของลูกค้าและข้อกำหนดที่ได้รับอนุมัติ ความละเอียดของกล้องเพียงอย่างเดียวไม่ได้รับประกันการระบุตัวตน: เลนส์ ระยะทาง มุม แสง และสสารของการเคลื่อนไหว ตัวอย่างทั้งหมดที่นี่เป็นข้อมูลทั่วไป ยังไม่ได้ระบุเกณฑ์การยอมรับเฉพาะของ AITS",
+            "en": "A visible live image does not prove recording, time accuracy, playback or export works. A complete handover test considers the customer’s agreed purpose and approved requirements. Camera resolution alone does not guarantee identification: lens, distance, angle, lighting and motion matter. All examples here are generic; AITS-specific acceptance criteria have not been supplied."
+          }
+        ],
+        "points": [
+          {
+            "th": "การจับภาพ การขนส่ง บันทึก และการดูมีความแตกต่างกัน",
+            "en": "Capture, transport, record and view are distinct"
+          },
+          {
+            "th": "NVR และ DVR อธิบายสถาปัตยกรรมทั่วไป",
+            "en": "NVR and DVR describe common architectures"
+          },
+          {
+            "th": "ทดสอบการเล่นและไลฟ์วิว",
+            "en": "Test playback as well as live view"
+          }
+        ],
+        "example": {
+          "th": "ระบบสังเคราะห์: กล้อง IP สองตัวเชื่อมต่อกับสวิตช์ PoE; เครื่องบันทึกและเวิร์กสเตชันการรับชมที่ได้รับอนุญาตจะแชร์เครือข่ายที่ได้รับอนุญาต",
+          "en": "Synthetic system: two IP cameras connect to a PoE switch; the recorder and authorized viewing workstation share the permitted network."
+        },
+        "question": {
+          "th": "อุปกรณ์ใดที่มักบันทึกสตรีมจากกล้องเครือข่าย",
+          "en": "Which device commonly records network-camera streams?"
+        },
+        "options": [
+          {
+            "th": "เครื่องบันทึกภาพ",
+            "en": "NVR"
+          },
+          {
+            "th": "แผงแพทช์แบบพาสซีฟ",
+            "en": "Passive patch panel"
+          },
+          {
+            "th": "ม้วนเก็บสายไฟที่ไม่มีไฟฟ้า",
+            "en": "Unpowered cable reel"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "NVR รับวิดีโอเครือข่ายสำหรับการบันทึก",
+          "en": "An NVR receives network video for recording."
+        }
+      },
+      {
+        "id": "AITS-C04-L02",
+        "title": {
+          "th": "การตรวจสอบสายเคเบิล PoE และอุปกรณ์",
+          "en": "PoE cabling and equipment checks"
+        },
+        "paragraphs": [
+          {
+            "th": "Power over Ethernet สามารถจ่ายพลังงานและข้อมูลผ่านสายเคเบิล Ethernet ที่ใช้ร่วมกันได้ ตรวจสอบทั้งประเภท PoE ที่รองรับของอุปกรณ์และความสามารถของสวิตช์หรือหัวฉีด อย่าถือว่าทุกพอร์ต RJ45 จ่ายไฟ หรือหัวฉีดทุกตัวเป็นไปตามมาตรฐาน เอกสารประกอบของผู้ผลิตให้ความสำคัญกับรุ่นจริงเป็นหลัก",
+            "en": "Power over Ethernet can deliver power and data over compatible Ethernet cabling. Check both the device’s supported PoE type and the switch or injector’s capability. Do not assume every RJ45 port supplies power or every injector is standards-compatible. Manufacturer documentation takes priority for the actual model."
+          },
+          {
+            "th": "สวิตช์มีขีดจำกัดต่อพอร์ตและงบประมาณด้านพลังงานทั้งหมด เปรียบเทียบโหลดที่วางแผนไว้กับงบประมาณที่บันทึกไว้ โดยคำนึงถึงเงื่อนไขของผู้ผลิตและการสูญเสียสายเคเบิล Axis อธิบายว่าการใช้กล้องโดยทั่วไปและสูงสุดจะแตกต่างกันไปตามคุณสมบัติและสภาวะการทำงาน ตรวจสอบประเภทของสายเคเบิล เส้นทาง การสิ้นสุด การติดฉลาก ความเสียหาย และความเหมาะสมสำหรับสภาพแวดล้อม ห้ามเดินสายไฟหลักโดยไม่ได้ตั้งใจโดยเป็นส่วนหนึ่งของการฝึกหัดเครือข่าย",
+            "en": "A switch has per-port limits and a total power budget. Compare planned loads against the documented budget, allowing for the manufacturer’s conditions and cable losses. Axis explains that typical and maximum camera consumption differ with features and operating conditions. Inspect cable category, route, terminations, labeling, damage and suitability for the environment. Never improvise mains wiring as part of a network exercise."
+          }
+        ],
+        "points": [
+          {
+            "th": "ตรวจสอบประเภท PoE และขีดจำกัดต่อพอร์ต",
+            "en": "Check PoE type and per-port limit"
+          },
+          {
+            "th": "ตรวจสอบงบประมาณพลังงานที่ใช้ได้ทั้งหมด",
+            "en": "Check total usable power budget"
+          },
+          {
+            "th": "ตรวจสอบและติดฉลากทางเดินของสายเคเบิล",
+            "en": "Inspect and label the cable path"
+          }
+        ],
+        "example": {
+          "th": "กล้องสมมุติสี่ตัวแต่ละตัวต้องการการจัดสรรสูงสุดที่บันทึกไว้ที่ 15 W รวมทั้งหมดคือ 60 W; งบประมาณที่ใช้งานได้ 50 W ไม่เพียงพอก่อนที่จะโหลดอื่นๆ ด้วยซ้ำ",
+          "en": "Four fictional cameras each require a documented maximum allocation of 15 W. Their total is 60 W; a 50 W usable budget is insufficient even before other loads."
+        },
+        "question": {
+          "th": "การจัดสรร 15 W สี่รายการสามารถพอดีกับงบประมาณที่ใช้งานได้ 50 W ได้หรือไม่",
+          "en": "Can four 15 W allocations fit a 50 W usable budget?"
+        },
+        "options": [
+          {
+            "th": "ใช่ รวมเป็น 30 วัตต์",
+            "en": "Yes, total is 30 W"
+          },
+          {
+            "th": "ใช่ จำนวนพอร์ตก็เพียงพอแล้ว",
+            "en": "Yes, port count is enough"
+          },
+          {
+            "th": "ไม่ รวม 60 W",
+            "en": "No, total is 60 W"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "งบประมาณด้านพลังงานและจำนวนพอร์ตเป็นข้อจำกัดที่แยกจากกัน",
+          "en": "Power budget and port count are separate constraints."
+        }
+      },
+      {
+        "id": "AITS-C04-L03",
+        "title": {
+          "th": "สำรวจสถานที่และเตรียมการติดตั้ง",
+          "en": "Survey placement and installation preparation"
+        },
+        "paragraphs": [
+          {
+            "th": "เริ่มต้นด้วยงานที่ตั้งใจไว้: สังเกตพื้นที่ รับรู้กิจกรรม หรือบันทึกรายละเอียดการระบุตัวตนที่ใช้งานได้ภายใต้เงื่อนไขที่ตกลงกัน ขอบเขตการมองเห็นที่บันทึก แสงสว่างที่คาดหวัง ข้อจำกัดในการติดตั้ง เส้นทางเคเบิล การสัมผัสสภาพอากาศ และการเข้าถึงการบำรุงรักษา หลีกเลี่ยงสมมติฐานเกี่ยวกับการบันทึกพื้นที่ส่วนตัวหรือทรัพย์สินใกล้เคียง ส่งต่อคำถามเกี่ยวกับความเป็นส่วนตัวและวัตถุประสงค์ทางกฎหมายไปยังผู้ตรวจสอบที่รับผิดชอบ",
+            "en": "Start with the intended task: observe an area, recognize activity or capture usable identification detail under agreed conditions. Record field of view, expected lighting, mounting constraints, cable route, weather exposure and maintenance access. Avoid assumptions about recording private areas or neighboring property; escalate privacy and lawful-purpose questions to the responsible reviewer."
+          },
+          {
+            "th": "ก่อนการติดตั้ง ให้ตรวจสอบรุ่นและปริมาณตามขอบเขตที่ได้รับอนุมัติ ตรวจสอบความเสียหาย และยืนยันอุปกรณ์เสริมที่เข้ากันได้ ตรวจสอบว่าการเข้าถึงที่ปลอดภัยและการอนุญาตที่จำเป็นพร้อมแล้ว ภาพวาดควรติดป้ายกำกับอุปกรณ์และเส้นทางเคเบิลให้ชัดเจนเพียงพอให้ช่างเทคนิคคนอื่นปฏิบัติตาม อย่าถือว่าแบบสำรวจร่างเป็นการอนุญาตให้เจาะ เพิ่มพลัง หรือเปลี่ยนแปลงระบบของลูกค้า",
+            "en": "Before installation, check model and quantities against the approved scope, inspect for damage and confirm compatible accessories. Verify that safe access and required permissions are ready. A drawing should label devices and cable routes clearly enough for another technician to follow. Do not treat a draft survey as permission to drill, energize or change a customer system."
+          }
+        ],
+        "points": [
+          {
+            "th": "กำหนดงานการดู",
+            "en": "Define the viewing task"
+          },
+          {
+            "th": "ตรวจสอบสภาพสถานที่จริง",
+            "en": "Check real site conditions"
+          },
+          {
+            "th": "ยืนยันขอบเขตและการเข้าถึงที่ปลอดภัย",
+            "en": "Confirm scope and safe access"
+          }
+        ],
+        "example": {
+          "th": "ทางเข้าที่สมมติหันหน้าไปทางแสงแดดยามบ่ายที่สดใส การตรวจสอบสถานที่ควรทดสอบสภาพแสงที่เกี่ยวข้อง แทนที่จะยอมรับภาพม้านั่งในอาคารที่ชัดเจน",
+          "en": "A fictional entrance faces bright afternoon sunlight. A site review should test the relevant lighting conditions instead of accepting a clear indoor bench image."
+        },
+        "question": {
+          "th": "อะไรควรเป็นแนวทางในการวางตำแหน่งกล้องเป็นอันดับแรก",
+          "en": "What should guide camera placement first?"
+        },
+        "options": [
+          {
+            "th": "จุดติดตั้งแบบสุ่ม",
+            "en": "A random mounting point"
+          },
+          {
+            "th": "วัตถุประสงค์และฉากการดูที่ตกลงกันไว้",
+            "en": "The agreed viewing purpose and scene"
+          },
+          {
+            "th": "สายเคเบิลที่สั้นที่สุดไม่ว่าจะมีค่าใช้จ่ายใดก็ตาม",
+            "en": "The shortest cable at any cost"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "ตำแหน่งจะต้องสนับสนุนงานที่ตั้งใจไว้",
+          "en": "Placement must support the intended task."
+        }
+      },
+      {
+        "id": "AITS-C04-L04",
+        "title": {
+          "th": "การบำรุงรักษาข้อบกพร่องและการส่งมอบ",
+          "en": "Faults maintenance and handover"
+        },
+        "paragraphs": [
+          {
+            "th": "สำหรับภาพที่หายไป ให้ตรวจสอบว่ากล้องตัวใดตัวหนึ่งหรือหลายตัวได้รับผลกระทบ เริ่มเมื่อใด และดูว่าไลฟ์วิวหรือการเล่นหายไปหรือไม่ สังเกตตัวบ่งชี้กำลัง/ลิงก์ที่ได้รับอนุญาต และเปรียบเทียบกับเส้นทางที่ทราบดีเมื่อได้รับอนุญาต สาเหตุที่เป็นไปได้ ได้แก่ กระแสไฟ การเดินสายเคเบิล การกำหนดที่อยู่ การรับรองความถูกต้อง ความเข้ากันได้ของสตรีม และการตั้งค่าการบันทึก อย่าข้ามไปที่การรีเซ็ตเป็นค่าจากโรงงานโดยตรง",
+            "en": "For a missing image, establish whether one camera or many are affected, when it began and whether live view or playback is missing. Observe authorized power/link indications and compare with a known-good path where permitted. Possible causes include power, cabling, addressing, authentication, stream compatibility and recording settings; do not jump straight to a factory reset."
+          },
+          {
+            "th": "การบำรุงรักษาเริ่มต้นด้วยช่วงเวลาที่ได้รับการอนุมัติและคำแนะนำรุ่น ตรวจสอบตัวชี้วัดด้านสุขภาพที่ได้รับอนุญาต ความแม่นยำของเวลา สภาพการจัดเก็บ และการอุดตันของภาพ โดยไม่ต้องเปลี่ยนการตั้งค่าโดยไม่จำเป็น หลักฐานการส่งมอบควรระบุอุปกรณ์ เวอร์ชันการกำหนดค่า การทดสอบที่ดำเนินการ ผลลัพธ์ ข้อจำกัด และปัญหาที่เปิดอยู่ ถ่ายโอนข้อมูลรับรองด้วยวิธีที่ปลอดภัยที่ได้รับอนุมัติ ไม่เคยอยู่ในรายงานความสมบูรณ์ทั่วไป",
+            "en": "Maintenance starts with approved intervals and model instructions. Review authorized health indicators, time accuracy, storage condition and image obstruction without changing settings unnecessarily. Handover evidence should identify devices, configuration versions, tests performed, results, limitations and open issues. Transfer credentials through the approved secure method, never in the ordinary completion report."
+          }
+        ],
+        "points": [
+          {
+            "th": "ขอบเขตอาการก่อนเปลี่ยนอุปกรณ์",
+            "en": "Scope the symptom before changing equipment"
+          },
+          {
+            "th": "หลีกเลี่ยงการรีเซ็ตแบบทำลายล้าง",
+            "en": "Avoid destructive resets"
+          },
+          {
+            "th": "บันทึกผลลัพธ์และรายการที่ยังไม่ได้แก้ไข",
+            "en": "Record results and unresolved items"
+          }
+        ],
+        "example": {
+          "th": "มีเพียงการเล่นหายไปสำหรับกล้อง C2; ไลฟ์วิวใช้งานได้ ตรวจสอบตารางการบันทึก การจัดเก็บ และการประทับเวลาก่อนเปลี่ยนกล้อง",
+          "en": "Only playback is missing for camera C2; live view works. Investigate recording schedule, storage and timestamps before replacing the camera."
+        },
+        "question": {
+          "th": "Live view ใช้งานได้ แต่การเล่นล้มเหลว พื้นที่ใดสมควรได้รับการตรวจสอบ?",
+          "en": "Live view works but playback fails. Which area deserves review?"
+        },
+        "options": [
+          {
+            "th": "การตั้งค่าการบันทึกและการจัดเก็บ",
+            "en": "Recording settings and storage"
+          },
+          {
+            "th": "สีเพ้นท์กล้อง",
+            "en": "Camera paint color"
+          },
+          {
+            "th": "เฉพาะขาตั้งจอภาพเท่านั้น",
+            "en": "Only the monitor stand"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "หลักฐานชี้ไปที่เส้นทางการบันทึก แม้ว่าการวินิจฉัยจะยังคงเปิดอยู่",
+          "en": "The evidence points toward the recording path, though diagnosis remains open."
+        }
+      }
+    ]
+  },
+  {
+    "id": "networking",
+    "title": {
+      "th": "เครือข่ายและการสนับสนุนด้านเทคนิค",
+      "en": "Networking and Technical Support"
+    },
+    "roles": ["technician", "engineer", "network"],
+    "lessons": [
+      {
+        "id": "AITS-C05-L01",
+        "title": {
+          "th": "LAN สลับเราเตอร์และ Wi-Fi",
+          "en": "LAN switches routers and Wi-Fi"
+        },
+        "paragraphs": [
+          {
+            "th": "เครือข่ายท้องถิ่นเชื่อมต่อกับอุปกรณ์ใกล้เคียง โดยทั่วไปสวิตช์จะเชื่อมต่ออุปกรณ์แบบใช้สายภายในเครือข่ายนั้น เราเตอร์จะส่งต่อการรับส่งข้อมูลระหว่างเครือข่าย และจุดเข้าใช้งานจะทำให้อุปกรณ์ไร้สายสามารถเข้าถึงเครือข่ายได้ ผลิตภัณฑ์ทางกายภาพตัวหนึ่งอาจรวมฟังก์ชันเหล่านี้เข้าด้วยกัน การเชื่อมต่อ Wi-Fi เพียงอย่างเดียวไม่สามารถพิสูจน์การเข้าถึงอินเทอร์เน็ตได้",
+            "en": "A local area network connects nearby devices. A switch commonly connects wired devices within that network, a router forwards traffic between networks, and an access point gives wireless devices access to a network. One physical product may combine these functions. A Wi-Fi connection alone does not prove internet access."
+          },
+          {
+            "th": "ติดตามเส้นทางจากไคลเอ็นต์ผ่านการเข้าถึง การสลับภายในเครื่อง เกตเวย์ และการเชื่อมต่ออัปสตรีมไปยังบริการ ข้อผิดพลาดอาจส่งผลต่ออุปกรณ์หนึ่งเครื่อง พื้นที่ไร้สายหนึ่งแห่ง VLAN หนึ่งแห่ง หรือทั้งไซต์ เริ่มต้นด้วยการถามว่าอะไรได้ผลและอะไรล้มเหลว การเปรียบเทียบเส้นทางที่ได้รับผลกระทบและไม่ได้รับผลกระทบจะทำให้การตรวจสอบแคบลงโดยไม่ต้องเปลี่ยนเครือข่าย",
+            "en": "Trace the path from the client through access, local switching, gateway and upstream connection to the service. A fault can affect one device, one wireless area, one VLAN or the whole site. Start by asking what works as well as what fails. Comparing affected and unaffected paths narrows the investigation without changing the network."
+          }
+        ],
+        "points": [
+          {
+            "th": "การเชื่อมต่อ Wi-Fi ไม่ใช่ข้อพิสูจน์ถึงอินเทอร์เน็ต",
+            "en": "Wi-Fi connection is not proof of internet"
+          },
+          {
+            "th": "แยกอุปกรณ์และขอบเขตที่ใช้ร่วมกัน",
+            "en": "Separate device and shared scope"
+          },
+          {
+            "th": "เปรียบเทียบเส้นทางการทำงานและเส้นทางที่ล้มเหลว",
+            "en": "Compare working and failing paths"
+          }
+        ],
+        "example": {
+          "th": "แล็ปท็อปสมมติเห็นชื่อ Wi-Fi ของสำนักงาน แต่ไม่สามารถเปิดเว็บไซต์ได้ เวิร์กสเตชันแบบใช้สายอื่นใช้งานได้ เริ่มต้นด้วยเส้นทางแล็ปท็อป/ไร้สาย แทนที่จะประกาศการหยุดทำงานของ ISP ทั่วทั้งไซต์",
+          "en": "A fictional laptop sees the office Wi-Fi name but cannot open websites. Another wired workstation works. Begin with the laptop/wireless path rather than declaring a site-wide ISP outage."
+        },
+        "question": {
+          "th": "โดยทั่วไปแล้วอะไรจะเชื่อมต่อเครือข่าย IP ที่แตกต่างกัน?",
+          "en": "What commonly connects different IP networks?"
+        },
+        "options": [
+          {
+            "th": "ป้ายกำกับแบบพาสซีฟ",
+            "en": "Passive label"
+          },
+          {
+            "th": "ถาดวางสาย",
+            "en": "Cable tray"
+          },
+          {
+            "th": "เราเตอร์",
+            "en": "Router"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "การกำหนดเส้นทางการส่งต่อการรับส่งข้อมูลระหว่างเครือข่าย",
+          "en": "Routing forwards traffic between networks."
+        }
+      },
+      {
+        "id": "AITS-C05-L02",
+        "title": {
+          "th": "ที่อยู่ IP DHCP และ DNS",
+          "en": "IP addressing DHCP and DNS"
+        },
+        "paragraphs": [
+          {
+            "th": "ที่อยู่ IP ระบุอินเทอร์เฟซบนเครือข่าย คำนำหน้าเครือข่ายย่อยช่วยกำหนดปลายทางที่อยู่ในเครื่อง เกตเวย์เริ่มต้นให้เส้นทางไปยังเครือข่ายอื่น ช่วง IPv4 ส่วนตัว ได้แก่ 10.0.0.0/8, 172.16.0.0/12 และ 192.168.0.0/16; ไม่ใช่ที่อยู่สาธารณะที่กำหนดเส้นทางทั่วโลก หลีกเลี่ยงการมอบหมายงานที่ซ้ำกัน และอย่าเปลี่ยนที่อยู่โดยไม่ได้รับอนุมัติแผนที่",
+            "en": "An IP address identifies an interface on a network; the subnet prefix helps determine which destinations are local. A default gateway provides a path to other networks. Private IPv4 ranges include 10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16; they are not globally routed public addresses. Avoid duplicate assignments and do not change addressing without an approved plan."
+          },
+          {
+            "th": "DHCP จัดเตรียมการกำหนดค่า เช่น การเช่าที่อยู่และตัวเลือกเครือข่าย DNS แก้ไขชื่อเป็นบันทึกที่ใช้เพื่อค้นหาบริการ ฟังก์ชันเหล่านี้แตกต่างออกไป: การเช่าที่ถูกต้องไม่ได้พิสูจน์ว่า DNS หรือการเข้าถึงอัปสตรีมทำงานได้ ในแบบฝึกหัดสังเคราะห์ 192.168.10.0/24 ไคลเอ็นต์ที่ .20 และเกตเวย์ที่ .1 แชร์เครือข่ายย่อย .0 และ .255 ไม่ใช่ตัวเลือกโฮสต์ทั่วไปสำหรับซับเน็ตนั้น",
+            "en": "DHCP supplies configuration such as an address lease and network options. DNS resolves names to records used to locate services. These functions are different: a valid lease does not prove DNS or upstream access works. In the synthetic 192.168.10.0/24 exercise, a client at .20 and gateway at .1 share the subnet; .0 and .255 are not ordinary host choices for that subnet."
+          }
+        ],
+        "points": [
+          {
+            "th": "ที่อยู่ คำนำหน้า และเกตเวย์ทำงานร่วมกัน",
+            "en": "Address, prefix and gateway work together"
+          },
+          {
+            "th": "การกำหนดค่าอุปกรณ์ DHCP",
+            "en": "DHCP supplies configuration"
+          },
+          {
+            "th": "DNS จัดการชื่อ",
+            "en": "DNS handles names"
+          }
+        ],
+        "example": {
+          "th": "ไคลเอ็นต์แล็บมี 192.168.10.20/24, เกตเวย์ 192.168.10.1 และรีโซลเวอร์ที่ได้รับอนุมัติ บันทึกทั้งสามอย่างก่อนที่จะสรุปเกี่ยวกับเว็บไซต์ที่ล้มเหลว",
+          "en": "A lab client has 192.168.10.20/24, gateway 192.168.10.1 and an approved resolver. Record all three before drawing a conclusion about a failed website."
+        },
+        "question": {
+          "th": "ตัวอย่าง IPv4 ส่วนตัวคืออะไร",
+          "en": "Which is a private IPv4 example?"
+        },
+        "options": [
+          {
+            "th": "ฉลาก MAC",
+            "en": "A MAC label"
+          },
+          {
+            "th": "192.168.10.20",
+            "en": "192.168.10.20"
+          },
+          {
+            "th": "ชื่อโดเมน",
+            "en": "A domain name"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "192.168.0.0/16 เป็นบล็อกที่อยู่ส่วนตัว",
+          "en": "192.168.0.0/16 is a private-address block."
+        }
+      },
+      {
+        "id": "AITS-C05-L03",
+        "title": {
+          "th": "ตรวจสอบอินเทอร์เน็ตไม่พร้อมใช้งาน",
+          "en": "Investigate internet unavailable"
+        },
+        "paragraphs": [
+          {
+            "th": "ขั้นแรกให้สร้างความปลอดภัย การอนุญาต ผู้ใช้ที่ได้รับผลกระทบ บริการ เวลาเริ่มต้น และการเปลี่ยนแปลงล่าสุด ถามว่าไซต์ทั้งหมดล้มเหลวหรือแอปพลิเคชันหนึ่งล้มเหลว สังเกตลิงก์และสถานะการเชื่อมต่ออย่างปลอดภัย อ่านที่อยู่ คำนำหน้า เกตเวย์ และการกำหนดค่า DNS ของลูกค้าก่อนที่จะทำการเปลี่ยนแปลง เปรียบเทียบอุปกรณ์ที่ทราบว่าใช้งานได้ดีบนเครือข่ายที่เกี่ยวข้อง",
+            "en": "First establish safety, authorization, affected users, services, start time and recent changes. Ask whether all sites fail or one application fails. Observe link and connection state safely. Read the client’s address, prefix, gateway and DNS configuration before changing it. Compare a known-good device on the relevant network."
+          },
+          {
+            "th": "บนอุปกรณ์ทดสอบที่ได้รับอนุญาต การวินิจฉัยขั้นพื้นฐานอาจรวมถึง ipconfig /all การทดสอบความสามารถในการเข้าถึงเกตเวย์ และการค้นหาชื่อการทดสอบที่ได้รับอนุมัติ การหมดเวลาของ Ping เป็นข้อพิสูจน์ ไม่ใช่ข้อพิสูจน์ว่าอุปกรณ์ออฟไลน์อยู่ การกรองหรือนโยบายอาจบล็อกการตอบกลับ หากเกตเวย์และการเชื่อมต่อภายนอกปรากฏขึ้นแต่การจำแนกชื่อล้มเหลว ให้ตรวจสอบตัวแก้ไขที่กำหนดค่าไว้และนโยบายที่เกี่ยวข้อง เปลี่ยนตัวแปรที่ได้รับอนุญาตครั้งละหนึ่งรายการ บันทึกก่อน/หลังผลลัพธ์ และรักษาเส้นทางย้อนกลับ",
+            "en": "On an authorized test device, basic diagnostics can include ipconfig /all, a gateway reachability test and nslookup for an approved test name. A ping timeout is evidence, not proof that a device is offline: filtering or policy may block replies. If gateway and external connectivity appear available but name resolution fails, investigate the configured resolver and related policy. Change one authorized variable at a time, record before/after results and preserve a rollback route."
+          }
+        ],
+        "points": [
+          {
+            "th": "กำหนดขอบเขตและการเปลี่ยนแปลงล่าสุด",
+            "en": "Define scope and recent changes"
+          },
+          {
+            "th": "สังเกตก่อนเปลี่ยน",
+            "en": "Observe before changing"
+          },
+          {
+            "th": "การ Ping ที่ล้มเหลวไม่ใช่การวินิจฉัยที่สมบูรณ์",
+            "en": "A failed ping is not a complete diagnosis"
+          }
+        ],
+        "example": {
+          "th": "ไฟดับสังเคราะห์: ไคลเอนต์ทั้งหมดเข้าถึงเกตเวย์ การทดสอบ TCP ภายนอกที่ได้รับอนุมัติสำเร็จ ค้นหาผ่านการหมดเวลาของตัวแก้ไขที่กำหนดค่าไว้ สิ่งนี้สนับสนุนสมมติฐานเส้นทาง DNS ไม่ใช่สายเคเบิลที่เสียหายที่ได้รับการยืนยัน",
+          "en": "Synthetic outage: all clients reach the gateway; an approved external TCP test succeeds; lookups through the configured resolver time out. This supports a DNS-path hypothesis, not a confirmed broken cable."
+        },
+        "question": {
+          "th": "สิ่งที่ควรมาก่อนการรีเซ็ตเราเตอร์?",
+          "en": "What should come before resetting the router?"
+        },
+        "options": [
+          {
+            "th": "ขอบเขต หลักฐาน และการอนุญาต",
+            "en": "Scope, evidence and authorization"
+          },
+          {
+            "th": "รีเซ็ตซ้ำแล้วซ้ำอีก",
+            "en": "Repeated resets"
+          },
+          {
+            "th": "เปลี่ยนสายใหม่ทุกเส้น",
+            "en": "Replacing every cable"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "การรีเซ็ตอาจรบกวนผู้ใช้และลบหลักฐานที่เป็นประโยชน์",
+          "en": "A reset may disrupt users and erase useful evidence."
+        }
+      },
+      {
+        "id": "AITS-C05-L04",
+        "title": {
+          "th": "การยกระดับการแยกและการอัปเดตลูกค้า",
+          "en": "Isolation escalation and customer updates"
+        },
+        "paragraphs": [
+          {
+            "th": "การแยกอุปกรณ์มีสองความหมาย: การจำกัดข้อผิดพลาดให้แคบลงให้กับอุปกรณ์/เส้นทาง และการจำกัดอุปกรณ์สำหรับการกักกันความปลอดภัย อย่าตัดการเชื่อมต่ออุปกรณ์หรือเปลี่ยน VLAN ภายใต้ความหมายที่สองโดยไม่ได้รับอนุญาต สำหรับการวินิจฉัย ให้เปรียบเทียบสายเคเบิล พอร์ต หรือไคลเอนต์ที่ทราบว่าใช้งานได้เฉพาะในกรณีที่การทดสอบปลอดภัยและได้รับการอนุมัติเท่านั้น รักษาสถานะดั้งเดิมและบันทึกการเปลี่ยนแปลงแต่ละครั้ง",
+            "en": "Device isolation has two meanings: narrowing a fault to a device/path, and restricting a device for security containment. Do not disconnect equipment or change VLANs under the second meaning without the applicable authorization. For diagnosis, compare a known-good cable, port or client only where the test is safe and approved. Preserve the original state and record each change."
+          },
+          {
+            "th": "การยกระดับรวมถึงผลกระทบ ขอบเขต การประทับเวลา โทโพโลยีที่เกี่ยวข้อง การทดสอบและผลลัพธ์ การเปลี่ยนแปลงที่ทำ สถานะการย้อนกลับ และความช่วยเหลือที่ร้องขอ ยกเว้นรหัสผ่านและข้อมูลส่วนบุคคลที่ไม่จำเป็น แจ้งให้ลูกค้าทราบถึงสิ่งที่ทราบ สิ่งที่ยังคงไม่แน่นอน และการอัปเดตที่ตกลงกันครั้งต่อไปจะเกิดขึ้นเมื่อใด อย่าสัญญาว่าจะมีเวลาแก้ไขหรือเสนอราคา AITS SLA ที่ยังไม่ได้รับการยืนยัน",
+            "en": "An escalation includes impact, scope, timestamps, relevant topology, tests and results, changes made, rollback status and the requested help. Exclude passwords and unnecessary personal information. Tell the customer what is known, what remains uncertain and when the next agreed update will occur. Do not promise resolution times or quote an AITS SLA that has not been verified."
+          }
+        ],
+        "points": [
+          {
+            "th": "การเปรียบเทียบแบบควบคุมครั้งละหนึ่งรายการ",
+            "en": "One controlled comparison at a time"
+          },
+          {
+            "th": "เพิ่มหลักฐานและความไม่แน่นอน",
+            "en": "Escalate evidence and uncertainty"
+          },
+          {
+            "th": "สัญญาว่าจะอัปเดตตามที่ตกลงไว้เท่านั้น",
+            "en": "Promise only an agreed update"
+          }
+        ],
+        "example": {
+          "th": "การอัปเดตสังเคราะห์: “อุปกรณ์สำนักงานสองเครื่องไม่สามารถแก้ไขชื่อได้ ผ่านการตรวจสอบเกตเวย์แล้ว เรากำลังตรวจสอบเส้นทางตัวแก้ไขและจะอัปเดตให้คุณตามเวลาที่ตกลงกัน”",
+          "en": "Synthetic update: “Two office devices cannot resolve names. Gateway checks passed. We are checking the resolver path and will update you at the agreed time.”"
+        },
+        "question": {
+          "th": "มีอะไรอยู่ในการยกระดับ?",
+          "en": "What belongs in an escalation?"
+        },
+        "options": [
+          {
+            "th": "รหัสผ่านลูกค้า",
+            "en": "Customer passwords"
+          },
+          {
+            "th": "มีเพียง “อินเตอร์เน็ตเสีย” เท่านั้น",
+            "en": "Only “internet broken”"
+          },
+          {
+            "th": "การทดสอบ ผลลัพธ์ และการเปลี่ยนแปลงที่เกิดขึ้น",
+            "en": "Tests, results and changes made"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "หลักฐานเฉพาะให้บุคคลถัดไปดำเนินการต่อได้",
+          "en": "Specific evidence lets the next person continue."
+        }
+      }
+    ]
+  },
+  {
+    "id": "customer-admin",
+    "title": {
+      "th": "ฝ่ายขายและสนับสนุนลูกค้า",
+      "en": "Sales Customer Support and Administration"
+    },
+    "roles": ["sales", "admin", "hr", "management"],
+    "lessons": [
+      {
+        "id": "AITS-C06-L01",
+        "title": {
+          "th": "ค้นหาและบันทึกข้อกำหนด",
+          "en": "Discover and record requirements"
+        },
+        "paragraphs": [
+          {
+            "th": "เริ่มต้นด้วยผลลัพธ์ที่ลูกค้าต้องการและปัญหาที่พวกเขาประสบ ใช้คำถามปลายเปิด จากนั้นยืนยันข้อมูลเฉพาะ: ประเภทสถานที่ พื้นที่ที่ได้รับผลกระทบ อุปกรณ์ที่มีอยู่ ข้อจำกัด และระยะเวลาที่ต้องการ อ่านความเข้าใจของคุณในภาษาธรรมดา อย่ารวบรวมข้อมูลประจำตัวหรือข้อมูลส่วนบุคคลที่ไม่จำเป็นเพื่อทำให้บันทึกดูสมบูรณ์",
+            "en": "Begin with the outcome the customer wants and the problem they experience. Use open questions, then confirm specifics: site type, affected area, existing equipment, constraints and desired timing. Read back your understanding in plain language. Do not collect credentials or unnecessary personal data to make the record look complete."
+          },
+          {
+            "th": "บันทึกคำขอที่เป็นประโยชน์จะแยกคำชี้แจงของลูกค้าออกจากข้อสังเกตที่ได้รับการยืนยัน รวมถึงข้อมูลอ้างอิง ช่องทางการติดต่อที่ได้รับอนุญาตให้ติดตามผล ขอบเขต คำถามเปิด และการดำเนินการที่รับผิดชอบครั้งต่อไป ฟิลด์ต่างๆ ในบทเรียนนี้เป็นแบบฝึกหัดทั่วไป ระบบ AITS จริงและฟิลด์บังคับจำเป็นต้องได้รับการยืนยันจากบริษัท",
+            "en": "A useful request record distinguishes customer statements from confirmed observations. Include a reference, contact channel authorized for follow-up, scope, open questions and the next responsible action. The fields in this lesson are a generic practice template; actual AITS systems and mandatory fields require company confirmation."
+          }
+        ],
+        "points": [
+          {
+            "th": "สอบถามผลลัพธ์ก่อนสินค้า",
+            "en": "Ask about outcome before product"
+          },
+          {
+            "th": "อ่านข้อกำหนดอีกครั้ง",
+            "en": "Read back the requirement"
+          },
+          {
+            "th": "แยกข้อความออกจากข้อเท็จจริงที่ตรวจสอบแล้ว",
+            "en": "Separate statements from verified facts"
+          }
+        ],
+        "example": {
+          "th": "Fictional Cedar Office กล่าวว่า \"เราต้องการกล้องที่ดีกว่านี้\" ถามสิ่งที่ต้องมองเห็น ภายใต้แสงใด และเพื่อจุดประสงค์อะไร ก่อนที่จะเสนอข้อกำหนด",
+          "en": "Fictional Cedar Office says “we need better cameras.” Ask what must be visible, under what lighting and for what purpose before proposing a specification."
+        },
+        "question": {
+          "th": "คำตอบแรกที่ดีที่สุดสำหรับ \"กล้องที่ดีกว่า\" คืออะไร?",
+          "en": "What is the best first response to “better cameras”?"
+        },
+        "options": [
+          {
+            "th": "ขอรหัสผ่านทั้งหมด",
+            "en": "Request all passwords"
+          },
+          {
+            "th": "ถามผลลัพธ์ที่ลูกค้าต้องการ",
+            "en": "Ask what outcome the customer needs"
+          },
+          {
+            "th": "อ้างอิงรุ่นที่แพงที่สุด",
+            "en": "Quote the most expensive model"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "การค้นพบควรสร้างข้อกำหนดที่แท้จริง",
+          "en": "Discovery should establish the actual requirement."
+        }
+      },
+      {
+        "id": "AITS-C06-L02",
+        "title": {
+          "th": "การร้องเรียนและการสื่อสารอย่างมืออาชีพ",
+          "en": "Complaints and professional communication"
+        },
+        "paragraphs": [
+          {
+            "th": "รับฟังโดยไม่ขัดจังหวะ สรุปปัญหาและรับทราบผลกระทบของปัญหา ถามคำถามที่มุ่งเน้นเพื่อกำหนดสิ่งที่เกิดขึ้นและผลลัพธ์ที่ลูกค้าต้องการ หลีกเลี่ยงการกล่าวโทษก่อนที่จะมีหลักฐาน การรับทราบด้วยความเคารพสามารถแม่นยำได้โดยไม่ต้องยอมรับสาเหตุที่ไม่ได้รับการยืนยันหรือสัญญาว่าจะให้ค่าตอบแทน",
+            "en": "Listen without interrupting, summarize the issue and acknowledge its impact. Ask focused questions to establish what happened and what outcome the customer seeks. Avoid assigning blame before evidence is available. A respectful acknowledgement can be accurate without admitting an unverified cause or promising compensation."
+          },
+          {
+            "th": "บันทึกข้อร้องเรียน ผลกระทบ หลักฐานที่มีอยู่ วิธีการติดต่อที่ตกลงร่วมกัน และการปรับปรุงครั้งต่อไป ยกระดับไปยังหน้าที่รับผิดชอบที่ได้รับอนุญาตเมื่อคำขอเกินบทบาทของคุณ อย่าสร้างกฎการคืนเงินหรือกำหนดเวลาการบริการ หากใช้ภาษาในทางที่ผิดหรือถูกคุกคามด้านความปลอดภัย ให้ขอการตอบสนองจากหัวหน้างาน/สถานที่ที่เกี่ยวข้อง แทนที่จะเพิ่มความรุนแรงในการเผชิญหน้า",
+            "en": "Record the complaint, impact, evidence available, agreed contact method and next update. Escalate to the authorized responsible function when the request exceeds your role. Do not invent a refund rule or service deadline. If language becomes abusive or safety is threatened, seek the applicable supervisor/site response instead of escalating the confrontation."
+          }
+        ],
+        "points": [
+          {
+            "th": "รับทราบผลกระทบ",
+            "en": "Acknowledge impact"
+          },
+          {
+            "th": "ชี้แจงข้อเท็จจริงโดยไม่กล่าวโทษ",
+            "en": "Clarify facts without blame"
+          },
+          {
+            "th": "ยอมรับการปรับปรุงครั้งต่อไป",
+            "en": "Agree the next update"
+          }
+        ],
+        "example": {
+          "th": "สำนักงานซีดาร์รายงานว่าการพลาดการนัดหมายทำให้งานหยุดชะงัก “ฉันเข้าใจว่าสิ่งนี้รบกวนกำหนดการของคุณ ฉันจะบันทึกรายละเอียดและขอให้ทีมที่รับผิดชอบยืนยันขั้นตอนต่อไป”",
+          "en": "Cedar Office reports that a missed appointment interrupted work. “I understand this disrupted your schedule. I will record the details and ask the responsible team to confirm the next step.”"
+        },
+        "question": {
+          "th": "คำตอบใดที่หลีกเลี่ยงคำสัญญาที่ไม่ได้รับการสนับสนุน",
+          "en": "Which response avoids an unsupported promise?"
+        },
+        "options": [
+          {
+            "th": "ฉันจะขอให้มีการตรวจสอบและยอมรับการอัปเดต",
+            "en": "I will request review and agree an update"
+          },
+          {
+            "th": "คุณจะได้รับเงินคืนเต็มจำนวนในวันนี้",
+            "en": "You will receive a full refund today"
+          },
+          {
+            "th": "เรารับประกันการซ่อมแซมภายในสิบนาที",
+            "en": "We guarantee repair in ten minutes"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "คำตอบแรกมุ่งมั่นในการดำเนินการภายในบทบาทที่ระบุไว้",
+          "en": "The first response commits to an action within the stated role."
+        }
+      },
+      {
+        "id": "AITS-C06-L03",
+        "title": {
+          "th": "เสนอราคาและประสานงานการขาย",
+          "en": "Quotations and sales coordination"
+        },
+        "paragraphs": [
+          {
+            "th": "ใบเสนอราคาควรทำให้ขอบเขตที่เสนอสามารถเข้าใจได้: รายการหรือบริการ ปริมาณ ข้อมูลจำเพาะที่เกี่ยวข้อง สมมติฐาน ข้อยกเว้น และเงื่อนไขทางการค้าที่จัดทำโดยกระบวนการที่ได้รับอนุญาต หลักสูตรนี้ไม่ได้กำหนดราคาของ AITS ส่วนลด การดำเนินการด้านภาษี ขีดจำกัดการอนุมัติ หรือระยะเวลาที่มีผลบังคับใช้ ความเป็นไปได้ทางเทคนิคและการอนุญาตเชิงพาณิชย์เป็นการตรวจสอบที่แตกต่างกัน",
+            "en": "A quotation should make the proposed scope understandable: items or services, quantities, relevant specifications, assumptions, exclusions and commercial terms supplied by the authorized process. This course does not set AITS pricing, discounts, tax treatment, approval limits or validity periods. Technical feasibility and commercial authorization are different checks."
+          },
+          {
+            "th": "ก่อนส่ง ให้กระทบยอดคำขอของลูกค้า แบบสำรวจ และร่างใบเสนอราคา ค้นหาปริมาณที่ไม่ตรงกัน ขอบเขตการติดตั้งที่ไม่ชัดเจน และการกล่าวอ้างความเข้ากันได้ที่ไม่รองรับ ใช้ตัวระบุเวอร์ชันเพื่อให้ผู้ตรวจสอบหารือเกี่ยวกับเอกสารเดียวกัน หากลูกค้าเปลี่ยนแปลงข้อกำหนด ให้บันทึกการเปลี่ยนแปลงและรับการตรวจสอบที่จำเป็น แทนที่จะแก้ไขเอกสารที่ลงนามหรืออนุมัติโดยไม่ต้องแจ้งให้ทราบ",
+            "en": "Before sending, reconcile the customer request, survey and draft quotation. Look for mismatched quantities, unclear installation scope and unsupported compatibility claims. Use a version identifier so reviewers discuss the same document. If the customer changes requirements, record the change and obtain the necessary revised review rather than editing a signed or approved document silently."
+          }
+        ],
+        "points": [
+          {
+            "th": "กระทบยอดขอบเขตและปริมาณ",
+            "en": "Reconcile scope and quantities"
+          },
+          {
+            "th": "แยกการตรวจสอบทางเทคนิคและเชิงพาณิชย์",
+            "en": "Separate technical and commercial review"
+          },
+          {
+            "th": "ติดตามการแก้ไขอย่างชัดเจน",
+            "en": "Track revisions explicitly"
+          }
+        ],
+        "example": {
+          "th": "การสำรวจสมมติเรียกร้องให้มีตำแหน่งกล้องหกตำแหน่ง แต่ใบเสนอราคาร่างแสดงรายการกล้องสี่ตัว ตั้งค่าสถานะไม่ตรงกันก่อนที่จะออก",
+          "en": "A fictional survey calls for six camera locations, but the draft quotation lists four cameras. Flag the mismatch before issue."
+        },
+        "question": {
+          "th": "การสำรวจระบุว่ามีกล้องหกตัว ใบเสนอราคาฉบับร่างบอกว่าสี่ อะไรต่อไป?",
+          "en": "Survey says six cameras; draft quote says four. What next?"
+        },
+        "options": [
+          {
+            "th": "ส่งไปไม่เปลี่ยนแปลง",
+            "en": "Send it unchanged"
+          },
+          {
+            "th": "เดาว่าสองคนนั้นว่าง",
+            "en": "Guess that two are free"
+          },
+          {
+            "th": "แก้ไขความไม่ตรงกันก่อนที่จะออก",
+            "en": "Resolve the mismatch before issue"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "ความไม่ตรงกันอาจทำให้เกิดข้อขัดแย้งในการจัดส่งที่หลีกเลี่ยงได้",
+          "en": "A mismatch can create an avoidable delivery dispute."
+        }
+      },
+      {
+        "id": "AITS-C06-L04",
+        "title": {
+          "th": "บันทึกการบริหารและการส่งมอบ",
+          "en": "Administrative records and handovers"
+        },
+        "paragraphs": [
+          {
+            "th": "ใช้ชื่อที่ชัดเจน ข้อมูลอ้างอิงที่เสถียร และข้อมูลเวอร์ชัน เพื่อให้บุคคลอื่นสามารถค้นหาบันทึกที่ถูกต้องได้ ตรวจสอบวันที่ ปริมาณ ตัวระบุลูกค้า และเอกสารแนบกับแหล่งที่มา สเปรดชีตที่คัดลอกอาจกลายเป็นรายการซ้ำที่ไม่สามารถควบคุมได้ ปฏิบัติตามกฎการจัดเก็บและการเก็บรักษาที่ได้รับอนุมัติเมื่อให้มา อย่าสร้างระยะเวลาการเก็บรักษา",
+            "en": "Use clear names, stable references and version information so another person can locate the right record. Check dates, quantities, customer identifiers and attachments against the source. A copied spreadsheet can become an uncontrolled duplicate; follow the approved storage and retention rules once supplied. Do not invent a retention period."
+          },
+          {
+            "th": "จำกัดการเข้าถึงตามงาน ตรวจสอบผู้รับ และใช้วิธีการถ่ายโอนที่ได้รับอนุมัติ การส่งมอบควรระบุสถานะ คำถามที่ค้างอยู่ สถานที่ที่เป็นหลักฐาน และเจ้าของรายต่อไป หรือการดำเนินการที่ร้องขอ อย่าทำเครื่องหมายงานว่าเสร็จสมบูรณ์เพียงเพราะว่ามีการส่งอีเมลไปแล้ว ยืนยันว่าผลลัพธ์ที่ตั้งใจไว้หรือการยอมรับการส่งมอบได้รับการบันทึกโดยบุคคลที่เหมาะสม",
+            "en": "Restrict access according to the task, verify recipients and use approved transfer methods. A handover should state status, outstanding questions, evidence location and next owner or requested action. Do not mark a task complete merely because an email was sent. Confirm that the intended outcome or handover acceptance has been recorded by the appropriate person."
+          }
+        ],
+        "points": [
+          {
+            "th": "ตรวจสอบบันทึกกับแหล่งที่มา",
+            "en": "Check records against their source"
+          },
+          {
+            "th": "ใช้เวอร์ชันและสถานะที่ชัดเจน",
+            "en": "Use explicit versions and status"
+          },
+          {
+            "th": "การส่งมอบต้องมีการดำเนินการถัดไปที่ชัดเจน",
+            "en": "Handover requires a clear next action"
+          }
+        ],
+        "example": {
+          "th": "ไฟล์สองไฟล์ชื่อ Final.xlsx ในแบบฝึกหัด ให้กำหนดการอ้างอิงคำขอที่เสถียรและเวอร์ชันที่ชัดเจน จากนั้นระบุว่าเวอร์ชันใดได้รับการอนุมัติ",
+          "en": "Two files are named final.xlsx. In the exercise, assign a stable request reference and explicit version, then identify which version is approved."
+        },
+        "question": {
+          "th": "ชื่อไฟล์ใดที่ให้การติดตามได้ดีกว่า",
+          "en": "Which file name gives better traceability?"
+        },
+        "options": [
+          {
+            "th": "เบ็ดเตล็ด",
+            "en": "misc"
+          },
+          {
+            "th": "CO-101-quotation-v0.2-ร่าง",
+            "en": "CO-101-quotation-v0.2-Draft"
+          },
+          {
+            "th": "สุดท้ายสุดท้ายใหม่",
+            "en": "final-final-new"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "ข้อมูลอ้างอิง เวอร์ชัน และสถานะช่วยลดความคลุมเครือ",
+          "en": "A reference, version and status reduce ambiguity."
+        }
+      }
+    ]
+  },
+  {
+    "id": "sop-quality",
+    "title": {
+      "th": "การรับรู้ SOP และการประกันคุณภาพ",
+      "en": "SOP Awareness and Quality Assurance"
+    },
+    "roles": [],
+    "lessons": [
+      {
+        "id": "AITS-C07-L01",
+        "title": {
+          "th": "อ่าน SOP ก่อนใช้งาน",
+          "en": "Read an SOP before using it"
+        },
+        "paragraphs": [
+          {
+            "th": "ขั้นตอนการปฏิบัติงานมาตรฐานจะอธิบายงานที่ทำซ้ำได้ ขอบเขต บทบาทที่รับผิดชอบ ข้อกำหนดเบื้องต้น ขั้นตอน และหลักฐานที่จำเป็น SOP ที่เป็นประโยชน์ยังระบุข้อยกเว้น เงื่อนไขการหยุด และเอกสารที่เกี่ยวข้องอีกด้วย การกำหนดมาตรฐานจะช่วยลดความผันแปรที่หลีกเลี่ยงได้เฉพาะเมื่อขั้นตอนมีความเหมาะสมและเป็นปัจจุบันเท่านั้น",
+            "en": "A standard operating procedure describes a repeatable task, its scope, responsible roles, prerequisites, steps and required evidence. A useful SOP also identifies exceptions, stop conditions and related documents. Standardization reduces avoidable variation only when the procedure is appropriate and current."
+          },
+          {
+            "th": "ก่อนใช้งาน ให้ตรวจสอบ ID เอกสาร เวอร์ชัน การอนุมัติ วันที่มีผลบังคับใช้ และการบังคับใช้กับอุปกรณ์และสถานที่จริง ร่างที่น่าสนใจไม่ใช่ขั้นตอนที่ได้รับอนุมัติ หากสองเวอร์ชันขัดแย้งกัน ให้หยุดงานที่ได้รับผลกระทบชั่วคราวและขอให้เจ้าของที่ได้รับอนุญาตระบุเวอร์ชันปัจจุบัน เทมเพลตทั่วไปในหลักสูตรนี้เป็นแบบร่าง และต้องไม่ใช้เป็นคำแนะนำอย่างเป็นทางการของ AITS",
+            "en": "Before use, check document ID, version, approval, effective date and applicability to the actual equipment and site. An attractive draft is not an approved procedure. If two versions conflict, pause the affected task and ask the authorized owner to identify the current version. The generic templates in this course are Draft and must not be used as official AITS instructions."
+          }
+        ],
+        "points": [
+          {
+            "th": "ตรวจสอบขอบเขตก่อนขั้นตอน",
+            "en": "Check scope before steps"
+          },
+          {
+            "th": "ตรวจสอบเวอร์ชันและการอนุมัติ",
+            "en": "Check version and approval"
+          },
+          {
+            "th": "แก้ไขข้อขัดแย้งกับเจ้าของ",
+            "en": "Resolve conflicts with the owner"
+          }
+        ],
+        "example": {
+          "th": "รายการตรวจสอบฉบับพิมพ์ v1 และ v2 ดิจิทัลไม่เห็นด้วยกับการทดสอบ แบบฝึกหัดนี้ขอให้คุณแก้ไขสิทธิ์ในเอกสาร ไม่ใช่เลือกอย่างใดอย่างหนึ่งที่ง่ายกว่า",
+          "en": "A printed checklist v1 and a digital v2 disagree about a test. The exercise asks you to resolve document authority, not choose whichever is easier."
+        },
+        "question": {
+          "th": "เอกสารใดควรควบคุมงานจริง?",
+          "en": "Which document should govern an actual task?"
+        },
+        "options": [
+          {
+            "th": "ขั้นตอนที่บังคับใช้ที่ได้รับอนุมัติในปัจจุบัน",
+            "en": "The current approved applicable procedure"
+          },
+          {
+            "th": "ฉบับร่างล่าสุดที่ไม่ได้รับการอนุมัติ",
+            "en": "The newest unapproved draft"
+          },
+          {
+            "th": "รายการตรวจสอบที่สั้นที่สุด",
+            "en": "The shortest checklist"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "การอนุมัติและการบังคับใช้มีความสำคัญรวมถึงอายุด้วย",
+          "en": "Approval and applicability matter as well as age."
+        }
+      },
+      {
+        "id": "AITS-C07-L02",
+        "title": {
+          "th": "หลักฐานและการเบี่ยงเบน",
+          "en": "Evidence and deviations"
+        },
+        "paragraphs": [
+          {
+            "th": "หลักฐานเชื่อมโยงข้อกำหนดกับผลลัพธ์ที่สังเกตได้ บันทึกสิ่งที่ตรวจสอบ วิธีการ เวลา ตัวระบุที่เกี่ยวข้อง และผลลัพธ์ “เสร็จสิ้น” เพียงอย่างเดียวถือเป็นหลักฐานที่อ่อนแอ เมื่อผู้ตรวจสอบรายถัดไปไม่สามารถบอกได้ว่าข้อกำหนดใดที่ได้รับการทดสอบ ห้ามสร้างภาพถ่าย ขนาด หรือลายเซ็น",
+            "en": "Evidence connects a requirement to an observed result. Record what was checked, the method, time, relevant identifier and result. “Done” alone is weak evidence when the next reviewer cannot tell which requirement was tested. Do not fabricate a photo, measurement or signature."
+          },
+          {
+            "th": "การเบี่ยงเบนคือการออกจากข้อกำหนดที่เกี่ยวข้องหรือกระบวนการที่วางแผนไว้ บันทึกความแตกต่างและผลกระทบ แสวงหาการจัดการที่ได้รับอนุญาตแทนที่จะเปลี่ยนขั้นตอนอย่างเงียบ ๆ งานอาจต้องหยุดชั่วคราว ทั้งนี้ขึ้นอยู่กับความเสี่ยง รักษาหลักฐานเดิมและบันทึกการแก้ไขพร้อมประวัติที่สามารถตรวจสอบย้อนกลับได้ การตรวจสอบที่ล้มเหลวอาจเป็นข้อมูลที่เป็นประโยชน์เมื่อมีการรายงานอย่างตรงไปตรงมา",
+            "en": "A deviation is a departure from the applicable requirement or planned process. Record the difference and its impact; seek authorized disposition instead of silently changing the procedure. Depending on the risk, the task may need to pause. Preserve the original evidence and record any correction with traceable history. A failed check can be useful information when it is reported honestly."
+          }
+        ],
+        "points": [
+          {
+            "th": "บันทึกวิธีการและผลที่สังเกตได้",
+            "en": "Record method and observed result"
+          },
+          {
+            "th": "ไม่ผ่านการทดสอบก็ไม่ผ่าน",
+            "en": "Not tested is not passed"
+          },
+          {
+            "th": "ให้มองเห็นความเบี่ยงเบนได้",
+            "en": "Keep deviations visible"
+          }
+        ],
+        "example": {
+          "th": "ไม่ได้ทำการทดสอบการเล่นที่จำเป็นเนื่องจากไม่สามารถเข้าถึง บันทึก \"ไม่ได้ทดสอบ กำลังรอการเข้าถึง\" แทนที่จะเป็นผ่าน",
+          "en": "The required playback test was not performed because access was unavailable. Record “not tested, access pending,” rather than a pass."
+        },
+        "question": {
+          "th": "การทดสอบที่ไม่มีประสิทธิภาพควรถูกบันทึกว่าเป็นอย่างไร?",
+          "en": "What should an unperformed test be recorded as?"
+        },
+        "options": [
+          {
+            "th": "ผ่านไป",
+            "en": "Passed"
+          },
+          {
+            "th": "ว่างเปล่าแต่ถือว่าผ่าน",
+            "en": "Blank but assumed passed"
+          },
+          {
+            "th": "ไม่ได้ทดสอบโดยมีเหตุผล",
+            "en": "Not tested with a reason"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "บันทึกจะต้องสะท้อนถึงสิ่งที่เกิดขึ้นจริง",
+          "en": "The record must reflect what actually occurred."
+        }
+      },
+      {
+        "id": "AITS-C07-L03",
+        "title": {
+          "th": "การประกันคุณภาพและการทบทวนความสมบูรณ์",
+          "en": "Quality assurance and completion review"
+        },
+        "paragraphs": [
+          {
+            "th": "การประกันคุณภาพจะสร้างวิธีการ การฝึกอบรม และการทบทวนงานที่เชื่อถือได้ การควบคุมคุณภาพจะตรวจสอบผลลัพธ์ตามข้อกำหนดที่กำหนดไว้ ทั้งสองมีประโยชน์: การตรวจสอบขั้นสุดท้ายสามารถตรวจพบข้อบกพร่องได้ ในขณะที่กระบวนการเตรียมการที่ดีกว่าอาจป้องกันได้ ภาพรวมของ ISO สนับสนุนความแตกต่างทั่วไปนี้ หลักสูตรนี้ไม่ได้อ้างว่า AITS มีใบรับรองเฉพาะ",
+            "en": "Quality assurance builds reliable methods, training and review into the work. Quality control checks outputs against defined requirements. Both are useful: a final inspection can detect a defect, while a better preparation process may prevent it. The ISO overview supports this general distinction; this course makes no claim that AITS holds a particular certification."
+          },
+          {
+            "th": "หากต้องการตรวจสอบความสมบูรณ์ ให้เปรียบเทียบขอบเขตที่ได้รับอนุมัติกับหลักฐานและประเด็นที่เปิดอยู่ ยืนยันว่าการทดสอบที่จำเป็นมีผล มีข้อยกเว้นที่ได้รับอนุญาตและสามารถเข้าใจการส่งมอบได้ บันทึกปัญหาที่เกิดซ้ำเพื่อการปรับปรุงโดยไม่ต้องเปลี่ยนขั้นตอนการควบคุมด้วยตนเอง ลายเซ็นของลูกค้าเพียงอย่างเดียวไม่สามารถลบปัญหาด้านความปลอดภัยหรือทางเทคนิคที่ยังไม่ได้รับการแก้ไข",
+            "en": "For a completion review, compare the approved scope with evidence and open issues. Confirm that required tests have results, exceptions have an authorized disposition and the handover is understandable. Record recurring problems for improvement without changing a controlled procedure on your own. A customer signature alone does not erase an unresolved safety or technical issue."
+          }
+        ],
+        "points": [
+          {
+            "th": "QA ปรับปรุงกระบวนการ",
+            "en": "QA improves the process"
+          },
+          {
+            "th": "QC ตรวจสอบผลลัพธ์",
+            "en": "QC checks the output"
+          },
+          {
+            "th": "ปิดงานโดยเทียบกับหลักฐานและขอบเขต",
+            "en": "Close work against evidence and scope"
+          }
+        ],
+        "example": {
+          "th": "จำนวนอุปกรณ์ที่ไม่ถูกต้องซ้ำๆ บ่งบอกถึงปัญหาการเตรียมการและการกระทบยอด แม้ว่าการนับครั้งสุดท้ายจะตรวจพบข้อผิดพลาดแต่ละรายการก็ตาม",
+          "en": "Repeated wrong device quantities suggest a preparation and reconciliation problem, even if a final count catches each error."
+        },
+        "question": {
+          "th": "ข้อใดคือการตรวจสอบกระบวนการเชิงป้องกัน?",
+          "en": "Which is a preventive process check?"
+        },
+        "options": [
+          {
+            "th": "รอการร้องเรียน",
+            "en": "Wait for a complaint"
+          },
+          {
+            "th": "กระทบยอดรายการเบิกสินค้าก่อนจัดส่ง",
+            "en": "Reconcile the picking list before dispatch"
+          },
+          {
+            "th": "ซ่อนรายการที่ขาดหายไป",
+            "en": "Hide a missing item"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "การตรวจสอบการเตรียมการสามารถป้องกันข้อบกพร่องดาวน์สตรีมได้",
+          "en": "Preparation checks can prevent downstream defects."
+        }
+      },
+      {
+        "id": "AITS-C07-L04",
+        "title": {
+          "th": "การตรวจสอบ AI และอำนาจเจ้าหน้าที่",
+          "en": "AI checks and human authority"
+        },
+        "paragraphs": [
+          {
+            "th": "AI สามารถช่วยเปรียบเทียบรายงานที่เป็นลายลักษณ์อักษรกับรายการตรวจสอบ ถามคำถามที่ขาดหายไป และอธิบายตัวอย่างการฝึกอบรม อาจยังคงเข้าใจรูปภาพผิด ละเว้นบริบท หรือให้คำตอบที่ไม่รองรับ ไม่สามารถตรวจสอบสภาพทางกายภาพที่ซ่อนอยู่จากภาพถ่าย อนุมัติ หรือเปลี่ยนร่าง SOP ให้เป็นนโยบายของบริษัทได้",
+            "en": "An AI can help compare a written report with a checklist, ask missing questions and explain a training example. It may still misunderstand images, omit context or produce an unsupported answer. It cannot verify hidden physical conditions from a photograph, grant approval or turn a draft SOP into company policy."
+          },
+          {
+            "th": "ก่อนที่จะยอมรับข้อเสนอแนะของ AI ให้ตรวจสอบแหล่งที่มา เวอร์ชัน การอนุมัติ และการบังคับใช้ที่อ้างถึง จำกัดการเรียกคืนข้อมูลที่เชื่อถือได้ของบริษัทไว้เฉพาะบันทึกของบริษัทที่ได้รับอนุมัติเท่านั้น รายการร่างและรายการสมมุติอาจสนับสนุนแนวทางปฏิบัติที่มีป้ายกำกับชัดเจน แต่ไม่ใช่คำตอบเชิงนโยบาย อย่าส่งความลับหรือข้อมูลส่วนบุคคลที่ไม่จำเป็น คะแนนฝึกหัด AI เป็นการตอบรับเชิงโครงสร้าง การประเมินความสามารถอย่างเป็นทางการจำเป็นต้องมีกระบวนการที่นำโดยมนุษย์ที่ได้รับอนุมัติจากบริษัท",
+            "en": "Before accepting AI feedback, inspect the cited source, version, approval and applicability. Keep company-authoritative retrieval restricted to approved company records. Draft and hypothetical items may support clearly labeled practice, but not a policy answer. Do not submit secrets or unnecessary personal data. An AI practice score is formative feedback; official competency assessment requires the company’s approved human-led process."
+          }
+        ],
+        "points": [
+          {
+            "th": "ข้อเสนอแนะของ AI จำเป็นต้องมีการตรวจสอบแหล่งที่มา",
+            "en": "AI feedback needs source checks"
+          },
+          {
+            "th": "องค์ความรู้ฉบับร่างไม่สามารถกำหนดนโยบายได้",
+            "en": "Draft knowledge cannot establish policy"
+          },
+          {
+            "th": "คะแนนการปฏิบัติไม่ได้รับการรับรอง",
+            "en": "Practice scores are not certification"
+          }
+        ],
+        "example": {
+          "th": "AI บอกว่าการติดตั้งกล้องส่งผ่านจากภาพถ่ายเดียว ถามว่าข้อกำหนดและหลักฐานใดบ้างที่ได้รับการตรวจสอบ การทดสอบทางกายภาพที่ไม่ได้รับการแก้ไขยังคงไม่ได้รับการแก้ไข",
+          "en": "An AI says a camera installation passes from one photograph. Ask which requirements and evidence were checked; unresolved physical tests remain unresolved."
+        },
+        "question": {
+          "th": "AI สามารถอนุมัติร่าง SOP ของบริษัทได้หรือไม่",
+          "en": "Can an AI approve a draft company SOP?"
+        },
+        "options": [
+          {
+            "th": "เลขที่",
+            "en": "No"
+          },
+          {
+            "th": "ได้ถ้ามั่นใจ",
+            "en": "Yes if confident"
+          },
+          {
+            "th": "ใช่หลังจากพร้อมท์เพียงพอ",
+            "en": "Yes after enough prompts"
+          }
+        ],
+        "correct": 0,
+        "feedback": {
+          "th": "การอนุมัติต้องดำเนินการจากบริษัทที่ได้รับอนุญาต",
+          "en": "Approval requires authorized company action."
+        }
+      }
+    ]
+  },
+  {
+    "id": "hr-purchasing",
+    "title": {
+      "th": "พื้นฐานงาน HR และจัดซื้อ",
+      "en": "HR and purchasing foundations"
+    },
+    "roles": ["hr", "management"],
+    "lessons": [
+      {
+        "id": "AITS-HR-01",
+        "title": {
+          "th": "เตรียมวันแรกให้เพื่อนร่วมงาน",
+          "en": "Prepare a colleague’s first day"
+        },
+        "paragraphs": [
+          {
+            "th": "ก่อนพนักงานเริ่มงาน ให้ตรวจสอบข้อมูลที่ได้รับอนุญาต เช่น วันเริ่มงาน สายงาน หัวหน้างาน และเอกสารที่ต้องใช้ จัดทำรายการสิ่งที่ยังขาดโดยไม่ส่งข้อมูลส่วนบุคคลเกินความจำเป็น",
+            "en": "Before a colleague starts, check authorized information such as start date, work function, manager and required documents. List what is missing without sharing unnecessary personal information."
+          },
+          {
+            "th": "แนะนำผู้ติดต่อ HR และช่องทางขอความช่วยเหลือ ยืนยันคำถามเรื่องเงื่อนไขการจ้างกับเอกสารที่อนุมัติแล้ว หากยังไม่มีคำตอบ ให้บอกว่าจะตรวจสอบ ไม่ควรรับปากสวัสดิการหรือสิทธิ์ที่ยังไม่ได้ยืนยัน",
+            "en": "Introduce HR and the support process. Verify employment-term questions against approved documents. If the answer is not known, say you will check; do not promise unconfirmed benefits or entitlements."
+          }
+        ],
+        "points": [
+          {
+            "th": "ยืนยันวันเริ่มงานและหัวหน้างาน",
+            "en": "Confirm start date and manager"
+          },
+          {
+            "th": "ใช้เอกสารปัจจุบันที่อนุมัติแล้ว",
+            "en": "Use current approved documents"
+          },
+          {
+            "th": "เก็บข้อมูลพนักงานตามสิทธิ์ที่ได้รับ",
+            "en": "Handle employee data only as authorized"
+          }
+        ],
+        "example": {
+          "th": "พนักงานใหม่ถามเรื่องสวัสดิการที่ไม่มีในเอกสาร ให้รวบรวมคำถามและส่งให้ HR หรือ CEO ยืนยัน",
+          "en": "A new colleague asks about a benefit absent from the documents. Record the question and ask HR or the CEO to confirm."
+        },
+        "question": {
+          "th": "หากยังยืนยันสวัสดิการไม่ได้ ควรทำอย่างไร?",
+          "en": "What should you do when a benefit is unconfirmed?"
+        },
+        "options": [
+          {
+            "th": "รับปากไปก่อน",
+            "en": "Promise it first"
+          },
+          {
+            "th": "ขอให้ HR หรือ CEO ยืนยันจากข้อมูลที่อนุมัติ",
+            "en": "Ask HR or the CEO to verify approved information"
+          },
+          {
+            "th": "ใช้ข้อกำหนดของบริษัทอื่น",
+            "en": "Use another company’s terms"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "คำตอบด้านบุคลากรต้องมาจากข้อมูลที่มีอำนาจยืนยัน ไม่ใช่การคาดเดา",
+          "en": "People-related answers need an authorized source, not a guess."
+        }
+      },
+      {
+        "id": "AITS-HR-02",
+        "title": {
+          "th": "ส่งต่อคำขอจัดซื้อให้ครบ",
+          "en": "Hand over a complete purchasing request"
+        },
+        "paragraphs": [
+          {
+            "th": "คำขอจัดซื้อควรบอกวัตถุประสงค์ รายการหรือสเปก จำนวน วันที่ต้องการ และผู้ขอ แยกข้อมูลที่ยืนยันแล้วออกจากข้อมูลที่รอตรวจสอบ ใช้แบบฟอร์มและผู้อนุมัติที่บริษัทกำหนด",
+            "en": "A purchasing request should explain the purpose, item or specification, quantity, required date and requester. Separate confirmed facts from open questions. Use the company’s designated form and approver."
+          },
+          {
+            "th": "เมื่อใบเสนอราคาหรือรายการสินค้าไม่ตรงกัน ให้ขอคำชี้แจงก่อนส่งอนุมัติ อย่าตกลงราคาหรือสั่งซื้อแทนผู้มีอำนาจ บทเรียนนี้ไม่ได้กำหนดวงเงินหรือระเบียบจัดซื้อของ AITS",
+            "en": "If quotations or item details differ, seek clarification before approval. Do not agree prices or place orders on behalf of an authorized approver. This lesson does not define AITS spending limits or purchasing policy."
+          }
+        ],
+        "points": [
+          {
+            "th": "ระบุสเปก จำนวน และเหตุผล",
+            "en": "State specification, quantity and purpose"
+          },
+          {
+            "th": "ตรวจสอบรายการที่ยังไม่ตรงกัน",
+            "en": "Resolve discrepancies"
+          },
+          {
+            "th": "ยืนยันผู้อนุมัติก่อนดำเนินการ",
+            "en": "Confirm the approver before proceeding"
+          }
+        ],
+        "example": {
+          "th": "คำขอระบุสวิตช์ PoE แต่ใบเสนอราคาไม่มี PoE ให้ส่งกลับผู้ขอเพื่อยืนยันสเปก",
+          "en": "A request specifies a PoE switch but the quote is non-PoE. Return it to the requester for specification confirmation."
+        },
+        "question": {
+          "th": "เมื่อสเปกในใบเสนอราคาไม่ตรงคำขอ ควรทำอย่างไร?",
+          "en": "What should you do when the quoted specification differs?"
+        },
+        "options": [
+          {
+            "th": "สั่งซื้อทันที",
+            "en": "Order immediately"
+          },
+          {
+            "th": "แก้สเปกเองโดยไม่แจ้ง",
+            "en": "Change it without telling anyone"
+          },
+          {
+            "th": "ขอให้ผู้รับผิดชอบยืนยันก่อนส่งอนุมัติ",
+            "en": "Ask the responsible person to confirm before approval"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "ข้อมูลที่ชัดเจนช่วยให้ผู้มีอำนาจตัดสินใจได้ถูกต้อง",
+          "en": "Clear information helps the authorized person make the decision."
+        }
+      }
+    ]
+  },
+  {
+    "id": "accounting-foundations",
+    "title": {
+      "th": "พื้นฐานเอกสารบัญชีและการประสานงาน",
+      "en": "Accounting documents and coordination"
+    },
+    "roles": ["accounting", "management"],
+    "lessons": [
+      {
+        "id": "AITS-ACC-01",
+        "title": {
+          "th": "ตรวจเอกสารก่อนส่งต่อ",
+          "en": "Check documents before handover"
+        },
+        "paragraphs": [
+          {
+            "th": "เริ่มจากระบุประเภทเอกสารและรายการที่เกี่ยวข้อง เช่น ใบเสนอราคา ใบสั่งซื้อ ใบส่งของ ใบแจ้งหนี้ หรือใบเสร็จ ตรวจชื่อผู้เกี่ยวข้อง วันที่ เลขอ้างอิง รายการ จำนวน และยอดรวมตามเอกสารต้นทาง",
+            "en": "Identify the document and related transaction: quotation, purchase order, delivery note, invoice or receipt. Check parties, dates, references, items, quantities and totals against source documents."
+          },
+          {
+            "th": "หากเอกสารขาดหรือข้อมูลไม่ตรงกัน ให้บันทึกจุดที่ต้องตรวจสอบและขอผู้รับผิดชอบยืนยัน อย่าสร้างใบเสร็จแทนเอกสารจริงหรือแก้ยอดโดยไม่มีหลักฐาน เงื่อนไขภาษี การลงบัญชี และกำหนดส่งให้ยึดผู้รับผิดชอบบัญชีและแนวทางที่อนุมัติ",
+            "en": "If documents are missing or inconsistent, record the discrepancy and ask the responsible person to verify. Do not fabricate receipts or change amounts without evidence. Tax treatment, posting and deadlines must follow the responsible accountant and approved guidance."
+          }
+        ],
+        "points": [
+          {
+            "th": "อ้างอิงเอกสารต้นทาง",
+            "en": "Use source documents"
+          },
+          {
+            "th": "ระบุรายการที่ขาดหรือไม่ตรง",
+            "en": "Identify missing or inconsistent items"
+          },
+          {
+            "th": "ส่งต่อให้ผู้รับผิดชอบยืนยัน",
+            "en": "Refer to the responsible person"
+          }
+        ],
+        "example": {
+          "th": "จำนวนสินค้าในใบส่งของต่างจากใบแจ้งหนี้ ให้ระบุเลขอ้างอิงทั้งสองฉบับและขอให้ตรวจสอบก่อนดำเนินการ",
+          "en": "A delivery quantity differs from an invoice. Record both references and request verification before proceeding."
+        },
+        "question": {
+          "th": "เมื่อยอดเอกสารไม่ตรงกัน ควรทำอย่างไร?",
+          "en": "What should you do when document totals differ?"
+        },
+        "options": [
+          {
+            "th": "เลือกยอดที่ดูถูกต้องเอง",
+            "en": "Choose the amount that looks right"
+          },
+          {
+            "th": "บันทึกความต่างและให้ผู้รับผิดชอบตรวจสอบ",
+            "en": "Record the discrepancy and request verification"
+          },
+          {
+            "th": "ลบเอกสารที่ไม่ตรง",
+            "en": "Delete the inconsistent document"
+          }
+        ],
+        "correct": 1,
+        "feedback": {
+          "th": "เก็บหลักฐานและขอการยืนยัน ช่วยให้ตรวจสอบย้อนหลังได้",
+          "en": "Preserving evidence and requesting confirmation supports traceability."
+        }
+      },
+      {
+        "id": "AITS-ACC-02",
+        "title": {
+          "th": "ส่งต่อข้อมูลการจ่ายเงินอย่างรอบคอบ",
+          "en": "Handle payment information carefully"
+        },
+        "paragraphs": [
+          {
+            "th": "ข้อมูลบัญชีธนาคารและคำขอเปลี่ยนช่องทางชำระเงินต้องผ่านการตรวจสอบตามกระบวนการบริษัท การได้รับอีเมลหรือข้อความเพียงอย่างเดียวไม่ใช่หลักฐานว่าผู้ส่งมีอำนาจให้เปลี่ยนข้อมูล",
+            "en": "Bank details and requests to change payment instructions must follow the company verification process. Receiving an email or message alone does not prove authority to change the information."
+          },
+          {
+            "th": "หากคำขอเร่งด่วนหรือผิดจากปกติ ให้หยุดและตรวจสอบผ่านช่องทางที่รู้จักอยู่แล้วกับผู้มีอำนาจ อย่าใช้เบอร์โทรหรือบัญชีใหม่จากข้อความนั้นเป็นแหล่งยืนยันเพียงอย่างเดียว บทเรียนนี้ไม่อนุมัติให้ทำธุรกรรมใด ๆ",
+            "en": "If a request is urgent or unusual, pause and verify with an authorized person through an already known channel. Do not use new contact or account details in that message as the only verification. This lesson does not authorize any transaction."
+          }
+        ],
+        "points": [
+          {
+            "th": "ตรวจสอบผู้ขอและอำนาจอนุมัติ",
+            "en": "Verify requester and approval authority"
+          },
+          {
+            "th": "ใช้ช่องทางติดต่อที่ยืนยันไว้แล้ว",
+            "en": "Use an established contact channel"
+          },
+          {
+            "th": "ไม่ทำรายการเมื่อยังมีข้อสงสัย",
+            "en": "Pause while questions remain"
+          }
+        ],
+        "example": {
+          "th": "มีข้อความขอเปลี่ยนบัญชีรับเงินทันที ให้ติดต่อผู้รับผิดชอบผ่านช่องทางเดิมก่อนส่งเรื่องให้ผู้อนุมัติ",
+          "en": "A message requests an immediate bank-account change. Contact the responsible person through an established channel before referring it for approval."
+        },
+        "question": {
+          "th": "ข้อความขอเปลี่ยนบัญชีแบบเร่งด่วนควรจัดการอย่างไร?",
+          "en": "How should you handle an urgent account-change message?"
+        },
+        "options": [
+          {
+            "th": "เปลี่ยนทันทีเพราะด่วน",
+            "en": "Change it immediately because it is urgent"
+          },
+          {
+            "th": "ใช้เบอร์ใหม่ในข้อความตรวจสอบเท่านั้น",
+            "en": "Verify only with the new number in the message"
+          },
+          {
+            "th": "หยุดและยืนยันผ่านช่องทางที่รู้จักกับผู้มีอำนาจ",
+            "en": "Pause and verify through a known channel with an authorized person"
+          }
+        ],
+        "correct": 2,
+        "feedback": {
+          "th": "ความเร่งด่วนไม่แทนการตรวจสอบและการอนุมัติ",
+          "en": "Urgency does not replace verification and approval."
+        }
+      }
+    ]
+  }
+]

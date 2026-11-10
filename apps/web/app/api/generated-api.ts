@@ -519,12 +519,50 @@ export interface GetPublicRegistrationFormResponse {
 export interface GetUserSettingsResponse {
   data:
     | {
+        employeeLearning?: {
+          version: 1;
+          stage: "company" | "people" | "role" | "ready";
+          role:
+            | null
+            | "hr"
+            | "accounting"
+            | "sales"
+            | "admin"
+            | "technician"
+            | "network"
+            | "engineer"
+            | "management";
+          /**
+           * @maxItems 200
+           * @uniqueItems true
+           */
+          completedLessons: string[];
+        };
         language: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
         /** @default false */
         isMFAEnabled: boolean;
         MFASecret: string | null;
       }
     | {
+        employeeLearning?: {
+          version: 1;
+          stage: "company" | "people" | "role" | "ready";
+          role:
+            | null
+            | "hr"
+            | "accounting"
+            | "sales"
+            | "admin"
+            | "technician"
+            | "network"
+            | "engineer"
+            | "management";
+          /**
+           * @maxItems 200
+           * @uniqueItems true
+           */
+          completedLessons: string[];
+        };
         language: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
         /** @default false */
         isMFAEnabled: boolean;
@@ -537,12 +575,50 @@ export interface GetUserSettingsResponse {
 
 export type UpdateUserSettingsBody =
   | {
+      employeeLearning?: {
+        version: 1;
+        stage: "company" | "people" | "role" | "ready";
+        role:
+          | null
+          | "hr"
+          | "accounting"
+          | "sales"
+          | "admin"
+          | "technician"
+          | "network"
+          | "engineer"
+          | "management";
+        /**
+         * @maxItems 200
+         * @uniqueItems true
+         */
+        completedLessons: string[];
+      };
       language?: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
       /** @default false */
       isMFAEnabled?: boolean;
       MFASecret?: string | null;
     }
   | {
+      employeeLearning?: {
+        version: 1;
+        stage: "company" | "people" | "role" | "ready";
+        role:
+          | null
+          | "hr"
+          | "accounting"
+          | "sales"
+          | "admin"
+          | "technician"
+          | "network"
+          | "engineer"
+          | "management";
+        /**
+         * @maxItems 200
+         * @uniqueItems true
+         */
+        completedLessons: string[];
+      };
       language?: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
       /** @default false */
       isMFAEnabled?: boolean;
@@ -555,12 +631,50 @@ export type UpdateUserSettingsBody =
 export interface UpdateUserSettingsResponse {
   data:
     | {
+        employeeLearning?: {
+          version: 1;
+          stage: "company" | "people" | "role" | "ready";
+          role:
+            | null
+            | "hr"
+            | "accounting"
+            | "sales"
+            | "admin"
+            | "technician"
+            | "network"
+            | "engineer"
+            | "management";
+          /**
+           * @maxItems 200
+           * @uniqueItems true
+           */
+          completedLessons: string[];
+        };
         language: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
         /** @default false */
         isMFAEnabled: boolean;
         MFASecret: string | null;
       }
     | {
+        employeeLearning?: {
+          version: 1;
+          stage: "company" | "people" | "role" | "ready";
+          role:
+            | null
+            | "hr"
+            | "accounting"
+            | "sales"
+            | "admin"
+            | "technician"
+            | "network"
+            | "engineer"
+            | "management";
+          /**
+           * @maxItems 200
+           * @uniqueItems true
+           */
+          completedLessons: string[];
+        };
         language: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
         /** @default false */
         isMFAEnabled: boolean;
@@ -717,6 +831,25 @@ export interface ResetDashboardSettingsResponse {
 
 export interface UpdateAdminNewUserNotificationResponse {
   data: {
+    employeeLearning?: {
+      version: 1;
+      stage: "company" | "people" | "role" | "ready";
+      role:
+        | null
+        | "hr"
+        | "accounting"
+        | "sales"
+        | "admin"
+        | "technician"
+        | "network"
+        | "engineer"
+        | "management";
+      /**
+       * @maxItems 200
+       * @uniqueItems true
+       */
+      completedLessons: string[];
+    };
     language: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
     /** @default false */
     isMFAEnabled: boolean;
@@ -1168,6 +1301,25 @@ export interface UpdateLearningPathsEnabledResponse {
 
 export interface UpdateAdminFinishedCourseNotificationResponse {
   data: {
+    employeeLearning?: {
+      version: 1;
+      stage: "company" | "people" | "role" | "ready";
+      role:
+        | null
+        | "hr"
+        | "accounting"
+        | "sales"
+        | "admin"
+        | "technician"
+        | "network"
+        | "engineer"
+        | "management";
+      /**
+       * @maxItems 200
+       * @uniqueItems true
+       */
+      completedLessons: string[];
+    };
     language: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
     /** @default false */
     isMFAEnabled: boolean;
@@ -1180,6 +1332,25 @@ export interface UpdateAdminFinishedCourseNotificationResponse {
 
 export interface UpdateAdminOverdueCourseNotificationResponse {
   data: {
+    employeeLearning?: {
+      version: 1;
+      stage: "company" | "people" | "role" | "ready";
+      role:
+        | null
+        | "hr"
+        | "accounting"
+        | "sales"
+        | "admin"
+        | "technician"
+        | "network"
+        | "engineer"
+        | "management";
+      /**
+       * @maxItems 200
+       * @uniqueItems true
+       */
+      completedLessons: string[];
+    };
     language: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
     /** @default false */
     isMFAEnabled: boolean;
@@ -1405,6 +1576,25 @@ export interface UpdateConfigWarningDismissedBody {
 
 export interface UpdateConfigWarningDismissedResponse {
   data: {
+    employeeLearning?: {
+      version: 1;
+      stage: "company" | "people" | "role" | "ready";
+      role:
+        | null
+        | "hr"
+        | "accounting"
+        | "sales"
+        | "admin"
+        | "technician"
+        | "network"
+        | "engineer"
+        | "management";
+      /**
+       * @maxItems 200
+       * @uniqueItems true
+       */
+      completedLessons: string[];
+    };
     language: "th" | "en" | "pl" | "de" | "lt" | "cs" | "es" | "fr";
     /** @default false */
     isMFAEnabled: boolean;
