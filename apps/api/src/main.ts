@@ -22,6 +22,7 @@ import {
 import { IntegrationModule } from "./integration/integration.module";
 import { startInstrumentation } from "./langfuse/instrumentation";
 import { McpOAuthService } from "./mcp/mcp-oauth.service";
+import { QueueService } from "./queue/queue.service";
 import { REDIS_PUBLISHER_CLIENT, REDIS_SUBSCRIBER_CLIENT, type RedisClient } from "./redis";
 import { DB_ADMIN } from "./storage/db/db.providers";
 import { createCorsOriginOption } from "./utils/cors";
@@ -142,5 +143,6 @@ async function bootstrap() {
   app.useWebSocketAdapter(redisIoAdapter);
 
   await app.listen(Number(process.env.PORT || 3000), "0.0.0.0");
+  app.get(QueueService).startWorkersAfterHttpReady();
 }
 bootstrap();

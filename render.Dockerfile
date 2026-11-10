@@ -41,6 +41,7 @@ RUN apk add --no-cache \
     && rm -rf /var/cache/apk/*
 
 ENV NODE_ENV=production \
+    QUEUE_ROLLOUT_CONNECTION_GATE=true \
     WEB_DIST_DIR=/app/public \
     NODE_EXTRA_CA_CERTS=/app/certs/supabase-ca.crt \
     PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true \

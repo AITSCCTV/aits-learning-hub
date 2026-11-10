@@ -11,6 +11,8 @@ import IORedis from "ioredis";
 
 import { QUEUE_NAMES, type QueueName } from "src/queue/queue.types";
 
+import { RolloutRedis } from "./rollout-redis";
+
 import type { RedisConfigSchema } from "src/common/configuration/redis";
 
 interface QueueInstance {
@@ -24,6 +26,13 @@ export class QueueService implements OnModuleInit, OnModuleDestroy, OnApplicatio
   private queues: Map<QueueName, QueueInstance> = new Map();
   private readonly connection: IORedis;
   private readonly producerConnection: IORedis;
+  private releaseBlocking: () => void = () => undefined;
+  private readonly blockingReady = new Promise<void>((resolve) => {
+    this.releaseBlocking = resolve;
+  });
+  private readonly deferBlocking = process.env.QUEUE_ROLLOUT_CONNECTION_GATE === "true";
+  private rolloutTimer?: ReturnType<typeof setTimeout>;
+  private stopping = false;
 
   constructor(private readonly configService: ConfigService) {
     const redisCfg = this.configService.get("redis") as RedisConfigSchema | undefined;
@@ -32,7 +41,9 @@ export class QueueService implements OnModuleInit, OnModuleDestroy, OnApplicatio
     }
 
     // Workers may wait for Redis recovery; HTTP producers should fail promptly.
-    this.connection = new IORedis(redisCfg.REDIS_URL, { maxRetriesPerRequest: null });
+    this.connection = this.deferBlocking
+      ? new RolloutRedis(redisCfg.REDIS_URL, this.blockingReady)
+      : new IORedis(redisCfg.REDIS_URL, { maxRetriesPerRequest: null });
     this.producerConnection = new IORedis(redisCfg.REDIS_URL, { maxRetriesPerRequest: 1 });
     this.connection.on("error", () => this.logger.error("Queue worker Redis connection failed"));
     this.producerConnection.on("error", () =>
@@ -76,7 +87,10 @@ export class QueueService implements OnModuleInit, OnModuleDestroy, OnApplicatio
 
     // QueueEvents uses a dedicated blocking connection. Most queues never need it.
     if (!instance.events) {
-      instance.events = new QueueEvents(name, { connection: this.connection });
+      // Completion listeners must observe jobs still running on the previous instance.
+      instance.events = new QueueEvents(name, {
+        connection: { ...this.connection.options, maxRetriesPerRequest: null },
+      });
       instance.events.on("error", () => this.logger.error(`Queue ${name} event connection failed`));
     }
     return instance.events;
@@ -104,7 +118,31 @@ export class QueueService implements OnModuleInit, OnModuleDestroy, OnApplicatio
     return this.connection;
   }
 
+  /** Called after HTTP is listening, allowing Render to retire the old instance first. */
+  startWorkersAfterHttpReady() {
+    if (!this.deferBlocking) return;
+    const checkCapacity = async () => {
+      if (this.stopping) return;
+      try {
+        const info = await this.connection.info("clients");
+        const count = Number(info.match(/^connected_clients:(\d+)/m)?.[1]);
+        // Reserve room for all 24 queue workers plus event consumers under maxclients=50.
+        if (Number.isFinite(count) && count <= 20) {
+          this.logger.log("Redis rollout capacity available; starting background workers");
+          this.releaseBlocking();
+          return;
+        }
+      } catch {
+        this.logger.warn("Waiting for Redis rollout capacity");
+      }
+      if (!this.stopping) this.rolloutTimer = setTimeout(() => void checkCapacity(), 5000);
+    };
+    void checkCapacity();
+  }
+
   async onModuleDestroy() {
+    this.stopping = true;
+    if (this.rolloutTimer) clearTimeout(this.rolloutTimer);
     const closePromises: Promise<void>[] = [];
 
     for (const instance of this.queues.values()) {

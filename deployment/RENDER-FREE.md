@@ -6,6 +6,8 @@ Create a **Web Service**, runtime **Docker**, in **Singapore**, using `render.Do
 
 The combined image includes the frontend under `/app/public`. Its same-origin API calls preserve the existing HttpOnly, Secure, SameSite=Strict authentication cookies. API routes, WebSockets and OAuth discovery routes bypass the frontend fallback. Missing asset files remain 404 responses.
 
+The image enables `QUEUE_ROLLOUT_CONNECTION_GATE=true` for the 50-client free Redis instance. Render overlaps the old and new processes during deployment. The new process opens HTTP and its shared producer connections first, then polls Redis client count every five seconds. Its 24 duplicated worker sockets start only when at most 20 clients remain, allowing the old process to retire first. Queued work is retained and completion listeners remain available during the handover. Other deployments retain immediate worker startup unless they opt in to this flag. This is a single-service free-pilot rollout strategy, not a multi-replica scaling design.
+
 Set these variables only on the backend service:
 
 | Variable                                               | Source                                                                               |
