@@ -4,7 +4,7 @@ The full Learning Hub is live at https://aits-learning-hub.onrender.com. GitHub 
 
 ## Hosted resources
 
-- Render Web Service `aits-learning-hub` (`srv-dbp6r98n74is73d1u980`): Docker, Singapore, Free. The deployed source is commit `4ffe26f` on `codex/free-hosting-preparation`, using `render.Dockerfile`. Deployment `dep-dbp8shp42hec73bu9p60` succeeded on 10 November 2026 at 10:27 Bangkok time.
+- Render Web Service `aits-learning-hub` (`srv-dbp6r98n74is73d1u980`): Docker, Singapore, Free. The deployed source is commit `92afa47` on `codex/free-hosting-preparation`, using `render.Dockerfile`. Deployment `dep-dbp9dn7avr4c73ef10d0` succeeded on 10 November 2026 at 11:13 Bangkok time.
 - Render Key Value `aits-learning-hub-queue`: Singapore, Free, 25 MB, 50 connections, noeviction, no persistence. External access is blocked.
 - Supabase project `nfbbmiqczekeedlsrtce`: Free organization, Singapore; PostgreSQL and private `aits-learning-hub` storage bucket. Data API is disabled. Session pool size is 30 to accommodate overlapping Render startup (the default 15 caused `EMAXCONNSESSION`). No plan upgrade was made.
 - All 229 core migrations plus Workflow/Graphile setup completed. The application uses a restricted runtime database role and a separate migration owner through the IPv4 session pooler, with certificate verification enabled.
@@ -31,6 +31,16 @@ The Knowledge page now adds seven English/Thai micro-lessons, 21 branded slide s
 - Eight targeted tests passed for frontend routing, Supabase role parsing, and queue connection/retry behavior. Scoped type checking, lint and formatting passed.
 - Visual learning: three component tests, scoped type checking/lint, full frontend build and desktop/mobile preview checks passed. Three Redis integration tests passed with a 50-client limit, covering old/new workers, completion events, retries and shutdown without open handles. Full API build passed.
 - The live rollout logged HTTP startup, successful deployment and subsequent background-worker release. The Redis gate delays duplicated worker sockets during overlap; no background features were disabled.
+
+## Thai interface
+
+The Thai interface has full English-catalog key parity (7,024 entries), including authentication, learner navigation, course controls, knowledge navigation, reports, administration and settings. New users without an explicit language choice start in Thai; existing saved choices remain intact. Thai calendars, Prompt typography, shared control labels and Video.js controls are included. English remains selectable.
+
+Three Thai coverage/behavior tests and three visual-learning regression tests passed. API/web scoped type checking, lint and formatting passed, as did the full production frontend build. The offline cache asset limit increased from 3 MiB to 4 MiB to accommodate the bundled catalog. No paid service or runtime translation API was introduced.
+
+Live verification confirmed Thai settings, course controls and report filters/metrics with the administrator account. Render reported a successful deployment and background-worker startup. Screenshots are saved in the local `outputs/thai-interface` folder.
+
+The catalog uses machine-assisted translation with targeted terminology review; a native Thai editorial pass is still advisable. Interface coverage does not translate uploaded documents, existing English course bodies or external video audio. The seven bilingual visual lessons remain available.
 
 ## Pilot limits and remaining work
 
