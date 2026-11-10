@@ -11,7 +11,7 @@ COPY . .
 RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
 RUN pnpm -w packages:build
 RUN pnpm build --filter=api
-RUN pnpm --filter=web build
+RUN NODE_OPTIONS=--max-old-space-size=6144 pnpm --filter=web build
 # TODO: Move pnpm deploy to turbo prune workflow
 RUN pnpm deploy --filter=api pnpm-deploy-output --prod --legacy
 
