@@ -10,16 +10,14 @@ Run `node scripts/build-review-site.mjs` from the repository root. It produces `
 
 `render.yaml` defines only a free Render Static Site. It does not provision paid services or deploy an authenticated LMS. The same `site/` output can be published on GitHub Pages from a `gh-pages` branch. Relative URLs support `/aits-learning-hub/` hosting. The visible site states the Draft review status and backend limitations.
 
-## Full LMS deployment remains separate
+## Full LMS free pilot
 
-The selected free-pilot layout now uses GitHub Pages as the entry page and the combined `render.Dockerfile` for the frontend and API on one Render origin. See `deployment/RENDER-FREE.md` for configuration and `docs/FREE-PILOT-STATUS.md` for verified progress. The combined image is prepared locally; it is not yet a live authenticated service.
+The combined frontend/API is live at https://aits-learning-hub.onrender.com using `render.Dockerfile`, Render Free web and Key Value services, and Supabase Free PostgreSQL/private storage. GitHub Pages links to the app so authentication stays on a single origin with secure, strict SameSite cookies. No custom domain is configured.
 
-The app needs the API, frontend, PostgreSQL with pgvector, a Redis-compatible queue service and private S3-compatible object storage. Production initialization must create the tenant for its actual HTTPS origin and an administrator with a unique credential, using a reviewed non-destructive bootstrap. The current AITS demonstration seed intentionally accepts only a local database and must retain that safeguard.
+See `deployment/RENDER-FREE.md` for settings and `docs/FREE-PILOT-STATUS.md` for verified behavior and limits. The live deployment uses commit `cdfd774` on `codex/free-hosting-preparation`; subsequent main-branch documentation and public-library updates do not change that running app.
 
-The deployment preparation branch reads PORT (default 3000) and listens on all interfaces. The existing web Docker image serves static frontend files on port 8080; it does not proxy `/api` or WebSockets. Authentication uses strict SameSite cookies, so deploy behind one origin or design and verify appropriate same-site routing. Separate arbitrary onrender.com origins are not a tested login configuration. Use separate migration-owner and restricted runtime database roles.
+The actual HTTPS tenant, unique administrator, seven draft courses, 28 reading lessons, seven practice quizzes and 28 draft knowledge records are initialized. The administrator must change the temporary password at first login. Do not rerun upstream destructive seeds or weaken the local-only demo seed guard.
 
-A local observation on 9 November 2026 found about 519 MB working memory for the running API. Render Free provides 512 MB, so successful backend operation on that tier is unverified and may exceed its memory allowance. Free PostgreSQL expires after 30 days, free Key Value loses state on restart, and free web services do not provide persistent disks. There is no configured external private file store for this deployment. No paid resources are authorized.
+This is a free pilot: startup can be slow, Redis is nonpersistent, and email/live AI are not enabled. The local container passed startup at 512 MB with about 422 MiB idle usage; concurrent usage and heavy conversion remain untested. Broader employee rollout requires content approval and acceptance testing.
 
-Before claiming a working hosted LMS: test a compatible free backend configuration; supply private storage; perform reviewed initialization and content import; verify real authentication, resource downloads, grading, persistence and role boundaries. Live AI additionally requires a configured provider and approved-source retrieval. The local completion results do not establish hosted readiness.
-
-References checked 9 November 2026: [Render Free](https://render.com/docs/free), [compute limits](https://render.com/docs/compute-plans), [Postgres extensions](https://render.com/docs/postgresql-extensions), [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).
+References: [Render Free](https://render.com/docs/free), [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/creating-a-github-pages-site).

@@ -27,4 +27,6 @@ The image sets `NODE_ENV=production`, `WEB_DIST_DIR=/app/public`, and `NODE_EXTR
 
 Before exposing login, initialize the real HTTPS tenant and a unique administrator through a non-destructive bootstrap. Never run the local demo seed or upstream seed with default accounts on this database.
 
-Deployment is still pending startup/memory checks, tenant initialization, curriculum import, and live authentication/progress/role tests. Free Redis is nonpersistent; restart behavior and session revocation require validation. Render's shared free-hour allowance also covers the workspace's other web services.
+The initial free deployment is live; tenant/admin initialization, draft curriculum import, and live administrator authentication are verified. Learner/manager acceptance tests, load testing and app-mediated upload checks remain. Free Redis is nonpersistent; restart behavior and session revocation require validation. Render's shared free-hour allowance also covers the workspace's other web services.
+
+For this email-free pilot, set `EMAIL_ADAPTER=mailhog`, `SMTP_HOST=127.0.0.1`, `SMTP_PORT=1025`, empty `SMTP_USER`/`SMTP_PASSWORD`, and `SMTP_EMAIL_FROM=noreply@aitscctv.com`. No local mail server is running: email delivery will fail, and invitations/password resets must not be advertised as working. Set `HELPDESK_ENABLED=false`, `NODE_OPTIONS=--max-old-space-size=384`, and health check `/api/healthcheck`.
