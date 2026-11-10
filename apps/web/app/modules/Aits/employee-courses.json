@@ -15,7 +15,7 @@
         },
         "paragraphs": [
           {
-            "th": "หน้าเกี่ยวกับเราอย่างเป็นทางการระบุ A.I.T.S. บริษัท จำกัด และก่อตั้งเมื่อปี พ.ศ. 2548 เทียบเท่ากับปี พ.ศ. 2548 โดยกล่าวถึงธุรกิจที่เกี่ยวข้องกับคุณภาพการติดตั้งและบริการอย่างมืออาชีพ นี่เป็นแถลงการณ์ของบริษัทมหาชน พวกเขาไม่ได้สร้างสัญญาพนักงานหรือมาตรฐานการยอมรับภาคสนาม",
+            "th": "หน้าเกี่ยวกับเราของบริษัทระบุชื่อ A.I.T.S. Company Limited และปีที่ก่อตั้งคือ พ.ศ. 2548 ซึ่งตรงกับ ค.ศ. 2005 พร้อมกล่าวถึงคุณภาพการติดตั้งและบริการอย่างมืออาชีพ ข้อมูลนี้เป็นประวัติที่บริษัทเผยแพร่ ไม่ใช่สัญญาจ้างหรือเกณฑ์ตรวจรับงาน",
             "en": "The official About us page identifies A.I.T.S. Company Limited and dates its founding to Buddhist year 2548, equivalent to 2005. It describes a business concerned with installation quality and professional service. These are public company statements; they do not establish an employee contract or a field acceptance standard."
           },
           {
@@ -25,11 +25,11 @@
         ],
         "points": [
           {
-            "th": "ประวัติศาสตร์สาธารณะ: ก่อตั้งในปี พ.ศ. 2548",
+            "th": "ข้อมูลประวัติที่บริษัทเผยแพร่: ก่อตั้ง พ.ศ. 2548 (ค.ศ. 2005)",
             "en": "Public history: founded in 2005"
           },
           {
-            "th": "คุณภาพการบริการและความรับผิดชอบถือเป็นประเด็นสาธารณะ",
+            "th": "บริษัทกล่าวถึงคุณภาพบริการและความรับผิดชอบในข้อมูลที่เผยแพร่",
             "en": "Service quality and responsibility are public themes"
           },
           {
@@ -38,16 +38,16 @@
           }
         ],
         "example": {
-          "th": "เพื่อนร่วมงานคนใหม่ถามว่าบริษัทเริ่มในปี 2548 หรือ 2548 อธิบายการแปลงปฏิทินและระบุแหล่งที่มาของหน้าบริษัท",
+          "th": "สถานการณ์สมมติ: เพื่อนร่วมงานถามว่าบริษัทเริ่มในปี 2548 หรือ 2005 อธิบายว่า พ.ศ. 2548 ตรงกับ ค.ศ. 2005 และอ้างอิงหน้าเกี่ยวกับเราของบริษัท",
           "en": "A fictional new colleague asks whether the company began in 2548 or 2005. Explain the calendar conversion and identify the company page as the source."
         },
         "question": {
-          "th": "ปีใดตรงกับประกาศก่อตั้งปี พ.ศ. 2548?",
+          "th": "ปี พ.ศ. 2548 ที่ระบุเป็นปีก่อตั้ง ตรงกับปี ค.ศ. ใด?",
           "en": "Which year matches the published founding year 2548 BE?"
         },
         "options": [
           {
-            "th": "พ.ศ. 2548 ส.ศ",
+            "th": "ค.ศ. 2005",
             "en": "2005 CE"
           },
           {
@@ -55,13 +55,13 @@
             "en": "2015 CE"
           },
           {
-            "th": "ส.ศ. 1995",
+            "th": "ค.ศ. 1995",
             "en": "1995 CE"
           }
         ],
         "correct": 0,
         "feedback": {
-          "th": "สำหรับวันที่ตามปฏิทินไทยนี้ ให้ลบ 543",
+          "th": "แปลง พ.ศ. เป็น ค.ศ. โดยลบ 543: 2548 − 543 = 2005",
           "en": "For this Thai calendar date, subtract 543."
         }
       },
@@ -73,7 +73,7 @@
         },
         "paragraphs": [
           {
-            "th": "AITS เปิดเผยรายชื่อกล้องวงจรปิด สายเคเบิลเครือข่าย ระบบรักษาความปลอดภัย อินเทอร์เน็ต ระบบโทรศัพท์ ระบบควบคุมการเข้าออก ระบบอัตโนมัติในบ้าน และบริการพลังงานแสงอาทิตย์ เรียนรู้ว่าแต่ละหมวดหมู่กล่าวถึงอะไรก่อนเสนอผลิตภัณฑ์ กล้องวงจรปิดรองรับการตรวจสอบด้วยภาพ การควบคุมการเข้าถึงจัดการรายการ โครงสร้างพื้นฐานเครือข่ายเชื่อมต่ออุปกรณ์และบริการ",
+            "th": "AITS เปิดเผยรายชื่อกล้องวงจรปิด สายเคเบิลเครือข่าย ระบบรักษาความปลอดภัย อินเทอร์เน็ต ระบบโทรศัพท์ ระบบควบคุมการเข้าออก ระบบอัตโนมัติในบ้าน และบริการพลังงานแสงอาทิตย์ เรียนรู้ว่าแต่ละหมวดหมู่กล่าวถึงอะไรก่อนเสนอผลิตภัณฑ์ กล้องวงจรปิดรองรับการตรวจสอบด้วยภาพ ระบบควบคุมการเข้าออกจัดการสิทธิ์ผ่านประตู โครงสร้างพื้นฐานเครือข่ายเชื่อมต่ออุปกรณ์และบริการ",
             "en": "AITS publicly lists CCTV, network cabling, security systems, internet, telephone systems, access control, home automation and solar services. Learn what each category addresses before proposing a product. CCTV supports visual monitoring; access control manages entry; network infrastructure connects devices and services."
           },
           {
@@ -96,7 +96,7 @@
           }
         ],
         "example": {
-          "th": "โรงงาน Lotus ที่สวมขึ้นมาต้องการเห็นทางเข้าจากระยะไกลและจำกัดการเข้าถึงประตูพนักงาน กล้องวงจรปิดและการควบคุมการเข้าถึงมีความเกี่ยวข้อง การเชื่อมต่อยังต้องมีการตรวจสอบอีกด้วย",
+          "th": "สถานการณ์สมมติ: โรงงาน Lotus ต้องการดูทางเข้าจากระยะไกลและจำกัดผู้ผ่านประตูพนักงาน จึงเกี่ยวข้องกับ CCTV และระบบควบคุมการเข้าออก โดยต้องตรวจสอบการเชื่อมต่อด้วย",
           "en": "Fictional Lotus Workshop wants to see its entrance remotely and restrict staff-door access. CCTV and access control are relevant; connectivity also needs investigation."
         },
         "question": {
@@ -154,7 +154,7 @@
           }
         ],
         "example": {
-          "th": "สตาร์ทเตอร์ใหม่จำเป็นต้องเข้าถึงระบบ สอบถาม Ethan, Kaung หรือ Kai สำหรับกระบวนการอนุมัติ และยืนยันการอนุมัติจากผู้จัดการที่จำเป็น",
+          "th": "พนักงานใหม่ต้องการสิทธิ์เข้าระบบ ให้สอบถามขั้นตอนจาก Ethan, Kaung หรือ Kai และยืนยันว่าต้องได้รับอนุมัติจากหัวหน้างานหรือไม่",
           "en": "A new starter needs system access. Ask Ethan, Kaung or Kai for the approved process, and confirm any required manager approval."
         },
         "question": {
@@ -163,7 +163,7 @@
         },
         "options": [
           {
-            "th": "อีธาน คัง หรือ ไค",
+            "th": "Ethan, Kaung หรือ Kai",
             "en": "Ethan, Kaung or Kai"
           },
           {
@@ -216,12 +216,12 @@
           "en": "A sample checklist appears in the library. You may use it for the exercise, but should not treat it as permission to perform a live installation."
         },
         "question": {
-          "th": "การทำแบบทดสอบการตระหนักรู้ด้านความปลอดภัยอนุญาตให้มีกระแสไฟฟ้าทำงานหรือไม่",
+          "th": "การทำแบบทดสอบความปลอดภัยเสร็จ อนุญาตให้ทำงานกับระบบไฟฟ้าที่ยังมีกระแสไฟหรือไม่?",
           "en": "Does completing a safety-awareness quiz authorize live electrical work?"
         },
         "options": [
           {
-            "th": "เลขที่",
+            "th": "ไม่ใช่",
             "en": "No"
           },
           {
@@ -310,7 +310,7 @@
       {
         "id": "AITS-C02-L02",
         "title": {
-          "th": "เวลาพักผ่อนและวันหยุด",
+          "th": "เวลาทำงาน เวลาพัก และวันหยุด",
           "en": "Hours rest and holidays"
         },
         "paragraphs": [
@@ -319,7 +319,7 @@
             "en": "For ordinary work, Ministry of Labour guidance describes normal limits of eight hours a day and 48 hours a week, with lawful arrangements and sector exceptions requiring review. Specified hazardous work has a seven-hour daily and 42-hour weekly limit. The ordinary rest rule provides at least one hour after no more than five consecutive working hours; agreed split breaks and statutory exceptions must be checked."
           },
           {
-            "th": "The general baseline includes at least one weekly holiday with no more than six days between, at least 13 traditional holidays including National Labour Day, and at least six working days of annual holiday after one continuous year. สิ่งเหล่านี้เป็นบรรทัดฐานทางกฎหมาย ไม่ใช่คำแถลงของบัญชีรายชื่อ AITS ความยินยอมล่วงเวลา ข้อยกเว้น และการจ่ายเงินควรได้รับการตรวจสอบแยกกัน อย่าสรุปว่ากำหนดเวลาของลูกค้ามาแทนที่พวกเขา",
+            "th": "หลักทั่วไปที่อธิบายไว้รวมถึงวันหยุดประจำสัปดาห์อย่างน้อยหนึ่งวัน โดยมีระยะห่างไม่เกินหกวัน วันหยุดตามประเพณีอย่างน้อย 13 วันรวมวันแรงงานแห่งชาติ และวันหยุดพักผ่อนประจำปีอย่างน้อยหกวันทำงานเมื่อทำงานต่อเนื่องครบหนึ่งปี ข้อมูลนี้เป็นภาพรวมข้อกฎหมาย ไม่ใช่ตารางงานของ AITS ให้ HR ตรวจสอบกฎหมายปัจจุบันและข้อยกเว้นที่เกี่ยวข้อง รวมถึงเงื่อนไขและค่าตอบแทนการทำงานล่วงเวลา",
             "en": "The general baseline includes at least one weekly holiday with no more than six days between, at least 13 traditional holidays including National Labour Day, and at least six working days of annual holiday after one continuous year. These are legal baselines, not a statement of the AITS roster. Overtime consent, exceptions and pay should be checked separately; do not infer that a customer deadline overrides them."
           }
         ],
@@ -342,7 +342,7 @@
           "en": "A fictional roster appears to schedule continuous work without a break. Identify the concern and ask HR to check the actual arrangement and exceptions."
         },
         "question": {
-          "th": "เส้นฐานชั่วโมงปกติปกติรายสัปดาห์ที่อธิบายไว้ที่นี่คืออะไร",
+          "th": "บทเรียนนี้กล่าวถึงเพดานเวลาทำงานปกติทั่วไปกี่ชั่วโมงต่อสัปดาห์?",
           "en": "What is the ordinary weekly normal-hours baseline described here?"
         },
         "options": [
@@ -368,7 +368,7 @@
       {
         "id": "AITS-C02-L03",
         "title": {
-          "th": "ออกจากหมวดหมู่และการเปลี่ยนแปลงล่าสุด",
+          "th": "ประเภทการลาและการเปลี่ยนแปลงล่าสุด",
           "en": "Leave categories and recent changes"
         },
         "paragraphs": [
@@ -400,7 +400,7 @@
           "en": "An older Ministry overview still says 90 maternity days. The newer official amendment explanation supersedes that figure for the relevant covered situation."
         },
         "question": {
-          "th": "แหล่งข้อมูลใดควรแก้ไขตัวเลขการคลอดบุตรที่ล้าสมัย",
+          "th": "หากข้อมูลจำนวนวันลาคลอดล้าสมัย ควรตรวจสอบกับแหล่งใด?",
           "en": "Which source should resolve an outdated maternity figure?"
         },
         "options": [
@@ -426,7 +426,7 @@
       {
         "id": "AITS-C02-L04",
         "title": {
-          "th": "ดำเนินการรักษาความลับและข้อกังวล",
+          "th": "การปฏิบัติตน การรักษาความลับ และการแจ้งข้อกังวล",
           "en": "Conduct confidentiality and concerns"
         },
         "paragraphs": [
@@ -435,7 +435,7 @@
             "en": "General professional practice includes accurate records, respectful communication, honesty about mistakes and protection of information entrusted to you. Collect only information needed for the legitimate task and share it only with authorized recipients through approved systems. This is privacy awareness, not a complete interpretation of Thailand’s PDPA or an AITS retention policy."
           },
           {
-            "th": "ก่อนส่งเอกสาร ให้ตรวจสอบผู้รับ เอกสารแนบ วัตถุประสงค์ และความไว อย่าใส่รหัสผ่านของลูกค้าลงในตั๋วหรือฝึกแชทด้วย AI สำหรับข้อกังวล ให้แยกสิ่งที่คุณสังเกตเห็นออกจากสิ่งที่คุณสงสัย เก็บรักษาหลักฐานที่เกี่ยวข้องอย่างถูกต้องตามกฎหมาย และใช้ช่องทางที่รับผิดชอบที่ได้รับการตรวจสอบแล้ว หากเกี่ยวข้องกับการติดต่อตามปกติ ให้แสวงหาเส้นทางอื่นที่ได้รับอนุญาต บทเรียนนี้ไม่ได้สร้างขั้นตอนการร้องทุกข์ของบริษัทหรือรับประกันผลการสอบสวนโดยเฉพาะ",
+            "th": "ก่อนส่งเอกสาร ให้ตรวจสอบผู้รับ เอกสารแนบ วัตถุประสงค์ และความไว อย่าใส่รหัสผ่านของลูกค้าลงในบันทึกแจ้งปัญหาหรือแชทฝึกกับ AI สำหรับข้อกังวล ให้แยกสิ่งที่คุณสังเกตเห็นออกจากสิ่งที่คุณสงสัย เก็บรักษาหลักฐานที่เกี่ยวข้องอย่างถูกต้องตามกฎหมาย และใช้ช่องทางที่รับผิดชอบที่ได้รับการตรวจสอบแล้ว หากเกี่ยวข้องกับการติดต่อตามปกติ ให้แสวงหาเส้นทางอื่นที่ได้รับอนุญาต บทเรียนนี้ไม่ได้สร้างขั้นตอนการร้องทุกข์ของบริษัทหรือรับประกันผลการสอบสวนโดยเฉพาะ",
             "en": "Before sending a document, check recipient, attachment, purpose and sensitivity. Never put customer passwords into a ticket or AI practice chat. For a concern, separate what you observed from what you suspect, preserve relevant evidence lawfully, and use a verified responsible channel. If the usual contact is implicated, seek an alternative authorized route. This lesson does not invent a company grievance procedure or promise a particular investigation outcome."
           }
         ],
@@ -458,7 +458,7 @@
           "en": "A fictional employee receives a customer list by mistake. Stop further sharing and report the misdelivery through the verified internal route."
         },
         "question": {
-          "th": "รายละเอียดใดที่ควรแยกออกจากตั๋วการแก้ไขปัญหา",
+          "th": "ข้อมูลใดไม่ควรใส่ในบันทึกแจ้งปัญหา?",
           "en": "Which detail should be excluded from a troubleshooting ticket?"
         },
         "options": [
@@ -499,7 +499,7 @@
         },
         "paragraphs": [
           {
-            "th": "อันตรายคือแหล่งที่มาของอันตรายที่อาจเกิดขึ้น ความเสี่ยงจะพิจารณาว่าอันตรายอาจเกิดขึ้นได้อย่างไรและผลที่ตามมา ก่อนทำงาน ให้มองหาสายเคเบิลที่ชำรุด พื้นที่เปียก การเข้าถึงที่ไม่มั่นคง วัตถุหล่น การจราจร การบรรทุกของหนัก และทางออกที่ถูกบล็อก ไซต์ที่ดูเรียบร้อยยังคงมีบริการที่ซ่อนอยู่หรืออุปกรณ์ที่มีพลังอยู่",
+            "th": "อันตรายคือแหล่งที่มาของอันตรายที่อาจเกิดขึ้น ความเสี่ยงจะพิจารณาว่าอันตรายอาจเกิดขึ้นได้อย่างไรและผลที่ตามมา ก่อนทำงาน ให้มองหาสายเคเบิลที่ชำรุด พื้นที่เปียก การเข้าถึงที่ไม่มั่นคง วัตถุหล่น การจราจร การบรรทุกของหนัก และทางออกที่ถูกบล็อก ไซต์ที่ดูเรียบร้อยยังคงมีแนวระบบสาธารณูปโภคที่มองไม่เห็นหรืออุปกรณ์ที่ยังมีพลังงาน",
             "en": "A hazard is a source of possible harm; risk considers how harm could occur and its consequences. Before work, look for damaged cables, wet areas, unstable access, falling objects, traffic, heavy loads and blocked exits. A neat-looking site can still contain hidden services or energized equipment."
           },
           {
@@ -539,7 +539,7 @@
             "en": "A source of possible harm"
           },
           {
-            "th": "มีเพียงอาการบาดเจ็บที่สมบูรณ์เท่านั้น",
+            "th": "เฉพาะเหตุที่มีผู้บาดเจ็บแล้วเท่านั้น",
             "en": "Only a completed injury"
           }
         ],
@@ -557,7 +557,7 @@
         },
         "paragraphs": [
           {
-            "th": "ประเทศไทยมีข้อบังคับและข้อกำหนดการฝึกอบรมด้านความปลอดภัยทางไฟฟ้าเฉพาะด้าน ดัชนีอ้างอิง DLPW เชื่อมโยงกฎระเบียบและประกาศ บทเรียนออนไลน์สั้นๆ ไม่ใช่วุฒิการศึกษานั้น อย่าเปิดอุปกรณ์ที่มีพลังงาน เอาชนะเจ้าหน้าที่รักษาความปลอดภัย หรือซ่อมแซมแบบด้นสด ความร้อนที่ไม่คาดคิด กลิ่นไหม้ ตัวนำที่สัมผัส หรือของเหลวที่ไหลเข้าไป จำเป็นต้องหยุดอย่างปลอดภัยและการประเมินที่มีคุณสมบัติ",
+            "th": "งานไฟฟ้ามีข้อกำหนดความปลอดภัยและการฝึกอบรมเฉพาะ บทเรียนออนไลน์สั้น ๆ ไม่ใช่คุณสมบัติสำหรับทำงานไฟฟ้า อย่าเปิดอุปกรณ์ที่ยังมีพลังงาน ถอดหรือข้ามอุปกรณ์ป้องกัน หรือดัดแปลงซ่อมเอง หากพบความร้อนผิดปกติ กลิ่นไหม้ สายไฟเปลือย หรือของเหลวเข้าอุปกรณ์ ให้หยุดอย่างปลอดภัยและแจ้งผู้มีหน้าที่และคุณสมบัติเหมาะสม",
             "en": "Thailand has specific occupational electrical-safety regulations and training requirements; the DLPW reference index links the regulation and notices. A short online lesson is not that qualification. Do not open energized equipment, defeat guards or improvise repairs. Unexpected heat, burning smell, exposed conductors or liquid ingress require a safe stop and qualified assessment."
           },
           {
@@ -580,7 +580,7 @@
           }
         ],
         "example": {
-          "th": "เครื่องบันทึกส่งกลิ่นไหม้ ทำให้ผู้คนมีความชัดเจนและแสวงหาการตอบสนองฉุกเฉิน/ตามหลักเกณฑ์ของสถานที่ อย่าเปิดกล่องเพื่อตรวจสอบ",
+          "th": "เครื่องบันทึกมีกลิ่นไหม้ ให้กันผู้คนออกจากบริเวณและแจ้งผู้รับผิดชอบตามแผนฉุกเฉินของสถานที่ อย่าเปิดเครื่องเพื่อตรวจสอบเอง",
           "en": "A recorder emits a burning smell. Keep people clear and seek the site emergency/qualified response; do not open the enclosure to inspect it."
         },
         "question": {
@@ -589,7 +589,7 @@
         },
         "options": [
           {
-            "th": "เลขที่",
+            "th": "ไม่ใช่",
             "en": "No"
           },
           {
@@ -610,7 +610,7 @@
       {
         "id": "AITS-C03-L03",
         "title": {
-          "th": "ความสูง PPE และการจัดการ",
+          "th": "งานบนที่สูง อุปกรณ์ป้องกัน และการเคลื่อนย้าย",
           "en": "Height PPE and handling"
         },
         "paragraphs": [
@@ -642,7 +642,7 @@
           "en": "A camera is above a stairwell. The safe planning response considers another mounting arrangement or properly assessed access, not balancing a ladder on a step."
         },
         "question": {
-          "th": "การสวมสายรัดทำให้สมอทุกตัวเหมาะสมหรือไม่?",
+          "th": "การสวมเข็มขัดนิรภัยทำให้จุดยึดทุกจุดใช้งานได้อย่างเหมาะสมหรือไม่?",
           "en": "Does wearing a harness make every anchor suitable?"
         },
         "options": [
@@ -655,7 +655,7 @@
             "en": "Only indoors"
           },
           {
-            "th": "เลขที่",
+            "th": "ไม่ใช่",
             "en": "No"
           }
         ],
@@ -668,12 +668,12 @@
       {
         "id": "AITS-C03-L04",
         "title": {
-          "th": "ความประพฤติและคุณภาพของสถานที่เกิดเหตุ",
+          "th": "การรายงานเหตุ การทำงานหน้างาน และคุณภาพ",
           "en": "Incidents site conduct and quality"
         },
         "paragraphs": [
           {
-            "th": "หากเกิดอุบัติเหตุหรือเหตุการณ์เกือบพลาด ให้ป้องกันตัวเอง ค้นหาการตอบสนองฉุกเฉินที่กำหนดไว้ และหลีกเลี่ยงการรบกวนสถานที่เกิดเหตุ ยกเว้นในกรณีที่จำเป็นเพื่อความปลอดภัยในทันที อย่าพยายามช่วยชีวิตนอกเหนือการฝึกของคุณ บันทึกเวลา สถานที่ สภาพที่สังเกตได้ และพยานผ่านเส้นทางการรายงานที่ได้รับการตรวจสอบแล้ว ห้ามคาดเดาเกี่ยวกับการกล่าวโทษหรือเผยแพร่ภาพบุคคล",
+            "th": "หากเกิดอุบัติเหตุหรือเหตุการณ์เกือบเกิดอุบัติเหตุ ให้ป้องกันตัวเอง ค้นหาการตอบสนองฉุกเฉินที่กำหนดไว้ และหลีกเลี่ยงการรบกวนสถานที่เกิดเหตุ ยกเว้นในกรณีที่จำเป็นเพื่อความปลอดภัยในทันที อย่าพยายามช่วยชีวิตนอกเหนือการฝึกของคุณ บันทึกเวลา สถานที่ สภาพที่สังเกตได้ และพยานผ่านเส้นทางการรายงานที่ได้รับการตรวจสอบแล้ว ห้ามคาดเดาเกี่ยวกับการกล่าวโทษหรือเผยแพร่ภาพบุคคล",
             "en": "If an incident or near miss occurs, protect yourself, seek the designated emergency response and avoid disturbing the scene except where necessary for immediate safety. Do not attempt a rescue beyond your training. Record time, location, observed conditions and witnesses through the verified reporting route. Do not speculate about blame or publish images of people."
           },
           {
@@ -700,7 +700,7 @@
           "en": "A box falls near a colleague without injury. Treat the near miss as useful safety information rather than hiding it because nobody was hurt."
         },
         "question": {
-          "th": "ควรจะมองข้ามการพลาดท่าใกล้เพราะไม่มีใครได้รับบาดเจ็บหรือไม่?",
+          "th": "ควรละเลยเหตุการณ์เกือบเกิดอุบัติเหตุเพราะไม่มีผู้บาดเจ็บหรือไม่?",
           "en": "Should a near miss be ignored because no one was hurt?"
         },
         "options": [
@@ -709,7 +709,7 @@
             "en": "Only if it happened outdoors"
           },
           {
-            "th": "เลขที่",
+            "th": "ไม่ใช่",
             "en": "No"
           },
           {
@@ -736,7 +736,7 @@
       {
         "id": "AITS-C04-L01",
         "title": {
-          "th": "กล้องบันทึกและดู",
+          "th": "กล้อง เครื่องบันทึก และการดูภาพ",
           "en": "Cameras recorders and viewing"
         },
         "paragraphs": [
@@ -773,7 +773,7 @@
         },
         "options": [
           {
-            "th": "เครื่องบันทึกภาพ",
+            "th": "เครื่องบันทึกภาพเครือข่าย (NVR)",
             "en": "NVR"
           },
           {
@@ -826,7 +826,7 @@
           "en": "Four fictional cameras each require a documented maximum allocation of 15 W. Their total is 60 W; a 50 W usable budget is insufficient even before other loads."
         },
         "question": {
-          "th": "การจัดสรร 15 W สี่รายการสามารถพอดีกับงบประมาณที่ใช้งานได้ 50 W ได้หรือไม่",
+          "th": "อุปกรณ์ 4 ตัวที่ต้องใช้กำลังไฟตัวละ 15 W ใช้กับกำลังไฟ PoE ที่มีให้ 50 W ได้หรือไม่?",
           "en": "Can four 15 W allocations fit a 50 W usable budget?"
         },
         "options": [
@@ -910,7 +910,7 @@
       {
         "id": "AITS-C04-L04",
         "title": {
-          "th": "การบำรุงรักษาข้อบกพร่องและการส่งมอบ",
+          "th": "การแก้ปัญหา การบำรุงรักษา และการส่งมอบ",
           "en": "Faults maintenance and handover"
         },
         "paragraphs": [
@@ -942,7 +942,7 @@
           "en": "Only playback is missing for camera C2; live view works. Investigate recording schedule, storage and timestamps before replacing the camera."
         },
         "question": {
-          "th": "Live view ใช้งานได้ แต่การเล่นล้มเหลว พื้นที่ใดสมควรได้รับการตรวจสอบ?",
+          "th": "ดูภาพสดได้ แต่ดูภาพย้อนหลังไม่ได้ ควรตรวจสอบส่วนใด?",
           "en": "Live view works but playback fails. Which area deserves review?"
         },
         "options": [
@@ -978,7 +978,7 @@
       {
         "id": "AITS-C05-L01",
         "title": {
-          "th": "LAN สลับเราเตอร์และ Wi-Fi",
+          "th": "LAN สวิตช์ เราเตอร์ และ Wi-Fi",
           "en": "LAN switches routers and Wi-Fi"
         },
         "paragraphs": [
@@ -1094,7 +1094,7 @@
       {
         "id": "AITS-C05-L03",
         "title": {
-          "th": "ตรวจสอบอินเทอร์เน็ตไม่พร้อมใช้งาน",
+          "th": "ตรวจสอบปัญหาใช้งานอินเทอร์เน็ตไม่ได้",
           "en": "Investigate internet unavailable"
         },
         "paragraphs": [
@@ -1152,7 +1152,7 @@
       {
         "id": "AITS-C05-L04",
         "title": {
-          "th": "การยกระดับการแยกและการอัปเดตลูกค้า",
+          "th": "แยกสาเหตุ ส่งต่อปัญหา และแจ้งความคืบหน้า",
           "en": "Isolation escalation and customer updates"
         },
         "paragraphs": [
@@ -1184,7 +1184,7 @@
           "en": "Synthetic update: “Two office devices cannot resolve names. Gateway checks passed. We are checking the resolver path and will update you at the agreed time.”"
         },
         "question": {
-          "th": "มีอะไรอยู่ในการยกระดับ?",
+          "th": "การส่งต่อปัญหาให้ทีมที่รับผิดชอบควรมีข้อมูลใด?",
           "en": "What belongs in an escalation?"
         },
         "options": [
@@ -1220,7 +1220,7 @@
       {
         "id": "AITS-C06-L01",
         "title": {
-          "th": "ค้นหาและบันทึกข้อกำหนด",
+          "th": "สอบถามและบันทึกความต้องการ",
           "en": "Discover and record requirements"
         },
         "paragraphs": [
@@ -1248,7 +1248,7 @@
           }
         ],
         "example": {
-          "th": "Fictional Cedar Office กล่าวว่า \"เราต้องการกล้องที่ดีกว่านี้\" ถามสิ่งที่ต้องมองเห็น ภายใต้แสงใด และเพื่อจุดประสงค์อะไร ก่อนที่จะเสนอข้อกำหนด",
+          "th": "สำนักงาน Cedar ในสถานการณ์สมมติ กล่าวว่า \"เราต้องการกล้องที่ดีกว่านี้\" ถามสิ่งที่ต้องมองเห็น ภายใต้แสงใด และเพื่อจุดประสงค์อะไร ก่อนที่จะเสนอข้อกำหนด",
           "en": "Fictional Cedar Office says “we need better cameras.” Ask what must be visible, under what lighting and for what purpose before proposing a specification."
         },
         "question": {
@@ -1265,7 +1265,7 @@
             "en": "Ask what outcome the customer needs"
           },
           {
-            "th": "อ้างอิงรุ่นที่แพงที่สุด",
+            "th": "เสนอราคารุ่นที่แพงที่สุดทันที",
             "en": "Quote the most expensive model"
           }
         ],
@@ -1315,7 +1315,7 @@
         },
         "options": [
           {
-            "th": "ฉันจะขอให้มีการตรวจสอบและยอมรับการอัปเดต",
+            "th": "จะขอให้ทีมตรวจสอบและตกลงเวลาที่จะแจ้งความคืบหน้า",
             "en": "I will request review and agree an update"
           },
           {
@@ -1377,7 +1377,7 @@
             "en": "Send it unchanged"
           },
           {
-            "th": "เดาว่าสองคนนั้นว่าง",
+            "th": "เดาว่ากล้องอีกสองตัวเป็นของแถม",
             "en": "Guess that two are free"
           },
           {
@@ -1520,12 +1520,12 @@
       {
         "id": "AITS-C07-L02",
         "title": {
-          "th": "หลักฐานและการเบี่ยงเบน",
+          "th": "หลักฐานและสิ่งที่ไม่เป็นไปตามข้อกำหนด",
           "en": "Evidence and deviations"
         },
         "paragraphs": [
           {
-            "th": "หลักฐานเชื่อมโยงข้อกำหนดกับผลลัพธ์ที่สังเกตได้ บันทึกสิ่งที่ตรวจสอบ วิธีการ เวลา ตัวระบุที่เกี่ยวข้อง และผลลัพธ์ “เสร็จสิ้น” เพียงอย่างเดียวถือเป็นหลักฐานที่อ่อนแอ เมื่อผู้ตรวจสอบรายถัดไปไม่สามารถบอกได้ว่าข้อกำหนดใดที่ได้รับการทดสอบ ห้ามสร้างภาพถ่าย ขนาด หรือลายเซ็น",
+            "th": "หลักฐานเชื่อมโยงข้อกำหนดกับผลลัพธ์ที่สังเกตได้ บันทึกสิ่งที่ตรวจสอบ วิธีการ เวลา ตัวระบุที่เกี่ยวข้อง และผลลัพธ์ “เสร็จสิ้น” เพียงอย่างเดียวถือเป็นหลักฐานที่อ่อนแอ เมื่อผู้ตรวจสอบรายถัดไปไม่สามารถบอกได้ว่าข้อกำหนดใดที่ได้รับการทดสอบ ห้ามสร้างภาพถ่าย ค่าที่วัดได้ หรือลายเซ็น",
             "en": "Evidence connects a requirement to an observed result. Record what was checked, the method, time, relevant identifier and result. “Done” alone is weak evidence when the next reviewer cannot tell which requirement was tested. Do not fabricate a photo, measurement or signature."
           },
           {
@@ -1552,12 +1552,12 @@
           "en": "The required playback test was not performed because access was unavailable. Record “not tested, access pending,” rather than a pass."
         },
         "question": {
-          "th": "การทดสอบที่ไม่มีประสิทธิภาพควรถูกบันทึกว่าเป็นอย่างไร?",
+          "th": "การทดสอบที่ยังไม่ได้ดำเนินการควรบันทึกว่าอย่างไร?",
           "en": "What should an unperformed test be recorded as?"
         },
         "options": [
           {
-            "th": "ผ่านไป",
+            "th": "ผ่าน",
             "en": "Passed"
           },
           {
@@ -1619,7 +1619,7 @@
             "en": "Wait for a complaint"
           },
           {
-            "th": "กระทบยอดรายการเบิกสินค้าก่อนจัดส่ง",
+            "th": "ตรวจรายการเบิกสินค้าให้ตรงกับของจริงก่อนจัดส่ง",
             "en": "Reconcile the picking list before dispatch"
           },
           {
@@ -1636,7 +1636,7 @@
       {
         "id": "AITS-C07-L04",
         "title": {
-          "th": "การตรวจสอบ AI และอำนาจเจ้าหน้าที่",
+          "th": "ตรวจสอบคำตอบ AI และอำนาจอนุมัติของผู้รับผิดชอบ",
           "en": "AI checks and human authority"
         },
         "paragraphs": [
@@ -1664,7 +1664,7 @@
           }
         ],
         "example": {
-          "th": "AI บอกว่าการติดตั้งกล้องส่งผ่านจากภาพถ่ายเดียว ถามว่าข้อกำหนดและหลักฐานใดบ้างที่ได้รับการตรวจสอบ การทดสอบทางกายภาพที่ไม่ได้รับการแก้ไขยังคงไม่ได้รับการแก้ไข",
+          "th": "AI บอกว่าการติดตั้งกล้องผ่านเกณฑ์จากภาพถ่ายเดียว ถามว่าข้อกำหนดและหลักฐานใดบ้างที่ได้รับการตรวจสอบ การทดสอบทางกายภาพที่ไม่ได้รับการแก้ไขยังคงไม่ได้รับการแก้ไข",
           "en": "An AI says a camera installation passes from one photograph. Ask which requirements and evidence were checked; unresolved physical tests remain unresolved."
         },
         "question": {
@@ -1673,7 +1673,7 @@
         },
         "options": [
           {
-            "th": "เลขที่",
+            "th": "ไม่ใช่",
             "en": "No"
           },
           {
