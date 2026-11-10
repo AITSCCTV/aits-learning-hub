@@ -1,10 +1,10 @@
 # Free pilot status — 10 November 2026
 
-The full Learning Hub is live at https://aits-learning-hub.onrender.com. GitHub Pages at https://aitscctv.github.io/aits-learning-hub/ provides the public review library and a sign-in link. No custom domain or paid service is configured.
+The full Learning Hub is live at https://aits-learning-hub.onrender.com. GitHub Pages at https://aitscctv.github.io/aits-learning-hub/ provides the Thai-first welcome and sign-in entry. The original review library remains at `review.html`. No custom domain or paid service is configured.
 
 ## Hosted resources
 
-- Render Web Service `aits-learning-hub` (`srv-dbp6r98n74is73d1u980`): Docker, Singapore, Free. The deployed source is commit `92afa47` on `codex/free-hosting-preparation`, using `render.Dockerfile`. Deployment `dep-dbp9dn7avr4c73ef10d0` succeeded on 10 November 2026 at 11:13 Bangkok time.
+- Render Web Service `aits-learning-hub` (`srv-dbp6r98n74is73d1u980`): Docker, Singapore, Free. Current source commit `632d6a7` deployed from `codex/free-hosting-preparation`, using `render.Dockerfile`. Deployment `dep-dbpabe29lscs73b16pqg` succeeded on 10 November 2026 at 12:16 Bangkok time; background workers started at 12:16:13. It includes employee onboarding and Thai wording/calendar corrections, verified live. The initial onboarding release `36bf172` succeeded at 12:00.
 - Render Key Value `aits-learning-hub-queue`: Singapore, Free, 25 MB, 50 connections, noeviction, no persistence. External access is blocked.
 - Supabase project `nfbbmiqczekeedlsrtce`: Free organization, Singapore; PostgreSQL and private `aits-learning-hub` storage bucket. Data API is disabled. Session pool size is 30 to accommodate overlapping Render startup (the default 15 caused `EMAXCONNSESSION`). No plan upgrade was made.
 - All 229 core migrations plus Workflow/Graphile setup completed. The application uses a restricted runtime database role and a separate migration owner through the IPv4 session pooler, with certificate verification enabled.
@@ -42,13 +42,25 @@ Live verification confirmed Thai settings, course controls and report filters/me
 
 The catalog uses machine-assisted translation with targeted terminology review; a native Thai editorial pass is still advisable. Interface coverage does not translate uploaded documents, existing English course bodies or external video audio. The seven bilingual visual lessons remain available.
 
+## Employee onboarding and role learning
+
+The public welcome invites employees to sign in. The authenticated `/learn` journey introduces company services and working habits, shows HR/CEO and Ethan/Kaung/Kai support contacts, and keeps accounting as the requested placeholder. Eight work-function choices follow the supplied organization-chart functions. Phone numbers, email addresses and reporting lines are not invented.
+
+The path contains nine bilingual practice courses and 32 lessons. Thai lesson bodies, examples, answer choices and feedback are included; English remains selectable. Shared welcome/SOP essentials appear for everyone, alongside only relevant specialist courses. The account stores onboarding stage, selected learning role and completed lessons. Choosing a role does not assign system permissions. This practice progress is separate from native LMS grades and certificates; original draft LMS records are preserved.
+
+The test learner `test@aitscctv.com` has only the student system role and Thai preferences. Its random password is stored outside the repository in the private local deployment folder. No email was sent. Login and role readback passed. After browser testing, the account was reset to the company introduction, no selected learning role and zero completed lessons.
+
+Live browser verification confirmed automatic learner routing into `/learn`, company/people/role steps, the named contacts, engineering and accounting course filtering, incorrect-answer gating, next-lesson unlock, progress after reload, and switching between Thai and English. Five learning-flow tests passed again after the Thai terminology/calendar corrections. Screenshots are saved locally in `outputs/employee-onboarding` (welcome, contacts, role selection, engineering path and Thai lesson).
+
+Validation: eight frontend tests cover role filtering, full bilingual lesson fields, sequential unlocks, correct-answer progress, remount persistence, failed saves and Thai interface parity. Two API schema tests cover accepted state and rejection of unsupported roles, extra properties, duplicates and excessive progress. API and frontend production builds, scoped lint, formatting and type checking passed. Source contracts were regenerated through normal app startup and the existing client generator.
+
 ## Pilot limits and remaining work
 
 - Email delivery is unavailable. `EMAIL_ADAPTER=mailhog` points only to `127.0.0.1:1025`, where no mail server is running. Invitations and password-reset emails cannot be relied upon. This avoids requiring paid email during initial startup, but it is not an email delivery service.
 - No live AI provider, payment provider, video service or external meeting service is configured.
 - Free Render services sleep; startup can take several minutes for this application. Free hours are shared with the workspace’s other services.
 - Free Redis loses queued state and revocation markers on restart. Durable progress is stored in PostgreSQL, but restart/session behavior needs further review before broader employee rollout.
-- Company review, employee provisioning, course assignment, learner/manager journeys, grading, reports and app-mediated file uploads still need acceptance testing. Draft content is intentionally not an approved training program. New visual-lesson progress is stored in the browser, not in manager reports; broader rollout should include workload and database-pool sizing checks.
+- Company review, employee provisioning, native LMS course assignment, manager journeys, grading, reports and app-mediated file uploads still need acceptance testing. Draft content is intentionally not an approved training program. The knowledge-page visual lessons store practice progress in the browser; the new `/learn` employee path stores progress in the account. Neither feeds native LMS grades or manager reports. Broader rollout should include workload and database-pool sizing checks.
 - Heavy document/media conversion and concurrent usage have not been validated within 512 MB. Supabase free quotas and inactivity behavior also apply.
 
 The existing local development checkout is preserved. The public review site remains available independently of the authenticated application.
