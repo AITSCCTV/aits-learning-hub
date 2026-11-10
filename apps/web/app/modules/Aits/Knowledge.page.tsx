@@ -16,6 +16,7 @@ import { Textarea } from "~/components/ui/textarea";
 import { useLanguageStore } from "~/modules/Dashboard/Settings/Language/LanguageStore";
 
 import { SopChecklist } from "./SopChecklist";
+import VisualLearning from "./VisualLearning";
 
 import type { CreateKnowledgeBody, ListKnowledgeResponse } from "~/api/generated-api";
 
@@ -194,6 +195,7 @@ export default function KnowledgePage() {
   );
   return (
     <PageWrapper breadcrumbs={[{ title: t("aits.knowledge"), href: "/knowledge" }]}>
+      {user && <VisualLearning key={user.id} userId={user.id} />}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div>
           <h1 className="flex items-center gap-3 text-2xl font-semibold">
@@ -282,7 +284,12 @@ export default function KnowledgePage() {
             {record.kind === "sop" ? (
               <SopChecklist key={record.id} content={record.body} />
             ) : (
-              <p className="whitespace-pre-wrap break-words leading-7">{record.body}</p>
+              <details>
+                <summary className="cursor-pointer py-2 font-medium">
+                  {t("visualLearning.readReference")}
+                </summary>
+                <p className="whitespace-pre-wrap break-words leading-7">{record.body}</p>
+              </details>
             )}
             {record.kind === "sop" && (
               <p className="mt-4 text-sm text-slate-600">{t("aits.noCompliance")}</p>
